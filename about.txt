@@ -1,6 +1,6 @@
 This favicon was generated using the following font:
 
-- Font Title: Abyssinica SIL
+- Font Title: Abhaya Libre
 - Font Author: undefined
-- Font Source: https://fonts.gstatic.com/s/abyssinicasil/v8/oY1H8ezOqK7iI3rK_45WKoc8J6UZBFOVAXuI.ttf
+- Font Source: https://fonts.gstatic.com/s/abhayalibre/v17/e3tmeuGtX-Co5MNzeAOqinEge0PWovdU4w.ttf
 - Font License: undefined)
