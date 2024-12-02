@@ -4588,7 +4588,7 @@ figcaption {
 
 .contact_location-item.is-newyork {
     object-fit: cover;
-    background-image: linear-gradient(#000000b3, #0000), url("https://cdn.prod.website-files.com/65fef82aa5efd4c62c976969/660ccd14a12ce2c2cecf6ca8_pexels-nout-gons-378570%20(1).jpg");
+    background-image: linear-gradient(#000000b3, #0000), url("arches.jpg");
     background-position: 0 0, 50%;
     background-repeat: repeat, no-repeat;
     background-size: auto, cover;
