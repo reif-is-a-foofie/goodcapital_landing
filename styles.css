@@ -4588,7 +4588,7 @@ figcaption {
 
 .contact_location-item.is-newyork {
     object-fit: cover;
-    background-image: linear-gradient(#000000b3, #0000), url("arches.jpg");
+    background-image: linear-gradient(#000000b3, #0000), url("https://images.pexels.com/photos/62600/pexels-photo-62600.jpeg");
     background-position: 0 0, 50%;
     background-repeat: repeat, no-repeat;
     background-size: auto, cover;
@@ -4597,7 +4597,7 @@ figcaption {
 }
 
 .contact_location-item.is-sandiego {
-    background-image: linear-gradient(#000000b3, #fff0), url("https://cdn.prod.website-files.com/65fef82aa5efd4c62c976969/671ba0d3d4ba39a8dc4f29f2_pexels-daniel-2984347.jpg");
+    background-image: linear-gradient(#000000b3, #fff0), url("dogwood.jpg");
     background-position: 0 0, 50%;
     background-repeat: repeat, no-repeat;
     background-size: auto, cover;
