@@ -111,25 +111,24 @@ p, li {
 }
 
 .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
     color: #2c3e50;
     text-decoration: none;
-    letter-spacing: -0.01em;
 }
 
 .nav-links {
     display: flex;
-    gap: 35px;
+    gap: 32px;
 }
 
 .nav-links a {
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     color: #2c3e50;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 15px;
     transition: all 0.3s ease;
     position: relative;
 }
