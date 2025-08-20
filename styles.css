@@ -710,6 +710,7 @@ body {
 }
 
 /* Responsive Design */
+/* Responsive Design */
 @media (max-width: 768px) {
     .hero-text h1 {
         font-size: 2.5rem;
@@ -723,19 +724,26 @@ body {
         display: none; /* You might want to add a mobile menu here */
     }
     
-    .invest-grid {
+    .invest-grid,
+    .content-grid,
+    .contact-grid {
         grid-template-columns: 1fr;
         gap: 40px;
     }
     
-    .definition-content h2 {
+    .definition-content h2,
+    .page-header h1 {
         font-size: 2rem;
     }
     
     .invest-content h2,
     .testimonials-section h2,
     .vision-content h2,
-    .cta-content h2 {
+    .cta-content h2,
+    .page-cta h2,
+    .mission-content h2,
+    .content-text h2,
+    .contact-info h2 {
         font-size: 2rem;
     }
     
@@ -751,5 +759,31 @@ body {
     .vision-section,
     .cta-section {
         height: 50vh;
+    }
+    
+    .criteria-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .criteria-number {
+        margin: 0 auto;
+    }
+    
+    .content-grid.reverse {
+        direction: ltr;
+    }
+    
+    .page-header {
+        padding: 100px 0 40px;
+    }
+    
+    .contact-form-wrapper {
+        gap: 20px;
+    }
+    
+    .rounded-image {
+        height: 250px;
     }
 }
