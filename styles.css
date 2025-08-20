@@ -702,17 +702,18 @@ p, li {
 }
 
 .team-info h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
     color: #2c3e50;
     margin-bottom: 5px;
 }
 
 .team-role {
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     color: #4682b4;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 15px;
     margin-bottom: 0;
 }
 
