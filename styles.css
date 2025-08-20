@@ -919,4 +919,17 @@ p, li {
     .rounded-image {
         height: 250px;
     }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .team-section {
+        padding: 60px 0;
+    }
+    
+    .team-section h2 {
+        font-size: 2rem;
+    }
 }
