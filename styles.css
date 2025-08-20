@@ -105,22 +105,43 @@ p, li {
 }
 
 .logo {
-    font-size: 24px;
-    font-weight: bold;
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 600;
     color: #2c3e50;
     text-decoration: none;
+    letter-spacing: -0.01em;
 }
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 35px;
 }
 
 .nav-links a {
+    font-family: 'Inter', sans-serif;
     color: #2c3e50;
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s ease;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #4682b4;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-current::after {
+    width: 100%;
 }
 
 .nav-links a:hover {
