@@ -659,8 +659,9 @@ p, li {
 }
 
 .team-section h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: 2.5rem;
+    font-weight: 600;
     color: #2c3e50;
     margin-bottom: 20px;
 }
