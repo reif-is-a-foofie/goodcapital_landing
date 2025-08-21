@@ -308,7 +308,7 @@ p, li {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, rgba(70, 130, 180, 0.7), rgba(135, 206, 235, 0.5));
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
     z-index: 2;
 }
 
@@ -322,15 +322,17 @@ p, li {
 .vision-content h2 {
     font-size: 3rem;
     margin-bottom: 20px;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-weight: 700;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
+    color: white;
 }
 
 .vision-content p {
     font-size: 1.3rem;
     margin-bottom: 10px;
-    opacity: 0.95;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    font-weight: 500;
 }
 
 /* Testimonials Section */
