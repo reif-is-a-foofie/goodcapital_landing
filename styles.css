@@ -824,24 +824,18 @@ p, li {
     display: block;
 }
 
-.partner-avatar {
+.partner-photo {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #4682b4, #5f9ea0);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    object-fit: cover;
     margin: 0 auto 1.5rem;
+    display: block;
     border: 3px solid #f0f8ff;
     transition: all 0.3s ease;
 }
 
-.partner-card:hover .partner-avatar {
+.partner-card:hover .partner-photo {
     border-color: #4682b4;
     transform: scale(1.05);
 }
