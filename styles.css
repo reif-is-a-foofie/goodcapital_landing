@@ -1078,6 +1078,17 @@ p, li {
         font-size: 2rem;
     }
     
+    .partner-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    .partner-card {
+        width: 280px;
+        max-width: 90vw;
+    }
+    
     .criteria-grid {
         grid-template-columns: 1fr;
         gap: 30px;
