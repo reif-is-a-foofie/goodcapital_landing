@@ -162,7 +162,12 @@ p, li {
     z-index: 5;
     text-align: center;
     color: white;
-    max-width: 800px;
+    max-width: 900px;
+    padding: 60px 40px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero-text h1 {
