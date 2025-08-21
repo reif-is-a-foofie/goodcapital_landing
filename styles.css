@@ -1078,4 +1078,20 @@ p, li {
     .team-section h2 {
         font-size: 2rem;
     }
+    
+    .criteria-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .investors-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .mission-section h2,
+    .criteria-section h2,
+    .investors-content h2 {
+        font-size: 2rem;
+    }
 }
