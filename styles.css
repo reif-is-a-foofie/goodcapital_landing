@@ -824,19 +824,26 @@ p, li {
     display: block;
 }
 
-.partner-photo {
+.partner-avatar {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    object-fit: cover;
+    background: linear-gradient(135deg, #4682b4, #5f9ea0);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 0 auto 1.5rem;
-    display: block;
     border: 3px solid #f0f8ff;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.partner-card:hover .partner-photo {
+.partner-card:hover .partner-avatar {
     border-color: #4682b4;
+    transform: scale(1.05);
 }
 
 .partner-card h3 {
