@@ -167,20 +167,21 @@ p, li {
 
 .hero-text h1 {
     font-family: 'DM Sans', sans-serif;
-    font-size: 3.8rem;
+    font-size: 4rem;
     font-weight: 700;
     margin-bottom: 24px;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
     line-height: 1.2;
+    color: white;
 }
 
 .hero-text p {
     font-family: 'DM Sans', sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     line-height: 1.5;
-    opacity: 0.95;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-    font-weight: 400;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    font-weight: 500;
     max-width: 700px;
     margin: 0 auto;
 }
