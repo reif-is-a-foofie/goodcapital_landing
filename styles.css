@@ -408,7 +408,7 @@ p, li {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, rgba(70, 130, 180, 0.6), rgba(135, 206, 235, 0.4));
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
     z-index: 2;
 }
 
@@ -422,7 +422,8 @@ p, li {
     font-size: 3rem;
     color: white;
     margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
+    font-weight: 700;
 }
 
 .cta-button {
