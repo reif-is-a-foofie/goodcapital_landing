@@ -599,7 +599,7 @@ p, li {
 
 /* Footer */
 .footer {
-    background: linear-gradient(135deg, #2c3e50, #34495e);
+    background: var(--charcoal);
     color: white;
     padding: 60px 0 20px;
 }
@@ -622,7 +622,7 @@ p, li {
 .logo-mark {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #4682b4, #5f9ea0);
+    background: var(--coral);
     border-radius: 50%;
 }
 
@@ -635,7 +635,7 @@ p, li {
 .footer-column h4 {
     font-size: 1.1rem;
     margin-bottom: 20px;
-    color: #87ceeb;
+    color: var(--coral);
 }
 
 .footer-column a {
@@ -643,17 +643,17 @@ p, li {
     color: #bdc3c7;
     text-decoration: none;
     margin-bottom: 10px;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease;
 }
 
 .footer-column a:hover {
-    color: #87ceeb;
+    color: var(--coral);
 }
 
 .footer-bottom {
     text-align: center;
     padding-top: 20px;
-    border-top: 1px solid rgba(135, 206, 235, 0.3);
+    border-top: 1px solid rgba(226, 125, 96, 0.3);
 }
 
 .footer-bottom p {
