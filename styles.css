@@ -668,13 +668,12 @@ p, li {
     width: 100%;
     z-index: 100;
     padding: 15px 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(70, 130, 180, 0.1);
+    background: var(--deep-teal);
+    border-bottom: 1px solid rgba(226, 125, 96, 0.2);
 }
 
 .nav-current {
-    color: #4682b4 !important;
+    color: var(--coral) !important;
     font-weight: 600;
 }
 
