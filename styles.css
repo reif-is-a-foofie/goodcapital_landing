@@ -821,20 +821,20 @@ p, li {
 }
 
 .partner-card {
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(38, 79, 84, 0.1);
     padding: 2rem 1.5rem;
     width: 220px;
     text-align: center;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(70, 130, 180, 0.1);
+    transition: all 0.2s ease;
+    border: 1px solid rgba(38, 79, 84, 0.1);
 }
 
 .partner-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    border-color: rgba(70, 130, 180, 0.2);
+    box-shadow: 0 8px 20px rgba(38, 79, 84, 0.15);
+    border-color: var(--coral);
 }
 
 .partner-card a {
@@ -850,26 +850,26 @@ p, li {
     object-fit: cover;
     margin: 0 auto 1.5rem;
     display: block;
-    border: 3px solid #f0f8ff;
-    transition: all 0.3s ease;
+    border: 3px solid var(--sand);
+    transition: all 0.2s ease;
 }
 
 .partner-card:hover .partner-photo {
-    border-color: #4682b4;
+    border-color: var(--coral);
     transform: scale(1.05);
 }
 
 .partner-card h3 {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--deep-teal);
     margin-bottom: 0.5rem;
 }
 
 .partner-card p {
-    font-family: 'DM Sans', sans-serif;
-    color: #4682b4;
+    font-family: 'Inter', sans-serif;
+    color: var(--forest-green);
     font-weight: 500;
     font-size: 1rem;
     margin: 0 0 1rem 0;
@@ -878,20 +878,20 @@ p, li {
 .partner-email {
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid rgba(70, 130, 180, 0.1);
+    border-top: 1px solid rgba(38, 79, 84, 0.1);
 }
 
 .partner-email a {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
-    color: #4682b4;
+    color: var(--coral);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease;
 }
 
 .partner-email a:hover {
-    color: #2c3e50;
+    color: var(--rust-orange);
     text-decoration: underline;
 }
 
