@@ -1,5 +1,24 @@
-/* Import DM Sans Font */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&display=swap');
+/* Import Professional Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap');
+
+/* Sailing Sunset Color Palette */
+:root {
+    /* Primary Brand Colors */
+    --deep-teal: #264f54;
+    --coral: #e27d60;
+    --rust-orange: #d94d1a;
+    
+    /* Secondary Supporting Colors */
+    --sand: #d9c6af;
+    --light-aqua: #9fd7d7;
+    --forest-green: #2e5c4d;
+    --charcoal: #2b2b2b;
+    
+    /* Neutral Colors */
+    --white: #ffffff;
+    --light-grey: #f8f9fa;
+    --text-grey: #555555;
+}
 
 /* Reset and Base Styles */
 * {
@@ -9,12 +28,12 @@
 }
 
 body {
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     line-height: 1.6;
-    color: #2c3e50;
+    color: var(--charcoal);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #fafbfc;
+    background-color: var(--white);
     font-weight: 400;
     font-size: 16px;
 }
