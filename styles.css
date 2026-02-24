@@ -1,53 +1,59 @@
-/* Import Professional Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap');
+/* Five Pathways CLONE - exact design spec from fivepathways-design-spec.md */
 
-/* Sailing Sunset Color Palette */
+/* Fonts: PPE = PP Editorial New (use Playfair Display), Neue = Helvetica Neue */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
 :root {
-    /* Primary Brand Colors */
-    --deep-teal: #264f54;
-    --coral: #e27d60;
-    --rust-orange: #d94d1a;
-    
-    /* Secondary Supporting Colors */
-    --sand: #d9c6af;
-    --light-aqua: #9fd7d7;
-    --forest-green: #2e5c4d;
-    --charcoal: #2b2b2b;
-    
-    /* Neutral Colors */
-    --white: #ffffff;
-    --light-grey: #f8f9fa;
-    --text-grey: #555555;
+    --white: #FFFAF5;
+    --white-off: #FAF5E8;
+    --btn-green: #63cfbf;
+    --sage: #EEF3E7;
+    --text: #000;
+    --text-gray: #504a4a;
+    --text-light: #aaaaaa;
+    --black: #000;
+    --ease: cubic-bezier(0.19, 1, 0.22, 1);
+    --sand: #FAF5E8;
+    --light-aqua: #EEF3E7;
+    --deep-teal: #000;
+    --charcoal: #000;
+    --text-grey: #504a4a;
+    --coral: #63cfbf;
+    --rust-orange: #63cfbf;
 }
 
-/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    font-size: 10px;
+}
+
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.6;
-    color: var(--charcoal);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.7rem;
+    line-height: 1.5;
+    color: var(--text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--white);
     font-weight: 400;
-    font-size: 16px;
 }
 
+/* site-max: Five Pathways layout */
 .container {
-    max-width: 1200px;
+    max-width: 120rem;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 1.5rem;
 }
 
-/* Hero Section */
+/* Hero Section - mobile first */
 .hero-section {
     position: relative;
-    height: 100vh;
+    min-height: 100svh;
     overflow: hidden;
 }
 
@@ -72,62 +78,92 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+    background: rgba(255, 250, 245, 0.7);
     z-index: 2;
 }
 
-/* Simplified Typography Hierarchy */
+/* Typography - exact Five Pathways scale */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    line-height: 1.3;
-    margin-bottom: 1rem;
-    color: var(--deep-teal);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 400;
+    color: var(--text);
 }
 
 h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
+    font-size: 4.5rem;
+    line-height: 1;
+    margin-bottom: 1rem;
 }
 
 h2 {
-    font-size: 2.5rem;
-    font-weight: 600;
+    font-size: 3.8rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
 }
 
 h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: 2.8rem;
+    line-height: 1.1;
 }
 
 p, li {
-    font-family: 'Merriweather', serif;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    font-weight: 400;
-    color: var(--text-grey);
+    font-size: 1.7rem;
+    line-height: 1.5;
+    color: var(--text-gray);
 }
 
-.hero-button {
-    display: inline-block;
-    background: var(--coral);
-    color: var(--white);
-    padding: 15px 35px;
+/* Button - EXACT Five Pathways .btn */
+.btn {
+    display: inline-flex;
+    position: relative;
+    border-radius: 999px;
     text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 15px rgba(226, 125, 96, 0.3);
-    margin-top: 30px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    margin-top: 2.5rem;
 }
 
-.hero-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(226, 125, 96, 0.4);
-    background: var(--rust-orange);
+.btn__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--btn-green);
+    border: 1px solid var(--black);
+    border-radius: 999px;
+    padding: 0 2rem;
+    height: 4.6rem;
+    min-height: 4.6rem;
+    min-width: auto;
+    position: relative;
+    z-index: 2;
+    color: var(--black);
+    font-size: inherit;
+    font-weight: 400;
+    transition: transform 0.5s var(--ease);
+}
+
+.btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #4ab8a8;
+    border: 1px solid var(--black);
+    border-radius: 999px;
+    transform: translate3d(0.5rem, 0.5rem, 0);
+    z-index: 1;
+    transition: transform 0.5s var(--ease);
+}
+
+.btn:hover .btn__content {
+    transform: translate3d(0.5rem, 0.5rem, 0);
+}
+
+.btn__arrow {
+    margin-left: 1.3rem;
+    font-size: 1.7rem;
+    transition: transform 0.75s var(--ease);
+}
+
+.btn:hover .btn__arrow {
+    transform: translateX(1rem);
 }
 
 /* Mission Section */
@@ -151,25 +187,26 @@ p, li {
     line-height: 1.6;
 }
 
-/* Methodology Sections */
+/* Methodology - Five Pathways section backgrounds */
 .methodology-section {
-    padding: 80px 0;
-    background: var(--white);
+    padding: 4rem 0;
+    background: var(--white-off);
 }
 
 .methodology-section.methodology-alt {
-    background: var(--light-grey);
+    background: var(--sage);
 }
 
 .methodology-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     align-items: center;
 }
 
+/* Reverse order only on desktop (mobile: content always first) */
 .methodology-grid.methodology-reverse {
-    direction: rtl;
+    direction: ltr;
 }
 
 .methodology-grid.methodology-reverse > * {
@@ -190,94 +227,116 @@ p, li {
 }
 
 .methodology-index {
-    font-size: 0.85rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.1rem;
     font-style: italic;
-    color: var(--text-grey);
+    color: var(--text-gray);
 }
 
 .methodology-content h2 {
-    font-size: 2.2rem;
-    color: var(--deep-teal);
+    font-size: 2.8rem;
+    color: var(--text);
     margin-bottom: 0.5rem;
 }
 
 .methodology-content h2 em {
     font-style: italic;
-    color: var(--coral);
+    color: var(--text);
 }
 
 .methodology-content p {
-    font-size: 1.1rem;
-    color: var(--text-grey);
+    font-size: 2.1rem;
+    line-height: 1.4;
+    color: var(--text-gray);
     margin: 0;
 }
 
 .methodology-image {
     overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(38, 79, 84, 0.15);
+    border-radius: 0;
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
 .methodology-image img {
     width: 100%;
-    height: 400px;
+    height: 220px;
     object-fit: cover;
     display: block;
 }
 
-/* Image Gallery */
+/* Directions - Five Pathways "Get directions" section */
+.directions-section {
+    padding: 6rem 0;
+    background: var(--white-off);
+    text-align: center;
+}
+
+.directions-title {
+    font-size: 3.8rem;
+    color: var(--text);
+    margin-bottom: 2rem;
+}
+
+.directions-intro {
+    font-size: 2.1rem;
+    line-height: 1.5;
+    max-width: 65rem;
+    margin: 0 auto;
+    color: var(--text-gray);
+}
+
+/* Image Gallery - Five Pathways */
 .image-gallery-section {
-    padding: 80px 0;
-    background: var(--sand);
+    padding: 6rem 0;
+    background: var(--white);
 }
 
 .gallery-title {
     text-align: center;
-    font-size: 2.5rem;
-    color: var(--deep-teal);
-    margin-bottom: 1rem;
+    font-size: 3.8rem;
+    color: var(--text);
+    margin-bottom: 2rem;
 }
 
 .gallery-intro {
     text-align: center;
-    font-size: 1.2rem;
-    color: var(--text-grey);
-    max-width: 700px;
-    margin: 0 auto 50px;
-    line-height: 1.6;
+    font-size: 2.1rem;
+    color: var(--text-gray);
+    max-width: 65rem;
+    margin: 0 auto 2rem;
+    line-height: 1.5;
 }
 
 .image-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
+    grid-template-columns: 1fr;
+    gap: 1rem;
 }
 
 .gallery-card {
     background: var(--white);
-    border-radius: 8px;
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(38, 79, 84, 0.1);
-    transition: transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s ease;
 }
 
 .gallery-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 25px rgba(38, 79, 84, 0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .gallery-card img {
     width: 100%;
-    height: 280px;
+    height: 200px;
     object-fit: cover;
     display: block;
 }
 
 .gallery-card p {
-    padding: 1.25rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--deep-teal);
+    padding: 1.5rem 2rem;
+    font-size: 1.7rem;
+    font-weight: 400;
+    color: var(--text);
     margin: 0;
 }
 
@@ -370,70 +429,54 @@ p, li {
     margin-right: 15px;
 }
 
-/* Enhanced Navigation */
+/* Navbar - Five Pathways: transparent, py-20 s:py-40, 131px height */
 .navbar {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 10;
-    padding: 20px 0;
-    background: var(--deep-teal);
+    padding: 2rem 0;
+    background: transparent;
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 120rem;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .logo {
-    font-family: 'Inter', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--white);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 400;
+    color: var(--black);
     text-decoration: none;
 }
 
 .nav-links {
     display: flex;
-    gap: 32px;
+    gap: 2.4rem;
 }
 
 .nav-links a {
-    font-family: 'Inter', sans-serif;
-    color: var(--white);
+    color: var(--black);
     text-decoration: none;
-    font-weight: 500;
-    font-size: 15px;
-    transition: all 0.2s ease;
-    position: relative;
+    font-size: 1.7rem;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
 }
 
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--coral);
-    transition: width 0.2s ease;
+.nav-links a:hover,
+.nav-current {
+    border-bottom-color: var(--black);
 }
 
-.nav-links a:hover::after,
-.nav-current::after {
-    width: 100%;
-}
-
-.nav-links a:hover {
-    color: var(--coral);
-}
-
-/* Hero Content */
+/* Hero - Five Pathways: pt-85 mobile, pt-170 desktop, h1 5.2rem→10rem */
 .hero-content {
     position: absolute;
     top: 50%;
@@ -441,33 +484,27 @@ p, li {
     transform: translate(-50%, -50%);
     z-index: 5;
     text-align: center;
-    color: white;
-    max-width: 900px;
-    padding: 60px 40px;
-    background: rgba(38, 79, 84, 0.9);
-    backdrop-filter: blur(10px);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--black);
+    width: 100%;
+    max-width: 100rem;
+    padding: 8.5rem 1.5rem 4rem;
+    background: transparent;
 }
 
 .hero-text h1 {
-    font-family: 'Inter', sans-serif;
-    font-size: 4rem;
-    font-weight: 700;
-    margin-bottom: 24px;
-    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
-    line-height: 1.2;
-    color: white;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 5.2rem;
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 1rem;
+    color: var(--black);
 }
 
 .hero-text p {
-    font-family: 'Merriweather', serif;
-    font-size: 1.3rem;
-    line-height: 1.5;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-    font-weight: 400;
-    max-width: 700px;
+    font-size: 2.1rem;
+    line-height: 1.4;
+    color: var(--text-gray);
+    max-width: 22.5rem;
     margin: 0 auto;
 }
 
@@ -657,10 +694,10 @@ p, li {
     color: #4682b4;
 }
 
-/* CTA Section */
+/* CTA Section - mobile first */
 .cta-section {
     position: relative;
-    height: 60vh;
+    min-height: 50vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -688,7 +725,7 @@ p, li {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(38, 79, 84, 0.8), rgba(46, 92, 77, 0.6));
+    background: rgba(255, 250, 245, 0.85);
     z-index: 2;
 }
 
@@ -699,95 +736,86 @@ p, li {
 }
 
 .cta-content h2 {
-    font-size: 3rem;
-    color: white;
-    margin-bottom: 30px;
-    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
-    font-weight: 700;
+    font-size: 3.8rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+    font-weight: 400;
 }
 
-.cta-button {
-    display: inline-block;
-    background: var(--coral);
-    color: var(--white);
-    padding: 15px 40px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 15px rgba(226, 125, 96, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.cta-sub {
+    font-size: 2.1rem;
+    color: var(--text-gray);
+    margin-bottom: 2rem;
 }
 
-.cta-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(226, 125, 96, 0.5);
-    background: var(--rust-orange);
-}
-
-/* Footer */
+/* Footer - Five Pathways */
 .footer {
-    background: var(--charcoal);
-    color: white;
-    padding: 60px 0 20px;
+    background: var(--text);
+    color: var(--white);
+    padding: 2rem 0 1rem;
 }
 
 .footer-content {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 60px;
-    margin-bottom: 40px;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
 .footer-logo {
     display: flex;
     align-items: center;
-    gap: 15px;
-    font-size: 1.5rem;
-    font-weight: bold;
+    gap: 0.75rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 500;
 }
 
 .logo-mark {
-    width: 40px;
-    height: 40px;
-    background: var(--coral);
-    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    background: var(--white);
+    border-radius: 0;
 }
 
 .footer-links {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 40px;
+    gap: 2rem;
 }
 
 .footer-column h4 {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-    color: var(--coral);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .footer-column a {
     display: block;
-    color: #bdc3c7;
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
     transition: color 0.2s ease;
 }
 
 .footer-column a:hover {
-    color: var(--coral);
+    color: var(--white);
 }
 
 .footer-bottom {
     text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid rgba(226, 125, 96, 0.3);
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
 }
 
 .footer-bottom p {
-    color: #95a5a6;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.85rem;
 }
 
 /* Fixed Navbar for Internal Pages */
@@ -1157,146 +1185,110 @@ p, li {
     margin-right: auto;
 }
 
-/* Responsive Design */
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero-text h1 {
-        font-size: 2.5rem;
-    }
-    
-    .hero-text p {
-        font-size: 1rem;
-    }
-    
-    .nav-links {
-        display: none; /* You might want to add a mobile menu here */
-    }
-    
-    .invest-grid,
-    .content-grid,
-    .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    
-    .definition-content h2,
-    .page-header h1 {
-        font-size: 2rem;
-    }
-    
-    .invest-content h2,
-    .testimonials-section h2,
-    .vision-content h2,
-    .cta-content h2,
-    .page-cta h2,
-    .mission-content h2,
-    .content-text h2,
-    .contact-info h2 {
-        font-size: 2rem;
-    }
-    
-    .testimonials-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .vision-section,
-    .cta-section {
-        height: 50vh;
-    }
-    
-    .criteria-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-    }
-    
-    .criteria-number {
-        margin: 0 auto;
-    }
-    
-    .content-grid.reverse {
-        direction: ltr;
-    }
-    
-    .page-header {
-        padding: 100px 0 40px;
-    }
-    
-    .contact-form-wrapper {
-        gap: 20px;
-    }
-    
-    .rounded-image {
-        height: 250px;
-    }
-    
-    .team-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .team-section {
-        padding: 60px 0;
-    }
-    
-    .team-section h2 {
-        font-size: 2rem;
-    }
-    
-    .partner-grid {
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5rem;
-    }
-    
-    .partner-card {
-        width: 280px;
-        max-width: 90vw;
-    }
-    
-    .criteria-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .investors-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    
-    .mission-section h2,
-    .criteria-section h2,
-    .investors-content h2 {
-        font-size: 2rem;
-    }
-    
-    .methodology-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    
-    .methodology-grid.methodology-reverse {
-        direction: ltr;
-    }
-    
+/* Tablet and up - min-width (mobile-first) */
+@media (min-width: 600px) {
     .methodology-image img {
         height: 280px;
     }
     
-    .methodology-content h2 {
-        font-size: 1.75rem;
+    .gallery-card img {
+        height: 240px;
     }
     
     .image-gallery {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Five Pathways breakpoint: 650px (s) */
+@media (min-width: 650px) {
+    body {
+        font-size: 1.8rem;
     }
     
-    .gallery-card img {
-        height: 220px;
+    .container {
+        padding: 2rem 4rem;
+    }
+    
+    .hero-content {
+        padding: 17rem 4rem 6rem;
+    }
+    
+    .hero-text h1 {
+        font-size: 10rem;
+    }
+    
+    .hero-text p {
+        font-size: 2.4rem;
+        max-width: 55rem;
+    }
+    
+    .navbar {
+        padding: 4rem 0;
+    }
+    
+    .methodology-content h2 {
+        font-size: 4rem;
+    }
+    
+    .methodology-content p {
+        font-size: 2.4rem;
+    }
+    
+    .directions-title,
+    .gallery-title,
+    .cta-content h2 {
+        font-size: 7rem;
+    }
+    
+    .directions-intro,
+    .gallery-intro,
+    .cta-sub {
+        font-size: 2.4rem;
+    }
+}
+
+/* 768px - methodology grid */
+@media (min-width: 768px) {
+    .container {
+        padding: 2rem 6rem;
+    }
+    
+    .methodology-section {
+        padding: 8rem 0;
+    }
+    
+    .methodology-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+    }
+    
+    .methodology-grid.methodology-reverse {
+        direction: rtl;
+    }
+    
+    .methodology-image img {
+        height: 360px;
+    }
+    
+    .image-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2.4rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr 2fr;
+        gap: 4rem;
+    }
+}
+
+/* 1024px - site-max 10rem padding */
+@media (min-width: 1024px) {
+    .container {
+        padding: 2rem 10rem;
+    }
+    
+    .methodology-image img {
+        height: 400px;
     }
 }
