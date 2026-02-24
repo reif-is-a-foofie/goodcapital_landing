@@ -151,6 +151,136 @@ p, li {
     line-height: 1.6;
 }
 
+/* Methodology Sections */
+.methodology-section {
+    padding: 80px 0;
+    background: var(--white);
+}
+
+.methodology-section.methodology-alt {
+    background: var(--light-grey);
+}
+
+.methodology-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.methodology-grid.methodology-reverse {
+    direction: rtl;
+}
+
+.methodology-grid.methodology-reverse > * {
+    direction: ltr;
+}
+
+.methodology-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.methodology-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--charcoal);
+}
+
+.methodology-index {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--text-grey);
+}
+
+.methodology-content h2 {
+    font-size: 2.2rem;
+    color: var(--deep-teal);
+    margin-bottom: 0.5rem;
+}
+
+.methodology-content h2 em {
+    font-style: italic;
+    color: var(--coral);
+}
+
+.methodology-content p {
+    font-size: 1.1rem;
+    color: var(--text-grey);
+    margin: 0;
+}
+
+.methodology-image {
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(38, 79, 84, 0.15);
+}
+
+.methodology-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Image Gallery */
+.image-gallery-section {
+    padding: 80px 0;
+    background: var(--sand);
+}
+
+.gallery-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--deep-teal);
+    margin-bottom: 1rem;
+}
+
+.gallery-intro {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--text-grey);
+    max-width: 700px;
+    margin: 0 auto 50px;
+    line-height: 1.6;
+}
+
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.gallery-card {
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(38, 79, 84, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.gallery-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 25px rgba(38, 79, 84, 0.15);
+}
+
+.gallery-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-card p {
+    padding: 1.25rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--deep-teal);
+    margin: 0;
+}
+
 /* Criteria Section */
 .criteria-section {
     padding: 80px 0;
@@ -1143,5 +1273,30 @@ p, li {
     .criteria-section h2,
     .investors-content h2 {
         font-size: 2rem;
+    }
+    
+    .methodology-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .methodology-grid.methodology-reverse {
+        direction: ltr;
+    }
+    
+    .methodology-image img {
+        height: 280px;
+    }
+    
+    .methodology-content h2 {
+        font-size: 1.75rem;
+    }
+    
+    .image-gallery {
+        grid-template-columns: 1fr;
+    }
+    
+    .gallery-card img {
+        height: 220px;
     }
 }
