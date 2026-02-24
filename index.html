@@ -17,26 +17,28 @@
 </head>
 <body>
     <div class="page-wrapper">
+        <!-- Pinned Nav -->
+        <nav class="navbar navbar--pinned">
+            <div class="site-max nav-container">
+                <a href="index.html" class="logo">The Good Project</a>
+                <div class="nav-links">
+                    <a href="#approach">Approach</a>
+                    <a href="#services">What We Do</a>
+                    <a href="#mission">Mission</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#contact" class="btn btn--nav">
+                        <span class="btn__content">Schedule a meeting <span class="btn__arrow">→</span></span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
         <!-- Hero -->
         <header class="hero-section">
             <div class="hero-background">
                 <img src="./hero lighthouse.png" alt="" class="hero-image">
                 <div class="hero-overlay"></div>
             </div>
-            <nav class="navbar">
-                <div class="site-max nav-container">
-                    <a href="index.html" class="logo">The Good Project</a>
-                    <div class="nav-links">
-                        <a href="#approach">Approach</a>
-                        <a href="#services">What We Do</a>
-                        <a href="#mission">Mission</a>
-                        <a href="#contact">Contact</a>
-                        <a href="#contact" class="btn btn--nav">
-                            <span class="btn__content">Schedule a meeting <span class="btn__arrow">→</span></span>
-                        </a>
-                    </div>
-                </div>
-            </nav>
             <div class="hero-content">
                 <h1>A roadmap for your life's work.</h1>
                 <p class="hero-subtitle">Your company is a journey. Hand it off with confidence—to someone who will take care of what you've built.</p>
@@ -136,5 +138,16 @@
             </div>
         </footer>
     </div>
+    <script>
+        (function() {
+            var nav = document.querySelector('.navbar--pinned');
+            if (!nav) return;
+            function onScroll() {
+                nav.classList.toggle('is-scrolled', window.scrollY > 50);
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        })();
+    </script>
 </body>
 </html>
