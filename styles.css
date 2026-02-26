@@ -114,6 +114,10 @@ body {
     border-radius: 3px;
 }
 
+.annotate {
+    display: inline;
+}
+
 .section h2 {
     font-size: 22px;
     font-weight: 500;

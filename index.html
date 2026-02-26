@@ -39,17 +39,17 @@
         </div>
 
         <div class="section" id="create">
-            <h2>Create</h2>
+            <h2><span class="annotate">Create</span></h2>
             <p>If it must exist and current solutions fail, we build it from first principles.</p>
         </div>
 
         <div class="section" id="collaborate">
-            <h2>Collaborate</h2>
+            <h2><span class="annotate">Collaborate</span></h2>
             <p>We work alongside exceptional people and strengthen platforms that deserve scale.</p>
         </div>
 
         <div class="section" id="coinvest">
-            <h2>Co-Invest</h2>
+            <h2><span class="annotate">Co-Invest</span></h2>
             <p>We deploy long-term capital alongside aligned operators building durable ventures.</p>
         </div>
 
@@ -61,18 +61,11 @@
     import { annotate } from 'https://unpkg.com/rough-notation?module';
 
     const annotations = new Map();
-    const opts = { type: 'underline', color: '#2c5282', strokeWidth: 2, padding: 2, animationDuration: 280, iterations: 1 };
+    const opts = { type: 'underline', color: '#2c5282', strokeWidth: 2, padding: 2, animationDuration: 280, iterations: 4 };
 
     ['create', 'collaborate', 'coinvest'].forEach(id => {
-        const section = document.querySelector(`#${id}`);
-        if (section) {
-            const h2 = section.querySelector('h2');
-            const p = section.querySelector('p');
-            const list = [];
-            if (h2) list.push(annotate(h2, opts));
-            if (p) list.push(annotate(p, opts));
-            annotations.set(id, list);
-        }
+        const el = document.querySelector(`#${id} .annotate`);
+        if (el) annotations.set(id, annotate(el, opts));
     });
 
     document.querySelectorAll('.nav-links a').forEach(link => {
