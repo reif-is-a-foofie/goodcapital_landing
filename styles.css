@@ -62,7 +62,7 @@ body {
     font-family: 'Nanum Myeongjo', Georgia, serif;
     font-weight: 800;
     font-size: clamp(70px, 10vw, 120px);
-    line-height: 1.1;
+    line-height: 1.05;
     letter-spacing: -0.05em;
     color: #222222;
     max-width: min(1600px, 96vw);
