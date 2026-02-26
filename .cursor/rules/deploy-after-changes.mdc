@@ -1,0 +1,14 @@
+---
+description: Auto-commit and push after making changes (Netlify deploy)
+alwaysApply: true
+---
+
+# Deploy After Changes
+
+After making any edits to this project, always:
+
+1. `git add -A`
+2. `git commit -m "<descriptive message>"`
+3. `git push`
+
+This triggers Netlify deployment so changes go live.
