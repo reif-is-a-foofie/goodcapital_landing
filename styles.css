@@ -22,7 +22,8 @@ body {
 .logo {
     position: fixed;
     top: 40px;
-    left: 50px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 14px;
     letter-spacing: -0.05em;
     font-weight: 600;
@@ -112,7 +113,6 @@ body {
 
 @media (max-width: 768px) {
     .logo {
-        left: 20px;
         top: 20px;
     }
 
