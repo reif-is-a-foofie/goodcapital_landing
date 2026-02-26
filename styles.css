@@ -61,6 +61,18 @@ body {
     padding: clamp(40px, 8vh, 80px) clamp(20px, 4vw, 24px) clamp(20px, 3vh, 32px);
 }
 
+.annotate-hero {
+    display: inline;
+}
+
+.hero h1 svg {
+    transition: opacity 2s ease;
+}
+
+.hero h1.hero-underline-fade svg {
+    opacity: 0;
+}
+
 .hero h1 {
     font-family: 'Nanum Myeongjo', Georgia, serif;
     font-weight: 800;

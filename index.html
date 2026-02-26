@@ -22,7 +22,7 @@
     </header>
 
     <section class="hero">
-        <h1>Build the change you wish<br>to see in the world.</h1>
+        <h1><span class="annotate-hero">Build</span> the change you wish<br>to see in the world.</h1>
     </section>
 
     <div class="container">
@@ -66,6 +66,24 @@
 
     const annotations = new Map();
     const opts = { type: 'underline', color: '#2c5282', strokeWidth: 2, padding: 2, animationDuration: 280, iterations: 8 };
+
+    const heroBuild = document.querySelector('.annotate-hero');
+    const heroH1 = document.querySelector('.hero h1');
+    if (heroBuild && heroH1) {
+        const heroAnn = annotate(heroBuild, { ...opts, animationDuration: 400 });
+        function cycleHeroUnderline() {
+            heroAnn.show();
+            setTimeout(() => {
+                heroH1.classList.add('hero-underline-fade');
+                setTimeout(() => {
+                    heroAnn.hide();
+                    heroH1.classList.remove('hero-underline-fade');
+                    setTimeout(cycleHeroUnderline, 1800);
+                }, 2000);
+            }, 2800);
+        }
+        setTimeout(cycleHeroUnderline, 800);
+    }
 
     ['create', 'collaborate', 'coinvest', 'contact'].forEach(id => {
         const el = document.querySelector(`#${id} .annotate`);
