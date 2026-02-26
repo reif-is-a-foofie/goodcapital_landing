@@ -10,6 +10,7 @@ The hero should feel **composed and literary**. Reduce visual aggression. Increa
 
 ## Specs
 
+- **Font:** Nanum Myeongjo
 - **Weight:** 400 (Regular)
 - **Size:** clamp(48px, 6vw, 76px)
 - **Line-height:** 1.18
