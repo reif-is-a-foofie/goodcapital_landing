@@ -85,10 +85,10 @@ body {
 }
 
 .section h2 {
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 500;
     letter-spacing: 0;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     color: var(--text);
 }
 
