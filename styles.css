@@ -60,10 +60,10 @@ body {
 }
 
 .container {
-    max-width: 680px;
+    max-width: 640px;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 24px 140px;
+    padding: 0 40px 160px;
     text-align: left;
 }
 
@@ -77,30 +77,31 @@ body {
 .divider {
     height: 1px;
     background: var(--divider);
-    margin: 60px 0;
+    margin: 80px 0;
 }
 
 .section {
-    margin-bottom: 60px;
+    margin-bottom: 80px;
 }
 
 .section h2 {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 600;
     letter-spacing: 0;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    color: var(--text);
 }
 
 .section p {
     font-size: 18px;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 1.6;
     letter-spacing: 0;
     color: #6B6B6B;
 }
 
 .contact {
-    margin-top: 120px;
+    margin-top: 140px;
 }
 
 .contact a {
@@ -124,6 +125,6 @@ body {
     }
 
     .container {
-        padding: 0 20px 100px;
+        padding: 0 24px 120px;
     }
 }
