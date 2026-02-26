@@ -66,27 +66,9 @@
 
     const heroBuild = document.querySelector('.annotate-hero');
     const heroH1 = document.querySelector('.hero h1');
-    if (heroBuild && heroH1) {
+    if (heroBuild) {
         const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 0.5, iterations: 5, animationDuration: 0, padding: [0, 0, -8, 0] });
-        function cycleHeroUnderline() {
-            heroAnn.show();
-            setTimeout(() => {
-                heroH1.classList.add('hero-underline-fade');
-                setTimeout(() => {
-                    heroAnn.hide();
-                    heroH1.classList.remove('hero-underline-fade');
-                    setTimeout(cycleHeroUnderline, 1800);
-                }, 20000);
-            }, 5000 + 15000);
-        }
-        setTimeout(cycleHeroUnderline, 800);
-        let resizeT = 0;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeT);
-            resizeT = setTimeout(() => {
-                if (heroAnn.isShowing()) heroAnn.show();
-            }, 150);
-        });
+        heroAnn.show();
     }
 
     ['create', 'collaborate', 'coinvest', 'contact'].forEach(id => {

@@ -68,14 +68,6 @@ body {
     margin-top: -8px;
 }
 
-.hero h1 svg {
-    transition: opacity 20s ease;
-}
-
-.hero h1.hero-underline-fade svg {
-    opacity: 0;
-}
-
 .hero h1 {
     font-family: 'Nanum Myeongjo', Georgia, serif;
     font-weight: 800;
