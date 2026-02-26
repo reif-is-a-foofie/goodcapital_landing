@@ -1,9 +1,11 @@
 :root {
-    --bg: #0E1A1F;
-    --text: #FFFFFF;
-    --muted: rgba(255,255,255,0.7);
-    --accent: #C7A447;
-    --divider: rgba(255,255,255,0.08);
+    --bg: #FFFAF5;
+    --bg-cream: #FAF5E8;
+    --bg-sage: #EEF3E7;
+    --text: #000000;
+    --muted: rgba(0,0,0,0.6);
+    --accent: #000000;
+    --divider: rgba(0,0,0,0.08);
 }
 
 * {
@@ -47,6 +49,7 @@ header .category {
 
 .hero {
     margin-top: 80px;
+    background: transparent;
 }
 
 .hero h2 {
@@ -68,6 +71,18 @@ header .category {
     height: 1px;
     background: var(--divider);
     margin: 100px 0;
+}
+
+.services {
+    background: var(--bg-cream);
+    margin: 0 -24px;
+    padding: 60px 24px;
+}
+
+.clients {
+    background: var(--bg-sage);
+    margin: 0 -24px;
+    padding: 60px 24px;
 }
 
 .services {
