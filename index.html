@@ -62,12 +62,12 @@
     import { annotate } from 'https://unpkg.com/rough-notation?module';
 
     const annotations = new Map();
-    const opts = { type: 'underline', color: '#0066cc', strokeWidth: 0.75, padding: -3, animationDuration: 1000, iterations: 2 };
+    const opts = { type: 'underline', color: '#0066cc', strokeWidth: 1.125, padding: -3, animationDuration: 1000, iterations: 2 };
 
     const heroBuild = document.querySelector('.annotate-hero');
     const heroH1 = document.querySelector('.hero h1');
     if (heroBuild) {
-        const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 1.5, iterations: 2, animationDuration: 0, padding: [0, 0, 2, 0] });
+        const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 2.25, iterations: 2, animationDuration: 0, padding: [0, 0, 2, 0] });
         heroAnn.show();
     }
 
