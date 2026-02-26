@@ -92,6 +92,7 @@ body {
 
 .nav-links a {
     text-decoration: underline;
+    text-underline-offset: 4px;
     color: #a98a6a;
     transition: color 0.2s ease;
 }
