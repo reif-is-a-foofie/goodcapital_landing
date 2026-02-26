@@ -26,30 +26,6 @@ body {
     overflow: hidden;
 }
 
-.top-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(245, 242, 236, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: clamp(16px, 2.5vw, 24px) clamp(20px, 5vw, 50px);
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-
-.logo {
-    font-size: clamp(14px, 2vw, 18px);
-    letter-spacing: -0.08em;
-    font-weight: 600;
-    color: #9C7A4D;
-}
-
-.logo em {
-    font-weight: 400;
-}
-
 .hero {
     width: 100%;
     flex-shrink: 0;
@@ -182,10 +158,6 @@ body {
 }
 
 @media (max-width: 768px) {
-    .top-bar {
-        padding: clamp(12px, 3vw, 20px) clamp(16px, 4vw, 24px);
-    }
-
     .hero {
         padding: clamp(20px, 5vh, 60px) clamp(16px, 4vw, 20px) clamp(12px, 2vh, 24px);
     }
