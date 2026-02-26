@@ -67,7 +67,7 @@
 
             const start = window.pageYOffset;
             const end = target.getBoundingClientRect().top + start;
-            const duration = 2000;
+            const duration = 4500;
             const startTime = performance.now();
 
             function scrollStep(now) {
@@ -78,7 +78,7 @@
                 if (progress < 1) requestAnimationFrame(scrollStep);
                 else {
                     target.classList.add('highlight');
-                    setTimeout(() => target.classList.remove('highlight'), 2200);
+                    setTimeout(() => target.classList.remove('highlight'), 3100);
                 }
             }
             requestAnimationFrame(scrollStep);
