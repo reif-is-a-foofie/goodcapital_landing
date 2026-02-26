@@ -96,8 +96,7 @@ body {
 }
 
 .nav-links a {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
     color: #8a7358;
     transition: color 0.2s ease;
 }
@@ -158,14 +157,14 @@ body {
 
 @media (max-width: 768px) {
     .top-bar {
-        padding: 20px 20px;
+        padding: clamp(16px, 2.5vw, 20px);
     }
 
     .hero {
-        padding: 60px 20px 24px;
+        padding: clamp(32px, 6vh, 60px) 20px clamp(16px, 2vh, 24px);
     }
 
     .container {
-        padding: 0 24px 30px;
+        padding: 0 24px clamp(20px, 3vh, 30px);
     }
 }
