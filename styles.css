@@ -37,6 +37,10 @@ body {
     color: #9C7A4D;
 }
 
+.logo em {
+    font-weight: 400;
+}
+
 .hero {
     width: 100%;
     min-height: 50vh;
