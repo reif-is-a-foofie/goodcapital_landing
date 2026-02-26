@@ -78,12 +78,6 @@ body {
     color: #6B6B6B;
 }
 
-.divider {
-    height: 1px;
-    background: var(--divider);
-    margin: 40px 0;
-}
-
 .section {
     margin-bottom: 80px;
 }
