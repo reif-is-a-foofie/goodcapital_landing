@@ -100,10 +100,17 @@ nav a:hover {
 
 .project-category h3 {
     font-size: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 16px;
     color: #888;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.project-category .category-intro {
+    max-width: 720px;
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 40px;
 }
 
 .project {
@@ -149,10 +156,16 @@ nav a:hover {
 
 footer {
     border-top: 1px solid #eaeaea;
-    padding: 40px 24px;
+    padding: 60px 24px 40px;
     font-size: 14px;
     color: #777;
     text-align: center;
+}
+
+footer .footer-quote {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 24px;
 }
     </style>
 </head>
@@ -170,12 +183,7 @@ footer {
     <div class="container">
         <h1>The Good Project</h1>
         <div class="subtitle">A Venture Studio</div>
-        <div class="mission">Build the change you wish to see in the world.</div>
-        <div class="description">
-            We believe that better companies make for a better world.
-            We build, collaborate, and co-invest in durable enterprises
-            through disciplined execution and structured capital.
-        </div>
+        <div class="mission">We believe that better companies make for a better world.</div>
     </div>
 </section>
 
@@ -185,6 +193,7 @@ footer {
 
 <div class="project-category">
 <h3>Create</h3>
+<p class="category-intro">If it must exist and current solutions are not serving the market, then we must build it.</p>
 
 <div class="project">
 <h4>Kyros Consulting</h4>
@@ -204,6 +213,7 @@ footer {
 
 <div class="project-category">
 <h3>Collaborate</h3>
+<p class="category-intro">If we find exceptional people, and they are open to our help, we back them with everything we have.</p>
 
 <div class="project">
 <h4>Practice of Life</h4>
@@ -223,6 +233,7 @@ footer {
 
 <div class="project-category">
 <h3>Co-Invest</h3>
+<p class="category-intro">If our people and/or projects need capital, we will scour the earth to find it.</p>
 
 <div class="project">
 <h4>Turning Hearts</h4>
@@ -250,7 +261,8 @@ footer {
 </section>
 
 <footer>
-    © 2026 The Good Project
+    <p class="footer-quote">Build the change you wish to see in the world.</p>
+    <p>© 2026 The Good Project</p>
 </footer>
 
 </body>
