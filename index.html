@@ -22,12 +22,12 @@
     </header>
 
     <section class="hero">
-        <h1>Build the change you wish<br>to see in the world.</h1>
+        <h1><em>Build</em> the change you wish<br>to see in the world.</h1>
         <div class="subtitle nav-links">
             <a href="#create">Create</a>
-            <span>·</span>
+            <span>/</span>
             <a href="#collaborate">Collaborate</a>
-            <span>·</span>
+            <span>/</span>
             <a href="#coinvest">Co-Invest</a>
         </div>
     </section>
@@ -60,16 +60,28 @@
     <script>
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', function(e) {
+            e.preventDefault();
             const href = this.getAttribute('href');
             const target = document.querySelector(href);
             if (!target) return;
 
-            setTimeout(() => {
-                target.classList.add('highlight');
-                setTimeout(() => {
-                    target.classList.remove('highlight');
-                }, 2000);
-            }, 400);
+            const start = window.pageYOffset;
+            const end = target.getBoundingClientRect().top + start;
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function scrollStep(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                window.scrollTo(0, start + (end - start) * eased);
+                if (progress < 1) requestAnimationFrame(scrollStep);
+                else {
+                    target.classList.add('highlight');
+                    setTimeout(() => target.classList.remove('highlight'), 2000);
+                }
+            }
+            requestAnimationFrame(scrollStep);
         });
     });
     </script>

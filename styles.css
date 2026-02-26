@@ -91,18 +91,18 @@ body {
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: #6B6B6B;
+    text-decoration: underline;
+    color: #a98a6a;
     transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
-    color: #222;
+    color: #8a7358;
 }
 
 .nav-links span {
-    color: rgba(0,0,0,0.2);
-    font-weight: 300;
+    color: #a98a6a;
+    opacity: 0.6;
 }
 
 .section {
