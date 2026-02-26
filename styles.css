@@ -140,6 +140,7 @@ p {
     position: relative;
     min-height: 85vh;
     margin-top: -7rem; /* overlap under pinned nav */
+    background: var(--white-off);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,29 +151,6 @@ p {
 
 @media (min-width: 650px) {
     .hero-section { padding-top: 10rem; }
-}
-
-.hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
-.hero-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center bottom;
-}
-
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 250, 245, 0.25);
-    z-index: 1;
 }
 
 .navbar {
@@ -233,6 +211,52 @@ p {
     border-bottom-color: var(--black);
 }
 
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--black);
+}
+
+@media (max-width: 768px) {
+    .nav-toggle { display: flex; }
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: min(280px, 85vw);
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        padding: 6rem 2rem 2rem;
+        box-shadow: -4px 0 20px rgba(0,0,0,0.08);
+        transform: translateX(100%);
+        transition: transform 0.25s var(--ease);
+        z-index: 99;
+    }
+    .nav-links.is-open {
+        transform: translateX(0);
+    }
+    .nav-links a {
+        padding: 1rem 0;
+        font-size: 2rem;
+    }
+    .nav-links .btn--nav {
+        margin-top: 1rem;
+    }
+}
+
 .hero-content {
     position: relative;
     z-index: 5;
@@ -287,57 +311,37 @@ p {
     background: var(--white);
 }
 
-/* Section: side-by-side (image left, content right) like Five Pathways */
-.section-split {
-    display: grid;
-    grid-template-columns: 1fr;
-    min-height: 0;
-}
-
-@media (min-width: 769px) {
-    .section-split {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.section-image {
-    min-height: 280px;
-    background-size: cover;
-    background-position: center;
-}
-
-@media (min-width: 769px) {
-    .section-image {
-        min-height: 400px;
-    }
-}
-
 .section-content {
-    padding: 3rem 2rem;
-    display: flex;
-    align-items: center;
+    padding: 4rem 2rem;
 }
 
 .section-inner {
     max-width: 55rem;
 }
 
+.section-inner--wide {
+    max-width: 78rem;
+}
+
 @media (min-width: 650px) {
     .section-content {
-        padding: 3rem 4rem;
+        padding: 4rem 6rem;
     }
 }
 
 .section-content--cream {
     background: var(--white-off);
+    border-top: 1px solid rgba(0,0,0,0.06);
 }
 
 .section-content--white {
     background: var(--white);
+    border-top: 1px solid rgba(0,0,0,0.06);
 }
 
 .section-content--sage {
     background: var(--sage);
+    border-top: 1px solid rgba(0,0,0,0.06);
 }
 
 .section-directions,
@@ -345,6 +349,7 @@ p {
 .section-mission,
 .section-contact {
     padding: 0;
+    scroll-margin-top: 8rem; /* clear sticky nav */
 }
 
 .section-products {
@@ -481,6 +486,16 @@ p {
     padding: 2rem;
     background: var(--sage);
     border: 1px solid rgba(0,0,0,0.06);
+    position: relative;
+}
+
+.service-num {
+    display: block;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.4rem;
+    font-style: italic;
+    color: var(--text-gray);
+    margin-bottom: 0.5rem;
 }
 
 .service-card h3 {
@@ -632,6 +647,28 @@ p {
     font-size: 1.7rem;
     border: 1px solid rgba(0,0,0,0.2);
     font-family: inherit;
+}
+
+.question-form input:focus,
+.question-form textarea:focus {
+    outline: none;
+    border-color: var(--btn-green);
+    box-shadow: 0 0 0 2px rgba(99, 207, 191, 0.3);
+}
+
+.btn:focus-visible,
+.question-form input:focus-visible,
+.question-form textarea:focus-visible {
+    outline: 2px solid var(--btn-green);
+    outline-offset: 2px;
+}
+
+.hidden {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }
 
 .question-form textarea {
