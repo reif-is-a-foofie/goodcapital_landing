@@ -32,7 +32,7 @@ body {
     letter-spacing: -0.08em;
     font-weight: 600;
     color: var(--accent);
-    padding: clamp(16px, 2.5vw, 24px) clamp(20px, 4vw, 40px) 0 clamp(12px, 3vw, 20px);
+    padding: clamp(16px, 2.5vw, 24px) clamp(20px, 4vw, 40px) 0 16px;
 }
 
 .site-title em {
@@ -48,7 +48,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: clamp(24px, 6vh, 80px) clamp(16px, 4vw, 24px) clamp(16px, 2.5vh, 32px);
+    padding: clamp(24px, 6vh, 80px) clamp(12px, 3vw, 20px) clamp(16px, 2.5vh, 32px);
     box-sizing: border-box;
 }
 
@@ -174,11 +174,11 @@ body {
 
 @media (max-width: 768px) {
     .site-title {
-        padding: clamp(12px, 3vw, 20px) clamp(16px, 4vw, 24px) 0 clamp(12px, 3vw, 16px);
+        padding: clamp(12px, 3vw, 20px) clamp(16px, 4vw, 24px) 0 16px;
     }
 
     .hero {
-        padding: clamp(16px, 2.5vh, 32px) clamp(16px, 4vw, 20px) clamp(12px, 1.5vh, 20px);
+        padding: clamp(16px, 2.5vh, 32px) clamp(12px, 3vw, 16px) clamp(12px, 1.5vh, 20px);
     }
 
     .hero h1 {
