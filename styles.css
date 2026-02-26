@@ -16,11 +16,18 @@ html {
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     background: var(--bg);
     color: var(--text);
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .top-bar {
@@ -49,13 +56,13 @@ body {
 
 .hero {
     width: 100%;
-    min-height: 50vh;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 120px 24px 120px;
+    padding: 60px 24px 40px;
 }
 
 .hero h1 {
@@ -70,11 +77,12 @@ body {
 }
 
 .container {
+    flex: 1;
     max-width: 736px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 40px 160px;
+    margin: 0 auto;
+    padding: 0 40px 40px;
     text-align: left;
+    overflow-y: auto;
 }
 
 .subtitle {
