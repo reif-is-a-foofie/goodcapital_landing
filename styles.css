@@ -131,6 +131,11 @@ body {
     transform: scaleX(1);
 }
 
+.section.highlight h2 {
+    border-bottom: 2px solid #2c5282;
+    padding-bottom: 4px;
+}
+
 .section h2 {
     font-size: 22px;
     font-weight: 500;
