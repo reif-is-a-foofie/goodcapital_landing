@@ -67,7 +67,7 @@
     const heroBuild = document.querySelector('.annotate-hero');
     const heroH1 = document.querySelector('.hero h1');
     if (heroBuild && heroH1) {
-        const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 3, animationDuration: 400, padding: [0, 0, -8, 0] });
+        const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 3, animationDuration: 15000, padding: [0, 0, -8, 0] });
         function cycleHeroUnderline() {
             heroAnn.show();
             setTimeout(() => {
@@ -76,8 +76,8 @@
                     heroAnn.hide();
                     heroH1.classList.remove('hero-underline-fade');
                     setTimeout(cycleHeroUnderline, 1800);
-                }, 10000);
-            }, 2800);
+                }, 20000);
+            }, 15000);
         }
         setTimeout(cycleHeroUnderline, 800);
         let resizeT = 0;
