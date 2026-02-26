@@ -186,7 +186,7 @@ body {
     }
 
     .hero h1 svg.rough-annotation {
-        transform: translateY(4px);
+        transform: translateY(-4px);
     }
 
     .container {
