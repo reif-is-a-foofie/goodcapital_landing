@@ -83,6 +83,13 @@
             }, 2800);
         }
         setTimeout(cycleHeroUnderline, 800);
+        let resizeT = 0;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeT);
+            resizeT = setTimeout(() => {
+                if (heroAnn.isShowing()) heroAnn.show();
+            }, 150);
+        });
     }
 
     ['create', 'collaborate', 'coinvest', 'contact'].forEach(id => {

@@ -53,6 +53,7 @@ body {
 .hero {
     width: 100%;
     flex-shrink: 0;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -63,6 +64,17 @@ body {
 
 .annotate-hero {
     display: inline;
+    position: relative;
+}
+
+.hero h1 {
+    position: relative;
+    overflow: visible;
+}
+
+.hero h1 svg.rough-annotation {
+    overflow: visible !important;
+    pointer-events: none;
 }
 
 .hero h1 svg {
@@ -171,6 +183,10 @@ body {
 
     .hero {
         padding: clamp(32px, 6vh, 60px) 20px clamp(16px, 2vh, 24px);
+    }
+
+    .hero h1 svg.rough-annotation {
+        transform: translateY(4px);
     }
 
     .container {
