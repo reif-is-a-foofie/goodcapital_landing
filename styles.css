@@ -24,8 +24,9 @@ body {
     top: 40px;
     left: 50px;
     font-size: 14px;
-    letter-spacing: 0.05em;
+    letter-spacing: -0.05em;
     font-weight: 600;
+    color: #9C7A4D;
 }
 
 .container {
