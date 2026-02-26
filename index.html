@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Good Project — A Venture Studio</title>
-    <meta name="description" content="The Good Project is a venture studio focused on building, collaborating, and co-investing in durable companies.">
-    <meta property="og:title" content="The Good Project — A Venture Studio">
-    <meta property="og:description" content="The Good Project is a venture studio focused on building, collaborating, and co-investing in durable companies.">
+    <title>The Good Project — Venture Studio</title>
+    <meta name="description" content="The Good Project is a venture studio building, collaborating, and co-investing in durable enterprises.">
+    <meta property="og:title" content="The Good Project — Venture Studio">
+    <meta property="og:description" content="The Good Project is a venture studio building, collaborating, and co-investing in durable enterprises.">
 
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png">
@@ -17,35 +17,71 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
+* { box-sizing: border-box; }
+
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: #ffffff;
+    background: #ffffff;
     color: #111111;
     line-height: 1.6;
 }
 
 .container {
-    max-width: 980px;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 100px 24px;
+    padding: 80px 24px;
 }
 
-header {
-    padding: 160px 24px 120px;
-    text-align: left;
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid #eaeaea;
+    position: sticky;
+    top: 0;
+    background: #ffffff;
 }
 
-h1 {
+nav a {
+    text-decoration: none;
+    color: #111;
+    margin-left: 24px;
+    font-size: 14px;
+}
+
+nav a:hover {
+    opacity: 0.6;
+}
+
+.hero {
+    padding: 140px 24px 100px;
+}
+
+.hero h1 {
     font-size: 64px;
     font-weight: 600;
-    margin: 0 0 10px 0;
+    margin-bottom: 12px;
     letter-spacing: -1px;
 }
 
-.subtitle {
+.hero .subtitle {
     font-size: 18px;
-    color: #666666;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.hero .mission {
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 24px;
+}
+
+.hero .description {
+    max-width: 720px;
+    color: #555;
+    font-size: 18px;
 }
 
 .section {
@@ -53,134 +89,168 @@ h1 {
 }
 
 .section h2 {
-    font-size: 28px;
+    font-size: 32px;
+    margin-bottom: 60px;
     font-weight: 500;
-    margin-bottom: 32px;
 }
 
-.mission {
-    font-size: 28px;
-    font-weight: 400;
-    margin-bottom: 24px;
+.project-category {
+    margin-bottom: 100px;
 }
 
-.text-muted {
-    max-width: 700px;
-    color: #555555;
-    font-size: 18px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 60px;
-}
-
-.card h3 {
+.project-category h3 {
     font-size: 20px;
-    font-weight: 500;
+    margin-bottom: 40px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.project {
+    margin-bottom: 60px;
+}
+
+.project h4 {
+    font-size: 20px;
     margin-bottom: 12px;
+    font-weight: 500;
 }
 
-.card p {
-    color: #555555;
+.project p {
+    max-width: 760px;
+    color: #555;
+    margin: 6px 0;
 }
 
-a {
-    color: #000000;
+.cta {
+    text-align: center;
+    padding: 120px 24px;
+}
+
+.cta h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.cta a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 14px 32px;
+    border: 1px solid #111;
     text-decoration: none;
-    border-bottom: 1px solid #cccccc;
+    color: #111;
+    font-size: 14px;
 }
 
-a:hover {
-    border-bottom: 1px solid #000000;
+.cta a:hover {
+    background: #111;
+    color: #fff;
 }
 
 footer {
     border-top: 1px solid #eaeaea;
     padding: 40px 24px;
     font-size: 14px;
-    color: #777777;
+    color: #777;
+    text-align: center;
 }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>The Good Project</h1>
-    <div class="subtitle">A Venture Studio</div>
-</header>
+<nav>
+    <div><strong>The Good Project</strong></div>
+    <div>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
 
-<section class="section">
+<section class="hero">
     <div class="container">
-        <div class="mission">
-            Build the change you wish to see in the world.
-        </div>
-        <p class="text-muted">
+        <h1>The Good Project</h1>
+        <div class="subtitle">A Venture Studio</div>
+        <div class="mission">Build the change you wish to see in the world.</div>
+        <div class="description">
             We believe that better companies make for a better world.
-            We might as well try to build the best possible companies with the best people
-            using the best tools in service of the best opportunities we can fathom.
-        </p>
-    </div>
-</section>
-
-<section class="section">
-    <div class="container">
-        <h2>Our Work</h2>
-
-        <div class="grid">
-
-            <div class="card">
-                <h3>Create</h3>
-                <p>
-                If it must exist and current solutions are not serving the market,
-                then we must build it.
-                </p>
-                <p>
-                <a href="https://www.kyros.cc/">Kyros Consulting</a> · <a href="https://github.com/reif-is-a-foofie/liahona">Liahona</a>
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Collaborate</h3>
-                <p>
-                If we find exceptional people, and they are open to our help,
-                we back them with everything we have.
-                </p>
-                <p>
-                <a href="https://www.practiceoflife.com/">Practice of Life</a> · <a href="https://www.goldback.com/">GoldBack</a>
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Co-Invest</h3>
-                <p>
-                If our people and/or projects need capital,
-                we will scour the earth to find it.
-                </p>
-                <p>
-                <a href="https://turninghearts.com">Turning Hearts</a> · <a href="https://colourhills.com/home">Colour Hills</a>
-                </p>
-            </div>
-
+            We build, collaborate, and co-invest in durable enterprises
+            through disciplined execution and structured capital.
         </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="container">
-        <h2>Contact</h2>
-        <p class="text-muted">
-            If you want to get in touch, please email
-            <a href="mailto:hello@thegoodproject.net">hello@thegoodproject.net</a>.
-        </p>
-    </div>
+<section id="work" class="section">
+<div class="container">
+<h2>Selected Work</h2>
+
+<div class="project-category">
+<h3>Create</h3>
+
+<div class="project">
+<h4>Kyros Consulting</h4>
+<p>Retail hardware operation (&gt;$5M revenue).</p>
+<p>Operator engagement focused on real-time analytics dashboards and reporting infrastructure.</p>
+<p>Status: Ongoing operational refinement.</p>
+</div>
+
+<div class="project">
+<h4>Liahona</h4>
+<p>Community task management infrastructure (alpha stage).</p>
+<p>Builder engagement designing structured workflow systems with AI-assisted task sizing.</p>
+<p>Status: In development.</p>
+</div>
+
+</div>
+
+<div class="project-category">
+<h3>Collaborate</h3>
+
+<div class="project">
+<h4>Practice of Life</h4>
+<p>Pre-revenue digital health platform.</p>
+<p>Operator engagement building outbound BD systems, refining product delivery, and digitizing operations.</p>
+<p>Result: Paying customers and pilot validation secured.</p>
+</div>
+
+<div class="project">
+<h4>GoldBack</h4>
+<p>Affiliate-led retail expansion initiative.</p>
+<p>Established new retail distributor partnerships and supported multi-state expansion.</p>
+<p>Status: Ongoing channel growth.</p>
+</div>
+
+</div>
+
+<div class="project-category">
+<h3>Co-Invest</h3>
+
+<div class="project">
+<h4>Turning Hearts</h4>
+<p>Full platform rebuild from legacy WordPress infrastructure.</p>
+<p>Head of Technology role leading scalable software architecture and professional development transition.</p>
+<p>Result: Enabled significant user growth.</p>
+</div>
+
+<div class="project">
+<h4>Colour Hills</h4>
+<p>AUD 10M SPV capital formation initiative.</p>
+<p>Partner engagement in structuring and capital sourcing.</p>
+<p>Status: Raise ongoing.</p>
+</div>
+
+</div>
+
+</div>
+</section>
+
+<section id="contact" class="cta">
+    <h2>Engage</h2>
+    <p>For operators and capital partners.</p>
+    <a href="mailto:hello@thegoodproject.net">Contact</a>
 </section>
 
 <footer>
-    <div class="container">
-        © 2026 The Good Project
-    </div>
+    © 2026 The Good Project
 </footer>
 
 </body>
