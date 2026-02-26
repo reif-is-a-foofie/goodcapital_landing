@@ -59,7 +59,8 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: clamp(40px, 8vh, 80px) clamp(20px, 4vw, 24px) clamp(20px, 3vh, 32px);
+    padding: clamp(24px, 6vh, 80px) clamp(16px, 4vw, 24px) clamp(16px, 2.5vh, 32px);
+    box-sizing: border-box;
 }
 
 .annotate-hero {
@@ -88,12 +89,14 @@ body {
 .hero h1 {
     font-family: 'Nanum Myeongjo', Georgia, serif;
     font-weight: 800;
-    font-size: clamp(70px, 10vw, 120px);
+    font-size: clamp(32px, 8vw, 120px);
     line-height: 0.98;
     letter-spacing: -0.05em;
     color: #222222;
     max-width: min(1600px, 96vw);
     width: 100%;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .container {
@@ -180,11 +183,15 @@ body {
 
 @media (max-width: 768px) {
     .top-bar {
-        padding: clamp(16px, 2.5vw, 20px);
+        padding: clamp(12px, 3vw, 20px) clamp(16px, 4vw, 24px);
     }
 
     .hero {
-        padding: clamp(32px, 6vh, 60px) 20px clamp(16px, 2vh, 24px);
+        padding: clamp(20px, 5vh, 60px) clamp(16px, 4vw, 20px) clamp(12px, 2vh, 24px);
+    }
+
+    .hero h1 {
+        font-size: clamp(32px, 9vw, 56px);
     }
 
     .hero h1 svg.rough-annotation {
@@ -192,6 +199,17 @@ body {
     }
 
     .container {
-        padding: 0 24px clamp(20px, 3vh, 30px);
+        padding: 0 clamp(16px, 4vw, 24px) clamp(16px, 3vh, 30px);
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: clamp(28px, 10vw, 48px);
+    }
+
+    .container {
+        padding: 0 16px 24px;
     }
 }
