@@ -26,16 +26,23 @@ body {
     overflow: hidden;
 }
 
-.site-title {
+.top-bar {
+    flex-shrink: 0;
+    background: rgba(245, 242, 236, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: clamp(16px, 2.5vw, 24px) clamp(20px, 5vw, 50px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.logo {
     font-size: clamp(14px, 2vw, 18px);
     letter-spacing: -0.08em;
     font-weight: 600;
     color: var(--accent);
-    padding: clamp(16px, 2.5vw, 24px) clamp(20px, 5vw, 50px) 0;
-    flex-shrink: 0;
 }
 
-.site-title em {
+.logo em {
     font-weight: 400;
 }
 
@@ -171,6 +178,10 @@ body {
 }
 
 @media (max-width: 768px) {
+    .top-bar {
+        padding: clamp(12px, 3vw, 20px) clamp(16px, 4vw, 24px);
+    }
+
     .hero {
         padding: clamp(20px, 5vh, 60px) clamp(16px, 4vw, 20px) clamp(12px, 2vh, 24px);
     }
