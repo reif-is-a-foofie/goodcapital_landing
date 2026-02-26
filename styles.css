@@ -29,7 +29,7 @@ body {
 }
 
 .container {
-    max-width: 740px;
+    max-width: 680px;
     margin: 0 auto;
     padding: 180px 24px 140px;
     text-align: left;
@@ -37,7 +37,7 @@ body {
 
 .hero {
     text-align: center;
-    max-width: 740px;
+    max-width: 680px;
     margin: 0 auto;
 }
 
