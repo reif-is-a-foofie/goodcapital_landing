@@ -26,6 +26,19 @@ body {
     overflow: hidden;
 }
 
+.site-title {
+    font-size: clamp(14px, 2vw, 18px);
+    letter-spacing: -0.08em;
+    font-weight: 600;
+    color: var(--accent);
+    padding: clamp(16px, 2.5vw, 24px) clamp(20px, 5vw, 50px) 0;
+    flex-shrink: 0;
+}
+
+.site-title em {
+    font-weight: 400;
+}
+
 .hero {
     width: 100%;
     flex-shrink: 0;
