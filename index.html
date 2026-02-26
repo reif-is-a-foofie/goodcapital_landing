@@ -23,7 +23,13 @@
 
     <section class="hero">
         <h1>Build the change you wish<br>to see in the world.</h1>
-        <div class="subtitle">Create, Collaborate, Co-Invest</div>
+        <div class="subtitle nav-links">
+            <a href="#create">Create</a>
+            <span>·</span>
+            <a href="#collaborate">Collaborate</a>
+            <span>·</span>
+            <a href="#coinvest">Co-Invest</a>
+        </div>
     </section>
 
     <div class="container">
@@ -32,17 +38,17 @@
             <p>We believe meaningful work requires intention, alignment, and discipline. Enduring ventures are built deliberately and stewarded over time.</p>
         </div>
 
-        <div class="section">
+        <div class="section" id="create">
             <h2>Create</h2>
             <p>If it must exist and current solutions fail, we build it from first principles.</p>
         </div>
 
-        <div class="section">
+        <div class="section" id="collaborate">
             <h2>Collaborate</h2>
             <p>We work alongside exceptional people and strengthen platforms that deserve scale.</p>
         </div>
 
-        <div class="section">
+        <div class="section" id="coinvest">
             <h2>Co-Invest</h2>
             <p>We deploy long-term capital alongside aligned operators building durable ventures.</p>
         </div>
@@ -51,5 +57,21 @@
             <a href="mailto:hello@thegoodproject.net">hello@thegoodproject.net</a>
         </div>
     </div>
+    <script>
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            const target = document.querySelector(href);
+            if (!target) return;
+
+            setTimeout(() => {
+                target.classList.add('highlight');
+                setTimeout(() => {
+                    target.classList.remove('highlight');
+                }, 2000);
+            }, 400);
+        });
+    });
+    </script>
 </body>
 </html>
