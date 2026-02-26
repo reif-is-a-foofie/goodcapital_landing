@@ -65,6 +65,7 @@ body {
 .hero h1 svg.rough-annotation {
     overflow: visible !important;
     pointer-events: none;
+    transform: translateY(-6px);
 }
 
 .hero h1 svg {
@@ -184,7 +185,7 @@ body {
     }
 
     .hero h1 svg.rough-annotation {
-        transform: translateY(-4px);
+        transform: translateY(-6px);
     }
 
     .container {
