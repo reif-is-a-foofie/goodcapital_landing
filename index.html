@@ -67,7 +67,7 @@
     const heroBuild = document.querySelector('.annotate-hero');
     const heroH1 = document.querySelector('.hero h1');
     if (heroBuild) {
-        const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 3, iterations: 2, animationDuration: 0, padding: [0, 0, 0, 0] });
+        const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 3, iterations: 2, animationDuration: 0, padding: [0, 0, -2, 0] });
         heroAnn.show();
     }
 
