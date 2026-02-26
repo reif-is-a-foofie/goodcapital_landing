@@ -48,7 +48,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: clamp(12px, 2vh, 32px) clamp(12px, 3vw, 20px) clamp(16px, 2.5vh, 32px);
+    padding: clamp(12px, 2vh, 32px) clamp(12px, 3vw, 20px) clamp(8px, 1.5vh, 20px);
     box-sizing: border-box;
 }
 
@@ -178,7 +178,7 @@ body {
     }
 
     .hero {
-        padding: clamp(8px, 1.5vh, 20px) clamp(12px, 3vw, 16px) clamp(12px, 1.5vh, 20px);
+        padding: clamp(8px, 1.5vh, 20px) clamp(12px, 3vw, 16px) clamp(8px, 1vh, 16px);
     }
 
     .hero h1 {
