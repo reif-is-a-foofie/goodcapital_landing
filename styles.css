@@ -107,21 +107,32 @@ body {
 
 .section {
     position: relative;
+    overflow: hidden;
     margin-bottom: 80px;
     padding: 0.5em 0.5em;
     margin-left: -0.5em;
     margin-right: -0.5em;
     border-radius: 3px;
-    transition: background 0.4s ease;
 }
 
-.section.highlight {
-    background: linear-gradient(
-        to top,
-        rgba(156,122,77,0.18) 0%,
-        rgba(156,122,77,0.18) 40%,
-        transparent 40%
-    );
+.section::before {
+    content: "";
+    position: absolute;
+    left: -5%;
+    bottom: 10px;
+    width: 110%;
+    height: 60%;
+    background: rgba(156,122,77,0.25);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s cubic-bezier(.22,1,.36,1);
+    z-index: -1;
+    border-radius: 4px;
+    clip-path: polygon(0% 20%, 100% 10%, 100% 85%, 0% 95%);
+}
+
+.section.highlight::before {
+    transform: scaleX(1);
 }
 
 .section h2 {
