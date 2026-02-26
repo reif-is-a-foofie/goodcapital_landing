@@ -81,7 +81,7 @@ body {
 .divider {
     height: 1px;
     background: var(--divider);
-    margin: 80px 0;
+    margin: 40px 0;
 }
 
 .section {
