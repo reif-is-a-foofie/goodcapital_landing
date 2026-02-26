@@ -32,7 +32,7 @@ body {
     max-width: 720px;
     margin: 0 auto;
     padding: 180px 24px 140px;
-    text-align: center;
+    text-align: left;
 }
 
 .hero h1 {
@@ -46,7 +46,6 @@ body {
     margin-top: 30px;
     font-size: 14px;
     letter-spacing: 0.14em;
-    text-transform: uppercase;
     color: var(--muted);
 }
 
@@ -63,7 +62,6 @@ body {
 .section h2 {
     font-size: 14px;
     letter-spacing: 0.2em;
-    text-transform: uppercase;
     margin-bottom: 22px;
 }
 
