@@ -77,17 +77,18 @@ body {
 .divider {
     height: 1px;
     background: var(--divider);
-    margin: 90px 0;
+    margin: 60px 0;
 }
 
 .section {
-    margin-bottom: 100px;
+    margin-bottom: 60px;
 }
 
 .section h2 {
-    font-size: 14px;
+    font-size: 20px;
+    font-weight: 600;
     letter-spacing: 0;
-    margin-bottom: 22px;
+    margin-bottom: 16px;
 }
 
 .section p {
