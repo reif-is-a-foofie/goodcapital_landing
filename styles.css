@@ -19,10 +19,18 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-.logo {
+.top-bar {
     position: fixed;
-    top: 40px;
-    left: 50px;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--bg);
+    padding: 24px 50px;
+    border-bottom: 1px solid var(--divider);
+}
+
+.logo {
     font-size: 20px;
     letter-spacing: -0.05em;
     font-weight: 600;
@@ -105,9 +113,8 @@ body {
 }
 
 @media (max-width: 768px) {
-    .logo {
-        left: 20px;
-        top: 20px;
+    .top-bar {
+        padding: 20px 20px;
     }
 
     .hero {
