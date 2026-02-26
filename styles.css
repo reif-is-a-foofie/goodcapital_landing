@@ -15,7 +15,7 @@
 body {
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -40,7 +40,7 @@ body {
 }
 
 .hero h1 {
-    font-family: 'Lustria', serif;
+    font-family: 'Lustria', Georgia, serif;
     font-size: clamp(48px, 6vw, 84px);
     line-height: 1.1;
     letter-spacing: -0.015em;
