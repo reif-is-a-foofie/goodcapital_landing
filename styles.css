@@ -120,6 +120,7 @@ body {
     letter-spacing: 0;
     margin-bottom: 12px;
     color: var(--text);
+    border: none;
 }
 
 .section p {
