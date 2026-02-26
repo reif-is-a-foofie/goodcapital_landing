@@ -140,18 +140,14 @@ body {
     color: #6B6B6B;
 }
 
-.contact {
-    margin-top: clamp(32px, 4vh, 48px);
-}
-
-.contact a {
+#contact p a {
     font-size: clamp(16px, 2vw, 18px);
     font-weight: 500;
     color: var(--accent);
     text-decoration: none;
 }
 
-.contact a:hover {
+#contact p a:hover {
     opacity: 0.8;
 }
 

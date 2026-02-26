@@ -37,6 +37,8 @@
             <a href="#collaborate">Collaborate</a>
             <span>/</span>
             <a href="#coinvest">Co-Invest</a>
+            <span>/</span>
+            <a href="#contact">Contact</a>
         </nav>
 
         <div class="section" id="create">
@@ -54,8 +56,9 @@
             <p>We deploy long-term capital alongside aligned operators building durable ventures.</p>
         </div>
 
-        <div class="contact">
-            <a href="mailto:hello@thegoodproject.net">hello@thegoodproject.net</a>
+        <div class="section" id="contact">
+            <h2><span class="annotate">Contact</span></h2>
+            <p><a href="mailto:hello@thegoodproject.net">hello@thegoodproject.net</a></p>
         </div>
     </div>
     <script type="module">
@@ -64,7 +67,7 @@
     const annotations = new Map();
     const opts = { type: 'underline', color: '#2c5282', strokeWidth: 2, padding: 2, animationDuration: 280, iterations: 4 };
 
-    ['create', 'collaborate', 'coinvest'].forEach(id => {
+    ['create', 'collaborate', 'coinvest', 'contact'].forEach(id => {
         const el = document.querySelector(`#${id} .annotate`);
         if (el) annotations.set(id, annotate(el, opts));
     });
