@@ -19,7 +19,7 @@
 <body>
     <div class="site-title">The Good Project <em>- a venture studio.</em></div>
     <section class="hero">
-        <h1><span class="annotate-hero">Build</span> the change you wish<br>to see in the world.</h1>
+        <h1><span class="annotate-hero" style="display: inline-block;">Build</span> the change you wish<br>to see in the world.</h1>
     </section>
 
     <div class="container">
@@ -67,7 +67,7 @@
     const heroBuild = document.querySelector('.annotate-hero');
     const heroH1 = document.querySelector('.hero h1');
     if (heroBuild && heroH1) {
-        const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 3, animationDuration: 400, padding: -14 });
+        const heroAnn = annotate(heroBuild, { ...opts, strokeWidth: 3, animationDuration: 400, padding: [0, 0, -8, 0] });
         function cycleHeroUnderline() {
             heroAnn.show();
             setTimeout(() => {
