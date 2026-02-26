@@ -160,6 +160,15 @@ body {
     color: #6B6B6B;
 }
 
+.section p a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.section p a:hover {
+    opacity: 0.8;
+}
+
 #contact p a {
     font-size: clamp(16px, 2vw, 18px);
     font-weight: 500;
