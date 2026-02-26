@@ -57,7 +57,23 @@
             <a href="mailto:hello@thegoodproject.net">hello@thegoodproject.net</a>
         </div>
     </div>
-    <script>
+    <script type="module">
+    import { annotate } from 'https://unpkg.com/rough-notation?module';
+
+    const annotations = new Map();
+    ['create', 'collaborate', 'coinvest'].forEach(id => {
+        const el = document.querySelector(`#${id} h2`);
+        if (el) {
+            annotations.set(id, annotate(el, {
+                type: 'underline',
+                color: '#2c5282',
+                strokeWidth: 2,
+                padding: 2,
+                animationDuration: 600
+            }));
+        }
+    });
+
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -65,6 +81,7 @@
             const target = document.querySelector(href);
             if (!target) return;
 
+            const sectionId = href.slice(1);
             const start = window.pageYOffset;
             const end = target.getBoundingClientRect().top + start;
             const duration = 4500;
@@ -78,6 +95,8 @@
                 if (progress < 1) requestAnimationFrame(scrollStep);
                 else {
                     target.classList.add('highlight');
+                    const ann = annotations.get(sectionId);
+                    if (ann && !ann.isShowing()) ann.show();
                 }
             }
             requestAnimationFrame(scrollStep);
