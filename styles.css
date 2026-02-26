@@ -193,6 +193,14 @@ body {
         padding: 0 clamp(16px, 4vw, 24px) clamp(16px, 3vh, 30px);
         max-width: 100%;
     }
+
+    .nav-links {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: var(--bg);
+        padding: clamp(12px, 2vh, 16px) 0;
+    }
 }
 
 @media (max-width: 480px) {
