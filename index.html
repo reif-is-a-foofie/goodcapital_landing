@@ -61,17 +61,17 @@
     import { annotate } from 'https://unpkg.com/rough-notation?module';
 
     const annotations = new Map();
+    const opts = { type: 'underline', color: '#2c5282', strokeWidth: 2, padding: 2, animationDuration: 600, iterations: 1 };
+
     ['create', 'collaborate', 'coinvest'].forEach(id => {
-        const el = document.querySelector(`#${id} h2`);
-        if (el) {
-            annotations.set(id, annotate(el, {
-                type: 'underline',
-                color: '#2c5282',
-                strokeWidth: 2,
-                padding: 2,
-                animationDuration: 600,
-                iterations: 1
-            }));
+        const section = document.querySelector(`#${id}`);
+        if (section) {
+            const h2 = section.querySelector('h2');
+            const p = section.querySelector('p');
+            const list = [];
+            if (h2) list.push(annotate(h2, opts));
+            if (p) list.push(annotate(p, opts));
+            annotations.set(id, list);
         }
     });
 
@@ -96,8 +96,8 @@
                 if (progress < 1) requestAnimationFrame(scrollStep);
                 else {
                     target.classList.add('highlight');
-                    const ann = annotations.get(sectionId);
-                    if (ann && !ann.isShowing()) ann.show();
+                    const list = annotations.get(sectionId);
+                    if (list) list.forEach(ann => { if (!ann.isShowing()) ann.show(); });
                 }
             }
             requestAnimationFrame(scrollStep);
