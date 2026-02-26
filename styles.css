@@ -48,6 +48,11 @@ body {
     letter-spacing: -0.015em;
 }
 
+.hero-line {
+    display: block;
+    white-space: nowrap;
+}
+
 .subtitle {
     margin-top: 30px;
     font-size: 14px;
