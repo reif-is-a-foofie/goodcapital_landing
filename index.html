@@ -276,6 +276,7 @@ footer .footer-quote {
 
 footer .footer-build {
     display: inline-block;
+    line-height: 1;
 }
 
     </style>
@@ -414,17 +415,36 @@ footer .footer-build {
 <script>
 const footerBuild = document.getElementById('footer-build');
 if (footerBuild && window.RoughNotation) {
-    const annotation = RoughNotation.annotate(footerBuild, {
-        type: 'underline',
-        color: '#087074',
-        strokeWidth: 2,
-        iterations: 3
-    });
+    const annotationTypes = ['circle', 'bracket', 'underline', 'box'];
+    let annotationIndex = 0;
+    let annotation;
 
-    annotation.show();
-    setInterval(() => {
-        annotation.hide();
+    const showAnnotation = () => {
+        if (annotation) {
+            annotation.hide();
+        }
+
+        const type = annotationTypes[annotationIndex];
+        const options = {
+            type,
+            color: '#087074',
+            strokeWidth: 2,
+            iterations: 3,
+            padding: 1
+        };
+
+        if (type === 'bracket') {
+            options.brackets = ['left', 'right'];
+        }
+
+        annotation = RoughNotation.annotate(footerBuild, options);
         annotation.show();
+    };
+
+    showAnnotation();
+    setInterval(() => {
+        annotationIndex = (annotationIndex + 1) % annotationTypes.length;
+        showAnnotation();
     }, 10000);
 }
 </script>
