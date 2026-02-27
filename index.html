@@ -36,29 +36,38 @@ body {
 nav {
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
-    padding: 0;
-    height: 48px;
-    max-height: 48px;
-    border-bottom: 1px solid #eaeaea;
+    align-items: center;
+    padding: 0 24px;
+    height: 96px;
+    min-height: 96px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
     position: sticky;
     top: 0;
-    background: #ffffff;
+    z-index: 100;
+    background: rgba(245, 245, 245, 0.85);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+    overflow: visible;
 }
 
 nav .logo-link {
     display: flex;
     align-items: center;
-    padding: 0;
+    justify-content: center;
+    padding: 16px 0;
     margin: 0;
+    min-height: 64px;
+    flex-shrink: 0;
 }
 
 nav .logo {
     display: block;
-    height: 100%;
-    max-height: 48px;
+    height: 64px;
     width: auto;
+    max-height: 64px;
     object-fit: contain;
+    object-position: left center;
     margin: 0;
     padding: 0;
 }
