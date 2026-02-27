@@ -265,6 +265,7 @@ footer {
     font-size: 14px;
     color: var(--muted);
     text-align: center;
+    overflow: visible;
 }
 
 footer .footer-quote {
@@ -272,11 +273,20 @@ footer .footer-quote {
     color: #333;
     margin-bottom: 24px;
     font-style: italic;
+    line-height: 1.35;
+    overflow: visible;
 }
 
 footer .footer-build {
     display: inline-block;
-    line-height: 1;
+    line-height: 1.1;
+    padding: 0 4px;
+    overflow: visible;
+    position: relative;
+}
+
+footer .footer-build svg {
+    overflow: visible !important;
 }
 
     </style>
@@ -402,8 +412,8 @@ footer .footer-build {
 
 <section id="contact" class="cta">
     <h1>Say hello.</h1>
-    <p>For operators and capital partners.<br>Have a project you'd like to collaborate on?</p>
-    <a href="mailto:hello@thegoodproject.net">Contact</a>
+    <p>Have a project you'd like to collaborate on?</p>
+    <a href="mailto:hello@thegoodproject.net">Contact Us</a>
 </section>
 
 <footer>
@@ -430,11 +440,11 @@ if (footerBuild && window.RoughNotation) {
             color: '#087074',
             strokeWidth: 2,
             iterations: 3,
-            padding: 1
+            padding: 5
         };
 
         if (type === 'bracket') {
-            options.brackets = ['left', 'right'];
+            options.brackets = ['top', 'bottom'];
         }
 
         annotation = RoughNotation.annotate(footerBuild, options);
