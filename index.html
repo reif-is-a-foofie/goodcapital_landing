@@ -38,8 +38,8 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 0 24px;
-    height: 96px;
-    min-height: 96px;
+    height: 120px;
+    min-height: 120px;
     width: 100%;
     border-bottom: 1px solid rgba(0,0,0,0.06);
     position: fixed;
@@ -47,7 +47,9 @@ nav {
     left: 0;
     right: 0;
     z-index: 9999;
-    background: #f5f5f5;
+    background: rgba(245, 245, 245, 0.62);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    backdrop-filter: blur(14px) saturate(130%);
     box-shadow: 0 2px 20px rgba(0,0,0,0.04);
     overflow: visible;
 }
@@ -92,7 +94,7 @@ nav .nav-links a:hover {
 }
 
 .hero {
-    padding: calc(96px + 140px) 24px 100px;
+    padding: calc(120px + 140px) 24px 100px;
 }
 
 .hero h1 {
@@ -137,7 +139,7 @@ nav .nav-links a:hover {
 .project-category h3 {
     font-size: 20px;
     margin-bottom: 16px;
-    color: #888;
+    color: #35a879;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -173,20 +175,21 @@ nav .nav-links a:hover {
 .cta h2 {
     font-size: 36px;
     margin-bottom: 20px;
+    color: #35a879;
 }
 
 .cta a {
     display: inline-block;
     margin-top: 20px;
     padding: 14px 32px;
-    border: 1px solid #111;
+    border: 1px solid #35a879;
     text-decoration: none;
-    color: #111;
+    color: #35a879;
     font-size: 14px;
 }
 
 .cta a:hover {
-    background: #111;
+    background: #35a879;
     color: #fff;
 }
 
