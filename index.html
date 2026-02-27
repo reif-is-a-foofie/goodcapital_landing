@@ -37,17 +37,25 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px;
+    padding: 16px 24px;
+    min-height: 80px;
     border-bottom: 1px solid #eaeaea;
     position: sticky;
     top: 0;
     background: #ffffff;
 }
 
+nav .logo-link {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+}
+
 nav .logo {
     display: block;
-    height: 32px;
+    height: 100%;
     width: auto;
+    object-fit: contain;
 }
 
 nav a {
@@ -178,7 +186,7 @@ footer .footer-quote {
 <body>
 
 <nav>
-    <a href="/"><img src="./he.png" alt="The Good Project" class="logo"></a>
+    <a href="/" class="logo-link"><img src="./he.png" alt="The Good Project" class="logo"></a>
     <div>
         <a href="#work">Work</a>
         <a href="#contact">Contact</a>
