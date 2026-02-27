@@ -19,11 +19,20 @@
     <style>
 * { box-sizing: border-box; }
 
+:root {
+    --bg: #F7F6F3;
+    --text: #111111;
+    --muted: #555555;
+    --divider: #E4E2DD;
+    --accent: #35A879;
+    --accent-hover: #2E8F68;
+}
+
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background: #F7F6F3;
-    color: #111111;
+    background: var(--bg);
+    color: var(--text);
     line-height: 1.6;
 }
 
@@ -41,7 +50,7 @@ nav {
     height: 120px;
     min-height: 120px;
     width: 100%;
-    border-bottom: 1px solid #E4E2DD;
+    border-bottom: 1px solid var(--divider);
     position: fixed;
     top: 0;
     left: 0;
@@ -84,7 +93,7 @@ nav .nav-links {
 
 nav .nav-links a {
     text-decoration: none;
-    color: #111;
+    color: var(--text);
     margin-left: 24px;
     font-size: 14px;
 }
@@ -106,7 +115,7 @@ nav .nav-links a:hover {
 
 .hero .subtitle {
     font-size: 18px;
-    color: #666;
+    color: var(--muted);
     font-weight: 500;
     margin-top: 0;
 }
@@ -120,13 +129,13 @@ nav .nav-links a:hover {
 
 .hero .description {
     max-width: 720px;
-    color: #666666;
+    color: var(--muted);
     font-size: 18px;
     margin-bottom: 24px;
 }
 
 .section {
-    border-top: 1px solid #E4E2DD;
+    border-top: 1px solid var(--divider);
 }
 
 .section h1 {
@@ -142,14 +151,14 @@ nav .nav-links a:hover {
 .project-category h2 {
     font-size: 20px;
     margin-bottom: 16px;
-    color: #35a879;
+    color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .project-category .category-intro {
     max-width: 720px;
-    color: #666666;
+    color: var(--muted);
     font-size: 18px;
     margin-bottom: 40px;
 }
@@ -171,13 +180,13 @@ nav .nav-links a:hover {
 }
 
 .project h3 a:hover {
-    color: #35a879;
-    border-bottom-color: #35a879;
+    color: var(--accent);
+    border-bottom-color: var(--accent);
 }
 
 .project p {
     max-width: 760px;
-    color: #666666;
+    color: var(--muted);
     margin: 6px 0;
 }
 
@@ -189,12 +198,12 @@ nav .nav-links a:hover {
     font-size: 20px;
     margin-bottom: 12px;
     font-weight: 500;
-    color: #111;
+    color: var(--text);
 }
 
 .testimonials .reference p {
     max-width: 760px;
-    color: #666666;
+    color: var(--muted);
     margin: 6px 0;
 }
 
@@ -206,29 +215,31 @@ nav .nav-links a:hover {
 .cta h1 {
     font-size: 36px;
     margin-bottom: 20px;
-    color: #35a879;
+    color: var(--text);
 }
 
 .cta a {
     display: inline-block;
     margin-top: 20px;
     padding: 14px 32px;
-    border: 1px solid #35a879;
+    border: 1px solid var(--accent);
+    background: var(--accent);
     text-decoration: none;
-    color: #35a879;
+    color: #FFFFFF;
     font-size: 14px;
 }
 
 .cta a:hover {
-    background: #35a879;
-    color: #fff;
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #FFFFFF;
 }
 
 footer {
-    border-top: 1px solid #E4E2DD;
+    border-top: 1px solid var(--divider);
     padding: 60px 24px 40px;
     font-size: 14px;
-    color: #666666;
+    color: var(--muted);
     text-align: center;
 }
 
