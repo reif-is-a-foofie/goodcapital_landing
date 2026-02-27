@@ -262,6 +262,11 @@ footer .footer-quote {
     font-size: 20px;
     color: #333;
     margin-bottom: 24px;
+    font-style: italic;
+}
+
+footer .footer-build {
+    display: inline-block;
 }
 
     </style>
@@ -271,8 +276,8 @@ footer .footer-quote {
 <nav>
     <a href="/" class="logo-link"><img src="./logo.png" alt="The Good Project" class="logo"></a>
     <div class="nav-links">
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
+        <a href="#work">Our Work</a>
+        <a href="#contact">Contact Us</a>
     </div>
 </nav>
 
@@ -392,9 +397,28 @@ footer .footer-quote {
 </section>
 
 <footer>
-    <p class="footer-quote">Build the change you wish to see in the world.</p>
-    <p>© 2026 The Good Project</p>
+    <p class="footer-quote"><span id="footer-build" class="footer-build">Build</span> the change you wish to see in the world.</p>
+    <p>© 2024 The Good Project</p>
 </footer>
+
+<script src="https://unpkg.com/rough-notation/lib/rough-notation.iife.js"></script>
+<script>
+const footerBuild = document.getElementById('footer-build');
+if (footerBuild && window.RoughNotation) {
+    const annotation = RoughNotation.annotate(footerBuild, {
+        type: 'underline',
+        color: '#087074',
+        strokeWidth: 2,
+        iterations: 3
+    });
+
+    annotation.show();
+    setInterval(() => {
+        annotation.hide();
+        annotation.show();
+    }, 10000);
+}
+</script>
 
 </body>
 </html>
