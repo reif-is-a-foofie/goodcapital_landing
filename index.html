@@ -114,20 +114,13 @@ nav .nav-links a:hover {
     padding: calc(120px + 64px) 24px 98px;
 }
 
-.hero h1 {
-    font-size: 64px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    letter-spacing: -1px;
-}
-
 .hero .subtitle {
     font-size: 14px;
     color: #6B6B6B;
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-top: 0;
+    margin: 0 0 20px;
 }
 
 .hero .mission {
@@ -137,7 +130,15 @@ nav .nav-links a:hover {
     line-height: 1.14;
     letter-spacing: -0.01em;
     max-width: 920px;
-    margin-bottom: 24px;
+    margin: 0 0 18px;
+}
+
+.hero .deck {
+    max-width: 680px;
+    color: #3F3F3F;
+    font-size: 24px;
+    line-height: 1.45;
+    margin: 0 0 10px;
 }
 
 .hero .description {
@@ -157,7 +158,7 @@ nav .nav-links a:hover {
     scroll-margin-top: 130px;
 }
 
-.section h1 {
+.section .section-title {
     font-size: 32px;
     margin-bottom: 60px;
     font-weight: 500;
@@ -246,7 +247,7 @@ nav .nav-links a:hover {
     padding: 120px 24px;
 }
 
-.cta h1 {
+.cta h2 {
     font-size: 36px;
     margin-bottom: 20px;
     color: var(--text);
@@ -313,18 +314,16 @@ footer .footer-build svg {
 
 <section class="hero">
     <div class="container">
-        <div class="mission">We believe that better companies make for a better world.</div>
-        <div class="description">
-            We create, collaborate and co-invest in durable enterprises
-            through creative execution and aligned capital.
-        </div>
         <div class="subtitle">A Venture Studio</div>
+        <h1 class="mission">We believe better companies make for a better world.</h1>
+        <p class="deck">Founders build those companies.</p>
+        <p class="description">So we exist to find and support founders. We help raise capital, go to market, and build the systems they need to grow.</p>
     </div>
 </section>
 
 <section id="work" class="section">
 <div class="container">
-<h1>Selected Work</h1>
+<h2 class="section-title">Selected Work</h2>
 
 <div class="project-category">
 <h2>Raise capital with intention.</h2>
@@ -353,7 +352,7 @@ footer .footer-build svg {
 <div class="project">
 <h3><a href="https://www.practiceoflife.com/" target="_blank" rel="noopener noreferrer">Practice of Life</a></h3>
 <p>Pre-revenue digital health platform.</p>
-<p>Operator engagement building outbound BD systems, refining product delivery, and digitizing operations.</p>
+<p>Founder support building outbound BD systems, refining product delivery, and digitizing operations.</p>
 <p>Result: Paying customers and pilot validation secured.</p>
 </div>
 
@@ -367,21 +366,21 @@ footer .footer-build svg {
 </div>
 
 <div class="project-category">
-<h2>Build what is missing.</h2>
-<p class="category-intro">If a gap in the user experience keeps getting in the way, we build the fix ourselves.</p>
+<h2>Tools for Founders</h2>
+<p class="category-intro">Founders often lack the operational tools needed to grow. We build practical systems that close those gaps.</p>
 
 <div class="project">
 <h3>Kyros Consulting</h3>
 <p>Retail hardware operation (&gt;$5M revenue).</p>
-<p>Operator engagement focused on real-time analytics dashboards and reporting infrastructure.</p>
+<p>Founder support focused on real-time analytics dashboards and reporting infrastructure.</p>
 <p>Status: Ongoing operational refinement.</p>
 </div>
 
 <div class="project">
 <h3>Liahona</h3>
-<p>Community task management infrastructure (alpha stage).</p>
-<p>Builder engagement designing structured workflow systems with AI-assisted task sizing.</p>
-<p>Status: In development.</p>
+<p>Community task management infrastructure.</p>
+<p>Founder support focused on structured workflows and AI-assisted task sizing.</p>
+<p>Status: Alpha stage.</p>
 </div>
 
 </div>
@@ -391,7 +390,7 @@ footer .footer-build svg {
 
 <section class="section testimonials">
 <div class="container">
-<h1>References</h1>
+<h2 class="section-title">References</h2>
 
 <div class="reference">
 <h3>Kate Larson, Founder of <a href="https://www.practiceoflife.com/" target="_blank" rel="noopener noreferrer">Practice of Life</a></h3>
@@ -421,7 +420,7 @@ footer .footer-build svg {
 </section>
 
 <section id="contact" class="cta">
-    <h1>Say hello.</h1>
+    <h2>Say hello.</h2>
     <p>Have a project you'd like to collaborate on?</p>
     <a href="mailto:hello@thegoodproject.net">Contact Us</a>
 </section>
