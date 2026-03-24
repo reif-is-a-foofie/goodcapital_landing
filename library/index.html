@@ -170,11 +170,12 @@ fetch('./toc.json')
     .then(r => r.json())
     .then(data => {
         tocData = data;
-        chapterOrder = data.filter(t => t.type === 'chapter').map(t => t.id);
+        chapterOrder = data.filter(t => t.type === 'chapter' || t.type === 'front').map(t => t.id);
         buildToc(data);
         // Restore last position or start at beginning
         var last = localStorage.getItem('lds_position');
-        var startId = (last && chapterOrder.includes(last)) ? last : chapterOrder[0];
+        // Always start at title page on first load; restore position on return
+        var startId = (last && chapterOrder.includes(last)) ? last : 'title_page';
         loadChapter(startId, true).then(() => {
             document.getElementById('splash').classList.add('gone');
             if (window.innerWidth >= 900) {
@@ -191,11 +192,13 @@ function buildToc(items) {
     var i = 0;
     while (i < items.length) {
         var item = items[i];
-        if (item.type === 'volume') {
+        if (item.type === 'front') {
+            html += `<span class="toc-ch toc-front" data-id="${item.id}" onclick="jumpTo('${item.id}')" style="padding-left:14px;font-weight:500;color:var(--text)">${item.label}</span>`;
+            i++;
+        } else if (item.type === 'volume') {
             html += `<div class="toc-volume">${item.label}</div>`;
             i++;
         } else if (item.type === 'book') {
-            var bookId = item.first_chapter;
             var bookLabel = item.label;
             html += `<div class="toc-book" data-book="${bookLabel}" onclick="toggleBook(this)"><span>${bookLabel}</span><span class="arrow">›</span></div>`;
             html += `<div class="toc-chapters">`;

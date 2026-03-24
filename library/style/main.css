@@ -472,3 +472,16 @@ p.donaldson-para {
         margin-left: 0.5em;
     }
 }
+
+/* ── Donaldson source label (web reader fix) ─────────────────────────────── */
+div.donaldson-block span.source-label {
+    display: block;
+    font-size: 0.72em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #7a5a10;
+    margin-bottom: 0.4em;
+    font-style: normal;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+}
