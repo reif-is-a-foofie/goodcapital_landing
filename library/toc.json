@@ -8,21 +8,6 @@
   },
   {
     "id": null,
-    "label": "Nav",
-    "href": "chapters/nav.html",
-    "depth": 1,
-    "type": "book",
-    "first_chapter": "nav"
-  },
-  {
-    "id": "nav",
-    "label": "Nav",
-    "href": "chapters/nav.html",
-    "depth": 2,
-    "type": "chapter"
-  },
-  {
-    "id": null,
     "label": "Old Testament",
     "href": null,
     "depth": 0,

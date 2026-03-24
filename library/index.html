@@ -237,16 +237,13 @@ function loadChapter(id, prepend) {
             var doc = parser.parseFromString(html, 'text/html');
             var body = doc.body;
 
-            // Inline the stylesheet once
+            // Inject stylesheet once (path relative to library/index.html)
             if (!document.getElementById('epub-style')) {
-                var link = doc.querySelector('link[rel="stylesheet"]');
-                if (link) {
-                    var style = document.createElement('link');
-                    style.id = 'epub-style';
-                    style.rel = 'stylesheet';
-                    style.href = link.getAttribute('href');
-                    document.head.appendChild(style);
-                }
+                var style = document.createElement('link');
+                style.id = 'epub-style';
+                style.rel = 'stylesheet';
+                style.href = './style/main.css';
+                document.head.appendChild(style);
             }
 
             var block = document.createElement('div');
