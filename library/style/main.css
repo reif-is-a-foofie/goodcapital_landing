@@ -1,0 +1,474 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LDS Scriptures — Enriched Edition
+   Typography system
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Font faces ─────────────────────────────────────────────────────────── */
+@font-face {
+    font-family: 'EBGaramond';
+    src: url('../fonts/EBGaramond-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'EBGaramond';
+    src: url('../fonts/EBGaramond-Italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'CrimsonPro';
+    src: url('../fonts/CrimsonPro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'CrimsonPro';
+    src: url('../fonts/CrimsonPro-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+body {
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 1em;
+    line-height: 1.65;
+    margin: 0 1.5em;
+    color: #1a1a1a;
+}
+
+/* ── Volume & book headers ───────────────────────────────────────────────── */
+h1.volume-title {
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 1.8em;
+    font-weight: normal;
+    text-align: center;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 2px solid #8b7355;
+    padding-bottom: 0.4em;
+    margin-top: 2em;
+    margin-bottom: 1.5em;
+    color: #3d2b1f;
+    page-break-before: always;
+}
+
+h2.book-title {
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 1.5em;
+    font-weight: normal;
+    text-align: center;
+    letter-spacing: 0.08em;
+    margin-top: 2em;
+    margin-bottom: 0.3em;
+    color: #3d2b1f;
+    page-break-before: always;
+}
+
+h3.chapter-heading {
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 1.1em;
+    font-weight: normal;
+    font-style: italic;
+    text-align: center;
+    color: #5a4030;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* ── Scripture verses ────────────────────────────────────────────────────── */
+div.verse {
+    margin: 0.6em 0 0 0;
+}
+
+span.verse-num {
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 0.72em;
+    vertical-align: super;
+    color: #8b7355;
+    font-weight: normal;
+    margin-right: 0.15em;
+}
+
+span.verse-text {
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 1em;
+    color: #1a1a1a;
+}
+
+/* ── Chapter numbers ─────────────────────────────────────────────────────── */
+p.chapter-num {
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 2.5em;
+    font-weight: normal;
+    float: left;
+    line-height: 1;
+    margin: 0.1em 0.2em 0 0;
+    color: #8b7355;
+    padding: 0;
+}
+
+/* ── JST variants ────────────────────────────────────────────────────────── */
+div.jst-block {
+    margin: 0.5em 0 0.4em 1.2em;
+    padding: 0.4em 0.8em;
+    background-color: #f0ede8;
+    border-left: 3px solid #a08060;
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 0.92em;
+    color: #3d2b1f;
+    font-style: italic;
+}
+
+div.jst-block .source-label {
+    font-size: 0.72em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #7a5a3a;
+    display: block;
+    margin-bottom: 0.2em;
+    font-style: normal;
+}
+
+div.jst-text {
+    line-height: 1.6;
+}
+
+div.gc-quote {
+    margin: 0.3em 0;
+    line-height: 1.55;
+    font-style: italic;
+    color: #1a2535;
+}
+
+/* ── Etymology boxes ─────────────────────────────────────────────────────── */
+div.etymology-block {
+    margin: 0.8em 0 0.4em 1.2em;
+    padding: 0.5em 0.8em;
+    background-color: #faf6ef;
+    border-left: 3px solid #c8a96e;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+    font-size: 0.82em;
+    color: #4a3520;
+}
+
+div.etymology-block .etym-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8b6540;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+div.etymology-entry {
+    margin: 0.25em 0;
+    line-height: 1.5;
+}
+
+span.etym-word {
+    font-variant: small-caps;
+    font-size: 1.05em;
+    color: #3d2b1f;
+    font-weight: bold;
+}
+
+span.etym-lemma {
+    font-style: italic;
+    color: #5a3e28;
+}
+
+span.etym-xlit {
+    font-style: italic;
+    color: #6b4c30;
+}
+
+span.etym-pron {
+    color: #7a6050;
+    font-size: 0.9em;
+}
+
+span.etym-def {
+    color: #2a1f14;
+}
+
+span.etym-deriv {
+    color: #7a6050;
+    font-size: 0.88em;
+}
+
+/* ── Rabbinical / Jewish commentary ─────────────────────────────────────── */
+div.rabbinical-block {
+    margin: 0.8em 0 0.4em 1.2em;
+    padding: 0.5em 0.8em;
+    background-color: #f5f0e8;
+    border-left: 4px solid #7a9a6a;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+    font-size: 0.88em;
+    color: #2a3520;
+}
+
+div.rabbinical-block .source-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #4a7040;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+div.rashi-comment, div.talmud-ref, div.midrash-ref {
+    margin: 0.3em 0;
+    line-height: 1.55;
+    font-style: italic;
+    color: #2a3520;
+}
+
+span.source-ref {
+    font-style: normal;
+    font-size: 0.85em;
+    color: #4a7040;
+    font-variant: small-caps;
+}
+
+/* ── LDS Prophet commentary (JD, HoC) ───────────────────────────────────── */
+div.lds-commentary-block {
+    margin: 0.8em 0 0.4em 1.2em;
+    padding: 0.5em 0.8em;
+    background-color: #eef2f7;
+    border-left: 4px solid #4a6a9a;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+    font-size: 0.88em;
+    color: #1a2535;
+}
+
+div.lds-commentary-block .source-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #3a5a8a;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+div.jd-quote, div.hoc-quote, div.jsp-quote {
+    margin: 0.3em 0;
+    line-height: 1.55;
+    font-style: italic;
+    color: #1a2535;
+}
+
+div.jd-quote .vol-ref,
+div.hoc-quote .vol-ref,
+div.jsp-quote .vol-ref {
+    font-style: normal;
+    font-size: 0.82em;
+    color: #3a5a8a;
+    font-variant: small-caps;
+    display: block;
+    margin-top: 0.2em;
+}
+
+/* ── Joseph Smith Papers ─────────────────────────────────────────────────── */
+div.jsp-block {
+    margin: 0.8em 0 0.4em 1.2em;
+    padding: 0.5em 0.8em;
+    background-color: #f7f0f5;
+    border-left: 4px solid #8a5a8a;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+    font-size: 0.88em;
+    color: #2a1525;
+}
+
+div.jsp-block .source-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6a3a6a;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+/* ── Church Fathers ─────────────────────────────────────────────────────── */
+div.fathers-block {
+    margin: 0.8em 0 0.4em 1.2em;
+    padding: 0.5em 0.8em;
+    background-color: #f0eaf5;
+    border-left: 4px solid #7a5a9a;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+    font-size: 0.88em;
+    color: #1a0a2a;
+}
+
+div.fathers-block .source-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #5a3a7a;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+div.fathers-quote {
+    margin: 0.3em 0;
+    line-height: 1.55;
+    font-style: italic;
+    color: #1a0a2a;
+}
+
+/* ── Ancient texts & myths ───────────────────────────────────────────────── */
+div.ancient-block {
+    margin: 0.8em 0 0.4em 1.2em;
+    padding: 0.5em 0.8em;
+    background-color: #f5ede0;
+    border-left: 4px solid #b87333;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+    font-size: 0.88em;
+    color: #2a1800;
+}
+
+div.ancient-block .source-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #7a4a10;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+div.ancient-quote {
+    margin: 0.3em 0;
+    line-height: 1.55;
+    font-style: italic;
+    color: #2a1800;
+}
+
+span.ancient-note {
+    font-style: normal;
+    font-variant: small-caps;
+    font-size: 0.85em;
+    color: #7a4a10;
+    display: block;
+    margin-bottom: 0.15em;
+}
+
+/* ── Dividers ────────────────────────────────────────────────────────────── */
+hr.section-rule {
+    border: none;
+    border-top: 1px solid #c8b89a;
+    margin: 1.5em 3em;
+}
+
+/* ── Semantic / connected passages ──────────────────────────────────────── */
+div.semantic-block {
+    margin: 0.8em 0 0.4em 1.2em;
+    padding: 0.5em 0.8em;
+    background-color: #eef5ee;
+    border-left: 4px solid #5a8a5a;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+    font-size: 0.86em;
+    color: #1a2a1a;
+}
+
+div.semantic-block .source-label {
+    font-size: 0.72em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #3a6a3a;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+/* Each quoted passage within the semantic block */
+div.semantic-quote {
+    margin: 0.6em 0 0 0;
+    padding-top: 0.4em;
+    border-top: 1px solid #c0d8c0;
+}
+
+div.semantic-quote:first-of-type {
+    margin-top: 0.2em;
+    border-top: none;
+    padding-top: 0;
+}
+
+/* Header row: source name + ref + dots on one line */
+div.semantic-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4em;
+    margin-bottom: 0.2em;
+    flex-wrap: wrap;
+}
+
+span.semantic-source {
+    font-style: normal;
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #3a6a3a;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+span.semantic-ref {
+    font-style: normal;
+    font-size: 0.78em;
+    color: #5a8a5a;
+    font-variant: small-caps;
+    flex-shrink: 0;
+}
+
+/* Dot relevance rating: ●●●○○ */
+span.score-dots {
+    font-style: normal;
+    font-size: 0.70em;
+    color: #5a8a5a;
+    letter-spacing: 0.1em;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+/* The passage text itself */
+div.semantic-text {
+    line-height: 1.55;
+    font-style: italic;
+    color: #1a2a1a;
+}
+
+/* Legacy — keep for old builds */
+span.semantic-note {
+    font-style: normal;
+    font-size: 0.82em;
+    color: #3a6a3a;
+    font-variant: small-caps;
+    display: block;
+    margin-bottom: 0.1em;
+}
+
+/* ── Donaldson inline commentary ─────────────────────────────────────────── */
+div.donaldson-block {
+    margin: 0.6em 0 0.6em 1.2em;
+    padding: 0.4em 0.8em;
+    border-left: 3px solid #8b6914;
+    background: #fdf8f0;
+    font-family: "Crimson Pro", Georgia, serif;
+    font-size: 0.88em;
+}
+p.donaldson-para {
+    margin: 0.3em 0;
+    color: #3a2a00;
+    line-height: 1.5;
+}
+
+/* ── Kindle / e-reader overrides ─────────────────────────────────────────── */
+@media amzn-mobi, amzn-kf8 {
+    body { margin: 0 0.5em; }
+    div.etymology-block,
+    div.rabbinical-block,
+    div.lds-commentary-block,
+    div.jsp-block {
+        margin-left: 0.5em;
+    }
+}

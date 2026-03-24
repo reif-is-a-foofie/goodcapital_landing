@@ -7,338 +7,446 @@
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32x32.png">
     <link rel="manifest" href="../site.webmanifest">
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCMWDK746H"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-PCMWDK746H');
-    </script>
-
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PCMWDK746H');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
     <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
     --bg: #F5F2EC;
     --text: #1C1C1C;
     --muted: #6C6C6C;
     --accent: #9C7A4D;
     --accent-hover: #7a5e38;
-    --divider: rgba(0,0,0,0.08);
+    --divider: rgba(0,0,0,0.09);
     --nav-h: 52px;
-    --toc-w: 280px;
+    --toc-w: 260px;
+    --reader-max: 680px;
 }
+html, body { height: 100%; background: var(--bg); color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
 
-html, body {
-    height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    overflow: hidden;
-}
-
-/* ── Top bar ── */
+/* ── Nav ── */
 #topbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: var(--nav-h);
-    background: var(--bg);
-    border-bottom: 1px solid var(--divider);
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    gap: 12px;
-    z-index: 200;
+    position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+    background: var(--bg); border-bottom: 1px solid var(--divider);
+    display: flex; align-items: center; padding: 0 14px; gap: 10px; z-index: 200;
 }
+#toc-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px;
+    color: var(--muted); display: flex; align-items: center; }
+#toc-btn:hover { background: rgba(0,0,0,0.06); color: var(--text); }
+#topbar .logo { font-weight: 600; font-size: 14px; letter-spacing: -0.04em;
+    color: var(--accent); text-decoration: none; margin-right: auto; }
+#location-label { font-size: 12px; color: var(--muted); max-width: 260px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#dl-btn { display: flex; align-items: center; gap: 5px; background: var(--accent); color: #fff;
+    text-decoration: none; padding: 6px 13px; border-radius: 6px; font-size: 12px; font-weight: 500; }
+#dl-btn:hover { background: var(--accent-hover); }
 
-#toc-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 6px;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-}
-#toc-toggle:hover { background: rgba(0,0,0,0.06); color: var(--text); }
+/* ── Shell ── */
+#shell { position: fixed; top: var(--nav-h); left: 0; right: 0; bottom: 0; display: flex; }
 
-#topbar .logo {
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: -0.04em;
-    color: var(--accent);
-    text-decoration: none;
-    margin-right: auto;
+/* ── TOC ── */
+#toc {
+    width: var(--toc-w); min-width: var(--toc-w); background: #FEFCF8;
+    border-right: 1px solid var(--divider); display: flex; flex-direction: column;
+    transition: width .2s, min-width .2s; overflow: hidden;
 }
+#toc.hidden { width: 0; min-width: 0; }
+#toc-head { padding: 12px 14px 10px; font-size: 10px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid var(--divider); flex-shrink: 0; }
+#toc-scroll { flex: 1; overflow-y: auto; padding: 6px 0; }
 
-#chapter-label {
-    font-size: 13px;
-    color: var(--muted);
-    max-width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+.toc-volume { padding: 10px 14px 4px; font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.toc-book { display: flex; align-items: center; justify-content: space-between;
+    padding: 5px 14px; font-size: 13px; font-weight: 500; color: var(--text);
+    cursor: pointer; user-select: none; }
+.toc-book:hover { background: rgba(0,0,0,0.04); }
+.toc-book .arrow { font-size: 10px; color: var(--muted); transition: transform .15s; }
+.toc-book.open .arrow { transform: rotate(90deg); }
+.toc-chapters { display: none; }
+.toc-book.open + .toc-chapters { display: block; }
+.toc-ch { display: block; padding: 4px 14px 4px 26px; font-size: 12px; color: var(--muted);
+    cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    border-left: 2px solid transparent; }
+.toc-ch:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+.toc-ch.active { color: var(--accent); border-left-color: var(--accent);
+    background: rgba(156,122,77,0.06); }
 
-#download-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--accent);
-    color: #fff;
-    text-decoration: none;
-    padding: 7px 14px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-#download-btn:hover { background: var(--accent-hover); }
+/* ── Reader ── */
+#reader { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--bg); }
+#content { max-width: var(--reader-max); margin: 0 auto; padding: 40px 32px 120px; }
+.chapter-block { margin-bottom: 3em; }
+#sentinel { height: 60px; }
 
-/* ── Layout ── */
-#shell {
-    position: fixed;
-    top: var(--nav-h);
-    left: 0; right: 0; bottom: 0;
-    display: flex;
+/* ── Highlight tooltip ── */
+#hl-tip {
+    position: fixed; background: #2a1f14; color: #fff;
+    border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 500;
+    cursor: pointer; z-index: 500; display: none; white-space: nowrap;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
+#hl-tip:hover { background: #3d2b1f; }
 
-/* ── TOC panel ── */
-#toc-panel {
-    width: var(--toc-w);
-    min-width: var(--toc-w);
-    background: #FEFCF8;
-    border-right: 1px solid var(--divider);
-    overflow-y: auto;
-    transition: width 0.2s ease, min-width 0.2s ease;
-    display: flex;
-    flex-direction: column;
-}
-#toc-panel.collapsed {
-    width: 0;
-    min-width: 0;
-    overflow: hidden;
-}
+/* Highlights rendered inside chapter iframes need this injected */
+.hl-yellow { background: rgba(255,220,50,0.45); border-radius: 2px; }
+.hl-green  { background: rgba(100,200,120,0.4); border-radius: 2px; }
+.hl-blue   { background: rgba(100,160,240,0.4); border-radius: 2px; }
 
-#toc-header {
-    padding: 16px 16px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid var(--divider);
-    flex-shrink: 0;
-}
+/* ── Loading state ── */
+#splash { position: fixed; inset: 0; background: var(--bg); display: flex;
+    flex-direction: column; align-items: center; justify-content: center; gap: 14px; z-index: 400; }
+#splash.gone { display: none; }
+.spin { width: 28px; height: 28px; border: 3px solid rgba(156,122,77,.2);
+    border-top-color: var(--accent); border-radius: 50%; animation: sp .7s linear infinite; }
+@keyframes sp { to { transform: rotate(360deg); } }
+#splash p { font-size: 13px; color: var(--muted); }
 
-#toc-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px 0;
-}
-
-.toc-item {
-    display: block;
-    padding: 7px 16px;
-    font-size: 13px;
-    color: var(--text);
-    text-decoration: none;
-    cursor: pointer;
-    border-left: 3px solid transparent;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.toc-item:hover { background: rgba(0,0,0,0.04); }
-.toc-item.active {
-    color: var(--accent);
-    border-left-color: var(--accent);
-    background: rgba(156,122,77,0.06);
-}
-.toc-item.depth-1 { padding-left: 28px; font-size: 12px; color: var(--muted); }
-
-/* ── Reader area ── */
-#reader-area {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: var(--bg);
-    scroll-behavior: smooth;
-}
-
-#viewer {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 40px 32px 120px;
-}
-
-/* epub.js iframe fills width */
-#viewer iframe {
-    width: 100% !important;
-    border: none !important;
-}
-
-/* ── Loading ── */
-#loading {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    z-index: 300;
-}
-#loading.done { display: none; }
-
-.spinner {
-    width: 32px; height: 32px;
-    border: 3px solid rgba(156,122,77,0.2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-#loading p { font-size: 14px; color: var(--muted); }
-#loading .title { font-size: 17px; font-weight: 600; color: var(--text); }
-
-/* ── Mobile ── */
 @media (max-width: 600px) {
     :root { --toc-w: 240px; }
-    #toc-panel { position: fixed; top: var(--nav-h); left: 0; bottom: 0; z-index: 150; }
-    #chapter-label { display: none; }
-    #viewer { padding: 24px 20px 80px; }
+    #toc { position: fixed; top: var(--nav-h); left: 0; bottom: 0; z-index: 150; }
+    #location-label { display: none; }
+    #content { padding: 24px 18px 80px; }
 }
     </style>
 </head>
 <body>
 
-<div id="loading">
-    <div class="spinner"></div>
-    <div class="title">LDS Scriptures</div>
-    <p>Loading annotated edition…</p>
-</div>
+<div id="splash"><div class="spin"></div><p>Loading…</p></div>
 
 <div id="topbar">
-    <button id="toc-toggle" title="Table of contents" onclick="toggleToc()">
+    <button id="toc-btn" onclick="toggleToc()">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-            <line x1="3" y1="5" x2="15" y2="5"/>
-            <line x1="3" y1="9" x2="15" y2="9"/>
-            <line x1="3" y1="13" x2="11" y2="13"/>
+            <line x1="3" y1="5" x2="15" y2="5"/><line x1="3" y1="9" x2="15" y2="9"/><line x1="3" y1="13" x2="11" y2="13"/>
         </svg>
     </button>
     <a href="../index.html" class="logo">The Good Project</a>
-    <span id="chapter-label"></span>
-    <a href="./LDS_Scriptures_Enriched.epub" id="download-btn" download>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <span id="location-label"></span>
+    <a href="./LDS_Scriptures_Enriched.epub" id="dl-btn" download>
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7 2v7M4 7l3 3 3-3M2 12h10"/>
         </svg>
-        Download
+        epub
     </a>
 </div>
 
 <div id="shell">
-    <div id="toc-panel" class="collapsed">
-        <div id="toc-header">Contents</div>
-        <div id="toc-list"></div>
+    <div id="toc" class="hidden">
+        <div id="toc-head">Contents</div>
+        <div id="toc-scroll"></div>
     </div>
-    <div id="reader-area">
-        <div id="viewer"></div>
+    <div id="reader">
+        <div id="content"></div>
+        <div id="sentinel"></div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script>
-<script>
-var tocOpen = false;
+<div id="hl-tip">✦ Highlight</div>
 
+<script>
+// ── State ────────────────────────────────────────────────────────────────
+var tocData = [];
+var chapterOrder = [];          // ordered array of chapter ids
+var loadedChapters = new Set(); // ids already in DOM
+var currentChapter = null;
+var tocOpen = false;
+var nextToLoad = 0;             // index into chapterOrder for infinite scroll
+var loading = false;
+
+// Highlights: { chapterId: [{start,end,color,text,note}] }
+var highlights = JSON.parse(localStorage.getItem('lds_highlights') || '{}');
+
+// ── TOC toggle ───────────────────────────────────────────────────────────
 function toggleToc() {
     tocOpen = !tocOpen;
-    document.getElementById('toc-panel').classList.toggle('collapsed', !tocOpen);
+    document.getElementById('toc').classList.toggle('hidden', !tocOpen);
 }
 
-var book = ePub('./LDS_Scriptures_Enriched.epub');
-var rendition = book.renderTo('viewer', {
-    manager: 'continuous',
-    flow: 'scrolled',
-    width: '100%',
-    allowScriptedContent: false,
-});
-
-rendition.display();
-
-// Hide loading screen once first content renders
-rendition.on('rendered', function() {
-    document.getElementById('loading').classList.add('done');
-});
-
-// Build TOC
-book.loaded.navigation.then(function(nav) {
-    var list = document.getElementById('toc-list');
-    list.innerHTML = '';
-
-    function addItems(items, depth) {
-        items.forEach(function(item) {
-            var a = document.createElement('a');
-            a.className = 'toc-item' + (depth > 0 ? ' depth-1' : '');
-            a.textContent = item.label.trim();
-            a.title = item.label.trim();
-            a.href = '#';
-            a.addEventListener('click', function(e) {
-                e.preventDefault();
-                rendition.display(item.href);
-                // On mobile close TOC after nav
-                if (window.innerWidth < 600) {
-                    tocOpen = false;
-                    document.getElementById('toc-panel').classList.add('collapsed');
-                }
-            });
-            list.appendChild(a);
-            if (item.subitems && item.subitems.length) {
-                addItems(item.subitems, depth + 1);
+// ── Load TOC ─────────────────────────────────────────────────────────────
+fetch('./toc.json')
+    .then(r => r.json())
+    .then(data => {
+        tocData = data;
+        chapterOrder = data.filter(t => t.type === 'chapter').map(t => t.id);
+        buildToc(data);
+        // Restore last position or start at beginning
+        var last = localStorage.getItem('lds_position');
+        var startId = (last && chapterOrder.includes(last)) ? last : chapterOrder[0];
+        loadChapter(startId, true).then(() => {
+            document.getElementById('splash').classList.add('gone');
+            if (window.innerWidth >= 900) {
+                tocOpen = true;
+                document.getElementById('toc').classList.remove('hidden');
             }
         });
-    }
-    addItems(nav.toc, 0);
+    });
 
-    // Auto-open TOC on first load if wide enough
-    if (window.innerWidth >= 900) {
-        tocOpen = true;
-        document.getElementById('toc-panel').classList.remove('collapsed');
-    }
-});
-
-// Update chapter label and active TOC item on location change
-rendition.on('relocated', function(location) {
-    var label = document.getElementById('chapter-label');
-    book.loaded.navigation.then(function(nav) {
-        var currentHref = location.start.href;
-        var found = null;
-        function search(items) {
-            items.forEach(function(item) {
-                if (item.href && currentHref && currentHref.includes(item.href.split('#')[0])) {
-                    found = item;
-                }
-                if (item.subitems) search(item.subitems);
-            });
+// ── Build TOC sidebar ────────────────────────────────────────────────────
+function buildToc(items) {
+    var scroll = document.getElementById('toc-scroll');
+    var html = '';
+    var i = 0;
+    while (i < items.length) {
+        var item = items[i];
+        if (item.type === 'volume') {
+            html += `<div class="toc-volume">${item.label}</div>`;
+            i++;
+        } else if (item.type === 'book') {
+            var bookId = item.first_chapter;
+            var bookLabel = item.label;
+            html += `<div class="toc-book" data-book="${bookLabel}" onclick="toggleBook(this)"><span>${bookLabel}</span><span class="arrow">›</span></div>`;
+            html += `<div class="toc-chapters">`;
+            i++;
+            while (i < items.length && items[i].type === 'chapter') {
+                var ch = items[i];
+                html += `<span class="toc-ch" data-id="${ch.id}" onclick="jumpTo('${ch.id}')">${ch.label}</span>`;
+                i++;
+            }
+            html += `</div>`;
+        } else {
+            i++;
         }
-        search(nav.toc);
-        if (found) {
-            label.textContent = found.label.trim();
-            // Highlight active item
-            document.querySelectorAll('.toc-item').forEach(function(el) {
-                el.classList.toggle('active', el.textContent === found.label.trim());
-            });
+    }
+    scroll.innerHTML = html;
+}
+
+function toggleBook(el) {
+    el.classList.toggle('open');
+}
+
+function jumpTo(chapterId) {
+    loadChapter(chapterId, true).then(() => {
+        var el = document.getElementById('ch-' + chapterId);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (window.innerWidth < 600) { tocOpen = false; document.getElementById('toc').classList.add('hidden'); }
+    });
+}
+
+// ── Load a chapter ───────────────────────────────────────────────────────
+function loadChapter(id, prepend) {
+    if (loadedChapters.has(id)) {
+        return Promise.resolve();
+    }
+    return fetch(`./chapters/${id}.html`)
+        .then(r => r.text())
+        .then(html => {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            var body = doc.body;
+
+            // Inline the stylesheet once
+            if (!document.getElementById('epub-style')) {
+                var link = doc.querySelector('link[rel="stylesheet"]');
+                if (link) {
+                    var style = document.createElement('link');
+                    style.id = 'epub-style';
+                    style.rel = 'stylesheet';
+                    style.href = link.getAttribute('href');
+                    document.head.appendChild(style);
+                }
+            }
+
+            var block = document.createElement('div');
+            block.className = 'chapter-block';
+            block.id = 'ch-' + id;
+            block.dataset.chapterId = id;
+            block.innerHTML = body.innerHTML;
+
+            var content = document.getElementById('content');
+            if (prepend) {
+                content.insertBefore(block, content.firstChild);
+            } else {
+                content.appendChild(block);
+            }
+
+            loadedChapters.add(id);
+            restoreHighlights(id, block);
+            setNextToLoad(id);
+        });
+}
+
+function setNextToLoad(lastLoadedId) {
+    var idx = chapterOrder.indexOf(lastLoadedId);
+    if (idx >= 0) nextToLoad = idx + 1;
+}
+
+// ── Infinite scroll ──────────────────────────────────────────────────────
+var reader = document.getElementById('reader');
+var sentinel = document.getElementById('sentinel');
+
+var observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !loading && nextToLoad < chapterOrder.length) {
+        loading = true;
+        var id = chapterOrder[nextToLoad];
+        loadChapter(id, false).then(() => { loading = false; });
+    }
+}, { root: reader, threshold: 0.1 });
+
+observer.observe(sentinel);
+
+// ── Track current chapter for TOC highlight + position save ──────────────
+var chObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            var id = e.target.dataset.chapterId;
+            if (id && id !== currentChapter) {
+                currentChapter = id;
+                localStorage.setItem('lds_position', id);
+                updateLocationLabel(id);
+                updateActiveToc(id);
+            }
         }
     });
+}, { root: reader, threshold: 0.2 });
+
+// Observe newly added chapter blocks
+var mutObs = new MutationObserver(mutations => {
+    mutations.forEach(m => m.addedNodes.forEach(n => {
+        if (n.classList && n.classList.contains('chapter-block')) {
+            chObserver.observe(n);
+        }
+    }));
 });
+mutObs.observe(document.getElementById('content'), { childList: true });
+
+function updateLocationLabel(id) {
+    var item = tocData.find(t => t.id === id);
+    if (!item) return;
+    // Find parent book
+    var idx = tocData.indexOf(item);
+    var book = '';
+    for (var i = idx - 1; i >= 0; i--) {
+        if (tocData[i].type === 'book') { book = tocData[i].label; break; }
+    }
+    document.getElementById('location-label').textContent =
+        book ? `${book} · ${item.label}` : item.label;
+}
+
+function updateActiveToc(id) {
+    document.querySelectorAll('.toc-ch').forEach(el => {
+        el.classList.toggle('active', el.dataset.id === id);
+    });
+    // Auto-expand the book containing this chapter
+    var active = document.querySelector('.toc-ch.active');
+    if (active) {
+        var chapters = active.closest('.toc-chapters');
+        if (chapters) {
+            var book = chapters.previousElementSibling;
+            if (book && !book.classList.contains('open')) book.classList.add('open');
+            active.scrollIntoView({ block: 'nearest' });
+        }
+    }
+}
+
+// ── Highlighting ─────────────────────────────────────────────────────────
+var tip = document.getElementById('hl-tip');
+var pendingRange = null;
+
+var COLORS = ['hl-yellow', 'hl-green', 'hl-blue'];
+var colorIdx = 0;
+
+document.addEventListener('mouseup', () => {
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+        tip.style.display = 'none';
+        return;
+    }
+    var range = sel.getRangeAt(0);
+    // Must be inside a chapter block
+    var block = range.commonAncestorContainer;
+    while (block && !block.dataset?.chapterId) block = block.parentElement;
+    if (!block) { tip.style.display = 'none'; return; }
+
+    pendingRange = { range: range.cloneRange(), chapterId: block.dataset.chapterId };
+    var rect = range.getBoundingClientRect();
+    tip.style.display = 'block';
+    tip.style.left = Math.min(rect.left + rect.width / 2 - 50, window.innerWidth - 160) + 'px';
+    tip.style.top  = (rect.top - 44 + window.scrollY) + 'px';
+});
+
+tip.addEventListener('click', () => {
+    if (!pendingRange) return;
+    applyHighlight(pendingRange.range, pendingRange.chapterId, COLORS[colorIdx % COLORS.length]);
+    colorIdx++;
+    tip.style.display = 'none';
+    window.getSelection().removeAllRanges();
+    pendingRange = null;
+});
+
+function applyHighlight(range, chapterId, colorClass) {
+    // Wrap selection in a mark element
+    try {
+        var mark = document.createElement('mark');
+        mark.className = colorClass;
+        mark.dataset.hlId = Date.now();
+        range.surroundContents(mark);
+
+        // Save: store text + xpath-like path
+        var hl = {
+            id: mark.dataset.hlId,
+            color: colorClass,
+            text: mark.textContent,
+            path: getPath(mark),
+            offset: getTextOffset(mark, chapterId),
+        };
+        if (!highlights[chapterId]) highlights[chapterId] = [];
+        highlights[chapterId].push(hl);
+        localStorage.setItem('lds_highlights', JSON.stringify(highlights));
+    } catch(e) {
+        // Selection spans multiple nodes — skip
+    }
+}
+
+function restoreHighlights(chapterId, block) {
+    var hls = highlights[chapterId];
+    if (!hls || !hls.length) return;
+    // Simple restore by text search within the block
+    hls.forEach(hl => {
+        try {
+            findAndHighlightText(block, hl.text, hl.color, hl.id);
+        } catch(e) {}
+    });
+}
+
+function findAndHighlightText(root, text, colorClass, hlId) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    var node;
+    while (node = walker.nextNode()) {
+        var idx = node.nodeValue.indexOf(text);
+        if (idx >= 0) {
+            var range = document.createRange();
+            range.setStart(node, idx);
+            range.setEnd(node, idx + text.length);
+            var mark = document.createElement('mark');
+            mark.className = colorClass;
+            mark.dataset.hlId = hlId;
+            range.surroundContents(mark);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getPath(el) {
+    var path = [];
+    while (el && el.id !== 'content') {
+        var idx = Array.from(el.parentNode?.children || []).indexOf(el);
+        path.unshift(el.tagName + '[' + idx + ']');
+        el = el.parentElement;
+    }
+    return path.join('/');
+}
+
+function getTextOffset(el, chapterId) {
+    var block = document.getElementById('ch-' + chapterId);
+    if (!block) return 0;
+    var text = block.textContent;
+    var hlText = el.textContent;
+    return text.indexOf(hlText);
+}
 </script>
 
 </body>
