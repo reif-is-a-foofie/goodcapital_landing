@@ -59,8 +59,15 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     border-bottom: 1px solid var(--divider); flex-shrink: 0; }
 #toc-scroll { flex: 1; overflow-y: auto; padding: 6px 0; }
 
-.toc-volume { padding: 10px 14px 4px; font-size: 10px; font-weight: 700;
-    letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.toc-volume { display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px 4px; font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
+    cursor: pointer; user-select: none; }
+.toc-volume:hover { color: var(--accent-hover); }
+.toc-volume .arrow { font-size: 10px; color: var(--accent); transition: transform .15s; opacity: 0.6; }
+.toc-volume.open .arrow { transform: rotate(90deg); }
+.toc-volume-body { display: none; }
+.toc-volume.open + .toc-volume-body { display: block; }
 .toc-book { display: flex; align-items: center; justify-content: space-between;
     padding: 5px 14px; font-size: 13px; font-weight: 500; color: var(--text);
     cursor: pointer; user-select: none; }
@@ -196,17 +203,26 @@ function buildToc(items) {
             html += `<span class="toc-ch toc-front" data-id="${item.id}" onclick="jumpTo('${item.id}')" style="padding-left:14px;font-weight:500;color:var(--text)">${item.label}</span>`;
             i++;
         } else if (item.type === 'volume') {
-            html += `<div class="toc-volume">${item.label}</div>`;
+            var volLabel = item.label;
+            html += `<div class="toc-volume open" data-volume="${volLabel}" onclick="toggleVolume(this)"><span>${volLabel}</span><span class="arrow">›</span></div>`;
+            html += `<div class="toc-volume-body">`;
             i++;
-        } else if (item.type === 'book') {
-            var bookLabel = item.label;
-            html += `<div class="toc-book" data-book="${bookLabel}" onclick="toggleBook(this)"><span>${bookLabel}</span><span class="arrow">›</span></div>`;
-            html += `<div class="toc-chapters">`;
-            i++;
-            while (i < items.length && items[i].type === 'chapter') {
-                var ch = items[i];
-                html += `<span class="toc-ch" data-id="${ch.id}" onclick="jumpTo('${ch.id}')">${ch.label}</span>`;
-                i++;
+            while (i < items.length && items[i].type !== 'volume' && items[i].type !== 'front') {
+                var vitem = items[i];
+                if (vitem.type === 'book') {
+                    var bookLabel = vitem.label;
+                    html += `<div class="toc-book" data-book="${bookLabel}" onclick="toggleBook(this)"><span>${bookLabel}</span><span class="arrow">›</span></div>`;
+                    html += `<div class="toc-chapters">`;
+                    i++;
+                    while (i < items.length && items[i].type === 'chapter') {
+                        var ch = items[i];
+                        html += `<span class="toc-ch" data-id="${ch.id}" onclick="jumpTo('${ch.id}')">${ch.label}</span>`;
+                        i++;
+                    }
+                    html += `</div>`;
+                } else {
+                    i++;
+                }
             }
             html += `</div>`;
         } else {
@@ -217,6 +233,18 @@ function buildToc(items) {
 }
 
 var manuallyCollapsed = new Set();
+var manuallyCollapsedVolumes = new Set();
+
+function toggleVolume(el) {
+    var vol = el.dataset.volume;
+    if (el.classList.contains('open')) {
+        el.classList.remove('open');
+        manuallyCollapsedVolumes.add(vol);
+    } else {
+        el.classList.add('open');
+        manuallyCollapsedVolumes.delete(vol);
+    }
+}
 
 function toggleBook(el) {
     var book = el.dataset.book;
@@ -356,9 +384,16 @@ function updateActiveToc(id) {
         var chapters = active.closest('.toc-chapters');
         if (chapters) {
             var book = chapters.previousElementSibling;
-            // Auto-expand only if this book hasn't been manually collapsed
             if (book && !manuallyCollapsed.has(book.dataset.book) && !book.classList.contains('open')) {
                 book.classList.add('open');
+            }
+            // Also ensure parent volume is open
+            var volBody = chapters.closest('.toc-volume-body');
+            if (volBody) {
+                var vol = volBody.previousElementSibling;
+                if (vol && !manuallyCollapsedVolumes.has(vol.dataset.volume)) {
+                    vol.classList.add('open');
+                }
             }
         }
         active.scrollIntoView({ block: 'nearest' });
