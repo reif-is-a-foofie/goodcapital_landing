@@ -216,11 +216,32 @@ function buildToc(items) {
     scroll.innerHTML = html;
 }
 
+var manuallyCollapsed = new Set();
+
 function toggleBook(el) {
-    el.classList.toggle('open');
+    var book = el.dataset.book;
+    if (el.classList.contains('open')) {
+        el.classList.remove('open');
+        manuallyCollapsed.add(book);
+    } else {
+        el.classList.add('open');
+        manuallyCollapsed.delete(book);
+    }
 }
 
 function jumpTo(chapterId) {
+    // Expand the book containing this chapter when user explicitly clicks it
+    var ch = document.querySelector(`.toc-ch[data-id="${chapterId}"]`);
+    if (ch) {
+        var chapters = ch.closest('.toc-chapters');
+        if (chapters) {
+            var book = chapters.previousElementSibling;
+            if (book) {
+                book.classList.add('open');
+                manuallyCollapsed.delete(book.dataset.book);
+            }
+        }
+    }
     loadChapter(chapterId, true).then(() => {
         var el = document.getElementById('ch-' + chapterId);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -329,15 +350,18 @@ function updateActiveToc(id) {
     document.querySelectorAll('.toc-ch').forEach(el => {
         el.classList.toggle('active', el.dataset.id === id);
     });
-    // Auto-expand the book containing this chapter
+    // Only scroll the active item into view in the TOC — don't auto-expand/collapse books
     var active = document.querySelector('.toc-ch.active');
     if (active) {
         var chapters = active.closest('.toc-chapters');
         if (chapters) {
             var book = chapters.previousElementSibling;
-            if (book && !book.classList.contains('open')) book.classList.add('open');
-            active.scrollIntoView({ block: 'nearest' });
+            // Auto-expand only if this book hasn't been manually collapsed
+            if (book && !manuallyCollapsed.has(book.dataset.book) && !book.classList.contains('open')) {
+                book.classList.add('open');
+            }
         }
+        active.scrollIntoView({ block: 'nearest' });
     }
 }
 
