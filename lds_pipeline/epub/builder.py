@@ -212,6 +212,9 @@ def write_book_chapters(bk, enrichment: dict, config, output_dir: str,
                         all_slugs: list) -> int:
     """
     Render and write all chapters for one book. Call after enriching each book.
+    Produces two files per chapter:
+      {slug}.html        — scripture text only (fast initial load)
+      {slug}_notes.html  — commentary blocks (lazy-loaded by reader)
     Returns the number of chapters written.
     """
     out = Path(output_dir)
@@ -221,8 +224,10 @@ def write_book_chapters(bk, enrichment: dict, config, output_dir: str,
         idx  = all_slugs.index(slug) if slug in all_slugs else -1
         prev = all_slugs[idx - 1] if idx > 0 else None
         nxt  = all_slugs[idx + 1] if idx >= 0 and idx < len(all_slugs) - 1 else None
-        html = _render_chapter_html(slug, prev, nxt, ch, enrichment)
-        (out / "chapters" / f"{slug}.html").write_text(html, encoding="utf-8")
+        text_html, notes_html = _render_chapter_split(slug, prev, nxt, ch, enrichment)
+        (out / "chapters" / f"{slug}.html").write_text(text_html, encoding="utf-8")
+        if notes_html:
+            (out / "chapters" / f"{slug}_notes.html").write_text(notes_html, encoding="utf-8")
         written += 1
     return written
 
@@ -327,21 +332,33 @@ def _write_title_page(path: Path):
 
 
 def _render_chapter_html(slug: str, prev, nxt, ch, enrichment: dict) -> str:
-    """Render a chapter as standalone HTML5 for the web reader."""
-    head = [
+    """Render a chapter as standalone HTML5 (legacy batch build — not used by streaming)."""
+    text_html, _ = _render_chapter_split(slug, prev, nxt, ch, enrichment)
+    return text_html
+
+
+def _render_chapter_split(slug: str, prev, nxt, ch, enrichment: dict):
+    """
+    Render a chapter into two HTML strings:
+      (text_html, notes_html)
+
+    text_html   — scripture verses only, suitable for fast initial load.
+                  Wrapped in <div class="scripture"> for CSS scoping.
+    notes_html  — commentary blocks keyed by verse number via data-verse attributes.
+                  None if the chapter has no notes.
+    """
+    head_lines = [
         '<!DOCTYPE html>',
         '<html lang="en">',
         '<head>',
         '<meta charset="UTF-8">',
         f'<meta name="chapter-id" content="{slug}">',
     ]
-    if prev: head.append(f'<meta name="prev" content="{prev}">')
-    if nxt:  head.append(f'<meta name="next" content="{nxt}">')
-    head.append('<link rel="stylesheet" href="../style/main.css">')
-    head.append('</head>')
-    head.append('<body>')
+    if prev: head_lines.append(f'<meta name="prev" content="{prev}">')
+    if nxt:  head_lines.append(f'<meta name="next" content="{nxt}">')
+    head_lines += ['<link rel="stylesheet" href="../style/main.css">', '</head>']
 
-    body = [
+    header = [
         f'<h2 class="book-title">{_esc(ch.book)}</h2>',
         f'<p class="chapter-num">{ch.number}</p>',
         '<div class="score-legend">'
@@ -351,16 +368,68 @@ def _render_chapter_html(slug: str, prev, nxt, ch, enrichment: dict) -> str:
         '</div>',
     ]
     if ch.heading:
-        body.append(f'<h3 class="chapter-heading">{_esc(ch.heading)}</h3>')
+        header.append(f'<h3 class="chapter-heading">{_esc(ch.heading)}</h3>')
+
+    text_verses  = []
+    notes_blocks = []  # [(verse_num, html), ...]
+
+    # Commentary CSS classes — these go into the notes file
+    _NOTES_CLASSES = re.compile(
+        r'class="(jst-block|etymology-block|rabbinical-block|lds-commentary-block|'
+        r'fathers-block|ancient-block|donaldson-block|jsp-block|'
+        r'semantic-quote|semantic-block|backlinks)"'
+    )
 
     for verse in ch.verses:
         key = (verse.book.upper(), verse.chapter, verse.verse)
         enr = enrichment.get(key) or {}
         verse_lines = _render_verse(verse, enr)
-        verse_html  = '\n'.join(verse_lines)
-        body.append(_linkify_refs(verse_html))
+        verse_html  = _linkify_refs('\n'.join(verse_lines))
 
-    return '\n'.join(head + body + ['</body>', '</html>'])
+        # Split text span line from commentary block lines
+        # verse_lines[0] = <div class="verse" id="vN">
+        # verse_lines[1] = <span class="verse-num">...</span><span class="verse-text">...</span>
+        # verse_lines[2..N-1] = commentary blocks
+        # verse_lines[-1] = </div>
+        text_only_lines = []
+        note_only_lines = []
+        in_verse = False
+        for line in verse_lines:
+            if line.startswith('<div class="verse"'):
+                in_verse = True
+                text_only_lines.append(line)
+            elif line == '</div>' and in_verse:
+                in_verse = False
+                text_only_lines.append(line)
+            elif in_verse and _NOTES_CLASSES.search(line):
+                note_only_lines.append(line)
+            else:
+                text_only_lines.append(line)
+
+        text_verses.append('\n'.join(text_only_lines))
+        if note_only_lines:
+            notes_blocks.append((verse.verse, '\n'.join(note_only_lines)))
+
+    text_html = '\n'.join(
+        head_lines + ['<body>', '<div class="scripture">']
+        + header + text_verses
+        + ['</div>', '</body>', '</html>']
+    )
+
+    if notes_blocks:
+        notes_parts = [
+            f'<div data-verse="{vnum}">\n{content}\n</div>'
+            for vnum, content in notes_blocks
+        ]
+        notes_html = (
+            '<!DOCTYPE html>\n<html lang="en">\n<body>\n'
+            + '\n'.join(notes_parts) + '\n'
+            + '</body>\n</html>\n'
+        )
+    else:
+        notes_html = None
+
+    return text_html, notes_html
 
 
 # ── Chapter renderer ───────────────────────────────────────────────────────────
@@ -459,6 +528,7 @@ def _render_verse(verse, enr: dict) -> list[str]:
         verse_text = getattr(verse, 'text', '') or ''
         cleaned = [_strip_verse_quote(p, verse_text) for p in dona_data.get("paragraphs", [])]
         cleaned = [p for p in cleaned if len(p.strip()) > 20]
+        cleaned = [_truncate(p, 800) for p in cleaned[:12]]  # cap paragraphs + length
         if cleaned:
             paras = ''.join(f'<p class="donaldson-para">{_esc(p)}</p>' for p in cleaned)
             blocks.append((

@@ -30,6 +30,14 @@
 }
 
 /* ── Base ────────────────────────────────────────────────────────────────── */
+/* .scripture wraps chapter content when embedded in the web reader.
+   body rules apply when chapters are loaded as standalone pages (epub). */
+.scripture {
+    font-family: 'EBGaramond', Georgia, serif;
+    font-size: 1.08em;
+    line-height: 1.7;
+    color: #1a1a1a;
+}
 body {
     font-family: 'EBGaramond', Georgia, serif;
     font-size: 1.08em;

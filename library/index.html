@@ -130,7 +130,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
             <line x1="3" y1="5" x2="15" y2="5"/><line x1="3" y1="9" x2="15" y2="9"/><line x1="3" y1="13" x2="11" y2="13"/>
         </svg>
     </button>
-    <a href="../index.html" class="logo">The Good Project</a>
+    <a id="site-home" href="../index.html" class="logo">The Good Project</a>
     <span id="location-label"></span>
     <a href="./LDS_Scriptures_Enriched.epub" id="dl-btn" download>
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -154,17 +154,31 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 <div id="hl-tip">✦ Highlight</div>
 
 <script>
+// ── Site config (override to white-label) ────────────────────────────────
+var SITE = {
+    name:       'The Good Project',
+    homeUrl:    '../index.html',
+    storageKey: 'lds',          // localStorage prefix
+};
+
+// Apply site config to DOM
+(function() {
+    var el = document.getElementById('site-home');
+    if (el) { el.textContent = SITE.name; el.href = SITE.homeUrl; }
+})();
+
 // ── State ────────────────────────────────────────────────────────────────
 var tocData = [];
 var chapterOrder = [];          // ordered array of chapter ids
 var loadedChapters = new Set(); // ids already in DOM
+var loadedNotes = new Set();    // ids whose notes have been fetched
 var currentChapter = null;
 var tocOpen = false;
 var nextToLoad = 0;             // index into chapterOrder for infinite scroll
 var loading = false;
 
 // Highlights: { chapterId: [{start,end,color,text,note}] }
-var highlights = JSON.parse(localStorage.getItem('lds_highlights') || '{}');
+var highlights = JSON.parse(localStorage.getItem(SITE.storageKey + '_highlights') || '{}');
 
 // ── TOC toggle ───────────────────────────────────────────────────────────
 function toggleToc() {
@@ -179,9 +193,7 @@ fetch('./toc.json')
         tocData = data;
         chapterOrder = data.filter(t => t.type === 'chapter' || t.type === 'front').map(t => t.id);
         buildToc(data);
-        // Restore last position or start at beginning
-        var last = localStorage.getItem('lds_position');
-        // Always start at title page on first load; restore position on return
+        var last = localStorage.getItem(SITE.storageKey + '_position');
         var startId = (last && chapterOrder.includes(last)) ? last : 'title_page';
         loadChapter(startId, true).then(() => {
             document.getElementById('splash').classList.add('gone');
@@ -277,7 +289,7 @@ function jumpTo(chapterId) {
     });
 }
 
-// ── Load a chapter ───────────────────────────────────────────────────────
+// ── Load a chapter (scripture text only — fast) ──────────────────────────
 function loadChapter(id, prepend) {
     if (loadedChapters.has(id)) {
         return Promise.resolve();
@@ -289,7 +301,7 @@ function loadChapter(id, prepend) {
             var doc = parser.parseFromString(html, 'text/html');
             var body = doc.body;
 
-            // Inject stylesheet once (path relative to library/index.html)
+            // Inject scripture stylesheet once
             if (!document.getElementById('epub-style')) {
                 var style = document.createElement('link');
                 style.id = 'epub-style';
@@ -314,7 +326,45 @@ function loadChapter(id, prepend) {
             loadedChapters.add(id);
             restoreHighlights(id, block);
             setNextToLoad(id);
+
+            // Start watching this block — notes load when it enters the viewport
+            notesObserver.observe(block);
         });
+}
+
+// ── Lazy-load commentary notes ────────────────────────────────────────────
+// Notes are fetched when the chapter block enters the viewport (threshold 0.05).
+// Each notes file contains <div data-verse="N">...blocks...</div> sections
+// that are injected into the matching verse divs.
+var notesObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        var id = e.target.dataset.chapterId;
+        if (!id || loadedNotes.has(id)) return;
+        loadedNotes.add(id);
+        notesObserver.unobserve(e.target);
+        injectNotes(id, e.target);
+    });
+}, { root: document.getElementById('reader'), threshold: 0.05 });
+
+function injectNotes(id, block) {
+    fetch('./chapters/' + id + '_notes.html')
+        .then(function(r) { if (r.ok) return r.text(); })
+        .then(function(html) {
+            if (!html) return;
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            var sections = doc.body.children;
+            Array.from(sections).forEach(function(section) {
+                var vnum = section.dataset.verse;
+                if (!vnum) return;
+                var verseEl = block.querySelector('.verse[id="v' + vnum + '"]');
+                if (verseEl) {
+                    verseEl.insertAdjacentHTML('beforeend', section.innerHTML);
+                }
+            });
+        })
+        .catch(function() {});  // notes file absent (e.g. title page)
 }
 
 function setNextToLoad(lastLoadedId) {
@@ -343,7 +393,7 @@ var chObserver = new IntersectionObserver(entries => {
             var id = e.target.dataset.chapterId;
             if (id && id !== currentChapter) {
                 currentChapter = id;
-                localStorage.setItem('lds_position', id);
+                localStorage.setItem(SITE.storageKey + '_position', id);
                 updateLocationLabel(id);
                 updateActiveToc(id);
             }
@@ -453,7 +503,7 @@ function applyHighlight(range, chapterId, colorClass) {
         };
         if (!highlights[chapterId]) highlights[chapterId] = [];
         highlights[chapterId].push(hl);
-        localStorage.setItem('lds_highlights', JSON.stringify(highlights));
+        localStorage.setItem(SITE.storageKey + '_highlights', JSON.stringify(highlights));
     } catch(e) {
         // Selection spans multiple nodes — skip
     }
