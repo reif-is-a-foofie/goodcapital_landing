@@ -84,13 +84,11 @@ div.verse {
 
 span.verse-num {
     font-family: 'EBGaramond', Georgia, serif;
-    font-size: 1.6em;
+    font-size: 0.72em;
+    vertical-align: super;
     color: #8b7355;
-    font-weight: bold;
-    margin-right: 0.3em;
-    display: inline-block;
-    min-width: 1.4em;
-    vertical-align: baseline;
+    font-weight: normal;
+    margin-right: 0.15em;
 }
 
 span.verse-text {
