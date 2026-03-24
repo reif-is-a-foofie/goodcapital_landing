@@ -485,3 +485,38 @@ div.donaldson-block span.source-label {
     font-style: normal;
     font-family: 'CrimsonPro', 'Palatino Linotype', serif;
 }
+
+/* ── Source label cleanup: hide category headers, show actual source names ── */
+
+/* Hide category section headers — not a source name */
+div.fathers-block > span.source-label,
+div.ancient-block > span.source-label,
+div.semantic-block > span.source-label { display: none; }
+
+/* Hide redundant sub-notes like "Babylonian creation parallel" */
+span.ancient-note { display: none; }
+
+/* Sefaria / semantic ref: truncate long ref strings, just show source name */
+span.semantic-ref { display: none; }
+
+/* Move vol-ref (actual source name) to its own line, styled simply */
+span.vol-ref {
+    display: block;
+    font-style: normal;
+    font-size: 0.75em;
+    color: #7a6050;
+    margin-top: 0.3em;
+    letter-spacing: 0.02em;
+}
+
+/* Simpler label for remaining source-label uses (JST, commentary, etc.) */
+span.source-label {
+    font-size: 0.70em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    color: #888;
+    display: block;
+    margin-bottom: 0.3em;
+    font-style: normal;
+}
