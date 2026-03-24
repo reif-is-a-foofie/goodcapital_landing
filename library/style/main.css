@@ -32,10 +32,13 @@
 /* ── Base ────────────────────────────────────────────────────────────────── */
 body {
     font-family: 'EBGaramond', Georgia, serif;
-    font-size: 1em;
-    line-height: 1.65;
-    margin: 0 1.5em;
+    font-size: 1.08em;
+    line-height: 1.7;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 1.5em 4em;
     color: #1a1a1a;
+    background: #faf8f4;
 }
 
 /* ── Volume & book headers ───────────────────────────────────────────────── */
@@ -79,17 +82,22 @@ h3.chapter-heading {
 
 /* ── Scripture verses ────────────────────────────────────────────────────── */
 div.verse {
-    margin: 0.6em 0 0 0;
+    margin: 1.4em 0 0 0;
+    padding-top: 0.6em;
+    border-top: 1px solid rgba(139, 115, 85, 0.15);
+}
+div.verse:first-of-type {
+    border-top: none;
 }
 
 span.verse-num {
     font-family: 'EBGaramond', Georgia, serif;
-    font-size: 1.6em;
+    font-size: 1.5em;
     color: #8b7355;
     font-weight: bold;
-    margin-right: 0.3em;
+    margin-right: 0.35em;
     display: inline-block;
-    min-width: 1.4em;
+    min-width: 1.3em;
     vertical-align: baseline;
 }
 
@@ -102,35 +110,36 @@ span.verse-text {
 /* ── Chapter numbers ─────────────────────────────────────────────────────── */
 p.chapter-num {
     font-family: 'EBGaramond', Georgia, serif;
-    font-size: 2.5em;
+    font-size: 3.5em;
     font-weight: normal;
-    float: left;
     line-height: 1;
-    margin: 0.1em 0.2em 0 0;
+    margin: 1.2em 0 0.1em;
     color: #8b7355;
     padding: 0;
 }
 
 /* ── JST variants ────────────────────────────────────────────────────────── */
 div.jst-block {
-    margin: 0.5em 0 0.4em 1.2em;
-    padding: 0.4em 0.8em;
+    margin: 0.9em 0 0.4em 1em;
+    padding: 0.55em 0.85em;
     background-color: #f0ede8;
     border-left: 3px solid #a08060;
     font-family: 'EBGaramond', Georgia, serif;
-    font-size: 0.92em;
+    font-size: 0.93em;
     color: #3d2b1f;
     font-style: italic;
+    border-radius: 0 3px 3px 0;
 }
 
 div.jst-block .source-label {
-    font-size: 0.72em;
+    font-size: 0.70em;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #7a5a3a;
     display: block;
-    margin-bottom: 0.2em;
+    margin-bottom: 0.3em;
     font-style: normal;
+    font-weight: bold;
 }
 
 div.jst-text {
@@ -364,12 +373,12 @@ hr.section-rule {
 
 /* ── Semantic / connected passages ──────────────────────────────────────── */
 div.semantic-block {
-    margin: 0.8em 0 0.4em 1.2em;
+    margin: 0.9em 0 0.4em 1em;
     padding: 0.5em 0.8em;
     background-color: #eef5ee;
-    border-left: 4px solid #5a8a5a;
+    border-left: 3px solid #5a8a5a;
     font-family: 'CrimsonPro', 'Palatino Linotype', serif;
-    font-size: 0.86em;
+    font-size: 0.88em;
     color: #1a2a1a;
 }
 
@@ -382,61 +391,78 @@ div.semantic-block .source-label {
     margin-bottom: 0.3em;
 }
 
-/* Each quoted passage within the semantic block */
+/* Each quoted passage — now a card-style block */
 div.semantic-quote {
-    margin: 0.6em 0 0 0;
-    padding-top: 0.4em;
-    border-top: 1px solid #c0d8c0;
+    margin: 0.9em 0 0 0;
+    padding: 0.5em 0.75em;
+    background: #f7f4ef;
+    border-left: 3px solid rgba(90, 138, 90, 0.35);
+    border-radius: 0 3px 3px 0;
+    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+    font-size: 0.93em;
 }
 
-div.semantic-quote:first-of-type {
-    margin-top: 0.2em;
-    border-top: none;
-    padding-top: 0;
-}
-
-/* Header row: source name + ref + dots on one line */
+/* Header row: source name + dots + ref */
 div.semantic-meta {
     display: flex;
     align-items: baseline;
-    gap: 0.4em;
-    margin-bottom: 0.2em;
+    gap: 0.5em;
+    margin-bottom: 0.3em;
     flex-wrap: wrap;
+    border-bottom: 1px solid rgba(90,138,90,0.15);
+    padding-bottom: 0.25em;
 }
 
 span.semantic-source {
     font-style: normal;
-    font-size: 0.78em;
+    font-size: 0.74em;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #3a6a3a;
+    letter-spacing: 0.09em;
+    color: #2e5e2e;
     font-weight: bold;
     flex-shrink: 0;
 }
 
 span.semantic-ref {
     font-style: normal;
-    font-size: 0.78em;
-    color: #5a8a5a;
+    font-size: 0.74em;
+    color: #6a9a6a;
     font-variant: small-caps;
-    flex-shrink: 0;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Dot relevance rating: ●●●○○ */
 span.score-dots {
     font-style: normal;
-    font-size: 0.70em;
-    color: #5a8a5a;
-    letter-spacing: 0.1em;
-    margin-left: auto;
+    font-size: 0.68em;
+    color: #7aaa7a;
+    letter-spacing: 0.12em;
     white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* score-dots in non-semantic blocks (JST, Donaldson, etc.) */
+div.jst-block span.score-dots,
+div.donaldson-block span.score-dots,
+div.lds-commentary-block span.score-dots,
+div.rabbinical-block span.score-dots,
+div.fathers-block span.score-dots,
+div.ancient-block span.score-dots {
+    float: right;
+    margin-left: 0.5em;
+    color: #aaa;
 }
 
 /* The passage text itself */
 div.semantic-text {
-    line-height: 1.55;
+    line-height: 1.6;
     font-style: italic;
-    color: #1a2a1a;
+    color: #2a3a2a;
+    font-size: 1.02em;
 }
 
 /* Legacy — keep for old builds */
@@ -451,17 +477,18 @@ span.semantic-note {
 
 /* ── Donaldson inline commentary ─────────────────────────────────────────── */
 div.donaldson-block {
-    margin: 0.6em 0 0.6em 1.2em;
-    padding: 0.4em 0.8em;
+    margin: 0.9em 0 0.6em 1em;
+    padding: 0.55em 0.85em;
     border-left: 3px solid #8b6914;
     background: #fdf8f0;
     font-family: "Crimson Pro", Georgia, serif;
-    font-size: 0.88em;
+    font-size: 0.91em;
+    border-radius: 0 3px 3px 0;
 }
 p.donaldson-para {
-    margin: 0.3em 0;
+    margin: 0.4em 0;
     color: #3a2a00;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 /* ── Kindle / e-reader overrides ─────────────────────────────────────────── */
@@ -487,27 +514,33 @@ a.ref-link:hover {
 
 /* ── Score dots legend ───────────────────────────────────────────────────── */
 .score-legend {
-    display: flex; gap: 1.2em; flex-wrap: wrap;
-    font-size: 0.72rem; color: #888;
-    margin: 0.4em 0 1.2em; padding: 0.4em 0;
-    border-bottom: 1px solid rgba(0,0,0,0.07);
+    display: flex; gap: 1.4em; flex-wrap: wrap;
+    font-size: 0.72rem; color: #999;
+    margin: 0.3em 0 1.6em; padding: 0.4em 0;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
 }
-.score-legend-item { display: flex; align-items: center; gap: 0.3em; }
+.score-legend-item { display: flex; align-items: center; gap: 0.35em; }
 
 /* ── Backlinks (referenced from) ─────────────────────────────────────────── */
 .backlinks {
-    margin-top: 0.8em; padding: 0.5em 0.8em;
-    background: rgba(156,122,77,0.06);
-    border-left: 2px solid rgba(156,122,77,0.3);
-    border-radius: 0 4px 4px 0;
-    font-size: 0.78rem;
+    margin-top: 0.6em; padding: 0.3em 0.6em;
+    background: rgba(156,122,77,0.05);
+    border-left: 2px solid rgba(156,122,77,0.25);
+    border-radius: 0 3px 3px 0;
+    font-size: 0.76rem;
+}
+/* When backlinks appear inside a semantic-meta flex row, break to new line */
+div.semantic-meta .backlinks {
+    flex-basis: 100%;
+    margin-top: 0.3em;
 }
 .backlinks-label {
     font-size: 0.68rem; font-weight: 600; letter-spacing: .06em;
-    text-transform: uppercase; color: #9C7A4D; margin-right: 0.6em;
+    text-transform: uppercase; color: #9C7A4D; margin-right: 0.5em;
 }
 a.backlink-ref {
-    display: inline-block; margin: 0.15em 0.3em 0.15em 0;
+    display: inline-block; margin: 0.1em 0.25em 0.1em 0;
     color: #9C7A4D; text-decoration: none;
     border-bottom: 1px dotted #9C7A4D; font-size: 0.82rem;
 }
