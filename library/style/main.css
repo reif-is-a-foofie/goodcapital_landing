@@ -473,50 +473,40 @@ p.donaldson-para {
     }
 }
 
-/* ── Donaldson source label (web reader fix) ─────────────────────────────── */
-div.donaldson-block span.source-label {
-    display: block;
-    font-size: 0.72em;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #7a5a10;
-    margin-bottom: 0.4em;
-    font-style: normal;
-    font-family: 'CrimsonPro', 'Palatino Linotype', serif;
+/* ── Scripture reference links (web reader only) ─────────────────────────── */
+a.ref-link {
+    color: #9C7A4D;
+    text-decoration: none;
+    border-bottom: 1px dotted #9C7A4D;
+}
+a.ref-link:hover {
+    border-bottom-style: solid;
 }
 
-/* ── Source label cleanup: hide category headers, show actual source names ── */
-
-/* Hide category section headers — not a source name */
-div.fathers-block > span.source-label,
-div.ancient-block > span.source-label,
-div.semantic-block > span.source-label { display: none; }
-
-/* Hide redundant sub-notes like "Babylonian creation parallel" */
-span.ancient-note { display: none; }
-
-/* Sefaria / semantic ref: truncate long ref strings, just show source name */
-span.semantic-ref { display: none; }
-
-/* Move vol-ref (actual source name) to its own line, styled simply */
-span.vol-ref {
-    display: block;
-    font-style: normal;
-    font-size: 0.75em;
-    color: #7a6050;
-    margin-top: 0.3em;
-    letter-spacing: 0.02em;
+/* ── Score dots legend ───────────────────────────────────────────────────── */
+.score-legend {
+    display: flex; gap: 1.2em; flex-wrap: wrap;
+    font-size: 0.72rem; color: #888;
+    margin: 0.4em 0 1.2em; padding: 0.4em 0;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
 }
+.score-legend-item { display: flex; align-items: center; gap: 0.3em; }
 
-/* Simpler label for remaining source-label uses (JST, commentary, etc.) */
-span.source-label {
-    font-size: 0.70em;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.10em;
-    color: #888;
-    display: block;
-    margin-bottom: 0.3em;
-    font-style: normal;
+/* ── Backlinks (referenced from) ─────────────────────────────────────────── */
+.backlinks {
+    margin-top: 0.8em; padding: 0.5em 0.8em;
+    background: rgba(156,122,77,0.06);
+    border-left: 2px solid rgba(156,122,77,0.3);
+    border-radius: 0 4px 4px 0;
+    font-size: 0.78rem;
 }
+.backlinks-label {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: #9C7A4D; margin-right: 0.6em;
+}
+a.backlink-ref {
+    display: inline-block; margin: 0.15em 0.3em 0.15em 0;
+    color: #9C7A4D; text-decoration: none;
+    border-bottom: 1px dotted #9C7A4D; font-size: 0.82rem;
+}
+a.backlink-ref:hover { border-bottom-style: solid; }
