@@ -204,7 +204,7 @@ function buildToc(items) {
             i++;
         } else if (item.type === 'volume') {
             var volLabel = item.label;
-            html += `<div class="toc-volume open" data-volume="${volLabel}" onclick="toggleVolume(this)"><span>${volLabel}</span><span class="arrow">›</span></div>`;
+            html += `<div class="toc-volume" data-volume="${volLabel}" onclick="toggleVolume(this)"><span>${volLabel}</span><span class="arrow">›</span></div>`;
             html += `<div class="toc-volume-body">`;
             i++;
             while (i < items.length && items[i].type !== 'volume' && items[i].type !== 'front') {
