@@ -6,7 +6,8 @@
     <title>LDS Scriptures — The Good Project</title>
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32x32.png">
-    <link rel="manifest" href="../site.webmanifest">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#9C7A4D">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCMWDK746H"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PCMWDK746H');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +22,7 @@
     --accent-hover: #7a5e38;
     --divider: rgba(0,0,0,0.09);
     --nav-h: 52px;
+    --filter-h: 32px;
     --toc-w: 260px;
     --reader-max: 760px;
 }
@@ -44,8 +46,25 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     text-decoration: none; padding: 6px 13px; border-radius: 6px; font-size: 12px; font-weight: 500; }
 #dl-btn:hover { background: var(--accent-hover); }
 
+/* ── Filter bar ── */
+#filterbar {
+    position: fixed; top: var(--nav-h); left: 0; right: 0; height: var(--filter-h);
+    background: var(--bg); border-bottom: 1px solid var(--divider);
+    display: flex; align-items: center; padding: 0 14px; gap: 5px; z-index: 190;
+    overflow-x: auto; scrollbar-width: none;
+}
+#filterbar::-webkit-scrollbar { display: none; }
+.filter-pill {
+    flex-shrink: 0; height: 20px; padding: 0 9px; border-radius: 10px;
+    font-size: 11px; font-weight: 500; cursor: pointer; border: none;
+    background: transparent; color: var(--muted); transition: background .12s, color .12s;
+    white-space: nowrap; line-height: 20px;
+}
+.filter-pill:hover { background: rgba(0,0,0,0.06); color: var(--text); }
+.filter-pill.active { background: var(--accent); color: #fff; }
+
 /* ── Shell ── */
-#shell { position: fixed; top: var(--nav-h); left: 0; right: 0; bottom: 0; display: flex; }
+#shell { position: fixed; top: calc(var(--nav-h) + var(--filter-h)); left: 0; right: 0; bottom: 0; display: flex; }
 
 /* ── TOC ── */
 #toc {
@@ -114,10 +133,14 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 
 @media (max-width: 600px) {
     :root { --toc-w: 240px; }
-    #toc { position: fixed; top: var(--nav-h); left: 0; bottom: 0; z-index: 150; }
+    #toc { position: fixed; top: calc(var(--nav-h) + var(--filter-h)); left: 0; bottom: 0; z-index: 150; }
     #location-label { display: none; }
     #content { padding: 24px 18px 80px; }
 }
+
+/* ── Offline badge ── */
+#offline-badge { display: none; font-size: 11px; color: #9C7A4D; padding: 2px 8px;
+    border: 1px solid currentColor; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -138,6 +161,16 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
         </svg>
         epub
     </a>
+</div>
+
+<div id="filterbar">
+    <button class="filter-pill active" data-filter="all">All</button>
+    <button class="filter-pill" data-filter="scripture">Scripture</button>
+    <button class="filter-pill" data-filter="jst">JST</button>
+    <button class="filter-pill" data-filter="donaldson">Donaldson</button>
+    <button class="filter-pill" data-filter="wordstudy">Word Study</button>
+    <button class="filter-pill" data-filter="sources">Sources</button>
+    <button class="filter-pill" data-filter="connections">Connections</button>
 </div>
 
 <div id="shell">
@@ -555,6 +588,105 @@ function getTextOffset(el, chapterId) {
     var text = block.textContent;
     var hlText = el.textContent;
     return text.indexOf(hlText);
+}
+
+// ── Commentary depth filter ───────────────────────────────────────────────
+// Maps each pill data-filter value to the CSS classes it controls.
+// "all" and "scripture" are special modes; others are individual toggles.
+var FILTER_CLASSES = {
+    jst:        ['.jst-block'],
+    donaldson:  ['.donaldson-block'],
+    wordstudy:  ['.etymology-block'],
+    sources:    ['.lds-commentary-block', '.rabbinical-block', '.fathers-block', '.ancient-block'],
+    connections:['.semantic-quote'],
+};
+
+// Active set: a Set of filter keys that are currently "on"
+// Special values: 'all' means everything visible, 'scripture' means nothing visible.
+var activeFilters = new Set(['all']);
+
+(function initFilter() {
+    var stored = localStorage.getItem(SITE.storageKey + '_filter');
+    if (stored) {
+        try {
+            var parsed = JSON.parse(stored);
+            if (Array.isArray(parsed)) {
+                activeFilters = new Set(parsed);
+            }
+        } catch(e) {}
+    }
+    applyFilter();
+    updateFilterPills();
+
+    document.getElementById('filterbar').addEventListener('click', function(e) {
+        var pill = e.target.closest('.filter-pill');
+        if (!pill) return;
+        var key = pill.dataset.filter;
+        onFilterClick(key);
+    });
+})();
+
+function onFilterClick(key) {
+    if (key === 'all') {
+        activeFilters = new Set(['all']);
+    } else if (key === 'scripture') {
+        activeFilters = new Set(['scripture']);
+    } else {
+        // Remove exclusive modes
+        activeFilters.delete('all');
+        activeFilters.delete('scripture');
+        // Toggle this key
+        if (activeFilters.has(key)) {
+            activeFilters.delete(key);
+        } else {
+            activeFilters.add(key);
+        }
+        // If nothing selected, fall back to "all"
+        if (activeFilters.size === 0) {
+            activeFilters.add('all');
+        }
+    }
+    applyFilter();
+    updateFilterPills();
+    localStorage.setItem(SITE.storageKey + '_filter', JSON.stringify(Array.from(activeFilters)));
+}
+
+function applyFilter() {
+    // Remove any previously injected filter style
+    var old = document.getElementById('filter-style');
+    if (old) old.remove();
+
+    if (activeFilters.has('all')) return; // everything visible — no rules needed
+
+    var hiddenSelectors = [];
+
+    if (activeFilters.has('scripture')) {
+        // Hide every commentary class
+        Object.values(FILTER_CLASSES).forEach(function(arr) {
+            hiddenSelectors = hiddenSelectors.concat(arr);
+        });
+    } else {
+        // Show only the selected commentary types — hide the rest
+        Object.keys(FILTER_CLASSES).forEach(function(key) {
+            if (!activeFilters.has(key)) {
+                hiddenSelectors = hiddenSelectors.concat(FILTER_CLASSES[key]);
+            }
+        });
+    }
+
+    if (hiddenSelectors.length === 0) return;
+
+    var style = document.createElement('style');
+    style.id = 'filter-style';
+    style.textContent = hiddenSelectors.join(', ') + ' { display: none !important; }';
+    document.head.appendChild(style);
+}
+
+function updateFilterPills() {
+    document.querySelectorAll('.filter-pill').forEach(function(pill) {
+        var key = pill.dataset.filter;
+        pill.classList.toggle('active', activeFilters.has(key));
+    });
 }
 </script>
 
