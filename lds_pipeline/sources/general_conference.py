@@ -20,7 +20,7 @@ import urllib.parse
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/gc")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/gc")
 BASE_SEARCH = "https://www.churchofjesuschrist.org/search"
 BASE_CONTENT = "https://www.churchofjesuschrist.org"
 

@@ -19,8 +19,8 @@ EPUB_CACHE_PATH = "/tmp/lds_ot.epub"  # pre-existing OT epub conversion
 # Archive PDF (currently 0 bytes — placeholder)
 PDF_PATH = "/Users/reify/Downloads/Reif_Machine_Archive_2026-03-19/LDS/LDS Scriptures.pdf"
 
-OUTPUT_DIR = "/Users/reify/lds_pipeline/output"
-CACHE_DIR  = "/Users/reify/lds_pipeline/cache"
+OUTPUT_DIR = "/Users/reify/Classified/goodcapital_landing/lds_pipeline/output"
+CACHE_DIR  = "/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache"
 
 # ── Source toggles ────────────────────────────────────────────────────────────
 SOURCES = {
@@ -105,13 +105,13 @@ SEMANTIC_MIN_SCORE             = 0.38  # cosine similarity threshold (0–1)
 
 # ── Output ────────────────────────────────────────────────────────────────────
 EPUB_OUTPUT_PATH = os.path.join(OUTPUT_DIR, "LDS_Scriptures_Enriched.epub")
-WEB_OUTPUT_DIR   = "/Users/reify/goodcapital_landing/library"  # None to skip web build
+WEB_OUTPUT_DIR   = "/Users/reify/Classified/goodcapital_landing/library"  # None to skip web build
 EPUB_TITLE = "LDS Scriptures — Enriched Edition"
 EPUB_AUTHOR = "Various"
 EPUB_LANGUAGE = "en"
 
 # ── Fonts ─────────────────────────────────────────────────────────────────────
-FONT_DIR = "/Users/reify/lds_pipeline/epub/fonts"
+FONT_DIR = "/Users/reify/Classified/goodcapital_landing/lds_pipeline/epub/fonts"
 FONT_SCRIPTURE    = "EBGaramond-Regular.otf"
 FONT_SCRIPTURE_IT = "EBGaramond-Italic.otf"
 FONT_COMMENTARY   = "CrimsonPro-Regular.ttf"

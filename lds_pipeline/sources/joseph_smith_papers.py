@@ -24,7 +24,7 @@ import urllib.error
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/jsp")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/jsp")
 
 # Curated high-value JSP documents with scripture density
 JSP_DOCUMENTS = {

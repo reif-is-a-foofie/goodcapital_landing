@@ -17,7 +17,7 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/gutenberg_lds")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/gutenberg_lds")
 
 TEXTS = {
     "parley_pratt": {

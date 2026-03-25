@@ -17,7 +17,7 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/hoc")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/hoc")
 
 GUTENBERG_VOLUMES = {
     1: "https://www.gutenberg.org/files/47091/47091-0.txt",

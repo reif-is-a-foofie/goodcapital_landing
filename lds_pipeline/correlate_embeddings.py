@@ -31,7 +31,7 @@ import numpy as np
 # Force CPU — MPS hangs on Python 3.9 with sentence-transformers
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 
-CACHE_DIR    = Path("/Users/reify/lds_pipeline/cache")
+CACHE_DIR    = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 CATALOG_PATH = CACHE_DIR / "verse_catalog.json"
 CORR_DIR     = CACHE_DIR / "correlations"
 EMB_DIR      = CACHE_DIR / "embeddings_dense"

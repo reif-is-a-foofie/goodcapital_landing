@@ -25,7 +25,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 LOG_FILE  = CACHE_DIR / "source_worker.log"
 
 SLEEP_BETWEEN_VOLS  = 0.3   # seconds between requests within a source
@@ -100,7 +100,7 @@ def sync_gutenberg() -> None:
     """Download any missing Gutenberg texts."""
     missing = []
     for key, (url, rel_path) in GUTENBERG_SOURCES.items():
-        dest = Path("/Users/reify/lds_pipeline") / rel_path
+        dest = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline") / rel_path
         if not dest.exists() or dest.stat().st_size < 5000:
             missing.append((key, url, dest))
 

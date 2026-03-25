@@ -42,7 +42,7 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/church_fathers")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/church_fathers")
 
 TEXTS = {
     "origen_de_principiis": {

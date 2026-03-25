@@ -24,7 +24,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from extract.donaldson_parser import Volume
 
-CATALOG_PATH = Path("/Users/reify/lds_pipeline/cache/verse_catalog.json")
+CATALOG_PATH = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/verse_catalog.json")
 
 
 def save_catalog(volumes: list) -> Path:

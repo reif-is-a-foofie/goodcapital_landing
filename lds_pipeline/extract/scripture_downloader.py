@@ -22,7 +22,7 @@ from extract.donaldson_parser import (
     BOOK_TO_VOLUME, OT_BOOKS, NT_BOOKS, BOM_BOOKS, PGP_BOOKS
 )
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/scriptures_json")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/scriptures_json")
 
 SCRIPTURE_URLS = {
     "Old Testament":          "https://raw.githubusercontent.com/bcbooks/scriptures-json/master/old-testament.json",

@@ -9,7 +9,7 @@ Run once:
 import json
 from pathlib import Path
 
-CACHE_DIR    = Path("/Users/reify/lds_pipeline/cache")
+CACHE_DIR    = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 CATALOG_PATH = CACHE_DIR / "verse_catalog.json"
 DONA_DIR     = CACHE_DIR / "donaldson"
 

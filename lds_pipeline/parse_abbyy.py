@@ -30,7 +30,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 
 NS = "http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml"
 

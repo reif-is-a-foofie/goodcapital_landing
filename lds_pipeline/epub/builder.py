@@ -20,10 +20,10 @@ from ebooklib import epub
 sys.path.insert(0, str(Path(__file__).parent))
 from curate_sources import curate, render_dots, score_to_dots, MIN_SCORE
 
-FONT_DIR  = Path("/Users/reify/lds_pipeline/epub/fonts")
-CSS_PATH  = Path("/Users/reify/lds_pipeline/epub/styles.css")
-_DONA_DIR = Path("/Users/reify/lds_pipeline/cache/donaldson")
-_CORR_DIR = Path("/Users/reify/lds_pipeline/cache/correlations")
+FONT_DIR  = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/epub/fonts")
+CSS_PATH  = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/epub/styles.css")
+_DONA_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/donaldson")
+_CORR_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/correlations")
 
 # Canonical display names — used everywhere a source label appears
 SOURCE_NAMES = {

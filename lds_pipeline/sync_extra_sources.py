@@ -36,7 +36,7 @@ try:
 except ImportError:
     _IA_AVAILABLE = False
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 
 BROWSER_HEADERS = {
     "User-Agent": (

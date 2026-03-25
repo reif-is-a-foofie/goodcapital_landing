@@ -27,7 +27,7 @@ import scipy.sparse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-CACHE_DIR    = Path("/Users/reify/lds_pipeline/cache")
+CACHE_DIR    = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 CATALOG_PATH = CACHE_DIR / "verse_catalog.json"
 CORR_DIR     = CACHE_DIR / "correlations"
 EMB_DIR      = CACHE_DIR / "embeddings"

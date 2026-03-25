@@ -20,7 +20,7 @@ import urllib.parse
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/sefaria")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/sefaria")
 BASE_URL  = "https://www.sefaria.org/api"
 
 # Book name translation: our canonical name → Sefaria reference name

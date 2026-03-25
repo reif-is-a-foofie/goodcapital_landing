@@ -14,7 +14,7 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/jd")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/jd")
 
 # Archive.org item IDs for Journal of Discourses volumes
 JD_ARCHIVE_IDS = [

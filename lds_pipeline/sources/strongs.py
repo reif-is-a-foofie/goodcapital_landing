@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR   = Path("/Users/reify/lds_pipeline/cache/strongs")
+CACHE_DIR   = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/strongs")
 HEBREW_URL  = "https://raw.githubusercontent.com/openscriptures/strongs/master/hebrew/strongs-hebrew-dictionary.js"
 GREEK_URL   = "https://raw.githubusercontent.com/openscriptures/strongs/master/greek/strongs-greek-dictionary.js"
 HEBREW_CACHE = CACHE_DIR / "hebrew.json"

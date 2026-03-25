@@ -33,7 +33,7 @@ import numpy as np
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/embeddings")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/embeddings")
 INDEX_PATH  = CACHE_DIR / "faiss.index"
 META_PATH   = CACHE_DIR / "metadata.pkl"
 CHUNK_SIZE  = 200   # words per chunk
@@ -255,7 +255,7 @@ def load_all_cached_sources():
     Load every cached source text file into the registry.
     Call this before build_index().
     """
-    base = Path("/Users/reify/lds_pipeline/cache")
+    base = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 
     source_dirs = {
         "jd":             ("Journal of Discourses",         "vol_*.txt"),

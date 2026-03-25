@@ -22,7 +22,7 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache/ancient_myths")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/ancient_myths")
 
 TEXTS = {
     "book_of_enoch": {

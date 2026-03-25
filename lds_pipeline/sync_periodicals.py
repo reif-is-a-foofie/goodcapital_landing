@@ -23,7 +23,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-CACHE_DIR = Path("/Users/reify/lds_pipeline/cache")
+CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 
 ARCHIVE_BASE = "https://archive.org/download"
 
