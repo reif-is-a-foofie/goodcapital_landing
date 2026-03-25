@@ -2,23 +2,22 @@
 """
 build_word_index.py
 ===================
-Generates {slug}_words.json per chapter — the data powering the Channel.
+Generates {slug}_words.json per chapter from {slug}_graph.json files.
+Falls back to correlation cache if available, otherwise uses graph nodes.
 
 Format:
   {
     "1": {                          ← verse number (string key)
       "nephi": {                    ← stemmed word
-        "score": 1.63,              ← total score across all matches
-        "forms": ["Nephi"],         ← canonical surface forms found in verse
-        "matches": [                ← top matches, sorted by score desc
-          {"s": "donaldson", "lb": "Donaldson on 1 Nephi 1:1",
-           "x": "passage text...", "w": 0.408},
+        "score": 1.63,
+        "forms": ["Nephi"],
+        "matches": [
+          {"s": "donaldson", "lb": "...", "x": "...", "w": 0.408},
           ...
         ]
       },
       ...
-    },
-    ...
+    }
   }
 
 Run from repo root:
@@ -32,14 +31,12 @@ from collections import defaultdict
 from pathlib import Path
 
 REPO     = Path(__file__).parent.parent
-CORR_DIR = Path(__file__).parent / "cache" / "correlations"
 CHAPTERS = REPO / "library" / "chapters"
 
-MIN_MATCH_SCORE = 0.18   # discard very weak matches
-MAX_MATCHES_PER_WORD = 8
-MAX_TEXT_LEN = 500
+MIN_MATCH_SCORE  = 0.18
+MAX_MATCHES_WORD = 8
+MAX_TEXT_LEN     = 500
 
-# ── Stop words (same set as annotate_critical_words) ──────────────────────
 STOPS = {
     'the','a','an','and','or','but','in','on','of','to','for','with','by',
     'from','at','as','into','upon','unto','about','above','below','after',
@@ -86,7 +83,6 @@ def stem(w: str) -> str:
 
 
 def tokenize(text: str):
-    """Yield (original_form, stemmed) for content words."""
     for w in re.findall(r"[a-zA-Z''\u2019]+", text):
         clean = w.strip("''\u2019\u2018")
         if len(clean) < 3:
@@ -108,135 +104,136 @@ def truncate(text: str, limit: int = MAX_TEXT_LEN) -> str:
     return (cut[:pos] + '\u2026') if pos > limit // 2 else cut + '\u2026'
 
 
-def build_verse_word_index(vtext: str, matches: list) -> dict:
+def build_from_graph(graph: dict) -> dict:
     """
-    Returns {stemmed_word: {"score": float, "forms": [str], "matches": [...]}}
+    Build verse→word→matches index from a chapter graph JSON.
+    Graph has verse nodes (t='v') and passage nodes (t='p') with edges.
     """
-    tokens = list(tokenize(vtext))
-    if not tokens:
-        return {}
+    # Index passage nodes by id
+    passages = {n['id']: n for n in graph['nodes'] if n.get('t') == 'p'}
 
-    stem_to_forms: dict[str, set] = defaultdict(set)
-    for form, st in tokens:
-        stem_to_forms[st].add(form)
+    # Group edges by source verse
+    verse_edges: dict[str, list] = defaultdict(list)
+    for e in graph['edges']:
+        verse_edges[e['s']].append(e)
 
-    # For each stem, collect matches where that stem appears in match text
-    word_data: dict[str, dict] = {}
+    # Build verse texts from verse nodes
+    verse_texts = {n['id']: (n.get('n', 0), n.get('x', ''))
+                   for n in graph['nodes'] if n.get('t') == 'v'}
 
-    for st, forms in stem_to_forms.items():
-        hit_matches = []
-        for m in matches:
-            score = m.get('score', 0)
+    chapter_index: dict[str, dict] = {}
+
+    for vid, (vnum, vtext) in verse_texts.items():
+        if not vtext:
+            continue
+
+        edges = verse_edges.get(vid, [])
+        if not edges:
+            continue
+
+        # Build match list for this verse
+        matches_for_verse = []
+        seen = set()
+        for e in sorted(edges, key=lambda x: -x.get('w', 0)):
+            pid = e.get('t')
+            p   = passages.get(pid)
+            if not p:
+                continue
+            score = e.get('w', 0)
             if score < MIN_MATCH_SCORE:
                 continue
-            mtext = m.get('text', '').lower()
-            mwords = set(stem(w) for w in re.findall(r'[a-z]+', mtext) if len(w) >= 3)
+            key = (p.get('src', ''), p.get('lb', '')[:60])
+            if key in seen:
+                continue
+            seen.add(key)
+            matches_for_verse.append({
+                's':  p.get('src', ''),
+                'lb': p.get('lb', ''),
+                'x':  truncate(p.get('x', '')),
+                'w':  score,
+            })
+
+        if not matches_for_verse:
+            continue
+
+        # Score each content word in the verse
+        tokens = list(tokenize(vtext))
+        if not tokens:
+            continue
+
+        stem_to_forms: dict[str, set] = defaultdict(set)
+        for form, st in tokens:
+            stem_to_forms[st].add(form)
+
+        word_data: dict[str, dict] = {}
+        for st, forms in stem_to_forms.items():
+            hit_matches = []
             forms_lower = {f.lower() for f in forms}
+            mstems_cache = {}
 
-            if st in mwords or forms_lower & mwords or any(f in mtext for f in forms_lower):
-                hit_matches.append(m)
+            for m in matches_for_verse:
+                mtext = m.get('x', '').lower()
+                if id(mtext) not in mstems_cache:
+                    mstems_cache[id(mtext)] = set(
+                        stem(w) for w in re.findall(r'[a-z]+', mtext) if len(w) >= 3
+                    )
+                mstems = mstems_cache[id(mtext)]
 
-        if not hit_matches:
-            continue
+                if st in mstems or forms_lower & mstems or any(f in mtext for f in forms_lower):
+                    hit_matches.append(m)
 
-        # Sort by score, deduplicate by (source, label), keep top N
-        seen = set()
-        deduped = []
-        for m in sorted(hit_matches, key=lambda x: x.get('score', 0), reverse=True):
-            key = (m.get('source',''), m.get('label','')[:60])
-            if key not in seen:
-                seen.add(key)
-                deduped.append(m)
-            if len(deduped) >= MAX_MATCHES_PER_WORD:
-                break
+            if not hit_matches:
+                continue
 
-        total_score = sum(m.get('score', 0) for m in deduped)
+            total_score = sum(m['w'] for m in hit_matches)
+            word_data[st] = {
+                'score':   round(total_score, 3),
+                'forms':   sorted(forms, key=len, reverse=True)[:3],
+                'matches': hit_matches[:MAX_MATCHES_WORD],
+            }
 
-        word_data[st] = {
-            'score':   round(total_score, 3),
-            'forms':   sorted(forms, key=len, reverse=True)[:3],
-            'matches': [
-                {
-                    's':  m.get('source', ''),
-                    'lb': m.get('label', ''),
-                    'x':  truncate(m.get('text', '')),
-                    'w':  round(m.get('score', 0), 3),
-                }
-                for m in deduped
-            ],
-        }
-
-    return word_data
-
-
-def process_chapter(book: str, chapter: int, verse_files: list) -> dict:
-    """Build word index for one chapter. Returns {verse_str: {stem: {...}}}."""
-    chapter_index = {}
-
-    for vf in sorted(verse_files, key=lambda f: int(f.stem.rsplit('_', 1)[-1])):
-        try:
-            data = json.loads(vf.read_text(encoding='utf-8'))
-        except Exception:
-            continue
-
-        vnum   = data.get('verse', int(vf.stem.rsplit('_', 1)[-1]))
-        vtext  = data.get('text', '')
-        matches = sorted(data.get('matches', []),
-                         key=lambda m: m.get('score', 0), reverse=True)
-
-        windex = build_verse_word_index(vtext, matches)
-        if windex:
-            chapter_index[str(vnum)] = windex
+        if word_data:
+            chapter_index[str(vnum)] = word_data
 
     return chapter_index
-
-
-def book_slug(book: str) -> str:
-    return re.sub(r'[^a-z0-9]+', '_', book.lower()).strip('_')
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--books', nargs='+')
+    parser.add_argument('--force', action='store_true',
+                        help='Overwrite existing _words.json files')
     args = parser.parse_args()
 
-    # Group correlation files by (book, chapter)
-    by_chapter: dict[tuple, list] = defaultdict(list)
-    for f in CORR_DIR.iterdir():
-        if f.suffix != '.json':
-            continue
-        parts = f.stem.rsplit('_', 2)
-        if len(parts) != 3:
-            continue
-        book, ch_str, v_str = parts
-        try:
-            ch = int(ch_str)
-            int(v_str)
-        except ValueError:
-            continue
-        by_chapter[(book, ch)].append(f)
+    graph_files = sorted(CHAPTERS.glob('*_graph.json'))
 
     if args.books:
-        by_chapter = {
-            k: v for k, v in by_chapter.items()
-            if any(book_slug(k[0]).startswith(b.lower()) for b in args.books)
-        }
+        graph_files = [f for f in graph_files
+                       if any(f.stem.startswith(b.lower().replace(' ', '_'))
+                              for b in args.books)]
 
-    print(f'Building word indexes for {len(by_chapter)} chapters...')
+    print(f'Building word indexes from {len(graph_files)} graph files...')
 
-    written = 0
-    total_words = 0
-    for (book, chapter), files in sorted(by_chapter.items()):
-        cslug = f'{book_slug(book)}_{chapter}'
-        outpath = CHAPTERS / f'{cslug}_words.json'
+    written = skipped = total_words = 0
+    for gf in graph_files:
+        slug     = gf.stem.replace('_graph', '')
+        outpath  = CHAPTERS / f'{slug}_words.json'
 
-        index = process_chapter(book, chapter, files)
+        if outpath.exists() and not args.force:
+            skipped += 1
+            continue
+
+        try:
+            graph = json.loads(gf.read_text(encoding='utf-8'))
+        except Exception:
+            continue
+
+        index = build_from_graph(graph)
         if not index:
             continue
 
         wcount = sum(len(v) for v in index.values())
         total_words += wcount
-
         outpath.write_text(
             json.dumps(index, ensure_ascii=False, separators=(',', ':')),
             encoding='utf-8',
@@ -246,7 +243,8 @@ def main():
         if written % 200 == 0:
             print(f'  {written} written...')
 
-    print(f'\nDone. {written} word index files, {total_words:,} word entries.')
+    print(f'\nDone. {written} word index files written, {skipped} skipped (already exist).')
+    print(f'Total word entries: {total_words:,}')
 
 
 if __name__ == '__main__':
