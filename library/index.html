@@ -225,6 +225,32 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     box-shadow: inset 3px 0 0 var(--accent);
     border-radius: 8px;
 }
+#morsel-preview {
+    max-width: var(--reader-max);
+    margin: 0 auto 28px;
+    border: 1px solid rgba(156,122,77,0.16);
+    border-radius: 14px;
+    background: #fffdf9;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+#morsel-preview[hidden] { display: none; }
+.morsel-preview-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 14px; border-bottom: 1px solid var(--divider);
+}
+.morsel-preview-kicker {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.morsel-preview-title {
+    font-size: 13px; font-weight: 600; color: var(--text);
+}
+.morsel-preview-body {
+    padding: 14px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+}
 
 /* ── Channel panel ── */
 #channel {
@@ -404,6 +430,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     </div>
     <div id="reader">
         <div id="content"></div>
+        <div id="morsel-preview" hidden></div>
         <div id="sentinel"></div>
     </div>
 </div>
@@ -1195,12 +1222,72 @@ var SOURCE_PRIORITY = {
 };
 
 function sortMatches(matches) {
-    return (matches || []).slice().sort(function(a, b) {
+    var sorted = (matches || []).slice().sort(function(a, b) {
         var pa = SOURCE_PRIORITY.hasOwnProperty(a.s) ? SOURCE_PRIORITY[a.s] : 9;
         var pb = SOURCE_PRIORITY.hasOwnProperty(b.s) ? SOURCE_PRIORITY[b.s] : 9;
         if (pa !== pb) return pa - pb;
         return (b.w || 0) - (a.w || 0);
     });
+    var scripture = [];
+    var other = [];
+    sorted.forEach(function(m) {
+        if ((m.s === 'standard_works' || m.s === 'jst') && scripture.length < 3) scripture.push(m);
+        else other.push(m);
+    });
+    return scripture.concat(other);
+}
+
+function escapeRegex(str) {
+    return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function findBookRecord(label) {
+    var found = null;
+    tocTree.volumes.some(function(volume) {
+        return volume.books.some(function(book) {
+            if (book.label === label) {
+                found = book;
+                return true;
+            }
+            return false;
+        });
+    });
+    return found;
+}
+
+function resolveScriptureRef(text) {
+    var names = [];
+    tocTree.volumes.forEach(function(volume) {
+        volume.books.forEach(function(book) { names.push(book.label); });
+    });
+    if (!names.length) return null;
+    names.sort(function(a, b) { return b.length - a.length; });
+    var re = new RegExp('\\b(' + names.map(escapeRegex).join('|') + ')\\.?\\s+(\\d+):(\\d+)\\b', 'i');
+    var m = String(text || '').match(re);
+    if (!m) return null;
+    var book = findBookRecord(m[1]);
+    if (!book || !book.firstChapter) return null;
+    var prefix = book.firstChapter.replace(/_1$/, '');
+    return {
+        chapterId: prefix + '_' + parseInt(m[2], 10),
+        verse: parseInt(m[3], 10),
+        label: m[1] + ' ' + parseInt(m[2], 10) + ':' + parseInt(m[3], 10)
+    };
+}
+
+function showMorselPreview(m) {
+    var host = document.getElementById('morsel-preview');
+    host.hidden = false;
+    host.innerHTML =
+        '<div class="morsel-preview-head">'
+      + '<span class="ch-src-dot" style="background:' + srcColor(m.s) + '"></span>'
+      + '<div>'
+      + '<div class="morsel-preview-kicker">' + escapeHtml(srcLabel(m.s)) + '</div>'
+      + '<div class="morsel-preview-title">' + escapeHtml(m.lb || 'Morsel') + '</div>'
+      + '</div>'
+      + '</div>'
+      + '<div class="morsel-preview-body">' + escapeHtml(m.x || '') + '</div>';
+    host.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // Load words JSON for a chapter (cached)
@@ -1315,32 +1402,39 @@ function renderChannelList() {
     var cur = list.querySelector('.ch-current');
     if (cur) cur.scrollIntoView({ block: 'nearest' });
 
-    // Expand button handler
-    list.addEventListener('click', function(e) {
-        // Morsel click → advance to that index
-        var morsel = e.target.closest('.ch-morsel');
-        if (morsel && !e.target.classList.contains('ch-expand')) {
-            channelIdx = parseInt(morsel.dataset.idx, 10);
-            renderChannelList();
+    list.onclick = function(e) {
+        var btn = e.target.closest('.ch-expand');
+        if (btn) {
+            var idx  = parseInt(btn.dataset.idx, 10);
+            var m    = channelMorsels[idx];
+            var full = btn.nextElementSibling;
+            if (!m || !full) return;
+            if (full.classList.contains('open')) {
+                full.classList.remove('open');
+                btn.textContent = 'expand ↓';
+            } else {
+                if (!full.innerHTML) {
+                    full.innerHTML = escapeHtml(m.x || '');
+                }
+                full.classList.add('open');
+                btn.textContent = 'collapse ↑';
+            }
             return;
         }
-        // Expand button
-        var btn = e.target.closest('.ch-expand');
-        if (!btn) return;
-        var idx  = parseInt(btn.dataset.idx, 10);
-        var m    = channelMorsels[idx];
-        var full = btn.nextElementSibling;
-        if (full.classList.contains('open')) {
-            full.classList.remove('open');
-            btn.textContent = 'expand ↓';
+
+        var morsel = e.target.closest('.ch-morsel');
+        if (!morsel) return;
+        channelIdx = parseInt(morsel.dataset.idx, 10);
+        var selected = channelMorsels[channelIdx];
+        renderChannelList();
+        if (!selected) return;
+        var ref = resolveScriptureRef((selected.lb || '') + ' ' + (selected.x || ''));
+        if (ref && ref.chapterId && !(ref.chapterId === currentChapter && ref.verse === parseInt((document.querySelector('.verse.verse-focus') || {}).id?.replace('v','') || '0', 10))) {
+            jumpTo(ref.chapterId, ref.verse);
         } else {
-            if (!full.innerHTML) {
-                full.innerHTML = escapeHtml(m.x || '');
-            }
-            full.classList.add('open');
-            btn.textContent = 'collapse ↑';
+            showMorselPreview(selected);
         }
-    }, { once: false });
+    };
 }
 
 function closeChannel() {
