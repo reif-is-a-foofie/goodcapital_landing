@@ -11,7 +11,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCMWDK746H"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PCMWDK746H');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
     <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -185,6 +185,83 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 #offline-badge { display: none; font-size: 11px; color: #9C7A4D; padding: 2px 8px;
     border: 1px solid currentColor; border-radius: 10px; }
 
+/* ── Word spans (critical word underlines) ── */
+.scripture span.w {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(156,122,77, calc(var(--ws,0.5) * 0.7 + 0.1));
+    text-decoration-thickness: calc(var(--ws,0.5) * 1.8px + 0.4px);
+    text-underline-offset: 3px;
+    border-radius: 2px;
+    transition: background .1s;
+}
+.scripture span.w:hover { background: rgba(156,122,77,0.13); }
+.scripture span.w.cw-active { background: rgba(156,122,77,0.22); }
+
+/* ── Channel panel ── */
+#channel {
+    position: fixed; top: calc(var(--nav-h) + var(--filter-h)); right: 0; bottom: 0;
+    width: 360px; background: #FEFCF8; border-left: 1px solid var(--divider);
+    display: flex; flex-direction: column; z-index: 180;
+    transform: translateX(100%); transition: transform .22s;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.06);
+}
+#channel.open { transform: translateX(0); }
+#ch-header {
+    padding: 12px 14px 10px; border-bottom: 1px solid var(--divider);
+    display: flex; align-items: flex-start; gap: 8px; flex-shrink: 0;
+}
+#ch-word {
+    flex: 1; font-size: 18px; font-weight: 700; color: var(--accent);
+    font-family: 'EB Garamond', Georgia, serif; letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+#ch-hint { font-size: 10px; color: var(--muted); margin-top: 4px; }
+#ch-close {
+    background: none; border: none; cursor: pointer; padding: 4px;
+    border-radius: 5px; color: var(--muted); flex-shrink: 0; display: flex;
+}
+#ch-close:hover { background: rgba(0,0,0,0.07); color: var(--text); }
+#ch-list { flex: 1; overflow-y: auto; }
+.ch-morsel {
+    padding: 12px 14px; border-bottom: 1px solid var(--divider);
+    cursor: pointer; transition: background .1s;
+}
+.ch-morsel:hover { background: rgba(0,0,0,0.03); }
+.ch-morsel.ch-current { background: rgba(156,122,77,0.07); border-left: 3px solid var(--accent); padding-left: 11px; }
+.ch-morsel-src {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 5px;
+}
+.ch-src-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.ch-src-name { font-size: 10px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted); }
+.ch-score-dots { font-size: 9px; color: var(--muted); margin-left: auto; letter-spacing: 1px; }
+.ch-morsel-text {
+    font-size: 12.5px; line-height: 1.55; color: var(--text);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.ch-morsel.ch-current .ch-morsel-text { -webkit-line-clamp: unset; }
+.ch-expand {
+    margin-top: 6px; font-size: 11px; color: var(--accent); cursor: pointer;
+    background: none; border: none; padding: 0; font-family: inherit;
+}
+.ch-expand:hover { text-decoration: underline; }
+.ch-full-text {
+    margin-top: 8px; font-size: 12.5px; line-height: 1.6; color: var(--text);
+    border-top: 1px solid var(--divider); padding-top: 8px;
+    display: none;
+}
+.ch-full-text.open { display: block; }
+.ch-empty { padding: 24px 14px; font-size: 12px; color: var(--muted); }
+
+@media (max-width: 600px) {
+    #channel { width: 100%; top: auto; height: 55vh; border-left: none;
+        border-top: 1px solid var(--divider);
+        transform: translateY(100%); transition: transform .22s; }
+    #channel.open { transform: translateY(0); }
+}
+
 /* ── Graph panel ── */
 #graph-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px;
     color: var(--muted); display: flex; align-items: center; }
@@ -310,6 +387,21 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
         </div>
         <div id="graph-legend"></div>
     </div>
+</div>
+
+<div id="channel">
+    <div id="ch-header">
+        <div style="flex:1">
+            <div id="ch-word"></div>
+            <div id="ch-hint">space → next · click any word to explore</div>
+        </div>
+        <button id="ch-close" onclick="closeChannel()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/>
+            </svg>
+        </button>
+    </div>
+    <div id="ch-list"></div>
 </div>
 
 <div id="hl-tip">✦ Highlight</div>
@@ -864,12 +956,7 @@ function closeSearch() {
     document.getElementById('search-status').textContent = '';
 }
 
-// Keyboard: Esc closes search
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && searchOpen) {
-        closeSearch();
-    }
-});
+// Keyboard: Esc closes search (channel Esc is handled in channel section)
 
 // Wire up the input
 document.getElementById('search-input').addEventListener('input', function() {
@@ -953,6 +1040,188 @@ function escapeAttr(str) {
     return str.replace(/"/g, '&quot;');
 }
 
+// ── Channel ───────────────────────────────────────────────────────────────
+var channelOpen    = false;
+var channelWord    = null;   // current stem
+var channelMorsels = [];     // current match list
+var channelIdx     = 0;      // which morsel is "current"
+var channelActiveSpan = null;
+var wordIndexCache = {};     // slug → loaded words JSON
+var wordIndexLoading = {};   // slug → promise
+
+var SRC_COLORS = {
+    donaldson:            '#D97706',
+    general_conference:   '#EA580C',
+    sefaria:              '#7C3AED',
+    pseudepigrapha:       '#6D28D9',
+    apocrypha:            '#5B21B6',
+    journal_of_discourses:'#92400E',
+    history_of_church:    '#1D4ED8',
+    millennial_star:      '#2563EB',
+    church_fathers:       '#DC2626',
+    ancient_texts:        '#B45309',
+    jst:                  '#059669',
+    bh_roberts:           '#0891B2',
+    pioneer_journals:     '#B07C3A',
+    nauvoo_theology:      '#7A6A4F',
+    gutenberg_lds:        '#4B5563',
+    times_and_seasons:    '#374151',
+    joseph_smith_papers:  '#065F46',
+};
+
+function srcColor(src) { return SRC_COLORS[src] || '#6B7280'; }
+
+function scoreDots(w) {
+    var filled = Math.round(w * 5);
+    return '●'.repeat(filled) + '○'.repeat(5 - filled);
+}
+
+function srcLabel(src) {
+    return (src || '').replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+}
+
+// Load words JSON for a chapter (cached)
+function loadWordIndex(slug) {
+    if (wordIndexCache[slug]) return Promise.resolve(wordIndexCache[slug]);
+    if (wordIndexLoading[slug]) return wordIndexLoading[slug];
+    wordIndexLoading[slug] = fetch('./chapters/' + slug + '_words.json')
+        .then(function(r) { if (r.ok) return r.json(); return null; })
+        .then(function(data) {
+            wordIndexCache[slug] = data || {};
+            return wordIndexCache[slug];
+        })
+        .catch(function() { wordIndexCache[slug] = {}; return {}; });
+    return wordIndexLoading[slug];
+}
+
+// Called when user clicks a .w span
+document.addEventListener('click', function(e) {
+    var span = e.target.closest('span.w');
+    if (!span) return;
+    e.stopPropagation();
+
+    var stem  = span.dataset.st;
+    var vnum  = span.dataset.v;
+    var block = span.closest('.chapter-block');
+    if (!block) return;
+    var slug  = block.dataset.chapterId;
+
+    // Mark active span
+    if (channelActiveSpan) channelActiveSpan.classList.remove('cw-active');
+    channelActiveSpan = span;
+    span.classList.add('cw-active');
+
+    loadWordIndex(slug).then(function(idx) {
+        var verseData = idx[vnum] || {};
+        var entry     = verseData[stem];
+        if (!entry || !entry.matches || !entry.matches.length) {
+            openChannelEmpty(stem);
+            return;
+        }
+        openChannel(stem, entry.matches);
+    });
+});
+
+function openChannelEmpty(word) {
+    channelWord    = word;
+    channelMorsels = [];
+    channelIdx     = 0;
+    document.getElementById('ch-word').textContent = word;
+    document.getElementById('ch-list').innerHTML =
+        '<div class="ch-empty">No connections found for this word.</div>';
+    document.getElementById('channel').classList.add('open');
+    channelOpen = true;
+}
+
+function openChannel(word, matches) {
+    channelWord    = word;
+    channelMorsels = matches;
+    channelIdx     = 0;
+    channelOpen    = true;
+
+    document.getElementById('ch-word').textContent = word;
+    document.getElementById('channel').classList.add('open');
+    renderChannelList();
+}
+
+function renderChannelList() {
+    var html = '';
+    channelMorsels.forEach(function(m, i) {
+        var isCurrent = i === channelIdx;
+        var col  = srcColor(m.s);
+        var dots = scoreDots(m.w);
+        var name = srcLabel(m.s);
+        var text = escapeHtml(m.x || '');
+        html += '<div class="ch-morsel' + (isCurrent ? ' ch-current' : '') + '" data-idx="' + i + '">'
+             + '<div class="ch-morsel-src">'
+             + '<span class="ch-src-dot" style="background:' + col + '"></span>'
+             + '<span class="ch-src-name">' + escapeHtml(name) + '</span>'
+             + '<span class="ch-score-dots">' + dots + '</span>'
+             + '</div>'
+             + '<div class="ch-morsel-text">' + text + '</div>'
+             + '<button class="ch-expand" data-idx="' + i + '">expand ↓</button>'
+             + '<div class="ch-full-text"></div>'
+             + '</div>';
+    });
+    var list = document.getElementById('ch-list');
+    list.innerHTML = html;
+
+    // Scroll current into view
+    var cur = list.querySelector('.ch-current');
+    if (cur) cur.scrollIntoView({ block: 'nearest' });
+
+    // Expand button handler
+    list.addEventListener('click', function(e) {
+        // Morsel click → advance to that index
+        var morsel = e.target.closest('.ch-morsel');
+        if (morsel && !e.target.classList.contains('ch-expand')) {
+            channelIdx = parseInt(morsel.dataset.idx, 10);
+            renderChannelList();
+            return;
+        }
+        // Expand button
+        var btn = e.target.closest('.ch-expand');
+        if (!btn) return;
+        var idx  = parseInt(btn.dataset.idx, 10);
+        var m    = channelMorsels[idx];
+        var full = btn.nextElementSibling;
+        if (full.classList.contains('open')) {
+            full.classList.remove('open');
+            btn.textContent = 'expand ↓';
+        } else {
+            if (!full.innerHTML) {
+                full.innerHTML = escapeHtml(m.x || '');
+            }
+            full.classList.add('open');
+            btn.textContent = 'collapse ↑';
+        }
+    }, { once: false });
+}
+
+function closeChannel() {
+    document.getElementById('channel').classList.remove('open');
+    channelOpen = false;
+    if (channelActiveSpan) {
+        channelActiveSpan.classList.remove('cw-active');
+        channelActiveSpan = null;
+    }
+}
+
+// Spacebar advances channel
+document.addEventListener('keydown', function(e) {
+    if (e.key === ' ' && channelOpen && !e.target.matches('input,textarea')) {
+        e.preventDefault();
+        if (channelMorsels.length === 0) return;
+        channelIdx = (channelIdx + 1) % channelMorsels.length;
+        renderChannelList();
+    }
+    if (e.key === 'Escape') {
+        if (graphOpen)   { closeGraph();   return; }
+        if (channelOpen) { closeChannel(); return; }
+        if (searchOpen)  { closeSearch();  return; }
+    }
+});
+
 // ── Cross-reference Graph ─────────────────────────────────────────────────
 var GRAPH_COLORS = {
     verse:              '#9C7A4D',
@@ -1016,10 +1285,7 @@ function closeGraph() {
     document.getElementById('graph-tip').style.display = 'none';
 }
 
-// Keyboard: Esc closes graph too
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && graphOpen) closeGraph();
-});
+// (graph Esc merged into channel keydown handler below)
 
 var d3Loaded = false;
 var d3Queue = [];
