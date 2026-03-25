@@ -93,9 +93,51 @@ div.verse {
     margin: 1.4em 0 0 0;
     padding-top: 0.6em;
     border-top: 1px solid rgba(139, 115, 85, 0.15);
+    cursor: pointer;
 }
 div.verse:first-of-type {
     border-top: none;
+}
+
+/* Commentary collapsed by default — revealed when verse is expanded */
+div.verse .jst-block,
+div.verse .etymology-block,
+div.verse .rabbinical-block,
+div.verse .lds-commentary-block,
+div.verse .fathers-block,
+div.verse .ancient-block,
+div.verse .donaldson-block,
+div.verse .jsp-block,
+div.verse .semantic-quote,
+div.verse .semantic-block,
+div.verse .backlinks {
+    display: none;
+}
+div.verse.expanded .jst-block,
+div.verse.expanded .etymology-block,
+div.verse.expanded .rabbinical-block,
+div.verse.expanded .lds-commentary-block,
+div.verse.expanded .fathers-block,
+div.verse.expanded .ancient-block,
+div.verse.expanded .donaldson-block,
+div.verse.expanded .jsp-block,
+div.verse.expanded .semantic-quote,
+div.verse.expanded .semantic-block,
+div.verse.expanded .backlinks {
+    display: block;
+}
+
+/* Expand indicator on verse-num */
+span.verse-num::after {
+    content: ' ›';
+    font-size: 0.55em;
+    opacity: 0.4;
+    font-weight: normal;
+    vertical-align: middle;
+}
+div.verse.expanded span.verse-num::after {
+    content: ' ↓';
+    opacity: 0.6;
 }
 
 span.verse-num {

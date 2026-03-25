@@ -1094,6 +1094,15 @@ function loadWordIndex(slug) {
     return wordIndexLoading[slug];
 }
 
+// ── Verse expand/collapse ─────────────────────────────────────────────────
+document.getElementById('content').addEventListener('click', function(e) {
+    // Word click handled separately below — don't toggle verse for word clicks
+    if (e.target.closest('span.w')) return;
+    var verse = e.target.closest('div.verse');
+    if (!verse) return;
+    verse.classList.toggle('expanded');
+});
+
 // Called when user clicks a .w span
 document.addEventListener('click', function(e) {
     var span = e.target.closest('span.w');
