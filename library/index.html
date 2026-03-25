@@ -251,6 +251,32 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     line-height: 1.7;
     color: var(--text);
 }
+.source-doc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 8px 0 40px;
+}
+.source-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #9C7A4D;
+    margin-bottom: 10px;
+}
+.source-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 34px;
+    line-height: 1.08;
+    margin: 0 0 20px;
+    color: #26221d;
+}
+.source-para {
+    font-size: 18px;
+    line-height: 1.78;
+    color: #2f2a24;
+    margin: 0 0 18px;
+}
 
 /* ── Channel panel ── */
 #channel {
@@ -487,13 +513,17 @@ var SITE = {
 
 // ── State ────────────────────────────────────────────────────────────────
 var tocData = [];
-var tocTree = { front: null, volumes: [] };
+var sourceTocData = [];
+var tocTree = { front: null, volumes: [], sources: [] };
 var chapterMeta = {};
-var tocPath = { level: 'root', volume: null, book: null };
+var sourceMeta = {};
+var tocPath = { level: 'root', volume: null, book: null, sourceCollection: null };
 var chapterOrder = [];          // ordered array of chapter ids
 var loadedChapters = new Set(); // ids already in DOM
 var loadedNotes = new Set();    // ids whose notes have been fetched
 var currentChapter = null;
+var currentSourceDoc = null;
+var sourceMode = false;
 var tocOpen = false;
 var nextToLoad = 0;             // index into chapterOrder for infinite scroll
 var loading = false;
@@ -508,7 +538,7 @@ function toggleToc() {
 }
 
 function buildTocTree(items) {
-    var tree = { front: null, volumes: [] };
+    var tree = { front: null, volumes: [], sources: [] };
     var currentVolume = null;
     var currentBook = null;
 
@@ -540,12 +570,40 @@ function buildTocTree(items) {
     return tree;
 }
 
+function buildSourceTree(items) {
+    return (items || []).map(function(collection) {
+        var docs = (collection.items || []).map(function(doc) {
+            sourceMeta[doc.id] = {
+                collection: collection.label,
+                label: doc.label,
+                href: doc.href
+            };
+            return {
+                id: doc.id,
+                label: doc.label,
+                href: doc.href,
+                meta: doc.meta || (doc.paragraphs ? (doc.paragraphs + ' paragraphs') : '')
+            };
+        });
+        return {
+            id: collection.id,
+            label: collection.label,
+            docs: docs
+        };
+    });
+}
+
 // ── Load TOC ─────────────────────────────────────────────────────────────
-fetch('./toc.json')
-    .then(r => r.json())
-    .then(data => {
+Promise.all([
+    fetch('./toc.json').then(function(r) { return r.json(); }),
+    fetch('./source_toc.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; })
+]).then(function(results) {
+        var data = results[0];
+        var sourceData = results[1] || [];
         tocData = data;
+        sourceTocData = sourceData;
         tocTree = buildTocTree(data);
+        tocTree.sources = buildSourceTree(sourceData);
         chapterOrder = data.filter(t => t.type === 'chapter' || t.type === 'front').map(t => t.id);
         buildToc();
         var last = localStorage.getItem(SITE.storageKey + '_position');
@@ -574,7 +632,7 @@ function renderTocView() {
 
     if (tocPath.level === 'root') {
         title.textContent = 'Contents';
-        subtitle.textContent = 'Choose a standard work';
+        subtitle.textContent = tocTree.sources.length ? 'Choose scripture or source collection' : 'Choose a standard work';
         back.classList.remove('show');
         if (tocTree.front) {
             html += renderTocTile({
@@ -595,6 +653,13 @@ function renderTocView() {
                 attrs: `data-action="volume" data-volume="${escapeAttr(volume.label)}"`
             });
         });
+        tocTree.sources.forEach(function(collection) {
+            html += renderTocTile({
+                label: collection.label,
+                meta: collection.docs.length + ' documents',
+                attrs: `data-action="source-collection" data-collection="${escapeAttr(collection.id)}"`
+            });
+        });
     } else if (tocPath.level === 'volume' && tocPath.volume) {
         title.textContent = 'Books';
         subtitle.textContent = tocPath.volume.label;
@@ -605,6 +670,18 @@ function renderTocView() {
                 book: true,
                 active: currentChapter && chapterMeta[currentChapter] && chapterMeta[currentChapter].book === book.label,
                 attrs: `data-action="book" data-volume="${escapeAttr(tocPath.volume.label)}" data-book="${escapeAttr(book.label)}"`
+            });
+        });
+    } else if (tocPath.level === 'source-collection' && tocPath.sourceCollection) {
+        title.textContent = 'Sources';
+        subtitle.textContent = tocPath.sourceCollection.label;
+        back.classList.add('show');
+        tocPath.sourceCollection.docs.forEach(function(doc) {
+            html += renderTocTile({
+                label: doc.label,
+                meta: doc.meta,
+                active: currentSourceDoc === doc.id,
+                attrs: `data-action="source-doc" data-doc="${escapeAttr(doc.id)}"`
             });
         });
     } else {
@@ -641,7 +718,7 @@ function findBook(volume, label) {
 
 function setTocPathForChapter(chapterId) {
     if (chapterId === 'title_page' || !chapterMeta[chapterId]) {
-        tocPath = { level: 'root', volume: null, book: null };
+        tocPath = { level: 'root', volume: null, book: null, sourceCollection: null };
         renderTocView();
         return;
     }
@@ -649,15 +726,28 @@ function setTocPathForChapter(chapterId) {
     var volume = findVolume(meta.volume);
     var book = findBook(volume, meta.book);
     if (!volume || !book) return;
-    tocPath = { level: 'book', volume: volume, book: book };
+    tocPath = { level: 'book', volume: volume, book: book, sourceCollection: null };
+    renderTocView();
+}
+
+function findSourceCollection(id) {
+    return tocTree.sources.find(function(collection) { return collection.id === id; }) || null;
+}
+
+function setTocPathForSource(docId) {
+    var meta = sourceMeta[docId];
+    if (!meta) return;
+    var collection = tocTree.sources.find(function(entry) { return entry.label === meta.collection; });
+    if (!collection) return;
+    tocPath = { level: 'source-collection', volume: null, book: null, sourceCollection: collection };
     renderTocView();
 }
 
 function tocBack() {
     if (tocPath.level === 'book' && tocPath.volume) {
-        tocPath = { level: 'volume', volume: tocPath.volume, book: null };
+        tocPath = { level: 'volume', volume: tocPath.volume, book: null, sourceCollection: null };
     } else {
-        tocPath = { level: 'root', volume: null, book: null };
+        tocPath = { level: 'root', volume: null, book: null, sourceCollection: null };
     }
     renderTocView();
 }
@@ -669,14 +759,23 @@ document.getElementById('toc-grid').addEventListener('click', function(e) {
     if (action === 'volume') {
         var volume = findVolume(tile.dataset.volume);
         if (!volume) return;
-        tocPath = { level: 'volume', volume: volume, book: null };
+        tocPath = { level: 'volume', volume: volume, book: null, sourceCollection: null };
         renderTocView();
     } else if (action === 'book') {
         var volume = findVolume(tile.dataset.volume);
         var book = findBook(volume, tile.dataset.book);
         if (!volume || !book) return;
-        tocPath = { level: 'book', volume: volume, book: book };
+        tocPath = { level: 'book', volume: volume, book: book, sourceCollection: null };
         renderTocView();
+    } else if (action === 'source-collection') {
+        var collection = findSourceCollection(tile.dataset.collection);
+        if (!collection) return;
+        tocPath = { level: 'source-collection', volume: null, book: null, sourceCollection: collection };
+        renderTocView();
+    } else if (action === 'source-doc') {
+        var docMeta = sourceMeta[tile.dataset.doc];
+        if (!docMeta) return;
+        loadSourceDocument(tile.dataset.doc, docMeta.href);
     } else if (action === 'chapter') {
         jumpTo(tile.dataset.id);
     }
@@ -688,7 +787,12 @@ function escapeAttr(str) {
 
 function jumpTo(chapterId, verseNum) {
     setTocPathForChapter(chapterId);
-    loadChapter(chapterId, true).then(() => {
+    ensureScriptureReader().then(function() {
+        return loadChapter(chapterId, true);
+    }).then(() => {
+        currentChapter = chapterId;
+        updateLocationLabel(chapterId);
+        updateActiveToc(chapterId);
         var target;
         if (verseNum) {
             var block = document.getElementById('ch-' + chapterId);
@@ -701,6 +805,50 @@ function jumpTo(chapterId, verseNum) {
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         if (window.innerWidth < 600) { tocOpen = false; document.getElementById('toc').classList.add('hidden'); }
     });
+}
+
+function resetReaderContent() {
+    document.getElementById('content').innerHTML = '';
+    document.getElementById('morsel-preview').hidden = true;
+    loadedChapters = new Set();
+    loadedNotes = new Set();
+    nextToLoad = 0;
+    loading = false;
+}
+
+function ensureScriptureReader() {
+    if (!sourceMode) return Promise.resolve();
+    sourceMode = false;
+    currentSourceDoc = null;
+    currentChapter = null;
+    resetReaderContent();
+    return Promise.resolve();
+}
+
+function loadSourceDocument(docId, href) {
+    sourceMode = true;
+    currentSourceDoc = docId;
+    currentChapter = null;
+    setTocPathForSource(docId);
+    updateLocationLabel(docId);
+    closeGraph();
+    closeChannel();
+    resetReaderContent();
+    return fetch('./' + href)
+        .then(function(r) { return r.text(); })
+        .then(function(html) {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            var block = document.createElement('div');
+            block.className = 'chapter-block source-reader-block';
+            block.id = 'src-' + docId.replace(/[^a-z0-9:_-]/ig, '_');
+            block.dataset.sourceDocId = docId;
+            block.innerHTML = doc.body.innerHTML;
+            document.getElementById('content').appendChild(block);
+            renderTocView();
+            block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (window.innerWidth < 600) { tocOpen = false; document.getElementById('toc').classList.add('hidden'); }
+        });
 }
 
 // ── Load a chapter (scripture text only — fast) ──────────────────────────
@@ -826,6 +974,11 @@ var mutObs = new MutationObserver(mutations => {
 mutObs.observe(document.getElementById('content'), { childList: true });
 
 function updateLocationLabel(id) {
+    if (sourceMeta[id]) {
+        document.getElementById('location-label').textContent =
+            sourceMeta[id].collection + ' · ' + sourceMeta[id].label;
+        return;
+    }
     var item = tocData.find(t => t.id === id);
     if (!item) return;
     // Find parent book
@@ -839,6 +992,12 @@ function updateLocationLabel(id) {
 }
 
 function updateActiveToc(id) {
+    if (sourceMode && currentSourceDoc) {
+        setTocPathForSource(currentSourceDoc);
+        var sourceActive = document.querySelector('.toc-tile.active');
+        if (sourceActive) sourceActive.scrollIntoView({ block: 'nearest' });
+        return;
+    }
     setTocPathForChapter(id);
     var active = document.querySelector('.toc-tile.active');
     if (active) active.scrollIntoView({ block: 'nearest' });
