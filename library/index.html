@@ -689,6 +689,22 @@ function updateFilterPills() {
         pill.classList.toggle('active', activeFilters.has(key));
     });
 }
+
+// ── Service Worker ────────────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(function() {});
+}
+
+// ── Offline badge ─────────────────────────────────────────────────────────
+(function() {
+    var badge = document.getElementById('offline-badge');
+    function updateBadge() {
+        badge.style.display = navigator.onLine ? 'none' : 'inline-block';
+    }
+    updateBadge();
+    window.addEventListener('online', updateBadge);
+    window.addEventListener('offline', updateBadge);
+})();
 </script>
 
 </body>
