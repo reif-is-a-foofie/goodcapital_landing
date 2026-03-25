@@ -78,47 +78,48 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     transition: width .2s, min-width .2s; overflow: hidden;
 }
 #toc.hidden { width: 0; min-width: 0; }
-#toc-head { padding: 12px 14px 10px; font-size: 10px; font-weight: 600;
-    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
-    border-bottom: 1px solid var(--divider); flex-shrink: 0; }
-#toc-scroll { flex: 1; overflow-y: auto; padding: 6px 0; }
-
-.toc-volume { display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 14px 4px; font-size: 10px; font-weight: 700;
-    letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
-    cursor: pointer; user-select: none; }
-.toc-volume:hover { color: var(--accent-hover); }
-.toc-volume .arrow { font-size: 10px; color: var(--accent); transition: transform .15s; opacity: 0.6; }
-.toc-volume.open .arrow { transform: rotate(90deg); }
-.toc-volume-body { display: none; }
-.toc-volume.open + .toc-volume-body { display: block; }
-.toc-book { display: flex; align-items: center; justify-content: space-between;
-    padding: 5px 14px; font-size: 13px; font-weight: 500; color: var(--text);
-    cursor: pointer; user-select: none; }
-.toc-book:hover { background: rgba(0,0,0,0.04); }
-.toc-book-label { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.toc-book-title { line-height: 1.2; }
-.toc-book-meta { font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
-.toc-book .arrow { font-size: 10px; color: var(--muted); transition: transform .15s; }
-.toc-book.open .arrow { transform: rotate(90deg); }
-.toc-chapters { display: none; }
-.toc-chapters {
-    padding: 2px 14px 10px 14px;
-    display: none;
-    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-    gap: 6px;
+#toc-head {
+    padding: 12px 14px 10px; border-bottom: 1px solid var(--divider);
+    flex-shrink: 0; display: flex; align-items: flex-start; gap: 8px;
 }
-.toc-book.open + .toc-chapters { display: grid; }
-.toc-ch {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 34px; padding: 6px 4px; font-size: 12px; color: var(--muted);
-    cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    border: 1px solid rgba(156,122,77,0.16); border-radius: 8px;
-    background: rgba(255,255,255,0.78); transition: background .12s, color .12s, border-color .12s, transform .12s;
+#toc-back {
+    border: 1px solid rgba(156,122,77,0.18); background: rgba(255,255,255,0.82);
+    color: var(--accent); border-radius: 8px; width: 30px; height: 30px; cursor: pointer;
+    display: none; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.toc-ch:hover { background: rgba(156,122,77,0.1); color: var(--text); border-color: rgba(156,122,77,0.34); transform: translateY(-1px); }
-.toc-ch.active { color: #fff; border-color: var(--accent);
-    background: var(--accent); }
+#toc-back.show { display: flex; }
+#toc-back:hover { background: rgba(156,122,77,0.08); }
+#toc-head-copy { min-width: 0; flex: 1; }
+#toc-title { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+#toc-subtitle { margin-top: 4px; font-size: 12px; color: var(--text); line-height: 1.25; }
+#toc-scroll { flex: 1; overflow-y: auto; padding: 12px; }
+#toc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+.toc-tile {
+    border: 1px solid rgba(156,122,77,0.14); border-radius: 12px;
+    background: rgba(255,255,255,0.82); padding: 12px 10px; min-height: 78px;
+    cursor: pointer; transition: transform .12s, border-color .12s, background .12s, box-shadow .12s;
+    display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+}
+.toc-tile:hover {
+    transform: translateY(-1px); border-color: rgba(156,122,77,0.34);
+    background: rgba(156,122,77,0.08); box-shadow: 0 8px 18px rgba(0,0,0,0.04);
+}
+.toc-tile.active {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.toc-tile-title { font-size: 13px; line-height: 1.2; font-weight: 600; color: var(--text); }
+.toc-tile.active .toc-tile-title { color: #fff; }
+.toc-tile-meta { font-size: 10px; line-height: 1.2; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.toc-tile.active .toc-tile-meta { color: rgba(255,255,255,0.82); }
+.toc-tile.chapter-tile {
+    min-height: 42px; padding: 10px 6px; align-items: center; text-align: center;
+}
+.toc-tile.chapter-tile .toc-tile-title { font-size: 14px; }
+.toc-tile.wide { grid-column: 1 / -1; }
 
 /* ── Reader ── */
 #reader { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--bg); }
@@ -192,6 +193,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     #search-panel { z-index: 162; }
     #location-label { display: none; }
     #content { padding: 24px 18px 80px; }
+    #toc-grid { grid-template-columns: 1fr; }
 }
 
 /* ── Offline badge ── */
@@ -210,6 +212,11 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 }
 .scripture span.w:hover { background: rgba(156,122,77,0.13); }
 .scripture span.w.cw-active { background: rgba(156,122,77,0.22); }
+.verse.verse-focus {
+    background: rgba(156,122,77,0.06);
+    box-shadow: inset 3px 0 0 var(--accent);
+    border-radius: 8px;
+}
 
 /* ── Channel panel ── */
 #channel {
@@ -374,8 +381,18 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 
 <div id="shell">
     <div id="toc" class="hidden">
-        <div id="toc-head">Contents</div>
-        <div id="toc-scroll"></div>
+        <div id="toc-head">
+            <button id="toc-back" onclick="tocBack()" aria-label="Back">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 2 4 7 9 12"></polyline>
+                </svg>
+            </button>
+            <div id="toc-head-copy">
+                <div id="toc-title">Contents</div>
+                <div id="toc-subtitle">Choose a standard work</div>
+            </div>
+        </div>
+        <div id="toc-scroll"><div id="toc-grid"></div></div>
     </div>
     <div id="reader">
         <div id="content"></div>
@@ -435,6 +452,9 @@ var SITE = {
 
 // ── State ────────────────────────────────────────────────────────────────
 var tocData = [];
+var tocTree = { front: null, volumes: [] };
+var chapterMeta = {};
+var tocPath = { level: 'root', volume: null, book: null };
 var chapterOrder = [];          // ordered array of chapter ids
 var loadedChapters = new Set(); // ids already in DOM
 var loadedNotes = new Set();    // ids whose notes have been fetched
@@ -452,15 +472,50 @@ function toggleToc() {
     document.getElementById('toc').classList.toggle('hidden', !tocOpen);
 }
 
+function buildTocTree(items) {
+    var tree = { front: null, volumes: [] };
+    var currentVolume = null;
+    var currentBook = null;
+
+    items.forEach(function(item) {
+        if (item.type === 'front') {
+            tree.front = item;
+        } else if (item.type === 'volume') {
+            currentVolume = { label: item.label, books: [] };
+            tree.volumes.push(currentVolume);
+            currentBook = null;
+        } else if (item.type === 'book' && currentVolume) {
+            currentBook = {
+                label: item.label,
+                href: item.href,
+                firstChapter: item.first_chapter,
+                chapters: []
+            };
+            currentVolume.books.push(currentBook);
+        } else if (item.type === 'chapter' && currentBook) {
+            currentBook.chapters.push(item);
+            chapterMeta[item.id] = {
+                volume: currentVolume.label,
+                book: currentBook.label,
+                label: item.label
+            };
+        }
+    });
+
+    return tree;
+}
+
 // ── Load TOC ─────────────────────────────────────────────────────────────
 fetch('./toc.json')
     .then(r => r.json())
     .then(data => {
         tocData = data;
+        tocTree = buildTocTree(data);
         chapterOrder = data.filter(t => t.type === 'chapter' || t.type === 'front').map(t => t.id);
-        buildToc(data);
+        buildToc();
         var last = localStorage.getItem(SITE.storageKey + '_position');
         var startId = (last && chapterOrder.includes(last)) ? last : 'title_page';
+        setTocPathForChapter(startId);
         loadChapter(startId, true).then(() => {
             document.getElementById('splash').classList.add('gone');
             if (window.innerWidth >= 900) {
@@ -471,110 +526,143 @@ fetch('./toc.json')
     });
 
 // ── Build TOC sidebar ────────────────────────────────────────────────────
-function buildToc(items) {
-    var scroll = document.getElementById('toc-scroll');
+function buildToc() {
+    renderTocView();
+}
+
+function renderTocView() {
+    var grid = document.getElementById('toc-grid');
+    var back = document.getElementById('toc-back');
+    var title = document.getElementById('toc-title');
+    var subtitle = document.getElementById('toc-subtitle');
     var html = '';
-    var i = 0;
-    var firstBookByVolume = [];
-    var currentVolumeIndex = -1;
-    while (i < items.length) {
-        var item = items[i];
-        if (item.type === 'front') {
-            html += `<span class="toc-ch toc-front" data-id="${item.id}" onclick="jumpTo('${item.id}')" style="padding-left:14px;font-weight:500;color:var(--text)">${item.label}</span>`;
-            i++;
-        } else if (item.type === 'volume') {
-            var volLabel = item.label;
-            currentVolumeIndex++;
-            html += `<div class="toc-volume" data-volume="${volLabel}" onclick="toggleVolume(this)"><span>${volLabel}</span><span class="arrow">›</span></div>`;
-            html += `<div class="toc-volume-body">`;
-            i++;
-            while (i < items.length && items[i].type !== 'volume' && items[i].type !== 'front') {
-                var vitem = items[i];
-                if (vitem.type === 'book') {
-                    var bookLabel = vitem.label;
-                    if (!firstBookByVolume[currentVolumeIndex]) {
-                        firstBookByVolume[currentVolumeIndex] = bookLabel;
-                    }
-                    var chapterCount = 0;
-                    var probe = i + 1;
-                    while (probe < items.length && items[probe].type === 'chapter') {
-                        chapterCount++;
-                        probe++;
-                    }
-                    html += `<div class="toc-book" data-book="${bookLabel}" onclick="toggleBook(this)"><span class="toc-book-label"><span class="toc-book-title">${bookLabel}</span><span class="toc-book-meta">${chapterCount} chapter${chapterCount === 1 ? '' : 's'}</span></span><span class="arrow">›</span></div>`;
-                    html += `<div class="toc-chapters">`;
-                    i++;
-                    while (i < items.length && items[i].type === 'chapter') {
-                        var ch = items[i];
-                        html += `<span class="toc-ch" data-id="${ch.id}" onclick="jumpTo('${ch.id}')">${ch.label}</span>`;
-                        i++;
-                    }
-                    html += `</div>`;
-                } else {
-                    i++;
-                }
-            }
-            html += `</div>`;
-        } else {
-            i++;
+
+    if (tocPath.level === 'root') {
+        title.textContent = 'Contents';
+        subtitle.textContent = 'Choose a standard work';
+        back.classList.remove('show');
+        if (tocTree.front) {
+            html += renderTocTile({
+                label: tocTree.front.label,
+                meta: 'Reader entry',
+                wide: true,
+                active: currentChapter === tocTree.front.id,
+                attrs: `data-action="chapter" data-id="${tocTree.front.id}"`
+            });
         }
+        tocTree.volumes.forEach(function(volume) {
+            var chapterCount = volume.books.reduce(function(total, book) {
+                return total + book.chapters.length;
+            }, 0);
+            html += renderTocTile({
+                label: volume.label,
+                meta: volume.books.length + ' books · ' + chapterCount + ' chapters',
+                attrs: `data-action="volume" data-volume="${escapeAttr(volume.label)}"`
+            });
+        });
+    } else if (tocPath.level === 'volume' && tocPath.volume) {
+        title.textContent = 'Books';
+        subtitle.textContent = tocPath.volume.label;
+        back.classList.add('show');
+        tocPath.volume.books.forEach(function(book) {
+            html += renderTocTile({
+                label: book.label,
+                meta: book.chapters.length + ' chapter' + (book.chapters.length === 1 ? '' : 's'),
+                active: currentChapter && chapterMeta[currentChapter] && chapterMeta[currentChapter].book === book.label,
+                attrs: `data-action="book" data-volume="${escapeAttr(tocPath.volume.label)}" data-book="${escapeAttr(book.label)}"`
+            });
+        });
+    } else {
+        title.textContent = 'Chapters';
+        subtitle.textContent = tocPath.book.label;
+        back.classList.add('show');
+        tocPath.book.chapters.forEach(function(ch) {
+            html += renderTocTile({
+                label: ch.label,
+                chapter: true,
+                active: currentChapter === ch.id,
+                attrs: `data-action="chapter" data-id="${ch.id}"`
+            });
+        });
     }
-    scroll.innerHTML = html;
-    document.querySelectorAll('.toc-volume').forEach(function(el) {
-        el.classList.add('open');
-    });
-    firstBookByVolume.forEach(function(bookLabel) {
-        var el = document.querySelector(`.toc-book[data-book="${CSS.escape(bookLabel)}"]`);
-        if (el) el.classList.add('open');
-    });
+
+    grid.innerHTML = html;
 }
 
-var manuallyCollapsed = new Set();
-var manuallyCollapsedVolumes = new Set();
-
-function toggleVolume(el) {
-    var vol = el.dataset.volume;
-    if (el.classList.contains('open')) {
-        el.classList.remove('open');
-        manuallyCollapsedVolumes.add(vol);
-    } else {
-        el.classList.add('open');
-        manuallyCollapsedVolumes.delete(vol);
-    }
+function renderTocTile(opts) {
+    return `<button class="toc-tile${opts.chapter ? ' chapter-tile' : ''}${opts.wide ? ' wide' : ''}${opts.active ? ' active' : ''}" ${opts.attrs || ''}>`
+        + `<span class="toc-tile-title">${opts.label}</span>`
+        + (opts.meta ? `<span class="toc-tile-meta">${opts.meta}</span>` : '')
+        + `</button>`;
 }
 
-function toggleBook(el) {
-    var book = el.dataset.book;
-    if (el.classList.contains('open')) {
-        el.classList.remove('open');
-        manuallyCollapsed.add(book);
-    } else {
-        el.classList.add('open');
-        manuallyCollapsed.delete(book);
+function findVolume(label) {
+    return tocTree.volumes.find(function(volume) { return volume.label === label; }) || null;
+}
+
+function findBook(volume, label) {
+    return volume && volume.books.find(function(book) { return book.label === label; }) || null;
+}
+
+function setTocPathForChapter(chapterId) {
+    if (chapterId === 'title_page' || !chapterMeta[chapterId]) {
+        tocPath = { level: 'root', volume: null, book: null };
+        renderTocView();
+        return;
     }
+    var meta = chapterMeta[chapterId];
+    var volume = findVolume(meta.volume);
+    var book = findBook(volume, meta.book);
+    if (!volume || !book) return;
+    tocPath = { level: 'book', volume: volume, book: book };
+    renderTocView();
+}
+
+function tocBack() {
+    if (tocPath.level === 'book' && tocPath.volume) {
+        tocPath = { level: 'volume', volume: tocPath.volume, book: null };
+    } else {
+        tocPath = { level: 'root', volume: null, book: null };
+    }
+    renderTocView();
+}
+
+document.getElementById('toc-grid').addEventListener('click', function(e) {
+    var tile = e.target.closest('.toc-tile');
+    if (!tile) return;
+    var action = tile.dataset.action;
+    if (action === 'volume') {
+        var volume = findVolume(tile.dataset.volume);
+        if (!volume) return;
+        tocPath = { level: 'volume', volume: volume, book: null };
+        renderTocView();
+    } else if (action === 'book') {
+        var volume = findVolume(tile.dataset.volume);
+        var book = findBook(volume, tile.dataset.book);
+        if (!volume || !book) return;
+        tocPath = { level: 'book', volume: volume, book: book };
+        renderTocView();
+    } else if (action === 'chapter') {
+        jumpTo(tile.dataset.id);
+    }
+});
+
+function escapeAttr(str) {
+    return String(str).replace(/"/g, '&quot;');
 }
 
 function jumpTo(chapterId, verseNum) {
-    // Expand the book containing this chapter when user explicitly clicks it
-    var ch = document.querySelector(`.toc-ch[data-id="${chapterId}"]`);
-    if (ch) {
-        var chapters = ch.closest('.toc-chapters');
-        if (chapters) {
-            var book = chapters.previousElementSibling;
-            if (book) {
-                book.classList.add('open');
-                manuallyCollapsed.delete(book.dataset.book);
-            }
-        }
-    }
+    setTocPathForChapter(chapterId);
     loadChapter(chapterId, true).then(() => {
         var target;
         if (verseNum) {
-            // Scroll to specific verse inside chapter block
             var block = document.getElementById('ch-' + chapterId);
             if (block) target = block.querySelector('.verse[id="v' + verseNum + '"]');
         }
         if (!target) target = document.getElementById('ch-' + chapterId);
+        if (target && target.classList && target.classList.contains('verse')) {
+            focusVerse(target, false);
+        }
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         if (window.innerWidth < 600) { tocOpen = false; document.getElementById('toc').classList.add('hidden'); }
     });
@@ -716,29 +804,9 @@ function updateLocationLabel(id) {
 }
 
 function updateActiveToc(id) {
-    document.querySelectorAll('.toc-ch').forEach(el => {
-        el.classList.toggle('active', el.dataset.id === id);
-    });
-    // Only scroll the active item into view in the TOC — don't auto-expand/collapse books
-    var active = document.querySelector('.toc-ch.active');
-    if (active) {
-        var chapters = active.closest('.toc-chapters');
-        if (chapters) {
-            var book = chapters.previousElementSibling;
-            if (book && !manuallyCollapsed.has(book.dataset.book) && !book.classList.contains('open')) {
-                book.classList.add('open');
-            }
-            // Also ensure parent volume is open
-            var volBody = chapters.closest('.toc-volume-body');
-            if (volBody) {
-                var vol = volBody.previousElementSibling;
-                if (vol && !manuallyCollapsedVolumes.has(vol.dataset.volume)) {
-                    vol.classList.add('open');
-                }
-            }
-        }
-        active.scrollIntoView({ block: 'nearest' });
-    }
+    setTocPathForChapter(id);
+    var active = document.querySelector('.toc-tile.active');
+    if (active) active.scrollIntoView({ block: 'nearest' });
 }
 
 // ── Highlighting ─────────────────────────────────────────────────────────
@@ -1082,6 +1150,7 @@ var wordIndexCache = {};     // slug → loaded words JSON
 var wordIndexLoading = {};   // slug → promise
 
 var SRC_COLORS = {
+    standard_works:        '#8B5E3C',
     donaldson:            '#D97706',
     general_conference:   '#EA580C',
     sefaria:              '#7C3AED',
@@ -1112,6 +1181,20 @@ function srcLabel(src) {
     return (src || '').replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
 }
 
+var SOURCE_PRIORITY = {
+    standard_works: 0,
+    jst: 1
+};
+
+function sortMatches(matches) {
+    return (matches || []).slice().sort(function(a, b) {
+        var pa = SOURCE_PRIORITY.hasOwnProperty(a.s) ? SOURCE_PRIORITY[a.s] : 9;
+        var pb = SOURCE_PRIORITY.hasOwnProperty(b.s) ? SOURCE_PRIORITY[b.s] : 9;
+        if (pa !== pb) return pa - pb;
+        return (b.w || 0) - (a.w || 0);
+    });
+}
+
 // Load words JSON for a chapter (cached)
 function loadWordIndex(slug) {
     if (wordIndexCache[slug]) return Promise.resolve(wordIndexCache[slug]);
@@ -1127,12 +1210,25 @@ function loadWordIndex(slug) {
 }
 
 // ── Verse expand/collapse ─────────────────────────────────────────────────
+var focusedVerseEl = null;
+
+function focusVerse(verse, toggleExpand) {
+    if (!verse) return;
+    if (focusedVerseEl && focusedVerseEl !== verse) {
+        focusedVerseEl.classList.remove('verse-focus');
+    }
+    focusedVerseEl = verse;
+    verse.classList.add('verse-focus');
+    if (toggleExpand) verse.classList.toggle('expanded');
+    verse.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 document.getElementById('content').addEventListener('click', function(e) {
     // Word click handled separately below — don't toggle verse for word clicks
     if (e.target.closest('span.w')) return;
     var verse = e.target.closest('div.verse');
     if (!verse) return;
-    verse.classList.toggle('expanded');
+    focusVerse(verse, true);
 });
 
 // Called when user clicks a .w span
@@ -1176,7 +1272,7 @@ function openChannelEmpty(word) {
 
 function openChannel(word, matches) {
     channelWord    = word;
-    channelMorsels = matches;
+    channelMorsels = sortMatches(matches);
     channelIdx     = 0;
     channelOpen    = true;
 
@@ -1266,6 +1362,7 @@ document.addEventListener('keydown', function(e) {
 // ── Cross-reference Graph ─────────────────────────────────────────────────
 var GRAPH_COLORS = {
     verse:              '#9C7A4D',
+    standard_works:     '#8B5E3C',
     donaldson:          '#D97706',
     general_conference: '#EA580C',
     sefaria:            '#7C3AED',
