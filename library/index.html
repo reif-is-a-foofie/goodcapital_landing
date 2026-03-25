@@ -96,16 +96,29 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     padding: 5px 14px; font-size: 13px; font-weight: 500; color: var(--text);
     cursor: pointer; user-select: none; }
 .toc-book:hover { background: rgba(0,0,0,0.04); }
+.toc-book-label { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.toc-book-title { line-height: 1.2; }
+.toc-book-meta { font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
 .toc-book .arrow { font-size: 10px; color: var(--muted); transition: transform .15s; }
 .toc-book.open .arrow { transform: rotate(90deg); }
 .toc-chapters { display: none; }
-.toc-book.open + .toc-chapters { display: block; }
-.toc-ch { display: block; padding: 4px 14px 4px 26px; font-size: 12px; color: var(--muted);
+.toc-chapters {
+    padding: 2px 14px 10px 14px;
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 6px;
+}
+.toc-book.open + .toc-chapters { display: grid; }
+.toc-ch {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 34px; padding: 6px 4px; font-size: 12px; color: var(--muted);
     cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    border-left: 2px solid transparent; }
-.toc-ch:hover { background: rgba(0,0,0,0.04); color: var(--text); }
-.toc-ch.active { color: var(--accent); border-left-color: var(--accent);
-    background: rgba(156,122,77,0.06); }
+    border: 1px solid rgba(156,122,77,0.16); border-radius: 8px;
+    background: rgba(255,255,255,0.78); transition: background .12s, color .12s, border-color .12s, transform .12s;
+}
+.toc-ch:hover { background: rgba(156,122,77,0.1); color: var(--text); border-color: rgba(156,122,77,0.34); transform: translateY(-1px); }
+.toc-ch.active { color: #fff; border-color: var(--accent);
+    background: var(--accent); }
 
 /* ── Reader ── */
 #reader { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--bg); }
@@ -462,6 +475,8 @@ function buildToc(items) {
     var scroll = document.getElementById('toc-scroll');
     var html = '';
     var i = 0;
+    var firstBookByVolume = [];
+    var currentVolumeIndex = -1;
     while (i < items.length) {
         var item = items[i];
         if (item.type === 'front') {
@@ -469,6 +484,7 @@ function buildToc(items) {
             i++;
         } else if (item.type === 'volume') {
             var volLabel = item.label;
+            currentVolumeIndex++;
             html += `<div class="toc-volume" data-volume="${volLabel}" onclick="toggleVolume(this)"><span>${volLabel}</span><span class="arrow">›</span></div>`;
             html += `<div class="toc-volume-body">`;
             i++;
@@ -476,7 +492,16 @@ function buildToc(items) {
                 var vitem = items[i];
                 if (vitem.type === 'book') {
                     var bookLabel = vitem.label;
-                    html += `<div class="toc-book" data-book="${bookLabel}" onclick="toggleBook(this)"><span>${bookLabel}</span><span class="arrow">›</span></div>`;
+                    if (!firstBookByVolume[currentVolumeIndex]) {
+                        firstBookByVolume[currentVolumeIndex] = bookLabel;
+                    }
+                    var chapterCount = 0;
+                    var probe = i + 1;
+                    while (probe < items.length && items[probe].type === 'chapter') {
+                        chapterCount++;
+                        probe++;
+                    }
+                    html += `<div class="toc-book" data-book="${bookLabel}" onclick="toggleBook(this)"><span class="toc-book-label"><span class="toc-book-title">${bookLabel}</span><span class="toc-book-meta">${chapterCount} chapter${chapterCount === 1 ? '' : 's'}</span></span><span class="arrow">›</span></div>`;
                     html += `<div class="toc-chapters">`;
                     i++;
                     while (i < items.length && items[i].type === 'chapter') {
@@ -495,6 +520,13 @@ function buildToc(items) {
         }
     }
     scroll.innerHTML = html;
+    document.querySelectorAll('.toc-volume').forEach(function(el) {
+        el.classList.add('open');
+    });
+    firstBookByVolume.forEach(function(bookLabel) {
+        var el = document.querySelector(`.toc-book[data-book="${CSS.escape(bookLabel)}"]`);
+        if (el) el.classList.add('open');
+    });
 }
 
 var manuallyCollapsed = new Set();
