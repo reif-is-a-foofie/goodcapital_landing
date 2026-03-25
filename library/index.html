@@ -118,6 +118,14 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .toc-tile.chapter-tile {
     min-height: 42px; padding: 10px 6px; align-items: center; text-align: center;
 }
+.toc-tile.book-tile {
+    min-height: 58px;
+    padding: 10px 8px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.toc-tile.book-tile .toc-tile-title { font-size: 12.5px; }
 .toc-tile.chapter-tile .toc-tile-title { font-size: 14px; }
 .toc-tile.wide { grid-column: 1 / -1; }
 
@@ -567,7 +575,7 @@ function renderTocView() {
         tocPath.volume.books.forEach(function(book) {
             html += renderTocTile({
                 label: book.label,
-                meta: book.chapters.length + ' chapter' + (book.chapters.length === 1 ? '' : 's'),
+                book: true,
                 active: currentChapter && chapterMeta[currentChapter] && chapterMeta[currentChapter].book === book.label,
                 attrs: `data-action="book" data-volume="${escapeAttr(tocPath.volume.label)}" data-book="${escapeAttr(book.label)}"`
             });
@@ -590,7 +598,7 @@ function renderTocView() {
 }
 
 function renderTocTile(opts) {
-    return `<button class="toc-tile${opts.chapter ? ' chapter-tile' : ''}${opts.wide ? ' wide' : ''}${opts.active ? ' active' : ''}" ${opts.attrs || ''}>`
+    return `<button class="toc-tile${opts.chapter ? ' chapter-tile' : ''}${opts.book ? ' book-tile' : ''}${opts.wide ? ' wide' : ''}${opts.active ? ' active' : ''}" ${opts.attrs || ''}>`
         + `<span class="toc-tile-title">${opts.label}</span>`
         + (opts.meta ? `<span class="toc-tile-meta">${opts.meta}</span>` : '')
         + `</button>`;
