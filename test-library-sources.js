@@ -325,7 +325,24 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
-  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, loveState, nephiMistState, dcPriesthoodState }, null, 2));
+  await page.evaluate(() => {
+    const target = Array.from(document.querySelectorAll('#v41 .verse-text .w')).find((el) => /^love$/i.test((el.textContent || '').trim()));
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+  const dcLoveCleanState = await page.evaluate(() => ({
+    word: document.querySelector('#ch-word')?.textContent.trim(),
+    sources: Array.from(document.querySelectorAll('.ch-morsel .ch-src-name')).slice(0, 3).map((el) => el.textContent.trim()),
+    verseText: document.querySelector('#v41 .verse-text')?.innerText || '',
+    verseHtml: document.querySelector('#v41 .verse-text')?.innerHTML || '',
+  }));
+  assert(/love/i.test(dcLoveCleanState.word), 'D&C clean re-annotation did not make love clickable');
+  assert(dcLoveCleanState.sources[0] === 'Standard Works', 'Doctrine and Covenants love did not rank standard works first after re-annotation');
+  assert(!/&lt;span class=|&amp;quot;cw/i.test(dcLoveCleanState.verseHtml), 'Doctrine and Covenants verse HTML still leaks escaped critical-word wrappers');
+  await page.$eval('#ch-close', (el) => el.click());
+  await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
+
+  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, loveState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
   await browser.close();
 }
 

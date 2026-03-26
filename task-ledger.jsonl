@@ -18,3 +18,5 @@
 {"ts": "2026-03-26T19:10:41+00:00", "type": "queue", "title": "Fix the Enuma Elish source artifact so it uses clean readable English text instead of the current wrong-language rendering", "status": "pending"}
 {"ts": "2026-03-26T22:13:06+00:00", "type": "queue", "title": "Widen the lexical scripture-fallback rebuild across the remaining standard works so underlines and scripture-first results are consistent outside John, Genesis, and Moses", "status": "completed"}
 {"ts": "2026-03-26T22:13:06+00:00", "type": "queue", "title": "Repair leaked escaped critical-word markup in scripture chapter HTML by re-annotating from clean verse text instead of mutated inline wrappers", "status": "pending"}
+{"ts": "2026-03-26T22:15:46+00:00", "type": "queue", "title": "Repair leaked escaped critical-word markup in Doctrine and Covenants chapters by re-annotating from clean verse text instead of mutated inline wrappers", "status": "completed"}
+{"ts": "2026-03-26T22:15:46+00:00", "type": "queue", "title": "Extend clean verse-text re-annotation to the remaining scripture books with leaked escaped critical-word wrappers, staging them in book-safe slices", "status": "pending"}
