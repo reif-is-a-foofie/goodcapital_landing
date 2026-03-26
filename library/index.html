@@ -99,6 +99,9 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
 }
+#toc-grid.chapter-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 .toc-tile {
     border: 1px solid rgba(156,122,77,0.14); border-radius: 12px;
     background: rgba(255,255,255,0.82); padding: 12px 10px; min-height: 78px;
@@ -117,7 +120,12 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .toc-tile-meta { font-size: 10px; line-height: 1.2; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .toc-tile.active .toc-tile-meta { color: rgba(255,255,255,0.82); }
 .toc-tile.chapter-tile {
-    min-height: 42px; padding: 10px 6px; align-items: center; text-align: center;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 .toc-tile.book-tile {
     min-height: 58px;
@@ -203,6 +211,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     #location-label { display: none; }
     #content { padding: 24px 18px 80px; }
     #toc-grid { grid-template-columns: 1fr; }
+    #toc-grid.chapter-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 /* ── Offline badge ── */
@@ -632,6 +641,7 @@ function renderTocView() {
     var html = '';
 
     if (tocPath.level === 'root') {
+        grid.className = 'toc-grid';
         title.textContent = 'Sources';
         subtitle.textContent = '';
         back.classList.remove('show');
@@ -662,6 +672,7 @@ function renderTocView() {
             });
         });
     } else if (tocPath.level === 'volume' && tocPath.volume) {
+        grid.className = 'toc-grid';
         title.textContent = 'Books';
         subtitle.textContent = tocPath.volume.label;
         back.classList.add('show');
@@ -674,6 +685,7 @@ function renderTocView() {
             });
         });
     } else if (tocPath.level === 'source-collection' && tocPath.sourceCollection) {
+        grid.className = 'toc-grid';
         title.textContent = 'Sources';
         subtitle.textContent = tocPath.sourceCollection.label;
         back.classList.add('show');
@@ -686,6 +698,7 @@ function renderTocView() {
             });
         });
     } else {
+        grid.className = 'toc-grid chapter-grid';
         title.textContent = 'Chapters';
         subtitle.textContent = tocPath.book.label;
         back.classList.add('show');
