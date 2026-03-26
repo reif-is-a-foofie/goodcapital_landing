@@ -29,13 +29,17 @@ import json
 import re
 from collections import defaultdict
 from pathlib import Path
+from typing import Optional
 
 REPO     = Path(__file__).parent.parent
 CHAPTERS = REPO / "library" / "chapters"
+TOC_PATH = REPO / "library" / "toc.json"
 
 MIN_MATCH_SCORE  = 0.18
 MAX_MATCHES_WORD = 8
 MAX_TEXT_LEN     = 500
+MAX_SCRIPTURE_FALLBACKS = 3
+MAX_SCRIPTURE_POSTINGS = 600
 
 SOURCE_PRIORITY = {
     'standard_works': 0,
@@ -116,7 +120,121 @@ def match_sort_key(m: dict):
     )
 
 
-def build_from_graph(graph: dict) -> dict:
+def load_chapter_labels() -> dict[str, dict]:
+    if not TOC_PATH.exists():
+        return {}
+    try:
+        toc = json.loads(TOC_PATH.read_text(encoding='utf-8'))
+    except Exception:
+        return {}
+
+    out = {}
+    current_book = None
+    for item in toc:
+        if item.get('type') == 'book':
+            current_book = item.get('label')
+        elif item.get('type') == 'chapter':
+            out[item.get('id', '')] = {
+                'book': current_book or '',
+                'chapter': str(item.get('label', '')),
+            }
+    return out
+
+
+def build_scripture_catalog(graph_files: list[Path]) -> tuple[dict[str, list], dict[str, float]]:
+    labels = load_chapter_labels()
+    verses = []
+    postings = defaultdict(list)
+
+    for gf in graph_files:
+        slug = gf.stem.replace('_graph', '')
+        try:
+            graph = json.loads(gf.read_text(encoding='utf-8'))
+        except Exception:
+            continue
+
+        chapter_meta = labels.get(slug, {})
+        book = chapter_meta.get('book') or slug.rsplit('_', 1)[0].replace('_', ' ').title()
+        chapter = chapter_meta.get('chapter') or slug.rsplit('_', 1)[-1]
+
+        for node in graph.get('nodes', []):
+            if node.get('t') != 'v':
+                continue
+            text = node.get('x', '')
+            if not text:
+                continue
+            stems = set()
+            forms_by_stem = defaultdict(set)
+            for form, st in tokenize(text):
+                forms_by_stem[st].add(form)
+                stems.add(st)
+            if not stems:
+                continue
+            entry = {
+                'id': f'{slug}:{node.get("n")}',
+                'slug': slug,
+                'verse': int(node.get('n', 0) or 0),
+                'label': f'{book} {chapter}:{int(node.get("n", 0) or 0)}',
+                'text': text,
+                'stems': stems,
+                'forms_by_stem': forms_by_stem,
+            }
+            verse_idx = len(verses)
+            verses.append(entry)
+            for st in stems:
+                postings[st].append(verse_idx)
+
+    total = len(verses)
+    idf = {stem: max(0.2, (1.0 + (total / (len(ids) + 1)) ** 0.15)) for stem, ids in postings.items()}
+    return {'verses': verses, 'postings': postings}, idf
+
+
+def add_scripture_fallbacks(
+    hit_matches: list[dict],
+    stem_key: str,
+    verse_stems: set[str],
+    scripture_ctx: Optional[dict],
+    scripture_idf: Optional[dict[str, float]],
+    self_ref: str,
+    forms: set[str],
+) -> list[dict]:
+    if not scripture_ctx or not scripture_idf:
+        return hit_matches
+    if len(hit_matches) >= MAX_MATCHES_WORD and any(m.get('s') == 'standard_works' for m in hit_matches):
+        return hit_matches
+
+    verse_ids = scripture_ctx.get('postings', {}).get(stem_key, [])
+    if not verse_ids or len(verse_ids) > MAX_SCRIPTURE_POSTINGS:
+        return hit_matches
+
+    existing = {(m.get('s', ''), m.get('lb', '')) for m in hit_matches}
+    forms_lower = {f.lower() for f in forms}
+    additions = []
+
+    for idx in verse_ids:
+        verse = scripture_ctx['verses'][idx]
+        if verse['id'] == self_ref:
+            continue
+        label_key = ('standard_works', verse['label'])
+        if label_key in existing:
+            continue
+        overlap = len(verse_stems & verse['stems'])
+        if overlap < 2:
+            continue
+        exact_bonus = 0.1 if forms_lower & {f.lower() for f in verse['forms_by_stem'].get(stem_key, set())} else 0.0
+        score = min(0.92, 0.22 + 0.06 * min(overlap, 6) + 0.05 * min(scripture_idf.get(stem_key, 1.0), 3.0) + exact_bonus)
+        additions.append({
+            's': 'standard_works',
+            'lb': verse['label'],
+            'x': truncate(verse['text']),
+            'w': round(score, 3),
+        })
+
+    additions.sort(key=match_sort_key)
+    return (additions[:MAX_SCRIPTURE_FALLBACKS] + hit_matches)[:MAX_MATCHES_WORD]
+
+
+def build_from_graph(graph: dict, chapter_slug: str, scripture_ctx: Optional[dict] = None, scripture_idf: Optional[dict[str, float]] = None) -> dict:
     """
     Build verse→word→matches index from a chapter graph JSON.
     Graph has verse nodes (t='v') and passage nodes (t='p') with edges.
@@ -181,6 +299,8 @@ def build_from_graph(graph: dict) -> dict:
         stem_to_forms: dict[str, set] = defaultdict(set)
         for form, st in tokens:
             stem_to_forms[st].add(form)
+        verse_stems = set(stem_to_forms.keys())
+        self_ref = f'{chapter_slug}:{vnum}'
 
         word_data: dict[str, dict] = {}
         for st, forms in stem_to_forms.items():
@@ -200,8 +320,11 @@ def build_from_graph(graph: dict) -> dict:
                     hit_matches.append(m)
 
             if not hit_matches:
-                continue
+                hit_matches = add_scripture_fallbacks([], st, verse_stems, scripture_ctx, scripture_idf, self_ref, forms)
+                if not hit_matches:
+                    continue
 
+            hit_matches = add_scripture_fallbacks(hit_matches, st, verse_stems, scripture_ctx, scripture_idf, self_ref, forms)
             hit_matches.sort(key=match_sort_key)
             total_score = sum(m['w'] for m in hit_matches)
             word_data[st] = {
@@ -231,6 +354,7 @@ def main():
                               for b in args.books)]
 
     print(f'Building word indexes from {len(graph_files)} graph files...')
+    scripture_ctx, scripture_idf = build_scripture_catalog(graph_files)
 
     written = skipped = total_words = 0
     for gf in graph_files:
@@ -246,7 +370,7 @@ def main():
         except Exception:
             continue
 
-        index = build_from_graph(graph)
+        index = build_from_graph(graph, slug, scripture_ctx, scripture_idf)
         if not index:
             continue
 

@@ -231,7 +231,8 @@ async function run() {
   }));
 
   assert(rankingState.word === 'pharisee', 'ranking regression used the wrong scripture word');
-  assert(rankingState.firstSource === 'Journal Of Discourses', 'deep-link ranking regressed behind Donaldson echoing');
+  assert(rankingState.firstSource === 'Standard Works', 'scripture-first ranking regressed behind commentary/source results');
+  assert(rankingState.morsels.every((m) => m.src === 'Standard Works'), 'scripture-first ranking no longer pins the first scripture tranche');
 
   await page.$eval('#ch-close', (el) => el.click());
   await page.click('#v16');
@@ -253,8 +254,42 @@ async function run() {
 
   assert(/god/i.test(strongsState.word), 'word-study regression used the wrong scripture word');
   assert(/G2316|theos/i.test(strongsState.study), "Strong's word study did not appear for John 3:16");
+  await page.$eval('#ch-close', (el) => el.click());
+  await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
-  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState }, null, 2));
+  await page.evaluate(() => jumpTo('genesis_2'));
+  await page.waitForSelector('#v6 .verse-text .w', { timeout: 20000 });
+  await page.evaluate(() => {
+    const target = Array.from(document.querySelectorAll('#v6 .verse-text .w')).find((el) => /mist/i.test(el.textContent || ''));
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+  const mistState = await page.evaluate(() => ({
+    word: document.querySelector('#ch-word')?.textContent.trim(),
+    firstSource: document.querySelector('.ch-morsel .ch-src-name')?.textContent.trim() || '',
+  }));
+  assert(/mist/i.test(mistState.word), 'scripture fallback regression used the wrong Genesis 2 word');
+  assert(mistState.firstSource === 'Standard Works', 'Genesis 2 mist did not prioritize standard works fallback');
+  await page.$eval('#ch-close', (el) => el.click());
+  await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
+
+  await page.evaluate(() => jumpTo('john_3'));
+  await page.waitForSelector('#v16 .verse-text .w', { timeout: 20000 });
+  await page.evaluate(() => {
+    const target = Array.from(document.querySelectorAll('#v16 .verse-text .w')).find((el) => /loved/i.test(el.textContent || ''));
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+  const loveState = await page.evaluate(() => ({
+    word: document.querySelector('#ch-word')?.textContent.trim(),
+    sources: Array.from(document.querySelectorAll('.ch-morsel .ch-src-name')).slice(0, 3).map((el) => el.textContent.trim()),
+  }));
+  assert(/lov/i.test(loveState.word), 'scripture fallback regression used the wrong John 3 word');
+  assert(loveState.sources[0] === 'Standard Works', 'John 3 loved did not rank standard works first');
+  await page.$eval('#ch-close', (el) => el.click());
+  await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
+
+  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, loveState }, null, 2));
   await browser.close();
 }
 
