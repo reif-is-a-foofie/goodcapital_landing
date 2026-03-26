@@ -1591,22 +1591,37 @@ var SOURCE_PRIORITY = {
     jst: 1
 };
 
+var SOURCE_RANK_BOOST = {
+    standard_works: 0.035,
+    jst: 0.03,
+    donaldson: 0.002,
+    general_conference: 0.015,
+    journal_of_discourses: 0.015,
+    history_of_church: 0.015
+};
+
 function sortMatches(matches) {
     var context = tokenSet(activeContextText);
     var sorted = (matches || []).slice().map(function(m) {
+        var novelty = noveltyBonus(context, m.x || '');
         return {
             raw: m,
-            rank: (m.w || 0) - overlapPenalty(context, m.x || '', m.s)
+            rank: (m.w || 0)
+                + (SOURCE_RANK_BOOST[m.s] || 0)
+                + novelty
+                - overlapPenalty(context, m.x || '', m.s)
+                - echoPenalty(activeContextText, m.x || '', m.s, m.lb || '')
         };
     }).sort(function(a, b) {
+        if (Math.abs(b.rank - a.rank) > 0.015) return b.rank - a.rank;
         var pa = SOURCE_PRIORITY.hasOwnProperty(a.raw.s) ? SOURCE_PRIORITY[a.raw.s] : 9;
         var pb = SOURCE_PRIORITY.hasOwnProperty(b.raw.s) ? SOURCE_PRIORITY[b.raw.s] : 9;
         if (pa !== pb) return pa - pb;
-        return b.rank - a.rank;
+        return (b.raw.w || 0) - (a.raw.w || 0);
     }).map(function(entry) { return entry.raw; });
     var seen = new Set();
     sorted = sorted.filter(function(m) {
-        var key = [m.s || '', m.lb || '', (m.x || '').slice(0, 140)].join('|');
+        var key = [m.s || '', m.lb || '', normalizeExcerpt(m.x || '').slice(0, 160)].join('|');
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
@@ -1628,6 +1643,24 @@ function tokenSet(text) {
     return new Set(String(text || '').toLowerCase().match(/[a-z]{3,}/g) || []);
 }
 
+function activeVerseRefLabel() {
+    if (!currentChapter || !focusedVerseEl || !chapterMeta[currentChapter]) return '';
+    var verse = parseInt((focusedVerseEl.id || '').replace('v', ''), 10);
+    if (!verse) return '';
+    return chapterMeta[currentChapter].book + ' ' + chapterMeta[currentChapter].label + ':' + verse;
+}
+
+function noveltyBonus(context, text) {
+    if (!context || !context.size) return 0;
+    var other = tokenSet(text);
+    if (!other.size) return 0;
+    var shared = 0;
+    other.forEach(function(tok) { if (context.has(tok)) shared += 1; });
+    var novel = Math.max(0, other.size - shared);
+    var ratio = novel / Math.max(1, other.size);
+    return Math.min(0.12, ratio * 0.12);
+}
+
 function overlapPenalty(context, text, source) {
     if (!context || !context.size) return 0;
     var other = tokenSet(text);
@@ -1636,7 +1669,47 @@ function overlapPenalty(context, text, source) {
     other.forEach(function(tok) { if (context.has(tok)) shared += 1; });
     var ratio = shared / Math.max(1, Math.min(context.size, other.size));
     if (ratio < 0.45) return 0;
-    return ratio * ((source === 'standard_works' || source === 'jst') ? 0.25 : 0.08);
+    return ratio * ((source === 'standard_works' || source === 'jst') ? 0.22 : 0.1);
+}
+
+function echoPenalty(contextText, text, source, label) {
+    var context = normalizeExcerpt(contextText);
+    var excerpt = normalizeExcerpt(text);
+    if (!context || !excerpt) return 0;
+
+    var contextTokens = context.split(' ').filter(function(tok) { return tok.length >= 4; });
+    var excerptTokens = excerpt.split(' ').filter(function(tok) { return tok.length >= 4; });
+    if (!contextTokens.length || !excerptTokens.length) return 0;
+
+    var shared = 0;
+    var ctx = new Set(contextTokens);
+    excerptTokens.forEach(function(tok) { if (ctx.has(tok)) shared += 1; });
+    var sharedRatio = shared / Math.max(1, Math.min(contextTokens.length, excerptTokens.length));
+    var novelRatio = Math.max(0, excerptTokens.length - shared) / Math.max(1, excerptTokens.length);
+    var prefix = context.slice(0, Math.min(160, context.length));
+    var hasDirectQuote = prefix.length >= 40 && excerpt.indexOf(prefix) !== -1;
+    var labelRef = resolveScriptureRef(label || '');
+    var activeRef = activeVerseRefLabel();
+    if (activeRef) {
+        var activeRefRe = new RegExp('\\b' + escapeRegex(activeRef) + '\\b', 'i');
+        if (activeRefRe.test(label || '') || activeRefRe.test(text || '')) {
+            return source === 'donaldson' ? 0.22 : 0.18;
+        }
+    }
+
+    if ((source === 'standard_works' || source === 'jst') && labelRef) {
+        return sharedRatio >= 0.58 ? 0.18 : 0;
+    }
+    if (hasDirectQuote && novelRatio < 0.55) {
+        return 0.18;
+    }
+    if (sharedRatio >= 0.72) {
+        return 0.14;
+    }
+    if (sharedRatio >= 0.56 && novelRatio < 0.35) {
+        return 0.11;
+    }
+    return 0;
 }
 
 function findBookRecord(label) {

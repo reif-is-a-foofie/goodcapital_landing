@@ -161,7 +161,33 @@ async function run() {
   assert(scriptureToSourceState.previewHidden, 'source morsel click fell back to the preview card');
   assert(scriptureToSourceState.focusedText.length > 80, 'source morsel click did not focus a relevant paragraph');
 
-  console.log(JSON.stringify({ rootTiles, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState }, null, 2));
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.$eval('.toc-tile[data-action="volume"][data-volume="New Testament"]', (el) => el.click());
+  await page.$eval('.toc-tile[data-action="book"][data-book="John"]', (el) => el.click());
+  await page.$eval('.toc-tile[data-action="chapter"][data-id="john_3"]', (el) => el.click());
+  await page.waitForSelector('#ch-john_3', { timeout: 20000 });
+  await page.click('#v1');
+  await page.waitForSelector('#v1 span.w', { timeout: 20000 });
+  await page.evaluate(() => {
+    const spans = Array.from(document.querySelectorAll('#v1 span.w'));
+    const target = spans.find((el) => /pharisees?/i.test(el.textContent || '')) || spans[0];
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+
+  const rankingState = await page.evaluate(() => ({
+    word: document.querySelector('#ch-word')?.textContent.trim(),
+    firstSource: document.querySelector('.ch-morsel .ch-src-name')?.textContent.trim() || '',
+    morsels: Array.from(document.querySelectorAll('.ch-morsel')).slice(0, 3).map((el) => ({
+      src: el.querySelector('.ch-src-name')?.textContent.trim() || '',
+      text: el.querySelector('.ch-morsel-text')?.textContent.trim() || '',
+    })),
+  }));
+
+  assert(rankingState.word === 'pharisee', 'ranking regression used the wrong scripture word');
+  assert(rankingState.firstSource === 'Journal Of Discourses', 'deep-link ranking regressed behind Donaldson echoing');
+
+  console.log(JSON.stringify({ rootTiles, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState }, null, 2));
   await browser.close();
 }
 
