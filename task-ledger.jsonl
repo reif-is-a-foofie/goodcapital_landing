@@ -1,0 +1,11 @@
+{"ts":"2026-03-26T00:00:00+00:00","type":"queue","status":"completed","title":"Separate Donaldson scripture quotation from actual commentary at the corpus/build layer so Donaldson stops echoing the verse text back as commentary","commit":"886f0a09"}
+{"ts":"2026-03-26T00:00:01+00:00","type":"queue","status":"completed","title":"Upgrade result/morsel navigation to be paragraph-first across available source corpora","commit":"5cd91c48"}
+{"ts":"2026-03-26T00:00:02+00:00","type":"queue","status":"completed","title":"Improve ranking toward deep links","commit":"61d0e546"}
+{"ts":"2026-03-26T00:00:03+00:00","type":"queue","status":"completed","title":"Add word-side translation/etymology hooks","commit":"3e32dc02"}
+{"ts":"2026-03-26T00:00:04+00:00","type":"queue","status":"completed","title":"Expand browser regression coverage","commit":"d7b1edbb"}
+{"ts":"2026-03-26T00:00:05+00:00","type":"queue","status":"pending","title":"Add an append-only immutable task ledger and worker-ready orchestration format"}
+{"ts":"2026-03-26T00:00:06+00:00","type":"queue","status":"pending","title":"Split source periodicals and large historical corpora into natural paragraph-addressed browse units so every result can open its full parent document at the relevant paragraph"}
+{"ts":"2026-03-26T00:00:07+00:00","type":"queue","status":"pending","title":"Replace heuristic source-doc resolution with stable doc and paragraph IDs in the scripture-side word/graph artifacts so cross-corpus jumps stay exact after future corpus changes"}
+{"ts":"2026-03-26T00:00:08+00:00","type":"queue","status":"pending","title":"Rebuild scripture-side critical-word coverage so semantically rich verse terms like loved, breath, life, and soul surface deeper paragraph-level links instead of disappearing from the interactive graph"}
+{"ts":"2026-03-26T00:00:09+00:00","type":"queue","status":"pending","title":"Add non-Bible word-study fallbacks for Book of Mormon, Doctrine and Covenants, and Pearl of Great Price so clicked words there still surface translation/gloss context without Strong's data"}
+{"ts":"2026-03-26T00:00:10+00:00","type":"queue","status":"pending","title":"Add mobile quick-back and cross-corpus regression coverage so swipe-back and history restoration are tested the same way traversal is tested"}
