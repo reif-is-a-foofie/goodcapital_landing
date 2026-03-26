@@ -839,6 +839,75 @@ function ensureScriptureReader() {
     return Promise.resolve();
 }
 
+function annotateSourceText(text, words, paraIdx) {
+    var entries = Object.keys(words || {}).map(function(stem) {
+        return { stem: stem, entry: words[stem] };
+    }).sort(function(a, b) {
+        return (b.entry.score || 0) - (a.entry.score || 0);
+    }).slice(0, 10);
+    if (!entries.length) return escapeHtml(text);
+
+    var spans = [];
+    var lowered = String(text || '').toLowerCase();
+    var maxScore = entries[0].entry.score || 1;
+
+    entries.forEach(function(item) {
+        (item.entry.forms || []).forEach(function(form) {
+            var re = new RegExp('\\b' + escapeRegex(form) + '\\b', 'gi');
+            var match;
+            while ((match = re.exec(lowered))) {
+                spans.push({
+                    start: match.index,
+                    end: match.index + match[0].length,
+                    stem: item.stem,
+                    score: Math.min(1, (item.entry.score || 0) / maxScore)
+                });
+            }
+        });
+    });
+
+    spans.sort(function(a, b) {
+        if (a.start !== b.start) return a.start - b.start;
+        return (b.end - b.start) - (a.end - a.start);
+    });
+
+    var chosen = [];
+    var cursor = -1;
+    spans.forEach(function(span) {
+        if (span.start < cursor) return;
+        chosen.push(span);
+        cursor = span.end;
+    });
+
+    if (!chosen.length) return escapeHtml(text);
+
+    var out = [];
+    var pos = 0;
+    chosen.forEach(function(span) {
+        if (span.start > pos) out.push(escapeHtml(text.slice(pos, span.start)));
+        out.push(
+            '<span class="w" data-st="' + escapeHtml(span.stem) + '" data-v="' + paraIdx + '" style="--ws:' + span.score.toFixed(3) + '">' +
+            escapeHtml(text.slice(span.start, span.end)) +
+            '</span>'
+        );
+        pos = span.end;
+    });
+    if (pos < text.length) out.push(escapeHtml(text.slice(pos)));
+    return out.join('');
+}
+
+function annotateSourceBlock(block, wordsIndex) {
+    if (!block || !wordsIndex) return;
+    Array.from(block.querySelectorAll('p.source-para')).forEach(function(node, idx) {
+        var key = String(idx + 1);
+        var words = wordsIndex[key];
+        if (!words) return;
+        var text = node.textContent || '';
+        if (!text.trim()) return;
+        node.innerHTML = annotateSourceText(text, words, idx + 1);
+    });
+}
+
 function loadSourceDocument(docId, href) {
     sourceMode = true;
     currentSourceDoc = docId;
@@ -859,9 +928,12 @@ function loadSourceDocument(docId, href) {
             block.dataset.sourceDocId = docId;
             block.innerHTML = doc.body.innerHTML;
             document.getElementById('content').appendChild(block);
-            renderTocView();
-            block.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            if (window.innerWidth < 600) { tocOpen = false; document.getElementById('toc').classList.add('hidden'); }
+            return loadSourceWordIndex(docId).then(function(idx) {
+                annotateSourceBlock(block, idx || {});
+                renderTocView();
+                block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (window.innerWidth < 600) { tocOpen = false; document.getElementById('toc').classList.add('hidden'); }
+            });
         });
 }
 
@@ -1464,17 +1536,40 @@ function showMorselPreview(m) {
 }
 
 // Load words JSON for a chapter (cached)
-function loadWordIndex(slug) {
-    if (wordIndexCache[slug]) return Promise.resolve(wordIndexCache[slug]);
-    if (wordIndexLoading[slug]) return wordIndexLoading[slug];
-    wordIndexLoading[slug] = fetch('./chapters/' + slug + '_words.json')
+function loadWordIndex(pathKey, href) {
+    if (wordIndexCache[pathKey]) return Promise.resolve(wordIndexCache[pathKey]);
+    if (wordIndexLoading[pathKey]) return wordIndexLoading[pathKey];
+    wordIndexLoading[pathKey] = fetch(href)
         .then(function(r) { if (r.ok) return r.json(); return null; })
         .then(function(data) {
-            wordIndexCache[slug] = data || {};
-            return wordIndexCache[slug];
+            if (data && data._m && data.v) {
+                var catalog = data._m;
+                Object.keys(data.v).forEach(function(vnum) {
+                    var verseData = data.v[vnum] || {};
+                    Object.keys(verseData).forEach(function(stem) {
+                        var entry = verseData[stem];
+                        if (!entry || !entry.m || entry.matches) return;
+                        entry.matches = entry.m.map(function(ref) { return catalog[ref]; }).filter(Boolean);
+                    });
+                });
+                data = data.v;
+            }
+            wordIndexCache[pathKey] = data || {};
+            return wordIndexCache[pathKey];
         })
-        .catch(function() { wordIndexCache[slug] = {}; return {}; });
-    return wordIndexLoading[slug];
+        .catch(function() { wordIndexCache[pathKey] = {}; return {}; });
+    return wordIndexLoading[pathKey];
+}
+
+function loadChapterWordIndex(slug) {
+    return loadWordIndex('chapter:' + slug, './chapters/' + slug + '_words.json');
+}
+
+function loadSourceWordIndex(docId) {
+    var meta = sourceMeta[docId];
+    if (!meta || !meta.href) return Promise.resolve({});
+    var wordsHref = './' + meta.href.replace(/\.html$/, '_words.json');
+    return loadWordIndex('source:' + docId, wordsHref);
 }
 
 // ── Verse expand/collapse ─────────────────────────────────────────────────
@@ -1510,13 +1605,15 @@ document.addEventListener('click', function(e) {
     var block = span.closest('.chapter-block');
     if (!block) return;
     var slug  = block.dataset.chapterId;
+    var sourceDocId = block.dataset.sourceDocId;
 
     // Mark active span
     if (channelActiveSpan) channelActiveSpan.classList.remove('cw-active');
     channelActiveSpan = span;
     span.classList.add('cw-active');
 
-    loadWordIndex(slug).then(function(idx) {
+    var loader = sourceDocId ? loadSourceWordIndex(sourceDocId) : loadChapterWordIndex(slug);
+    loader.then(function(idx) {
         var verseData = idx[vnum] || {};
         var entry     = verseData[stem];
         if (!entry || !entry.matches || !entry.matches.length) {

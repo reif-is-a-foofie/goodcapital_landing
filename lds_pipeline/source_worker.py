@@ -235,13 +235,13 @@ def sync_gc() -> None:
 
 HOC_CACHE = CACHE_DIR / "hoc"
 HOC_SOURCES = {
-    "vol1": "https://www.gutenberg.org/cache/epub/45922/pg45922.txt",
-    "vol2": "https://www.gutenberg.org/cache/epub/45923/pg45923.txt",
-    "vol3": "https://www.gutenberg.org/cache/epub/45924/pg45924.txt",
-    "vol4": "https://www.gutenberg.org/cache/epub/45925/pg45925.txt",
-    "vol5": "https://www.gutenberg.org/cache/epub/45926/pg45926.txt",
-    "vol6": "https://www.gutenberg.org/cache/epub/45927/pg45927.txt",
-    "vol7": "https://www.gutenberg.org/cache/epub/45928/pg45928.txt",
+    "vol1": "https://www.gutenberg.org/files/47091/47091-0.txt",
+    "vol2": "https://www.gutenberg.org/files/47745/47745-0.txt",
+    "vol3": "https://www.gutenberg.org/files/48080/48080-0.txt",
+    "vol4": "https://www.gutenberg.org/files/48289/48289-0.txt",
+    "vol5": "https://www.gutenberg.org/files/48290/48290-0.txt",
+    "vol6": "https://www.gutenberg.org/files/48419/48419-0.txt",
+    "vol7": "https://archive.org/download/HistoryOfTheChurchhcVolumes1-7original1902EditionPdf/HistoryOfTheChurchhcVolumes1-7original1902EditionPdf_djvu.txt",
 }
 
 
