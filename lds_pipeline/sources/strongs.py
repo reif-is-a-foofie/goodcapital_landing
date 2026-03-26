@@ -135,7 +135,7 @@ def lookup(strongs_num: str) -> Optional[dict]:
 
 _oshb_loaded: dict[str, dict] = {}   # abbr → {ch:v → [strongs_nums]}
 
-_OSHB_NS = "http://www.biblesocieties.org/osis"
+_OSHB_NS = "http://www.bibletechnologies.net/2003/OSIS/namespace"
 
 
 def _load_oshb_book(book_upper: str) -> dict:
@@ -151,8 +151,11 @@ def _load_oshb_book(book_upper: str) -> dict:
     json_cache = OSHB_CACHE / f"{abbr}.json"
 
     if json_cache.exists():
-        _oshb_loaded[abbr] = json.loads(json_cache.read_text(encoding="utf-8"))
-        return _oshb_loaded[abbr]
+        cached = json.loads(json_cache.read_text(encoding="utf-8"))
+        # Older runs cached empty verse arrays because the OSIS namespace was wrong.
+        if any(cached.values()):
+            _oshb_loaded[abbr] = cached
+            return _oshb_loaded[abbr]
 
     # Download and parse XML
     url = OSHB_BASE.format(abbr=abbr)
@@ -191,9 +194,11 @@ def _load_oshb_book(book_upper: str) -> dict:
                 lemma = el.get('lemma', '')
                 for part in lemma.split('/'):
                     part = part.strip()
-                    clean = re.sub(r'[a-z]$', '', part)
-                    if re.match(r'^H\d+$', clean):
-                        index[current_cv].append(clean)
+                    clean = re.sub(r'\s+[a-z]$', '', part)
+                    clean = re.sub(r'[a-z]$', '', clean)
+                    digits = re.sub(r'\D', '', clean)
+                    if digits:
+                        index[current_cv].append(f'H{digits}')
 
     except ET.ParseError as e:
         print(f"  Warning: XML parse error for {abbr}: {e}")
@@ -289,13 +294,13 @@ MORPHGNT_CACHE = CACHE_DIR / "morphgnt"
 _MORPHGNT_BOOKS = {
     "MATTHEW": "61-Mt", "MARK": "62-Mk", "LUKE": "63-Lk", "JOHN": "64-Jn",
     "ACTS": "65-Ac", "ROMANS": "66-Ro", "1 CORINTHIANS": "67-1Co",
-    "2 CORINTHIANS": "68-2Co", "GALATIANS": "69-Ga", "EPHESIANS": "70-Ep",
-    "PHILIPPIANS": "71-Ph", "COLOSSIANS": "72-Co",
+    "2 CORINTHIANS": "68-2Co", "GALATIANS": "69-Ga", "EPHESIANS": "70-Eph",
+    "PHILIPPIANS": "71-Php", "COLOSSIANS": "72-Col",
     "1 THESSALONIANS": "73-1Th", "2 THESSALONIANS": "74-2Th",
-    "1 TIMOTHY": "75-1Ti", "2 TIMOTHY": "76-2Ti", "TITUS": "77-Ti",
+    "1 TIMOTHY": "75-1Ti", "2 TIMOTHY": "76-2Ti", "TITUS": "77-Tit",
     "PHILEMON": "78-Phm", "HEBREWS": "79-Heb", "JAMES": "80-Jas",
     "1 PETER": "81-1Pe", "2 PETER": "82-2Pe", "1 JOHN": "83-1Jn",
-    "2 JOHN": "84-2Jn", "3 JOHN": "85-3Jn", "JUDE": "86-Jude",
+    "2 JOHN": "84-2Jn", "3 JOHN": "85-3Jn", "JUDE": "86-Jud",
     "REVELATION": "87-Re",
 }
 # Note: morphgnt file format has 7 tab-separated fields per word:
@@ -338,8 +343,11 @@ def _load_morphgnt_book(book_upper: str) -> dict:
     json_cache = MORPHGNT_CACHE / f"{code}.json"
 
     if json_cache.exists():
-        _morphgnt_loaded[book_upper] = json.loads(json_cache.read_text(encoding="utf-8"))
-        return _morphgnt_loaded[book_upper]
+        cached = json.loads(json_cache.read_text(encoding="utf-8"))
+        # Older runs parsed chapter/verse boundaries incorrectly from MorphGNT.
+        if any(str(key).startswith("1:") for key in cached.keys()):
+            _morphgnt_loaded[book_upper] = cached
+            return _morphgnt_loaded[book_upper]
 
     url = MORPHGNT_BASE.format(book=code)
     print(f"  Downloading MorphGNT {code}...", flush=True)
@@ -361,11 +369,17 @@ def _load_morphgnt_book(book_upper: str) -> dict:
         parts = line.split()
         if len(parts) < 7:
             continue
-        bcv   = parts[0]          # e.g. "61001001"
+        bcv   = parts[0]          # e.g. "040101" for John 1:1
         lemma = parts[6].lower()  # last field
 
-        ch = str(int(bcv[2:5]))
-        v  = str(int(bcv[5:8]))
+        if len(bcv) == 6:
+            ch = str(int(bcv[0:3]))
+            v  = str(int(bcv[3:6]))
+        elif len(bcv) >= 8:
+            ch = str(int(bcv[2:5]))
+            v  = str(int(bcv[5:8]))
+        else:
+            continue
         cv_key = f"{ch}:{v}"
 
         snum = rev.get(lemma)

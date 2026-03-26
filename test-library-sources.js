@@ -187,7 +187,28 @@ async function run() {
   assert(rankingState.word === 'pharisee', 'ranking regression used the wrong scripture word');
   assert(rankingState.firstSource === 'Journal Of Discourses', 'deep-link ranking regressed behind Donaldson echoing');
 
-  console.log(JSON.stringify({ rootTiles, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState }, null, 2));
+  await page.$eval('#ch-close', (el) => el.click());
+  await page.click('#v16');
+  await page.waitForSelector('#v16 span.w', { timeout: 20000 });
+  await page.evaluate(() => {
+    const target = Array.from(document.querySelectorAll('#v16 span.w')).find((el) => /god/i.test(el.textContent || ''));
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+  await page.waitForFunction(() => {
+    const study = document.querySelector('#ch-study');
+    return !!(study && !study.hidden && /G2316|theos|god/i.test(study.textContent || ''));
+  }, { timeout: 15000 });
+
+  const strongsState = await page.evaluate(() => ({
+    word: document.querySelector('#ch-word')?.textContent.trim(),
+    study: document.querySelector('#ch-study')?.textContent.trim() || '',
+  }));
+
+  assert(/god/i.test(strongsState.word), 'word-study regression used the wrong scripture word');
+  assert(/G2316|theos/i.test(strongsState.study), "Strong's word study did not appear for John 3:16");
+
+  console.log(JSON.stringify({ rootTiles, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState }, null, 2));
   await browser.close();
 }
 

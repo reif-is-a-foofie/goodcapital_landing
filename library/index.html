@@ -340,6 +340,40 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     font-family: 'EB Garamond', Georgia, serif; letter-spacing: -0.02em;
     line-height: 1.2;
 }
+#ch-study {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(156,122,77,0.16);
+    border-radius: 12px;
+    background: #fffdf9;
+}
+#ch-study[hidden] { display: none; }
+.ch-study-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+.ch-study-entry + .ch-study-entry {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+.ch-study-line {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text);
+}
+.ch-study-num { font-weight: 700; color: var(--accent); }
+.ch-study-lemma { font-weight: 600; }
+.ch-study-def {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #52493f;
+}
 #ch-hint { font-size: 10px; color: var(--muted); margin-top: 4px; }
 #ch-close {
     background: none; border: none; cursor: pointer; padding: 4px;
@@ -529,6 +563,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
         <div style="flex:1">
             <div id="ch-word"></div>
             <div id="ch-hint">space → next · click any word to explore</div>
+            <div id="ch-study" hidden></div>
         </div>
         <button id="ch-close" onclick="closeChannel()">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1553,6 +1588,8 @@ var channelIdx     = 0;      // which morsel is "current"
 var channelActiveSpan = null;
 var wordIndexCache = {};     // slug → loaded words JSON
 var wordIndexLoading = {};   // slug → promise
+var strongsIndexCache = {};  // chapter → loaded strongs JSON
+var strongsIndexLoading = {}; // chapter → promise
 
 var SRC_COLORS = {
     standard_works:        '#8B5E3C',
@@ -1871,6 +1908,70 @@ function loadSourceWordIndex(docId) {
     return loadWordIndex('source:' + docId, wordsHref);
 }
 
+function loadStrongsIndex(chapterId) {
+    if (!chapterId) return Promise.resolve({});
+    if (strongsIndexCache[chapterId]) return Promise.resolve(strongsIndexCache[chapterId]);
+    if (strongsIndexLoading[chapterId]) return strongsIndexLoading[chapterId];
+    strongsIndexLoading[chapterId] = fetch('./chapters/' + chapterId + '_strongs.json')
+        .then(function(r) { return r.ok ? r.json() : {}; })
+        .then(function(data) {
+            strongsIndexCache[chapterId] = data || {};
+            return strongsIndexCache[chapterId];
+        })
+        .catch(function() { strongsIndexCache[chapterId] = {}; return {}; });
+    return strongsIndexLoading[chapterId];
+}
+
+function scoreStrongsEntry(wordText, stem, entry) {
+    var word = normalizeExcerpt(wordText || '');
+    var targetStem = normalizeExcerpt(stem || '');
+    var hay = normalizeExcerpt([
+        entry.sn || '', entry.lm || '', entry.xl || '', entry.pr || '', entry.gl || '', entry.kj || '', entry.dv || ''
+    ].join(' '));
+    if (!hay) return 0;
+    var score = 0;
+    if (word && hay.indexOf(word) !== -1) score += 3;
+    if (targetStem && hay.indexOf(targetStem) !== -1) score += 2;
+    if (entry.gl && normalizeExcerpt(entry.gl).indexOf(word) !== -1) score += 2;
+    return score;
+}
+
+function pickStrongsEntries(wordText, stem, entries) {
+    var ranked = (entries || []).slice().map(function(entry) {
+        return { entry: entry, score: scoreStrongsEntry(wordText, stem, entry) };
+    }).sort(function(a, b) {
+        if (b.score !== a.score) return b.score - a.score;
+        return String(a.entry.sn || '').localeCompare(String(b.entry.sn || ''));
+    }).map(function(row) { return row.entry; });
+    return ranked.slice(0, 3);
+}
+
+function renderWordStudy(wordText, entries) {
+    var host = document.getElementById('ch-study');
+    if (!entries || !entries.length) {
+        host.hidden = true;
+        host.innerHTML = '';
+        return;
+    }
+    host.hidden = false;
+    host.innerHTML =
+        '<div class="ch-study-title">Word Study</div>' +
+        entries.map(function(entry) {
+            var line = '<div class="ch-study-line">'
+                + '<span class="ch-study-num">' + escapeHtml(entry.sn || '') + '</span>'
+                + (entry.xl ? ' <span class="ch-study-lemma">' + escapeHtml(entry.xl) + '</span>' : '')
+                + (entry.lm ? ' <span>' + escapeHtml(entry.lm) + '</span>' : '')
+                + (entry.pr ? ' <span>(' + escapeHtml(entry.pr) + ')</span>' : '')
+                + '</div>';
+            var def = (entry.kj || entry.gl || '');
+            if (entry.gl && entry.kj && entry.gl !== entry.kj) def += ' · ' + entry.gl;
+            if (entry.dv) def += (def ? ' · from ' : 'from ') + entry.dv;
+            return '<div class="ch-study-entry">' + line
+                + (def ? '<div class="ch-study-def">' + escapeHtml(def) + '</div>' : '')
+                + '</div>';
+        }).join('');
+}
+
 // ── Verse expand/collapse ─────────────────────────────────────────────────
 var focusedVerseEl = null;
 
@@ -1901,6 +2002,7 @@ document.addEventListener('click', function(e) {
 
     var stem  = span.dataset.st;
     var vnum  = span.dataset.v;
+    var wordText = (span.textContent || '').trim();
     var block = span.closest('.chapter-block');
     if (!block) return;
     var slug  = block.dataset.chapterId;
@@ -1914,7 +2016,12 @@ document.addEventListener('click', function(e) {
     span.classList.add('cw-active');
 
     var loader = sourceDocId ? loadSourceWordIndex(sourceDocId) : loadChapterWordIndex(slug);
-    loader.then(function(idx) {
+    var strongsLoader = sourceDocId ? Promise.resolve({}) : loadStrongsIndex(slug);
+    Promise.all([loader, strongsLoader]).then(function(results) {
+        var idx = results[0] || {};
+        var strongsIdx = results[1] || {};
+        var studyEntries = pickStrongsEntries(wordText, stem, strongsIdx[vnum] || []);
+        renderWordStudy(wordText, studyEntries);
         var verseData = idx[vnum] || {};
         var entry     = verseData[stem];
         if (!entry || !entry.matches || !entry.matches.length) {
@@ -2017,6 +2124,7 @@ function renderChannelList() {
 function closeChannel() {
     document.getElementById('channel').classList.remove('open');
     channelOpen = false;
+    renderWordStudy('', []);
     if (channelActiveSpan) {
         channelActiveSpan.classList.remove('cw-active');
         channelActiveSpan = null;
