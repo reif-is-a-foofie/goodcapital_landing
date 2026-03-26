@@ -14,6 +14,7 @@ import json
 import os
 import re
 import sys
+import html
 from pathlib import Path
 from ebooklib import epub
 
@@ -27,6 +28,7 @@ _CORR_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache
 
 # Canonical display names — used everywhere a source label appears
 SOURCE_NAMES = {
+    "standard_works":        "Standard Works",
     "jst":                   "Joseph Smith Translation",
     "donaldson":             "Donaldson",
     "journal_of_discourses": "Journal of Discourses",
@@ -69,9 +71,30 @@ _CORR_KEY = {
 }
 
 
-def _strip_verse_quote(para: str, verse_text: str) -> str:
-    if not verse_text or not para:
-        return para
+def _norm_words(text: str) -> list[str]:
+    text = html.unescape(text or "")
+    text = re.sub(r'<[^>]+>', ' ', text)
+    text = re.sub(r'\s+', ' ', text)
+    return re.findall(r"[a-z']{3,}", text.lower())
+
+
+def _looks_like_heading(text: str) -> bool:
+    stripped = (text or "").strip()
+    if not stripped:
+        return False
+    if re.fullmatch(r'[\divxlc:\-–—().,\s]{3,}', stripped.lower()):
+        return True
+    letters = re.findall(r'[A-Za-z]', stripped)
+    if len(letters) >= 8 and sum(1 for ch in letters if ch.isupper()) / len(letters) > 0.7:
+        return True
+    return False
+
+
+def _clean_donaldson_para(para: str, verse_text: str) -> str:
+    para = re.sub(r'\s+', ' ', (para or '')).strip()
+    if not para:
+        return ''
+
     dash_pos = para.find('—')
     if dash_pos > 0:
         prefix = para[:dash_pos].strip().lower()
@@ -80,9 +103,29 @@ def _strip_verse_quote(para: str, verse_text: str) -> str:
         verse_words = verse_norm.split()
         shared = sum(1 for w in prefix_words if w in set(verse_words))
         if shared >= min(3, len(prefix_words)) and len(prefix_words) <= len(verse_words) + 4:
-            remainder = para[dash_pos + 1:].strip()
-            if len(remainder) > 20:
-                return remainder
+            para = para[dash_pos + 1:].strip()
+            if not para:
+                return ''
+
+    if _looks_like_heading(para):
+        return para
+
+    verse_words = set(_norm_words(verse_text))
+    para_words = _norm_words(para)
+    if not para_words:
+        return ''
+    overlap = sum(1 for w in para_words if w in verse_words) / max(len(para_words), 1)
+
+    # Drop naked scripture fragments masquerading as commentary.
+    if len(para) < 55 and overlap >= 0.35:
+        return ''
+    if len(para) < 120 and overlap >= 0.55:
+        return ''
+    if len(para) < 220 and overlap >= 0.72 and '("' not in para and 'in Conference Report' not in para:
+        return ''
+    if para and para[0].islower() and overlap >= 0.45:
+        return ''
+
     return para
 
 
@@ -281,33 +324,46 @@ def build_backlinks(output_dir: str):
             if entry not in backlinks[target_slug][verse_num]:
                 backlinks[target_slug][verse_num].append(entry)
 
-    # Step 3: rewrite target files — append backlinks block inside each verse div
-    _verse_end_re = re.compile(r'(<div class="verse" id="v(\d+)">.*?)(</div>)', re.DOTALL)
-
+    # Step 3: rewrite target files — normalize any existing backlinks and append one clean block
+    from bs4 import BeautifulSoup
     updated = 0
     for target_slug, verse_map in backlinks.items():
         target_file = out / f"{target_slug}.html"
         if not target_file.exists():
             continue
         html = target_file.read_text(encoding="utf-8")
+        soup = BeautifulSoup(html, "html.parser")
+        changed = False
 
-        def _inject(m):
-            v_num = m.group(2)
-            refs  = verse_map.get(v_num, [])
+        for verse_div in soup.select("div.verse[id]"):
+            verse_id = verse_div.get("id", "")
+            if not verse_id.startswith("v"):
+                continue
+            refs = verse_map.get(verse_id[1:], [])
+
+            existing = verse_div.select(".backlinks")
+            if existing:
+                changed = True
+                for block in existing:
+                    block.decompose()
+
             if not refs:
-                return m.group(0)
+                continue
+
             links_html = ''.join(
                 f'<a class="backlink-ref" href="../chapters/{src}.html">{disp}</a>'
                 for src, disp in refs
             )
-            backlink_block = (
+            backlink_block = BeautifulSoup(
                 f'<div class="backlinks">'
                 f'<span class="backlinks-label">Referenced from</span>'
-                f'{links_html}</div>'
-            )
-            return m.group(1) + backlink_block + m.group(3)
+                f'{links_html}</div>',
+                "html.parser",
+            ).div
+            verse_div.append(backlink_block)
+            changed = True
 
-        new_html = _verse_end_re.sub(_inject, html)
+        new_html = str(soup)
         if new_html != html:
             target_file.write_text(new_html, encoding="utf-8")
             updated += 1
@@ -526,7 +582,7 @@ def _render_verse(verse, enr: dict) -> list[str]:
     if dona_file.exists():
         dona_data = json.loads(dona_file.read_text(encoding="utf-8"))
         verse_text = getattr(verse, 'text', '') or ''
-        cleaned = [_strip_verse_quote(p, verse_text) for p in dona_data.get("paragraphs", [])]
+        cleaned = [_clean_donaldson_para(p, verse_text) for p in dona_data.get("paragraphs", [])]
         cleaned = [p for p in cleaned if len(p.strip()) > 20]
         cleaned = [_truncate(p, 800) for p in cleaned[:12]]  # cap paragraphs + length
         if cleaned:
