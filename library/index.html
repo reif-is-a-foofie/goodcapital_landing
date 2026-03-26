@@ -137,6 +137,33 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .toc-tile.book-tile .toc-tile-title { font-size: 12.5px; }
 .toc-tile.chapter-tile .toc-tile-title { font-size: 14px; }
 .toc-tile.wide { grid-column: 1 / -1; }
+.toc-note {
+    grid-column: 1 / -1;
+    border: 1px solid rgba(156,122,77,0.14);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.82);
+    padding: 12px 12px 13px;
+}
+.toc-note-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+.toc-note p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+.toc-note a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(156,122,77,0.25);
+}
 
 /* ── Reader ── */
 #reader { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--bg); }
@@ -286,6 +313,13 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     line-height: 1.78;
     color: #2f2a24;
     margin: 0 0 18px;
+}
+.source-para-focus {
+    background: rgba(156,122,77,0.08);
+    box-shadow: inset 3px 0 0 var(--accent);
+    border-radius: 8px;
+    padding-left: 8px;
+    margin-left: -8px;
 }
 
 /* ── Channel panel ── */
@@ -537,6 +571,8 @@ var sourceMode = false;
 var tocOpen = false;
 var nextToLoad = 0;             // index into chapterOrder for infinite scroll
 var loading = false;
+var visitStack = [];
+var activeContextText = '';
 
 // Highlights: { chapterId: [{start,end,color,text,note}] }
 var highlights = JSON.parse(localStorage.getItem(SITE.storageKey + '_highlights') || '{}');
@@ -545,6 +581,54 @@ var highlights = JSON.parse(localStorage.getItem(SITE.storageKey + '_highlights'
 function toggleToc() {
     tocOpen = !tocOpen;
     document.getElementById('toc').classList.toggle('hidden', !tocOpen);
+}
+
+function activeReaderTarget() {
+    var readerEl = document.getElementById('reader');
+    if (sourceMode && currentSourceDoc) {
+        return { type: 'source', docId: currentSourceDoc, scrollTop: readerEl.scrollTop || 0 };
+    }
+    if (currentChapter) {
+        return {
+            type: 'scripture',
+            chapterId: currentChapter,
+            verse: focusedVerseEl ? parseInt((focusedVerseEl.id || '').replace('v', ''), 10) || null : null,
+            scrollTop: readerEl.scrollTop || 0
+        };
+    }
+    return null;
+}
+
+function sameTarget(a, b) {
+    if (!a || !b || a.type !== b.type) return false;
+    if (a.type === 'source') return a.docId === b.docId;
+    return a.chapterId === b.chapterId && (a.verse || 0) === (b.verse || 0);
+}
+
+function pushVisit(current, next) {
+    if (!current || sameTarget(current, next)) return;
+    var last = visitStack[visitStack.length - 1];
+    if (sameTarget(last, current)) return;
+    visitStack.push(current);
+    if (visitStack.length > 60) visitStack.shift();
+}
+
+function quickBack() {
+    var previous = visitStack.pop();
+    if (!previous) return;
+    if (previous.type === 'source' && previous.docId && sourceMeta[previous.docId]) {
+        loadSourceDocument(previous.docId, sourceMeta[previous.docId].href, {
+            pushHistory: false,
+            scrollTop: previous.scrollTop || 0
+        });
+        return;
+    }
+    if (previous.type === 'scripture' && previous.chapterId) {
+        jumpTo(previous.chapterId, previous.verse, {
+            pushHistory: false,
+            scrollTop: previous.scrollTop || 0
+        });
+    }
 }
 
 function buildTocTree(items) {
@@ -645,22 +729,21 @@ function renderTocView() {
         title.textContent = 'Sources';
         subtitle.textContent = '';
         back.classList.remove('show');
+        html += '<div class="toc-note">'
+             + '<span class="toc-note-label">Donaldson Papers</span>'
+             + '<p>Built on the work of <a href="https://donaldsonpapers.com/" target="_blank" rel="noopener noreferrer">Lee Donaldson</a>. The <em>Disk of Knowledge</em> was given to missionaries at the end of their missions in the San Diego California Mission.</p>'
+             + '</div>';
         if (tocTree.front) {
             html += renderTocTile({
                 label: tocTree.front.label,
-                meta: 'Reader entry',
                 wide: true,
                 active: currentChapter === tocTree.front.id,
                 attrs: `data-action="chapter" data-id="${tocTree.front.id}"`
             });
         }
         tocTree.volumes.forEach(function(volume) {
-            var chapterCount = volume.books.reduce(function(total, book) {
-                return total + book.chapters.length;
-            }, 0);
             html += renderTocTile({
                 label: volume.label,
-                meta: volume.books.length + ' books · ' + chapterCount + ' chapters',
                 attrs: `data-action="volume" data-volume="${escapeAttr(volume.label)}"`
             });
         });
@@ -799,7 +882,11 @@ function escapeAttr(str) {
     return String(str).replace(/"/g, '&quot;');
 }
 
-function jumpTo(chapterId, verseNum) {
+function jumpTo(chapterId, verseNum, opts) {
+    opts = opts || {};
+    if (opts.pushHistory !== false) {
+        pushVisit(activeReaderTarget(), { type: 'scripture', chapterId: chapterId, verse: verseNum || null });
+    }
     setTocPathForChapter(chapterId);
     ensureScriptureReader().then(function() {
         return loadChapter(chapterId, true);
@@ -816,7 +903,11 @@ function jumpTo(chapterId, verseNum) {
         if (target && target.classList && target.classList.contains('verse')) {
             focusVerse(target, false);
         }
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (typeof opts.scrollTop === 'number') {
+            document.getElementById('reader').scrollTop = opts.scrollTop;
+        } else if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
         if (window.innerWidth < 600) { tocOpen = false; document.getElementById('toc').classList.add('hidden'); }
     });
 }
@@ -908,7 +999,24 @@ function annotateSourceBlock(block, wordsIndex) {
     });
 }
 
-function loadSourceDocument(docId, href) {
+function sanitizeEscapedConnectionMarkup(root) {
+    if (!root) return;
+    Array.from(root.querySelectorAll('.verse-text, .source-para, .donaldson-para')).forEach(function(node) {
+        var html = node.innerHTML;
+        if (!html || (html.indexOf('&lt;span class="cw"') === -1 && html.indexOf('&amp;apos;') === -1)) return;
+        html = html.replace(/&lt;span class="cw"[^&]*?&gt;((?:.|\n)*?)<\/span>/g, '$1');
+        html = html.replace(/&lt;span class="cw"[^&]*?&gt;/g, '');
+        html = html.replace(/&lt;\/span&gt;/g, '');
+        html = html.replace(/&amp;apos;/g, '&#39;');
+        node.innerHTML = html;
+    });
+}
+
+function loadSourceDocument(docId, href, opts) {
+    opts = opts || {};
+    if (opts.pushHistory !== false) {
+        pushVisit(activeReaderTarget(), { type: 'source', docId: docId });
+    }
     sourceMode = true;
     currentSourceDoc = docId;
     currentChapter = null;
@@ -927,11 +1035,24 @@ function loadSourceDocument(docId, href) {
             block.id = 'src-' + docId.replace(/[^a-z0-9:_-]/ig, '_');
             block.dataset.sourceDocId = docId;
             block.innerHTML = doc.body.innerHTML;
+            sanitizeEscapedConnectionMarkup(block);
             document.getElementById('content').appendChild(block);
             return loadSourceWordIndex(docId).then(function(idx) {
                 annotateSourceBlock(block, idx || {});
                 renderTocView();
-                block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (typeof opts.focusPara === 'number') {
+                    var para = block.querySelectorAll('p.source-para')[opts.focusPara - 1];
+                    if (para) {
+                        para.classList.add('source-para-focus');
+                        para.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                } else if (typeof opts.scrollTop === 'number') {
+                    document.getElementById('reader').scrollTop = opts.scrollTop;
+                } else {
+                    block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
                 if (window.innerWidth < 600) { tocOpen = false; document.getElementById('toc').classList.add('hidden'); }
             });
         });
@@ -963,6 +1084,7 @@ function loadChapter(id, prepend) {
             block.id = 'ch-' + id;
             block.dataset.chapterId = id;
             block.innerHTML = body.innerHTML;
+            sanitizeEscapedConnectionMarkup(block);
 
             var content = document.getElementById('content');
             if (prepend) {
@@ -1467,11 +1589,24 @@ var SOURCE_PRIORITY = {
 };
 
 function sortMatches(matches) {
-    var sorted = (matches || []).slice().sort(function(a, b) {
-        var pa = SOURCE_PRIORITY.hasOwnProperty(a.s) ? SOURCE_PRIORITY[a.s] : 9;
-        var pb = SOURCE_PRIORITY.hasOwnProperty(b.s) ? SOURCE_PRIORITY[b.s] : 9;
+    var context = tokenSet(activeContextText);
+    var sorted = (matches || []).slice().map(function(m) {
+        return {
+            raw: m,
+            rank: (m.w || 0) - overlapPenalty(context, m.x || '', m.s)
+        };
+    }).sort(function(a, b) {
+        var pa = SOURCE_PRIORITY.hasOwnProperty(a.raw.s) ? SOURCE_PRIORITY[a.raw.s] : 9;
+        var pb = SOURCE_PRIORITY.hasOwnProperty(b.raw.s) ? SOURCE_PRIORITY[b.raw.s] : 9;
         if (pa !== pb) return pa - pb;
-        return (b.w || 0) - (a.w || 0);
+        return b.rank - a.rank;
+    }).map(function(entry) { return entry.raw; });
+    var seen = new Set();
+    sorted = sorted.filter(function(m) {
+        var key = [m.s || '', m.lb || '', (m.x || '').slice(0, 140)].join('|');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
     });
     var scripture = [];
     var other = [];
@@ -1484,6 +1619,21 @@ function sortMatches(matches) {
 
 function escapeRegex(str) {
     return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function tokenSet(text) {
+    return new Set(String(text || '').toLowerCase().match(/[a-z]{3,}/g) || []);
+}
+
+function overlapPenalty(context, text, source) {
+    if (!context || !context.size) return 0;
+    var other = tokenSet(text);
+    if (!other.size) return 0;
+    var shared = 0;
+    other.forEach(function(tok) { if (context.has(tok)) shared += 1; });
+    var ratio = shared / Math.max(1, Math.min(context.size, other.size));
+    if (ratio < 0.45) return 0;
+    return ratio * ((source === 'standard_works' || source === 'jst') ? 0.25 : 0.08);
 }
 
 function findBookRecord(label) {
@@ -1606,6 +1756,8 @@ document.addEventListener('click', function(e) {
     if (!block) return;
     var slug  = block.dataset.chapterId;
     var sourceDocId = block.dataset.sourceDocId;
+    var contextNode = span.closest('.verse, .source-para');
+    activeContextText = contextNode ? (contextNode.textContent || '') : '';
 
     // Mark active span
     if (channelActiveSpan) channelActiveSpan.classList.remove('cw-active');
@@ -1701,6 +1853,8 @@ function renderChannelList() {
         var ref = resolveScriptureRef((selected.lb || '') + ' ' + (selected.x || ''));
         if (ref && ref.chapterId && !(ref.chapterId === currentChapter && ref.verse === parseInt((document.querySelector('.verse.verse-focus') || {}).id?.replace('v','') || '0', 10))) {
             jumpTo(ref.chapterId, ref.verse);
+        } else if (selected.d && sourceMeta[selected.d]) {
+            loadSourceDocument(selected.d, sourceMeta[selected.d].href, { focusPara: selected.p || null });
         } else {
             showMorselPreview(selected);
         }
@@ -1715,6 +1869,25 @@ function closeChannel() {
         channelActiveSpan = null;
     }
 }
+
+(function setupQuickBackSwipe() {
+    var readerEl = document.getElementById('reader');
+    var startX = 0;
+    var startY = 0;
+    readerEl.addEventListener('touchstart', function(e) {
+        if (!e.touches || !e.touches[0]) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }, { passive: true });
+    readerEl.addEventListener('touchend', function(e) {
+        if (window.innerWidth > 700) return;
+        if (!e.changedTouches || !e.changedTouches[0]) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        var dy = e.changedTouches[0].clientY - startY;
+        if (startX > 44) return;
+        if (dx > 80 && Math.abs(dy) < 60) quickBack();
+    }, { passive: true });
+})();
 
 // Spacebar advances channel
 document.addEventListener('keydown', function(e) {

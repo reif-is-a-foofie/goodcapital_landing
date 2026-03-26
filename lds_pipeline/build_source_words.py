@@ -165,7 +165,14 @@ def build_indexes():
                         "x": truncate(morsel["text"], MAX_PREVIEW_LEN),
                         "w": weight,
                     }
-                    key = (match["s"], match["lb"], match["x"], match["w"])
+                    if morsel.get("doc_id"):
+                        match["d"] = morsel["doc_id"]
+                    if morsel.get("para_idx"):
+                        match["p"] = morsel["para_idx"]
+                    key = (
+                        match["s"], match["lb"], match["x"], match["w"],
+                        match.get("d", ""), match.get("p", 0)
+                    )
                     ref = morsel_ref.get(key)
                     if ref is None:
                         ref = len(morsel_catalog)
