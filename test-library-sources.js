@@ -289,7 +289,43 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
-  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, loveState }, null, 2));
+  await page.evaluate(() => jumpTo('1_nephi_8'));
+  await page.waitForSelector('#v23 .verse-text .w', { timeout: 20000 });
+  await page.evaluate(() => {
+    const target = Array.from(document.querySelectorAll('#v23 .verse-text .w')).find((el) => /mist/i.test(el.textContent || ''));
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+  const nephiMistState = await page.evaluate(() => ({
+    word: document.querySelector('#ch-word')?.textContent.trim(),
+    sources: Array.from(document.querySelectorAll('.ch-morsel .ch-src-name')).slice(0, 3).map((el) => el.textContent.trim()),
+    texts: Array.from(document.querySelectorAll('.ch-morsel .ch-morsel-text')).slice(0, 3).map((el) => el.textContent.trim()),
+  }));
+  assert(/mist/i.test(nephiMistState.word), 'Book of Mormon fallback regression used the wrong 1 Nephi word');
+  assert(nephiMistState.sources[0] === 'Standard Works', '1 Nephi mist did not rank standard works first');
+  assert(nephiMistState.texts.some((text) => /mist of darkness|fell on him a mist/i.test(text)), '1 Nephi mist did not surface scripture fallback morsels');
+  await page.$eval('#ch-close', (el) => el.click());
+  await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
+
+  await page.evaluate(() => jumpTo('doctrine_and_covenants_121'));
+  await page.waitForSelector('#v41 .verse-text .w', { timeout: 20000 });
+  await page.evaluate(() => {
+    const target = Array.from(document.querySelectorAll('#v41 .verse-text .w')).find((el) => /priesthood/i.test(el.textContent || ''));
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+  const dcPriesthoodState = await page.evaluate(() => ({
+    word: document.querySelector('#ch-word')?.textContent.trim(),
+    sources: Array.from(document.querySelectorAll('.ch-morsel .ch-src-name')).slice(0, 3).map((el) => el.textContent.trim()),
+    texts: Array.from(document.querySelectorAll('.ch-morsel .ch-morsel-text')).slice(0, 3).map((el) => el.textContent.trim()),
+  }));
+  assert(/priesthood/i.test(dcPriesthoodState.word), 'D&C fallback regression used the wrong Doctrine and Covenants word');
+  assert(dcPriesthoodState.sources[0] === 'Standard Works', 'Doctrine and Covenants priesthood did not rank standard works first');
+  assert(dcPriesthoodState.texts.some((text) => /Priesthood of thy father|Melchizedek Priesthood|higher, or Melchizedek Priesthood/i.test(text)), 'Doctrine and Covenants priesthood did not surface scripture fallback morsels');
+  await page.$eval('#ch-close', (el) => el.click());
+  await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
+
+  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, loveState, nephiMistState, dcPriesthoodState }, null, 2));
   await browser.close();
 }
 
