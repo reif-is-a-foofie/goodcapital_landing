@@ -37,6 +37,11 @@ MIN_MATCH_SCORE  = 0.18
 MAX_MATCHES_WORD = 8
 MAX_TEXT_LEN     = 500
 
+SOURCE_PRIORITY = {
+    'standard_works': 0,
+    'jst': 1,
+}
+
 STOPS = {
     'the','a','an','and','or','but','in','on','of','to','for','with','by',
     'from','at','as','into','upon','unto','about','above','below','after',
@@ -61,8 +66,7 @@ STOPS = {
     'yea','ye','thy','thee','thou','hath','doth','didst','wilt',
     'shalt','sayeth','saith','art','hast','canst','wouldst','shouldst',
     'things','thing','place','places','time','times','day','days',
-    'way','ways','man','men','people','world','words','word',
-    'number','part','parts','kind','manner','means',
+    'way','ways','people','number','part','parts','kind','manner','means',
     'very','more','most','much','many','few','little',
     'same','other','another','every','first','last','next','own',
     'long','back','down','away','far','near','once','twice',
@@ -102,6 +106,14 @@ def truncate(text: str, limit: int = MAX_TEXT_LEN) -> str:
     cut = text[:limit]
     pos = cut.rfind(' ')
     return (cut[:pos] + '\u2026') if pos > limit // 2 else cut + '\u2026'
+
+
+def match_sort_key(m: dict):
+    return (
+        SOURCE_PRIORITY.get(m.get('s', ''), 9),
+        -m.get('w', 0),
+        m.get('lb', ''),
+    )
 
 
 def build_from_graph(graph: dict) -> dict:
@@ -146,12 +158,17 @@ def build_from_graph(graph: dict) -> dict:
             if key in seen:
                 continue
             seen.add(key)
-            matches_for_verse.append({
+            match = {
                 's':  p.get('src', ''),
                 'lb': p.get('lb', ''),
                 'x':  truncate(p.get('x', '')),
                 'w':  score,
-            })
+            }
+            if p.get('d'):
+                match['d'] = p.get('d')
+            if p.get('p'):
+                match['p'] = p.get('p')
+            matches_for_verse.append(match)
 
         if not matches_for_verse:
             continue
@@ -185,6 +202,7 @@ def build_from_graph(graph: dict) -> dict:
             if not hit_matches:
                 continue
 
+            hit_matches.sort(key=match_sort_key)
             total_score = sum(m['w'] for m in hit_matches)
             word_data[st] = {
                 'score':   round(total_score, 3),
