@@ -1040,14 +1040,17 @@ function loadSourceDocument(docId, href, opts) {
             return loadSourceWordIndex(docId).then(function(idx) {
                 annotateSourceBlock(block, idx || {});
                 renderTocView();
+                updateLocationLabel(docId);
+                var para = null;
                 if (typeof opts.focusPara === 'number') {
-                    var para = block.querySelectorAll('p.source-para')[opts.focusPara - 1];
-                    if (para) {
-                        para.classList.add('source-para-focus');
-                        para.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else {
-                        block.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+                    para = block.querySelectorAll('p.source-para')[opts.focusPara - 1] || null;
+                }
+                if (!para && opts.focusText) {
+                    para = findSourceParagraphByExcerpt(block, opts.focusText);
+                }
+                if (para) {
+                    para.classList.add('source-para-focus');
+                    para.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 } else if (typeof opts.scrollTop === 'number') {
                     document.getElementById('reader').scrollTop = opts.scrollTop;
                 } else {
@@ -1670,6 +1673,79 @@ function resolveScriptureRef(text) {
     };
 }
 
+function normalizeExcerpt(text) {
+    return String(text || '')
+        .toLowerCase()
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&[^;\s]+;/g, ' ')
+        .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function resolveSourceTarget(m) {
+    if (!m) return null;
+    if (m.d && sourceMeta[m.d]) {
+        return { docId: m.d, focusPara: m.p || null, focusText: m.x || '' };
+    }
+
+    var src = String(m.s || '');
+    var label = String(m.lb || '');
+    var match = null;
+    var docId = null;
+
+    if (src === 'general_conference') {
+        match = label.match(/^GC:\s*([a-z0-9_:-]+)$/i);
+        if (match) docId = 'general_conference:' + match[1].replace(/^general_conference:/, '');
+    } else if (src === 'journal_of_discourses') {
+        match = label.match(/JD\s+Vol\.?\s+(\d+)/i);
+        if (match) docId = 'journal_of_discourses:vol_' + String(parseInt(match[1], 10)).padStart(2, '0');
+    } else if (src === 'history_of_church') {
+        match = label.match(/HoC:\s*(vol_?\d+)/i);
+        if (match) docId = 'history_of_church:' + match[1].replace('_', '');
+    } else {
+        match = label.match(/^[^:]+:\s*([a-z0-9_:-]+)$/i);
+        if (match) {
+            var suffix = match[1].replace(new RegExp('^' + escapeRegex(src) + ':'), '');
+            var candidate = src + ':' + suffix;
+            if (sourceMeta[candidate]) docId = candidate;
+        }
+    }
+
+    if (!docId || !sourceMeta[docId]) return null;
+    return { docId: docId, focusPara: m.p || null, focusText: m.x || '' };
+}
+
+function findSourceParagraphByExcerpt(block, excerpt) {
+    if (!block || !excerpt) return null;
+    var excerptNorm = normalizeExcerpt(excerpt).replace(/…/g, '').trim();
+    if (!excerptNorm) return null;
+    var prefix = excerptNorm.slice(0, 180).trim();
+    var excerptTokens = prefix.split(' ').filter(function(tok) { return tok.length >= 4; }).slice(0, 18);
+    var paragraphs = Array.from(block.querySelectorAll('p.source-para'));
+    var best = null;
+    var bestScore = 0;
+
+    for (var i = 0; i < paragraphs.length; i++) {
+        var para = paragraphs[i];
+        var norm = normalizeExcerpt(para.textContent || '');
+        if (!norm) continue;
+        if (norm.indexOf(excerptNorm) !== -1 || (prefix && norm.indexOf(prefix) !== -1)) {
+            return para;
+        }
+        var score = 0;
+        excerptTokens.forEach(function(tok) {
+            if (norm.indexOf(tok) !== -1) score += 1;
+        });
+        if (score > bestScore) {
+            bestScore = score;
+            best = para;
+        }
+    }
+
+    return bestScore >= Math.min(6, Math.max(3, excerptTokens.length - 2)) ? best : null;
+}
+
 function showMorselPreview(m) {
     var host = document.getElementById('morsel-preview');
     host.hidden = false;
@@ -1851,10 +1927,14 @@ function renderChannelList() {
         renderChannelList();
         if (!selected) return;
         var ref = resolveScriptureRef((selected.lb || '') + ' ' + (selected.x || ''));
+        var sourceTarget = resolveSourceTarget(selected);
         if (ref && ref.chapterId && !(ref.chapterId === currentChapter && ref.verse === parseInt((document.querySelector('.verse.verse-focus') || {}).id?.replace('v','') || '0', 10))) {
             jumpTo(ref.chapterId, ref.verse);
-        } else if (selected.d && sourceMeta[selected.d]) {
-            loadSourceDocument(selected.d, sourceMeta[selected.d].href, { focusPara: selected.p || null });
+        } else if (sourceTarget && sourceMeta[sourceTarget.docId]) {
+            loadSourceDocument(sourceTarget.docId, sourceMeta[sourceTarget.docId].href, {
+                focusPara: sourceTarget.focusPara || null,
+                focusText: sourceTarget.focusText || ''
+            });
         } else {
             showMorselPreview(selected);
         }

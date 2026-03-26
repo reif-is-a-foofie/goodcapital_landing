@@ -119,7 +119,49 @@ async function run() {
   assert(scriptureState.location === 'John · 3', 'scripture location label did not recover after source view');
   assert(scriptureState.tocSubtitle === 'John', 'TOC did not return to scripture chapter view');
 
-  console.log(JSON.stringify({ rootTiles, sourceState, jdWordState, hocWordState, scriptureState }, null, 2));
+  await page.click('#v1');
+  await page.waitForSelector('#v1 span.w', { timeout: 20000 });
+  await page.evaluate(() => {
+    const spans = Array.from(document.querySelectorAll('#v1 span.w'));
+    const target = spans.find((el) => /pharisees?/i.test(el.textContent || '')) || spans[0];
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+  await page.waitForFunction(() => {
+    return Array.from(document.querySelectorAll('.ch-morsel .ch-src-name')).some((el) =>
+      /Journal of Discourses|General Conference|History of the Church/i.test(el.textContent || '')
+    );
+  }, { timeout: 15000 });
+
+  const sourceMorselIndex = await page.evaluate(() => {
+    const morsels = Array.from(document.querySelectorAll('.ch-morsel'));
+    return morsels.findIndex((el) =>
+      /Journal of Discourses|General Conference|History of the Church/i.test(
+        el.querySelector('.ch-src-name')?.textContent || ''
+      )
+    );
+  });
+  assert(sourceMorselIndex >= 0, 'scripture word click did not surface a source morsel');
+
+  await page.$eval(`.ch-morsel[data-idx="${sourceMorselIndex}"]`, (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  await page.waitForFunction(() => {
+    const focused = document.querySelector('.source-para-focus');
+    return !!(focused && (focused.textContent || '').trim().length > 80);
+  }, { timeout: 15000 });
+
+  const scriptureToSourceState = await page.evaluate(() => ({
+    sourceTitle: document.querySelector('.source-doc .source-title')?.textContent.trim(),
+    location: document.querySelector('#location-label')?.textContent.trim(),
+    previewHidden: document.querySelector('#morsel-preview')?.hidden,
+    focusedText: document.querySelector('.source-para-focus')?.textContent.trim() || '',
+  }));
+
+  assert(scriptureToSourceState.sourceTitle, 'source morsel click did not open a source doc');
+  assert(scriptureToSourceState.previewHidden, 'source morsel click fell back to the preview card');
+  assert(scriptureToSourceState.focusedText.length > 80, 'source morsel click did not focus a relevant paragraph');
+
+  console.log(JSON.stringify({ rootTiles, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState }, null, 2));
   await browser.close();
 }
 
