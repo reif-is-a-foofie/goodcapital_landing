@@ -28,6 +28,52 @@ async function run() {
   assert(rootTiles.includes('Journal of Discourses'), 'Journal of Discourses missing from TOC root');
   assert(rootTiles.includes('History of the Church'), 'History of the Church missing from TOC root');
   assert(rootTiles.includes('General Conference'), 'General Conference missing from TOC root');
+  assert(rootTiles.includes('Times and Seasons'), 'Times and Seasons missing from TOC root');
+  assert(rootTiles.includes('Millennial Star'), 'Millennial Star missing from TOC root');
+
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="times_and_seasons"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Times and Seasons'
+  );
+
+  const timesState = await page.evaluate(() => {
+    const first = document.querySelector('.toc-tile[data-action="source-doc"]');
+    return {
+      firstLabel: first?.querySelector('.toc-tile-title')?.textContent.trim() || '',
+      docCount: document.querySelectorAll('.toc-tile[data-action="source-doc"]').length,
+    };
+  });
+
+  assert(timesState.docCount >= 20, 'Times and Seasons did not split into issue-like source docs');
+  assert(/Vol\.\s*\d+/.test(timesState.firstLabel) && /No\.\s*\d+/.test(timesState.firstLabel), 'Times and Seasons issue labels did not render with volume/number metadata');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="millennial_star"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Millennial Star'
+  );
+
+  const starState = await page.evaluate(() => {
+    const first = document.querySelector('.toc-tile[data-action="source-doc"]');
+    return {
+      firstLabel: first?.querySelector('.toc-tile-title')?.textContent.trim() || '',
+      docCount: document.querySelectorAll('.toc-tile[data-action="source-doc"]').length,
+    };
+  });
+
+  assert(starState.docCount >= 100, 'Millennial Star did not split into issue-like source docs');
+  assert(/Vol\.\s*\d+/.test(starState.firstLabel) && /No\.\s*\d+/.test(starState.firstLabel), 'Millennial Star issue labels did not render with volume/number metadata');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
 
   await page.$eval('.toc-tile[data-action="source-collection"][data-collection="journal_of_discourses"]', (el) => el.click());
   await page.waitForFunction(() =>
@@ -208,7 +254,7 @@ async function run() {
   assert(/god/i.test(strongsState.word), 'word-study regression used the wrong scripture word');
   assert(/G2316|theos/i.test(strongsState.study), "Strong's word study did not appear for John 3:16");
 
-  console.log(JSON.stringify({ rootTiles, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState }, null, 2));
+  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState }, null, 2));
   await browser.close();
 }
 

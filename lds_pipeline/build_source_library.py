@@ -76,6 +76,194 @@ def split_paragraphs(text: str) -> list[str]:
     return paragraphs
 
 
+MONTH_ALIASES = {
+    "jan": "January",
+    "january": "January",
+    "feb": "February",
+    "february": "February",
+    "mar": "March",
+    "march": "March",
+    "apr": "April",
+    "april": "April",
+    "may": "May",
+    "jun": "June",
+    "june": "June",
+    "jul": "July",
+    "july": "July",
+    "aug": "August",
+    "august": "August",
+    "sep": "September",
+    "sept": "September",
+    "september": "September",
+    "oct": "October",
+    "october": "October",
+    "nov": "November",
+    "november": "November",
+    "dec": "December",
+    "december": "December",
+}
+
+MONTH_RE = re.compile(
+    r"\b("
+    r"jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|"
+    r"jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|"
+    r"oct(?:ober)?|nov(?:ember)?|dec(?:ember)?"
+    r")\b",
+    re.I,
+)
+YEAR_RE = re.compile(r"\b(18[3-5][0-9]|1860)\b")
+
+
+def roman_to_int(token: str) -> Optional[int]:
+    values = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100}
+    token = re.sub(r"[^IVXLC]", "", token.upper())
+    if not token:
+        return None
+    total = 0
+    prev = 0
+    for ch in reversed(token):
+        val = values.get(ch)
+        if not val:
+            return None
+        if val < prev:
+            total -= val
+        else:
+            total += val
+            prev = val
+    return total or None
+
+
+def parse_numeric_token(token: str) -> Optional[int]:
+    cleaned = token.strip()
+    if not cleaned:
+        return None
+    digits = re.sub(r"[^0-9]", "", cleaned)
+    if digits:
+        try:
+            return int(digits)
+        except ValueError:
+            return None
+    if re.fullmatch(r"[ivxlc]+", cleaned, re.I):
+        roman = roman_to_int(cleaned)
+        if roman is not None:
+            return roman
+    simple = cleaned.lower().replace("l", "1").replace("i", "1").replace("o", "0")
+    if simple.isdigit():
+        try:
+            return int(simple)
+        except ValueError:
+            return None
+    return None
+
+
+def normalize_month(text: str) -> Optional[str]:
+    m = MONTH_RE.search(text)
+    if not m:
+        return None
+    return MONTH_ALIASES.get(m.group(1).lower().rstrip("."), m.group(1).title())
+
+
+def volume_number(text: str) -> Optional[int]:
+    m = re.search(r"\b(?:Vol|Vot|Vou|Voi|Yol|VoL|Volume)\.?\s*([ivxlc0-9]{1,5})\b", text, re.I)
+    if not m:
+        return None
+    token = m.group(1)
+    value = parse_numeric_token(token)
+    if value is None:
+        return None
+    if value > 26 and re.fullmatch(r"[xil]+", token, re.I):
+        corrected = parse_numeric_token(token.lower().replace("l", "i"))
+        if corrected is not None:
+            value = corrected
+    return value
+
+
+def issue_number(text: str) -> Optional[int]:
+    m = re.search(r"\bNo[\.,;:\- ]*([a-z0-9ivxlc]{1,5})\b", text, re.I)
+    if not m:
+        return None
+    return parse_numeric_token(m.group(1))
+
+
+def extract_issue_marker(group_key: str, para: str) -> Optional[dict]:
+    sample = " ".join(para.split())[:320]
+    if len(sample) < 24:
+        return None
+    year_match = YEAR_RE.search(sample)
+    if not year_match:
+        return None
+    year = int(year_match.group(1))
+    volume = volume_number(sample)
+    number = issue_number(sample)
+    month = normalize_month(sample)
+    if volume is None or number is None:
+        return None
+    if not month:
+        return None
+
+    if group_key == "times_and_seasons":
+        if "whole no" not in sample.lower() and "illinois" not in sample.lower():
+            return None
+    elif group_key == "millennial_star":
+        lower = sample.lower()
+        if "price" not in lower and "saturday" not in lower and "published" not in lower:
+            return None
+
+    slug_parts = [str(year), f"vol_{volume:02d}", f"no_{number:02d}"]
+    if month:
+        slug_parts.insert(1, slugify(month))
+    title_bits = [f"Vol. {volume}", f"No. {number}"]
+    if month:
+        title = f"{month} {year} · " + " · ".join(title_bits)
+    else:
+        title = f"{year} · " + " · ".join(title_bits)
+    return {
+        "year": year,
+        "month": month,
+        "volume": volume,
+        "number": number,
+        "slug": "_".join(slug_parts),
+        "title": title,
+    }
+
+
+def split_large_document(group_key: str, title: str, slug: str, paragraphs: list[str]) -> list[dict]:
+    if group_key not in {"millennial_star", "times_and_seasons"}:
+        return [{"slug": slug, "title": title, "paragraphs": paragraphs}]
+
+    markers = []
+    for idx, para in enumerate(paragraphs):
+        marker = extract_issue_marker(group_key, para)
+        if marker:
+            markers.append((idx, marker))
+
+    if len(markers) < 2:
+        return [{"slug": slug, "title": title, "paragraphs": paragraphs}]
+
+    chunks = []
+    used_slugs = set()
+    for pos, (start, marker) in enumerate(markers):
+        end = markers[pos + 1][0] if pos + 1 < len(markers) else len(paragraphs)
+        chunk_paras = paragraphs[start:end]
+        if len(chunk_paras) < 8:
+            continue
+        base_slug = f"{slug}_{marker['slug']}"
+        chunk_slug = base_slug
+        bump = 2
+        while chunk_slug in used_slugs:
+            chunk_slug = f"{base_slug}_{bump:02d}"
+            bump += 1
+        used_slugs.add(chunk_slug)
+        chunks.append({
+            "slug": chunk_slug,
+            "title": f"{title} — {marker['title']}",
+            "paragraphs": chunk_paras,
+        })
+
+    usable = [chunk for chunk in chunks if len(chunk["paragraphs"]) >= 8]
+    return usable or [{"slug": slug, "title": title, "paragraphs": paragraphs}]
+
+
 def source_title(group_key: str, txt_path: Path, gc_meta: dict) -> str:
     if group_key == "general_conference":
         meta = gc_meta.get(txt_path.stem, {})
@@ -95,6 +283,10 @@ def source_title(group_key: str, txt_path: Path, gc_meta: dict) -> str:
         m = re.search(r"vol[_ ]?0*(\d+)", txt_path.stem, re.I)
         if m:
             return f"History of the Church Vol. {int(m.group(1))}"
+    if group_key == "times_and_seasons":
+        return "Times and Seasons"
+    if group_key == "millennial_star":
+        return "Millennial Star"
     return txt_path.stem.replace("_", " ").replace("-", " ").title()
 
 
@@ -177,6 +369,8 @@ def build_group(group: dict, gc_meta: dict) -> Optional[dict]:
 
     group_out = OUT / group["key"]
     group_out.mkdir(parents=True, exist_ok=True)
+    for stale in group_out.glob("*.html"):
+        stale.unlink()
     docs = []
 
     for txt in files:
@@ -189,16 +383,17 @@ def build_group(group: dict, gc_meta: dict) -> Optional[dict]:
             continue
         title = source_title(group["key"], txt, gc_meta)
         slug = slugify(txt.stem)
-        html = render_source_page(group["label"], title, paragraphs[:300])
-        out_path = group_out / f"{slug}.html"
-        out_path.write_text(html, encoding="utf-8")
-        docs.append({
-            "id": f"{group['key']}:{slug}",
-            "label": title,
-            "href": f"sources/{group['key']}/{slug}.html",
-            "paragraphs": len(paragraphs),
-            "meta": f"{len(paragraphs)} paragraphs",
-        })
+        for chunk in split_large_document(group["key"], title, slug, paragraphs):
+            html = render_source_page(group["label"], chunk["title"], chunk["paragraphs"])
+            out_path = group_out / f"{chunk['slug']}.html"
+            out_path.write_text(html, encoding="utf-8")
+            docs.append({
+                "id": f"{group['key']}:{chunk['slug']}",
+                "label": chunk["title"],
+                "href": f"sources/{group['key']}/{chunk['slug']}.html",
+                "paragraphs": len(chunk["paragraphs"]),
+                "meta": f"{len(chunk['paragraphs'])} paragraphs",
+            })
 
     if not docs:
         return None

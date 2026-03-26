@@ -27560,43 +27560,43 @@
         "id": "history_of_church:vol1",
         "label": "History of the Church Vol. 1",
         "href": "sources/history_of_church/vol1.html",
-        "paragraphs": 664,
-        "meta": "664 paragraphs"
+        "paragraphs": 4336,
+        "meta": "4336 paragraphs"
       },
       {
         "id": "history_of_church:vol2",
         "label": "History of the Church Vol. 2",
         "href": "sources/history_of_church/vol2.html",
-        "paragraphs": 1451,
-        "meta": "1451 paragraphs"
+        "paragraphs": 996,
+        "meta": "996 paragraphs"
       },
       {
         "id": "history_of_church:vol3",
         "label": "History of the Church Vol. 3",
         "href": "sources/history_of_church/vol3.html",
-        "paragraphs": 1129,
-        "meta": "1129 paragraphs"
+        "paragraphs": 1248,
+        "meta": "1248 paragraphs"
       },
       {
         "id": "history_of_church:vol4",
         "label": "History of the Church Vol. 4",
         "href": "sources/history_of_church/vol4.html",
-        "paragraphs": 894,
-        "meta": "894 paragraphs"
+        "paragraphs": 301,
+        "meta": "301 paragraphs"
       },
       {
         "id": "history_of_church:vol5",
         "label": "History of the Church Vol. 5",
         "href": "sources/history_of_church/vol5.html",
-        "paragraphs": 1707,
-        "meta": "1707 paragraphs"
+        "paragraphs": 296,
+        "meta": "296 paragraphs"
       },
       {
         "id": "history_of_church:vol6",
         "label": "History of the Church Vol. 6",
         "href": "sources/history_of_church/vol6.html",
-        "paragraphs": 401,
-        "meta": "401 paragraphs"
+        "paragraphs": 133,
+        "meta": "133 paragraphs"
       },
       {
         "id": "history_of_church:vol7",
@@ -27683,11 +27683,186 @@
     "type": "collection",
     "items": [
       {
-        "id": "times_and_seasons:times_and_seasons_1839_1846",
-        "label": "Times And Seasons 1839 1846",
-        "href": "sources/times_and_seasons/times_and_seasons_1839_1846.html",
-        "paragraphs": 20915,
-        "meta": "20915 paragraphs"
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1839_july_vol_01_no_01",
+        "label": "Times and Seasons — July 1839 · Vol. 1 · No. 1",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1839_july_vol_01_no_01.html",
+        "paragraphs": 213,
+        "meta": "213 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1839_december_vol_04_no_02",
+        "label": "Times and Seasons — December 1839 · Vol. 4 · No. 2",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1839_december_vol_04_no_02.html",
+        "paragraphs": 189,
+        "meta": "189 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1840_january_vol_01_no_03",
+        "label": "Times and Seasons — January 1840 · Vol. 1 · No. 3",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1840_january_vol_01_no_03.html",
+        "paragraphs": 136,
+        "meta": "136 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1840_february_vol_01_no_04",
+        "label": "Times and Seasons — February 1840 · Vol. 1 · No. 4",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1840_february_vol_01_no_04.html",
+        "paragraphs": 115,
+        "meta": "115 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1840_march_vol_01_no_05",
+        "label": "Times and Seasons — March 1840 · Vol. 1 · No. 5",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1840_march_vol_01_no_05.html",
+        "paragraphs": 125,
+        "meta": "125 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1840_april_vol_01_no_06",
+        "label": "Times and Seasons — April 1840 · Vol. 1 · No. 6",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1840_april_vol_01_no_06.html",
+        "paragraphs": 708,
+        "meta": "708 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1840_september_vol_01_no_11",
+        "label": "Times and Seasons — September 1840 · Vol. 1 · No. 11",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1840_september_vol_01_no_11.html",
+        "paragraphs": 700,
+        "meta": "700 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1840_december_vol_02_no_04",
+        "label": "Times and Seasons — December 1840 · Vol. 2 · No. 4",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1840_december_vol_02_no_04.html",
+        "paragraphs": 167,
+        "meta": "167 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1841_january_vol_02_no_05",
+        "label": "Times and Seasons — January 1841 · Vol. 2 · No. 5",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1841_january_vol_02_no_05.html",
+        "paragraphs": 148,
+        "meta": "148 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1841_january_vol_02_no_06",
+        "label": "Times and Seasons — January 1841 · Vol. 2 · No. 6",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1841_january_vol_02_no_06.html",
+        "paragraphs": 178,
+        "meta": "178 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1841_february_vol_02_no_07",
+        "label": "Times and Seasons — February 1841 · Vol. 2 · No. 7",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1841_february_vol_02_no_07.html",
+        "paragraphs": 302,
+        "meta": "302 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1841_march_vol_02_no_09",
+        "label": "Times and Seasons — March 1841 · Vol. 2 · No. 9",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1841_march_vol_02_no_09.html",
+        "paragraphs": 309,
+        "meta": "309 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1841_april_vol_02_no_11",
+        "label": "Times and Seasons — April 1841 · Vol. 2 · No. 11",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1841_april_vol_02_no_11.html",
+        "paragraphs": 692,
+        "meta": "692 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1841_june_vol_02_no_15",
+        "label": "Times and Seasons — June 1841 · Vol. 2 · No. 15",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1841_june_vol_02_no_15.html",
+        "paragraphs": 3977,
+        "meta": "3977 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1842_july_vol_03_no_17",
+        "label": "Times and Seasons — July 1842 · Vol. 3 · No. 17",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1842_july_vol_03_no_17.html",
+        "paragraphs": 4957,
+        "meta": "4957 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1844_january_vol_05_no_02",
+        "label": "Times and Seasons — January 1844 · Vol. 5 · No. 2",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1844_january_vol_05_no_02.html",
+        "paragraphs": 642,
+        "meta": "642 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1844_march_vol_05_no_00",
+        "label": "Times and Seasons — March 1844 · Vol. 5 · No. 0",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1844_march_vol_05_no_00.html",
+        "paragraphs": 1134,
+        "meta": "1134 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1844_july_vol_05_no_13",
+        "label": "Times and Seasons — July 1844 · Vol. 5 · No. 13",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1844_july_vol_05_no_13.html",
+        "paragraphs": 199,
+        "meta": "199 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1844_august_vol_05_no_34",
+        "label": "Times and Seasons — August 1844 · Vol. 5 · No. 34",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1844_august_vol_05_no_34.html",
+        "paragraphs": 717,
+        "meta": "717 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1844_october_vol_05_no_19",
+        "label": "Times and Seasons — October 1844 · Vol. 5 · No. 19",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1844_october_vol_05_no_19.html",
+        "paragraphs": 381,
+        "meta": "381 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1844_november_vol_05_no_21",
+        "label": "Times and Seasons — November 1844 · Vol. 5 · No. 21",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1844_november_vol_05_no_21.html",
+        "paragraphs": 2760,
+        "meta": "2760 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1845_june_vol_06_no_11",
+        "label": "Times and Seasons — June 1845 · Vol. 6 · No. 11",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1845_june_vol_06_no_11.html",
+        "paragraphs": 215,
+        "meta": "215 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1845_july_vol_06_no_120",
+        "label": "Times and Seasons — July 1845 · Vol. 6 · No. 120",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1845_july_vol_06_no_120.html",
+        "paragraphs": 175,
+        "meta": "175 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1845_july_vol_06_no_13",
+        "label": "Times and Seasons — July 1845 · Vol. 6 · No. 13",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1845_july_vol_06_no_13.html",
+        "paragraphs": 740,
+        "meta": "740 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1845_november_vol_06_no_17",
+        "label": "Times and Seasons — November 1845 · Vol. 6 · No. 17",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1845_november_vol_06_no_17.html",
+        "paragraphs": 320,
+        "meta": "320 paragraphs"
+      },
+      {
+        "id": "times_and_seasons:times_and_seasons_1839_1846_1845_december_vol_06_no_19",
+        "label": "Times and Seasons — December 1845 · Vol. 6 · No. 19",
+        "href": "sources/times_and_seasons/times_and_seasons_1839_1846_1845_december_vol_06_no_19.html",
+        "paragraphs": 716,
+        "meta": "716 paragraphs"
       }
     ]
   },
@@ -27697,11 +27872,1138 @@
     "type": "collection",
     "items": [
       {
-        "id": "millennial_star:millennial_star_1840_1859",
-        "label": "Millennial Star 1840 1859",
-        "href": "sources/millennial_star/millennial_star_1840_1859.html",
-        "paragraphs": 90576,
-        "meta": "90576 paragraphs"
+        "id": "millennial_star:millennial_star_1840_1859_1850_august_vol_21_no_33",
+        "label": "Millennial Star — August 1850 · Vol. 21 · No. 33",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1850_august_vol_21_no_33.html",
+        "paragraphs": 313,
+        "meta": "313 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_august_vol_21_no_35",
+        "label": "Millennial Star — August 1859 · Vol. 21 · No. 35",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_august_vol_21_no_35.html",
+        "paragraphs": 299,
+        "meta": "299 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_september_vol_21_no_37",
+        "label": "Millennial Star — September 1859 · Vol. 21 · No. 37",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_september_vol_21_no_37.html",
+        "paragraphs": 767,
+        "meta": "767 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_october_vol_21_no_42",
+        "label": "Millennial Star — October 1859 · Vol. 21 · No. 42",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_october_vol_21_no_42.html",
+        "paragraphs": 171,
+        "meta": "171 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_october_vol_21_no_43",
+        "label": "Millennial Star — October 1859 · Vol. 21 · No. 43",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_october_vol_21_no_43.html",
+        "paragraphs": 760,
+        "meta": "760 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_november_vol_21_no_48",
+        "label": "Millennial Star — November 1859 · Vol. 21 · No. 48",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_november_vol_21_no_48.html",
+        "paragraphs": 171,
+        "meta": "171 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_december_vol_21_no_49",
+        "label": "Millennial Star — December 1859 · Vol. 21 · No. 49",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_december_vol_21_no_49.html",
+        "paragraphs": 143,
+        "meta": "143 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_december_vol_21_no_50",
+        "label": "Millennial Star — December 1859 · Vol. 21 · No. 50",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_december_vol_21_no_50.html",
+        "paragraphs": 175,
+        "meta": "175 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_december_vol_21_no_51",
+        "label": "Millennial Star — December 1859 · Vol. 21 · No. 51",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_december_vol_21_no_51.html",
+        "paragraphs": 127,
+        "meta": "127 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_december_vol_21_no_52",
+        "label": "Millennial Star — December 1859 · Vol. 21 · No. 52",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_december_vol_21_no_52.html",
+        "paragraphs": 165,
+        "meta": "165 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_december_vol_21_no_53",
+        "label": "Millennial Star — December 1859 · Vol. 21 · No. 53",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_december_vol_21_no_53.html",
+        "paragraphs": 20957,
+        "meta": "20957 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_april_vol_14_no_09",
+        "label": "Millennial Star — April 1852 · Vol. 14 · No. 9",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_april_vol_14_no_09.html",
+        "paragraphs": 1134,
+        "meta": "1134 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_june_vol_25_no_17",
+        "label": "Millennial Star — June 1852 · Vol. 25 · No. 17",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_june_vol_25_no_17.html",
+        "paragraphs": 537,
+        "meta": "537 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_july_vol_14_no_21",
+        "label": "Millennial Star — July 1852 · Vol. 14 · No. 21",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_july_vol_14_no_21.html",
+        "paragraphs": 585,
+        "meta": "585 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_august_vol_14_no_25",
+        "label": "Millennial Star — August 1852 · Vol. 14 · No. 25",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_august_vol_14_no_25.html",
+        "paragraphs": 136,
+        "meta": "136 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_august_vol_14_no_26",
+        "label": "Millennial Star — August 1852 · Vol. 14 · No. 26",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_august_vol_14_no_26.html",
+        "paragraphs": 129,
+        "meta": "129 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_august_vol_14_no_27",
+        "label": "Millennial Star — August 1852 · Vol. 14 · No. 27",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_august_vol_14_no_27.html",
+        "paragraphs": 140,
+        "meta": "140 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_september_vol_14_no_28",
+        "label": "Millennial Star — September 1852 · Vol. 14 · No. 28",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_september_vol_14_no_28.html",
+        "paragraphs": 166,
+        "meta": "166 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_september_vol_14_no_29",
+        "label": "Millennial Star — September 1852 · Vol. 14 · No. 29",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_september_vol_14_no_29.html",
+        "paragraphs": 153,
+        "meta": "153 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_september_vol_14_no_30",
+        "label": "Millennial Star — September 1852 · Vol. 14 · No. 30",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_september_vol_14_no_30.html",
+        "paragraphs": 374,
+        "meta": "374 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_october_vol_14_no_32",
+        "label": "Millennial Star — October 1852 · Vol. 14 · No. 32",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_october_vol_14_no_32.html",
+        "paragraphs": 316,
+        "meta": "316 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_october_vol_14_no_34",
+        "label": "Millennial Star — October 1852 · Vol. 14 · No. 34",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_october_vol_14_no_34.html",
+        "paragraphs": 453,
+        "meta": "453 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_november_vol_14_no_37",
+        "label": "Millennial Star — November 1852 · Vol. 14 · No. 37",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_november_vol_14_no_37.html",
+        "paragraphs": 144,
+        "meta": "144 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_november_vol_14_no_38",
+        "label": "Millennial Star — November 1852 · Vol. 14 · No. 38",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_november_vol_14_no_38.html",
+        "paragraphs": 139,
+        "meta": "139 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_november_vol_14_no_39",
+        "label": "Millennial Star — November 1852 · Vol. 14 · No. 39",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_november_vol_14_no_39.html",
+        "paragraphs": 143,
+        "meta": "143 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_november_vol_14_no_04",
+        "label": "Millennial Star — November 1852 · Vol. 14 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_november_vol_14_no_04.html",
+        "paragraphs": 479,
+        "meta": "479 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_december_vol_14_no_43",
+        "label": "Millennial Star — December 1852 · Vol. 14 · No. 43",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_december_vol_14_no_43.html",
+        "paragraphs": 154,
+        "meta": "154 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1852_december_vol_14_no_44",
+        "label": "Millennial Star — December 1852 · Vol. 14 · No. 44",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1852_december_vol_14_no_44.html",
+        "paragraphs": 1536,
+        "meta": "1536 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_january_vol_15_no_04",
+        "label": "Millennial Star — January 1853 · Vol. 15 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_january_vol_15_no_04.html",
+        "paragraphs": 177,
+        "meta": "177 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_january_vol_15_no_05",
+        "label": "Millennial Star — January 1853 · Vol. 15 · No. 5",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_january_vol_15_no_05.html",
+        "paragraphs": 277,
+        "meta": "277 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_february_vol_15_no_07",
+        "label": "Millennial Star — February 1853 · Vol. 15 · No. 7",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_february_vol_15_no_07.html",
+        "paragraphs": 134,
+        "meta": "134 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_february_vol_15_no_08",
+        "label": "Millennial Star — February 1853 · Vol. 15 · No. 8",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_february_vol_15_no_08.html",
+        "paragraphs": 636,
+        "meta": "636 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_march_vol_15_no_12",
+        "label": "Millennial Star — March 1853 · Vol. 15 · No. 12",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_march_vol_15_no_12.html",
+        "paragraphs": 167,
+        "meta": "167 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_march_vol_15_no_13",
+        "label": "Millennial Star — March 1853 · Vol. 15 · No. 13",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_march_vol_15_no_13.html",
+        "paragraphs": 627,
+        "meta": "627 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_april_vol_15_no_17",
+        "label": "Millennial Star — April 1853 · Vol. 15 · No. 17",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_april_vol_15_no_17.html",
+        "paragraphs": 1149,
+        "meta": "1149 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_june_vol_02_no_25",
+        "label": "Millennial Star — June 1853 · Vol. 2 · No. 25",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_june_vol_02_no_25.html",
+        "paragraphs": 1314,
+        "meta": "1314 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_august_vol_15_no_33",
+        "label": "Millennial Star — August 1853 · Vol. 15 · No. 33",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_august_vol_15_no_33.html",
+        "paragraphs": 239,
+        "meta": "239 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_august_vol_15_no_35",
+        "label": "Millennial Star — August 1853 · Vol. 15 · No. 35",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_august_vol_15_no_35.html",
+        "paragraphs": 152,
+        "meta": "152 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_september_vol_15_no_36",
+        "label": "Millennial Star — September 1853 · Vol. 15 · No. 36",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_september_vol_15_no_36.html",
+        "paragraphs": 711,
+        "meta": "711 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_october_vol_15_no_04",
+        "label": "Millennial Star — October 1853 · Vol. 15 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_october_vol_15_no_04.html",
+        "paragraphs": 517,
+        "meta": "517 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_november_vol_15_no_04",
+        "label": "Millennial Star — November 1853 · Vol. 15 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_november_vol_15_no_04.html",
+        "paragraphs": 2610,
+        "meta": "2610 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_february_vol_16_no_05",
+        "label": "Millennial Star — February 1854 · Vol. 16 · No. 5",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_february_vol_16_no_05.html",
+        "paragraphs": 2763,
+        "meta": "2763 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_june_vol_16_no_23",
+        "label": "Millennial Star — June 1854 · Vol. 16 · No. 23",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_june_vol_16_no_23.html",
+        "paragraphs": 162,
+        "meta": "162 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_june_vol_16_no_24",
+        "label": "Millennial Star — June 1854 · Vol. 16 · No. 24",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_june_vol_16_no_24.html",
+        "paragraphs": 1664,
+        "meta": "1664 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_september_vol_16_no_35",
+        "label": "Millennial Star — September 1854 · Vol. 16 · No. 35",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_september_vol_16_no_35.html",
+        "paragraphs": 504,
+        "meta": "504 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_september_vol_16_no_38",
+        "label": "Millennial Star — September 1854 · Vol. 16 · No. 38",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_september_vol_16_no_38.html",
+        "paragraphs": 676,
+        "meta": "676 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_october_vol_16_no_42",
+        "label": "Millennial Star — October 1854 · Vol. 16 · No. 42",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_october_vol_16_no_42.html",
+        "paragraphs": 171,
+        "meta": "171 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_october_vol_16_no_43",
+        "label": "Millennial Star — October 1854 · Vol. 16 · No. 43",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_october_vol_16_no_43.html",
+        "paragraphs": 283,
+        "meta": "283 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_november_vol_16_no_04",
+        "label": "Millennial Star — November 1854 · Vol. 16 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_november_vol_16_no_04.html",
+        "paragraphs": 171,
+        "meta": "171 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_november_vol_16_no_04_02",
+        "label": "Millennial Star — November 1854 · Vol. 16 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_november_vol_16_no_04_02.html",
+        "paragraphs": 171,
+        "meta": "171 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_november_vol_16_no_04_03",
+        "label": "Millennial Star — November 1854 · Vol. 16 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_november_vol_16_no_04_03.html",
+        "paragraphs": 311,
+        "meta": "311 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1854_december_vol_16_no_04",
+        "label": "Millennial Star — December 1854 · Vol. 16 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1854_december_vol_16_no_04.html",
+        "paragraphs": 740,
+        "meta": "740 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_january_vol_17_no_02",
+        "label": "Millennial Star — January 1856 · Vol. 17 · No. 2",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_january_vol_17_no_02.html",
+        "paragraphs": 308,
+        "meta": "308 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_january_vol_17_no_04",
+        "label": "Millennial Star — January 1855 · Vol. 17 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_january_vol_17_no_04.html",
+        "paragraphs": 168,
+        "meta": "168 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1850_february_vol_17_no_05",
+        "label": "Millennial Star — February 1850 · Vol. 17 · No. 5",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1850_february_vol_17_no_05.html",
+        "paragraphs": 133,
+        "meta": "133 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_february_vol_17_no_06",
+        "label": "Millennial Star — February 1855 · Vol. 17 · No. 6",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_february_vol_17_no_06.html",
+        "paragraphs": 152,
+        "meta": "152 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_february_vol_17_no_07",
+        "label": "Millennial Star — February 1855 · Vol. 17 · No. 7",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_february_vol_17_no_07.html",
+        "paragraphs": 160,
+        "meta": "160 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_february_vol_17_no_08",
+        "label": "Millennial Star — February 1855 · Vol. 17 · No. 8",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_february_vol_17_no_08.html",
+        "paragraphs": 483,
+        "meta": "483 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_march_vol_17_no_11",
+        "label": "Millennial Star — March 1855 · Vol. 17 · No. 11",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_march_vol_17_no_11.html",
+        "paragraphs": 155,
+        "meta": "155 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_march_vol_17_no_12",
+        "label": "Millennial Star — March 1855 · Vol. 17 · No. 12",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_march_vol_17_no_12.html",
+        "paragraphs": 279,
+        "meta": "279 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_april_vol_17_no_14",
+        "label": "Millennial Star — April 1855 · Vol. 17 · No. 14",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_april_vol_17_no_14.html",
+        "paragraphs": 178,
+        "meta": "178 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_april_vol_17_no_15",
+        "label": "Millennial Star — April 1855 · Vol. 17 · No. 15",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_april_vol_17_no_15.html",
+        "paragraphs": 167,
+        "meta": "167 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_april_vol_17_no_16",
+        "label": "Millennial Star — April 1855 · Vol. 17 · No. 16",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_april_vol_17_no_16.html",
+        "paragraphs": 1644,
+        "meta": "1644 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_july_vol_17_no_27",
+        "label": "Millennial Star — July 1855 · Vol. 17 · No. 27",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_july_vol_17_no_27.html",
+        "paragraphs": 142,
+        "meta": "142 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_july_vol_17_no_28",
+        "label": "Millennial Star — July 1855 · Vol. 17 · No. 28",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_july_vol_17_no_28.html",
+        "paragraphs": 136,
+        "meta": "136 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_july_vol_17_no_29",
+        "label": "Millennial Star — July 1855 · Vol. 17 · No. 29",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_july_vol_17_no_29.html",
+        "paragraphs": 137,
+        "meta": "137 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_july_vol_17_no_30",
+        "label": "Millennial Star — July 1855 · Vol. 17 · No. 30",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_july_vol_17_no_30.html",
+        "paragraphs": 183,
+        "meta": "183 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_august_vol_17_no_31",
+        "label": "Millennial Star — August 1855 · Vol. 17 · No. 31",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_august_vol_17_no_31.html",
+        "paragraphs": 129,
+        "meta": "129 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_august_vol_17_no_32",
+        "label": "Millennial Star — August 1855 · Vol. 17 · No. 32",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_august_vol_17_no_32.html",
+        "paragraphs": 166,
+        "meta": "166 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_august_vol_17_no_33",
+        "label": "Millennial Star — August 1855 · Vol. 17 · No. 33",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_august_vol_17_no_33.html",
+        "paragraphs": 162,
+        "meta": "162 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_august_vol_17_no_34",
+        "label": "Millennial Star — August 1855 · Vol. 17 · No. 34",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_august_vol_17_no_34.html",
+        "paragraphs": 151,
+        "meta": "151 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_september_vol_17_no_35",
+        "label": "Millennial Star — September 1855 · Vol. 17 · No. 35",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_september_vol_17_no_35.html",
+        "paragraphs": 138,
+        "meta": "138 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_september_vol_17_no_36",
+        "label": "Millennial Star — September 1855 · Vol. 17 · No. 36",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_september_vol_17_no_36.html",
+        "paragraphs": 169,
+        "meta": "169 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_september_vol_17_no_37",
+        "label": "Millennial Star — September 1855 · Vol. 17 · No. 37",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_september_vol_17_no_37.html",
+        "paragraphs": 162,
+        "meta": "162 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_september_vol_17_no_38",
+        "label": "Millennial Star — September 1855 · Vol. 17 · No. 38",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_september_vol_17_no_38.html",
+        "paragraphs": 118,
+        "meta": "118 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_september_vol_17_no_39",
+        "label": "Millennial Star — September 1855 · Vol. 17 · No. 39",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_september_vol_17_no_39.html",
+        "paragraphs": 130,
+        "meta": "130 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_october_vol_17_no_40",
+        "label": "Millennial Star — October 1855 · Vol. 17 · No. 40",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_october_vol_17_no_40.html",
+        "paragraphs": 318,
+        "meta": "318 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_october_vol_17_no_42",
+        "label": "Millennial Star — October 1855 · Vol. 17 · No. 42",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_october_vol_17_no_42.html",
+        "paragraphs": 150,
+        "meta": "150 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_october_vol_17_no_43",
+        "label": "Millennial Star — October 1855 · Vol. 17 · No. 43",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_october_vol_17_no_43.html",
+        "paragraphs": 289,
+        "meta": "289 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_november_vol_17_no_45",
+        "label": "Millennial Star — November 1855 · Vol. 17 · No. 45",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_november_vol_17_no_45.html",
+        "paragraphs": 193,
+        "meta": "193 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_november_vol_17_no_46",
+        "label": "Millennial Star — November 1855 · Vol. 17 · No. 46",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_november_vol_17_no_46.html",
+        "paragraphs": 133,
+        "meta": "133 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_november_vol_17_no_47",
+        "label": "Millennial Star — November 1855 · Vol. 17 · No. 47",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_november_vol_17_no_47.html",
+        "paragraphs": 173,
+        "meta": "173 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_december_vol_17_no_48",
+        "label": "Millennial Star — December 1855 · Vol. 17 · No. 48",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_december_vol_17_no_48.html",
+        "paragraphs": 129,
+        "meta": "129 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1855_december_vol_17_no_49",
+        "label": "Millennial Star — December 1855 · Vol. 17 · No. 49",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1855_december_vol_17_no_49.html",
+        "paragraphs": 711,
+        "meta": "711 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_january_vol_18_no_02",
+        "label": "Millennial Star — January 1858 · Vol. 18 · No. 2",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_january_vol_18_no_02.html",
+        "paragraphs": 170,
+        "meta": "170 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_january_vol_18_no_03",
+        "label": "Millennial Star — January 1856 · Vol. 18 · No. 3",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_january_vol_18_no_03.html",
+        "paragraphs": 132,
+        "meta": "132 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_january_vol_18_no_04",
+        "label": "Millennial Star — January 1856 · Vol. 18 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_january_vol_18_no_04.html",
+        "paragraphs": 576,
+        "meta": "576 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_february_vol_18_no_07",
+        "label": "Millennial Star — February 1856 · Vol. 18 · No. 7",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_february_vol_18_no_07.html",
+        "paragraphs": 307,
+        "meta": "307 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_march_vol_18_no_09",
+        "label": "Millennial Star — March 1856 · Vol. 18 · No. 9",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_march_vol_18_no_09.html",
+        "paragraphs": 157,
+        "meta": "157 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_march_vol_18_no_10",
+        "label": "Millennial Star — March 1856 · Vol. 18 · No. 10",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_march_vol_18_no_10.html",
+        "paragraphs": 172,
+        "meta": "172 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_march_vol_18_no_11",
+        "label": "Millennial Star — March 1856 · Vol. 18 · No. 11",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_march_vol_18_no_11.html",
+        "paragraphs": 160,
+        "meta": "160 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_march_vol_18_no_12",
+        "label": "Millennial Star — March 1856 · Vol. 18 · No. 12",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_march_vol_18_no_12.html",
+        "paragraphs": 574,
+        "meta": "574 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_april_vol_18_no_16",
+        "label": "Millennial Star — April 1856 · Vol. 18 · No. 16",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_april_vol_18_no_16.html",
+        "paragraphs": 505,
+        "meta": "505 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_may_vol_18_no_19",
+        "label": "Millennial Star — May 1856 · Vol. 18 · No. 19",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_may_vol_18_no_19.html",
+        "paragraphs": 150,
+        "meta": "150 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_may_vol_18_no_20",
+        "label": "Millennial Star — May 1856 · Vol. 18 · No. 20",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_may_vol_18_no_20.html",
+        "paragraphs": 280,
+        "meta": "280 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1850_may_vol_18_no_22",
+        "label": "Millennial Star — May 1850 · Vol. 18 · No. 22",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1850_may_vol_18_no_22.html",
+        "paragraphs": 686,
+        "meta": "686 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1850_june_vol_18_no_20",
+        "label": "Millennial Star — June 1850 · Vol. 18 · No. 20",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1850_june_vol_18_no_20.html",
+        "paragraphs": 153,
+        "meta": "153 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_july_vol_18_no_27",
+        "label": "Millennial Star — July 1856 · Vol. 18 · No. 27",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_july_vol_18_no_27.html",
+        "paragraphs": 511,
+        "meta": "511 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_july_vol_18_no_30",
+        "label": "Millennial Star — July 1856 · Vol. 18 · No. 30",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_july_vol_18_no_30.html",
+        "paragraphs": 144,
+        "meta": "144 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_august_vol_18_no_31",
+        "label": "Millennial Star — August 1858 · Vol. 18 · No. 31",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_august_vol_18_no_31.html",
+        "paragraphs": 181,
+        "meta": "181 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_august_vol_18_no_32",
+        "label": "Millennial Star — August 1856 · Vol. 18 · No. 32",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_august_vol_18_no_32.html",
+        "paragraphs": 369,
+        "meta": "369 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_august_vol_18_no_34",
+        "label": "Millennial Star — August 1856 · Vol. 18 · No. 34",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_august_vol_18_no_34.html",
+        "paragraphs": 160,
+        "meta": "160 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_august_vol_18_no_35",
+        "label": "Millennial Star — August 1856 · Vol. 18 · No. 35",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_august_vol_18_no_35.html",
+        "paragraphs": 160,
+        "meta": "160 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_september_vol_18_no_36",
+        "label": "Millennial Star — September 1856 · Vol. 18 · No. 36",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_september_vol_18_no_36.html",
+        "paragraphs": 152,
+        "meta": "152 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_september_vol_18_no_37",
+        "label": "Millennial Star — September 1856 · Vol. 18 · No. 37",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_september_vol_18_no_37.html",
+        "paragraphs": 860,
+        "meta": "860 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1850_october_vol_18_no_42",
+        "label": "Millennial Star — October 1850 · Vol. 18 · No. 42",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1850_october_vol_18_no_42.html",
+        "paragraphs": 174,
+        "meta": "174 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_october_vol_18_no_43",
+        "label": "Millennial Star — October 1856 · Vol. 18 · No. 43",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_october_vol_18_no_43.html",
+        "paragraphs": 193,
+        "meta": "193 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_november_vol_18_no_44",
+        "label": "Millennial Star — November 1856 · Vol. 18 · No. 44",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_november_vol_18_no_44.html",
+        "paragraphs": 199,
+        "meta": "199 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_november_vol_18_no_45",
+        "label": "Millennial Star — November 1856 · Vol. 18 · No. 45",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_november_vol_18_no_45.html",
+        "paragraphs": 151,
+        "meta": "151 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_november_vol_18_no_46",
+        "label": "Millennial Star — November 1856 · Vol. 18 · No. 46",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_november_vol_18_no_46.html",
+        "paragraphs": 152,
+        "meta": "152 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_november_vol_18_no_47",
+        "label": "Millennial Star — November 1856 · Vol. 18 · No. 47",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_november_vol_18_no_47.html",
+        "paragraphs": 124,
+        "meta": "124 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_november_vol_18_no_48",
+        "label": "Millennial Star — November 1856 · Vol. 18 · No. 48",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_november_vol_18_no_48.html",
+        "paragraphs": 172,
+        "meta": "172 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_december_vol_18_no_49",
+        "label": "Millennial Star — December 1856 · Vol. 18 · No. 49",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_december_vol_18_no_49.html",
+        "paragraphs": 146,
+        "meta": "146 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_december_vol_18_no_50",
+        "label": "Millennial Star — December 1858 · Vol. 18 · No. 50",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_december_vol_18_no_50.html",
+        "paragraphs": 152,
+        "meta": "152 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1856_december_vol_18_no_51",
+        "label": "Millennial Star — December 1856 · Vol. 18 · No. 51",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1856_december_vol_18_no_51.html",
+        "paragraphs": 720,
+        "meta": "720 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_january_vol_19_no_04",
+        "label": "Millennial Star — January 1857 · Vol. 19 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_january_vol_19_no_04.html",
+        "paragraphs": 819,
+        "meta": "819 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_february_vol_19_no_09",
+        "label": "Millennial Star — February 1857 · Vol. 19 · No. 9",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_february_vol_19_no_09.html",
+        "paragraphs": 285,
+        "meta": "285 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_march_vol_19_no_11",
+        "label": "Millennial Star — March 1857 · Vol. 19 · No. 11",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_march_vol_19_no_11.html",
+        "paragraphs": 251,
+        "meta": "251 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_march_vol_19_no_13",
+        "label": "Millennial Star — March 1857 · Vol. 19 · No. 13",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_march_vol_19_no_13.html",
+        "paragraphs": 284,
+        "meta": "284 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_april_vol_19_no_15",
+        "label": "Millennial Star — April 1857 · Vol. 19 · No. 15",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_april_vol_19_no_15.html",
+        "paragraphs": 310,
+        "meta": "310 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_april_vol_19_no_17",
+        "label": "Millennial Star — April 1857 · Vol. 19 · No. 17",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_april_vol_19_no_17.html",
+        "paragraphs": 2206,
+        "meta": "2206 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_august_vol_19_no_32",
+        "label": "Millennial Star — August 1857 · Vol. 19 · No. 32",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_august_vol_19_no_32.html",
+        "paragraphs": 635,
+        "meta": "635 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_september_vol_19_no_36",
+        "label": "Millennial Star — September 1857 · Vol. 19 · No. 36",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_september_vol_19_no_36.html",
+        "paragraphs": 142,
+        "meta": "142 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_september_vol_19_no_37",
+        "label": "Millennial Star — September 1857 · Vol. 19 · No. 37",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_september_vol_19_no_37.html",
+        "paragraphs": 127,
+        "meta": "127 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_september_vol_19_no_38",
+        "label": "Millennial Star — September 1857 · Vol. 19 · No. 38",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_september_vol_19_no_38.html",
+        "paragraphs": 502,
+        "meta": "502 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_october_vol_19_no_41",
+        "label": "Millennial Star — October 1857 · Vol. 19 · No. 41",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_october_vol_19_no_41.html",
+        "paragraphs": 403,
+        "meta": "403 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_october_vol_19_no_44",
+        "label": "Millennial Star — October 1857 · Vol. 19 · No. 44",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_october_vol_19_no_44.html",
+        "paragraphs": 124,
+        "meta": "124 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_november_vol_19_no_45",
+        "label": "Millennial Star — November 1857 · Vol. 19 · No. 45",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_november_vol_19_no_45.html",
+        "paragraphs": 261,
+        "meta": "261 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_november_vol_19_no_47",
+        "label": "Millennial Star — November 1857 · Vol. 19 · No. 47",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_november_vol_19_no_47.html",
+        "paragraphs": 239,
+        "meta": "239 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_december_vol_19_no_49",
+        "label": "Millennial Star — December 1857 · Vol. 19 · No. 49",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_december_vol_19_no_49.html",
+        "paragraphs": 139,
+        "meta": "139 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_december_vol_19_no_50",
+        "label": "Millennial Star — December 1857 · Vol. 19 · No. 50",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_december_vol_19_no_50.html",
+        "paragraphs": 148,
+        "meta": "148 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_december_vol_19_no_51",
+        "label": "Millennial Star — December 1857 · Vol. 19 · No. 51",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_december_vol_19_no_51.html",
+        "paragraphs": 105,
+        "meta": "105 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1857_december_vol_19_no_52",
+        "label": "Millennial Star — December 1857 · Vol. 19 · No. 52",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1857_december_vol_19_no_52.html",
+        "paragraphs": 428,
+        "meta": "428 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_january_vol_20_no_03",
+        "label": "Millennial Star — January 1858 · Vol. 20 · No. 3",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_january_vol_20_no_03.html",
+        "paragraphs": 129,
+        "meta": "129 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_january_vol_20_no_04",
+        "label": "Millennial Star — January 1858 · Vol. 20 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_january_vol_20_no_04.html",
+        "paragraphs": 440,
+        "meta": "440 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_february_vol_20_no_07",
+        "label": "Millennial Star — February 1858 · Vol. 20 · No. 7",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_february_vol_20_no_07.html",
+        "paragraphs": 125,
+        "meta": "125 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_february_vol_20_no_08",
+        "label": "Millennial Star — February 1858 · Vol. 20 · No. 8",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_february_vol_20_no_08.html",
+        "paragraphs": 181,
+        "meta": "181 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_february_vol_20_no_09",
+        "label": "Millennial Star — February 1858 · Vol. 20 · No. 9",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_february_vol_20_no_09.html",
+        "paragraphs": 480,
+        "meta": "480 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_march_vol_20_no_12",
+        "label": "Millennial Star — March 1858 · Vol. 20 · No. 12",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_march_vol_20_no_12.html",
+        "paragraphs": 2559,
+        "meta": "2559 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1853_july_vol_20_no_31",
+        "label": "Millennial Star — July 1853 · Vol. 20 · No. 31",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1853_july_vol_20_no_31.html",
+        "paragraphs": 289,
+        "meta": "289 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_august_vol_20_no_33",
+        "label": "Millennial Star — August 1858 · Vol. 20 · No. 33",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_august_vol_20_no_33.html",
+        "paragraphs": 145,
+        "meta": "145 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_august_vol_20_no_34",
+        "label": "Millennial Star — August 1858 · Vol. 20 · No. 34",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_august_vol_20_no_34.html",
+        "paragraphs": 278,
+        "meta": "278 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_september_vol_20_no_36",
+        "label": "Millennial Star — September 1858 · Vol. 20 · No. 36",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_september_vol_20_no_36.html",
+        "paragraphs": 276,
+        "meta": "276 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_september_vol_20_no_38",
+        "label": "Millennial Star — September 1858 · Vol. 20 · No. 38",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_september_vol_20_no_38.html",
+        "paragraphs": 478,
+        "meta": "478 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_october_vol_20_no_41",
+        "label": "Millennial Star — October 1858 · Vol. 20 · No. 41",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_october_vol_20_no_41.html",
+        "paragraphs": 178,
+        "meta": "178 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_october_vol_20_no_42",
+        "label": "Millennial Star — October 1858 · Vol. 20 · No. 42",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_october_vol_20_no_42.html",
+        "paragraphs": 149,
+        "meta": "149 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_october_vol_20_no_43",
+        "label": "Millennial Star — October 1858 · Vol. 20 · No. 43",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_october_vol_20_no_43.html",
+        "paragraphs": 128,
+        "meta": "128 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_october_vol_20_no_44",
+        "label": "Millennial Star — October 1858 · Vol. 20 · No. 44",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_october_vol_20_no_44.html",
+        "paragraphs": 243,
+        "meta": "243 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_november_vol_20_no_46",
+        "label": "Millennial Star — November 1858 · Vol. 20 · No. 46",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_november_vol_20_no_46.html",
+        "paragraphs": 296,
+        "meta": "296 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_november_vol_20_no_48",
+        "label": "Millennial Star — November 1858 · Vol. 20 · No. 48",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_november_vol_20_no_48.html",
+        "paragraphs": 116,
+        "meta": "116 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_december_vol_20_no_49",
+        "label": "Millennial Star — December 1858 · Vol. 20 · No. 49",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_december_vol_20_no_49.html",
+        "paragraphs": 281,
+        "meta": "281 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_december_vol_20_no_51",
+        "label": "Millennial Star — December 1858 · Vol. 20 · No. 51",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_december_vol_20_no_51.html",
+        "paragraphs": 142,
+        "meta": "142 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1858_december_vol_20_no_52",
+        "label": "Millennial Star — December 1858 · Vol. 20 · No. 52",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1858_december_vol_20_no_52.html",
+        "paragraphs": 416,
+        "meta": "416 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_january_vol_21_no_03",
+        "label": "Millennial Star — January 1859 · Vol. 21 · No. 3",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_january_vol_21_no_03.html",
+        "paragraphs": 148,
+        "meta": "148 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_january_vol_21_no_04",
+        "label": "Millennial Star — January 1859 · Vol. 21 · No. 4",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_january_vol_21_no_04.html",
+        "paragraphs": 149,
+        "meta": "149 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_january_vol_21_no_05",
+        "label": "Millennial Star — January 1859 · Vol. 21 · No. 5",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_january_vol_21_no_05.html",
+        "paragraphs": 95,
+        "meta": "95 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_february_vol_21_no_06",
+        "label": "Millennial Star — February 1859 · Vol. 21 · No. 6",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_february_vol_21_no_06.html",
+        "paragraphs": 79,
+        "meta": "79 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_february_vol_21_no_07",
+        "label": "Millennial Star — February 1859 · Vol. 21 · No. 7",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_february_vol_21_no_07.html",
+        "paragraphs": 122,
+        "meta": "122 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_february_vol_21_no_08",
+        "label": "Millennial Star — February 1859 · Vol. 21 · No. 8",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_february_vol_21_no_08.html",
+        "paragraphs": 360,
+        "meta": "360 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_march_vol_21_no_11",
+        "label": "Millennial Star — March 1859 · Vol. 21 · No. 11",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_march_vol_21_no_11.html",
+        "paragraphs": 756,
+        "meta": "756 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_april_vol_21_no_16",
+        "label": "Millennial Star — April 1859 · Vol. 21 · No. 16",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_april_vol_21_no_16.html",
+        "paragraphs": 140,
+        "meta": "140 paragraphs"
+      },
+      {
+        "id": "millennial_star:millennial_star_1840_1859_1859_april_vol_21_no_17",
+        "label": "Millennial Star — April 1859 · Vol. 21 · No. 17",
+        "href": "sources/millennial_star/millennial_star_1840_1859_1859_april_vol_21_no_17.html",
+        "paragraphs": 1253,
+        "meta": "1253 paragraphs"
       }
     ]
   },
