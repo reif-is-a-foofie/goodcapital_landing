@@ -146,6 +146,41 @@ nav .nav-links a:hover {
     margin-bottom: 34px;
 }
 
+.hero .origin-note {
+    max-width: 760px;
+    padding: 20px 22px;
+    border: 1px solid var(--divider);
+    background: rgba(255,255,255,0.72);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.04);
+}
+
+.hero .origin-label {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.hero .origin-note p {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.55;
+    color: #3F3F3F;
+}
+
+.hero .origin-note a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(8, 112, 116, 0.35);
+}
+
+.hero .origin-note a:hover {
+    border-bottom-color: var(--accent);
+}
+
 .section {
     border-top: 1px solid var(--divider);
 }
@@ -318,6 +353,10 @@ footer .footer-build svg {
             <span>Go-to-market support</span>
             <span>Tool building</span>
         </p>
+        <div class="origin-note">
+            <span class="origin-label">Donaldson Papers</span>
+            <p>This library is built on the work of <a href="https://donaldsonpapers.com/" target="_blank" rel="noopener noreferrer">Lee Donaldson</a>, whose <em>Disk of Knowledge</em> was given to missionaries at the end of their missions in the San Diego California Mission.</p>
+        </div>
     </div>
 </section>
 
