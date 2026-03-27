@@ -309,6 +309,17 @@ async function run() {
   assert(/grace and truth came by Jesus Christ/i.test(johnCleanState.v17), 'John 1:17 did not restore full canonical verse text');
   assert(!/&lt;span class=|&amp;quot;cw/i.test(johnCleanState.v1Html), 'John 1 still leaks escaped critical-word wrappers');
 
+  await page.evaluate(() => jumpTo('2_thessalonians_2'));
+  await page.waitForSelector('#v1 .verse-text', { timeout: 20000 });
+  const secondThessCleanState = await page.evaluate(() => ({
+    v1: document.querySelector('#v1 .verse-text')?.innerText || '',
+    v3: document.querySelector('#v3 .verse-text')?.innerText || '',
+    v3Html: document.querySelector('#v3 .verse-text')?.innerHTML || '',
+  }));
+  assert(/Now we beseech you, brethren/i.test(secondThessCleanState.v1), '2 Thessalonians 2:1 did not restore full canonical verse text');
+  assert(/that man of sin be revealed, the son of perdition/i.test(secondThessCleanState.v3), '2 Thessalonians 2:3 did not restore full canonical verse text');
+  assert(!/&lt;span class=|&amp;quot;cw/i.test(secondThessCleanState.v3Html), '2 Thessalonians still leaks escaped critical-word wrappers');
+
   await page.evaluate(() => jumpTo('1_nephi_8'));
   await page.waitForSelector('#v23 .verse-text .w', { timeout: 20000 });
   await page.evaluate(() => {
@@ -362,7 +373,7 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
-  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, genesisCleanState, loveState, johnCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
+  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, genesisCleanState, loveState, johnCleanState, secondThessCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
   await browser.close();
 }
 
