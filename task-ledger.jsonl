@@ -39,3 +39,5 @@
 {"ts": "2026-03-27T19:05:26+00:00", "type": "queue", "title": "Complete the traversal benchmark so 10-hop mixed-corpus walks can be scored for whether they produce genuinely new and useful insight paths", "status": "pending"}
 {"ts": "2026-03-27T19:10:54+00:00", "type": "queue", "title": "Replace the wrong-source Ancient Texts artifacts for Book of Jubilees and Testament of the Twelve Patriarchs with correct readable source texts", "status": "completed"}
 {"ts": "2026-03-27T19:10:54+00:00", "type": "queue", "title": "Trim trailing notes and editorial apparatus from corrected Ancient Texts pages like Jubilees and Testaments so the reader opens on cleaner primary-text paragraphs", "status": "pending"}
+{"ts": "2026-03-27T19:12:58+00:00", "type": "queue", "title": "Trim Gilgamesh so the Ancient Texts reader opens on the first narrative section instead of Gutenberg boilerplate", "status": "completed"}
+{"ts": "2026-03-27T19:12:58+00:00", "type": "queue", "title": "Replace the current fragmentary Gilgamesh source with a cleaner full-text translation that opens on the epic prologue and minimizes notes/apparatus", "status": "pending"}

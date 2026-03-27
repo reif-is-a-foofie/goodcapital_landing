@@ -101,6 +101,27 @@ async function run() {
     document.querySelector('#toc-title').textContent === 'Sources' &&
     document.querySelector('#toc-subtitle').textContent === 'Ancient Texts'
   );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="ancient_texts:gilgamesh"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const gilgameshState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    first: document.querySelector('.source-doc .source-para')?.textContent.trim() || '',
+    body: document.querySelector('.source-doc')?.innerText || '',
+  }));
+  assert(gilgameshState.title === 'Gilgamesh', 'Gilgamesh source title did not load');
+  assert(/Now the harlot urges Enkidu/i.test(gilgameshState.first), 'Gilgamesh still opens on Gutenberg boilerplate instead of the first narrative section');
+  assert(!/Project Gutenberg eBook of The Epic of Gilgamish/i.test(gilgameshState.body), 'Gilgamesh still contains the old Gutenberg boilerplate opening');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="ancient_texts"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Ancient Texts'
+  );
   await page.$eval('.toc-tile[data-action="source-doc"][data-doc="ancient_texts:book_of_enoch"]', (el) => el.click());
   await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
   const enochState = await page.evaluate(() => ({

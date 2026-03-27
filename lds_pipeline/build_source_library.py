@@ -103,6 +103,10 @@ def preprocess_source_text(group_key: str, txt_path: Path, raw: str) -> str:
             hits = [m.start() for m in re.finditer(re.escape("BOOK I."), text)]
             if len(hits) >= 2:
                 text = text[hits[1]:]
+        elif stem == "gilgamesh":
+            matches = list(re.finditer(r"\bNow the harlot urges Enkidu\b", text, re.I))
+            if matches:
+                text = text[matches[0].start():]
         elif stem == "testament_twelve_patriarchs":
             matches = list(re.finditer(r"\bTHE\s+TESTAMENT\s+OF\s+REUBEN\b", text, re.I))
             if matches:
