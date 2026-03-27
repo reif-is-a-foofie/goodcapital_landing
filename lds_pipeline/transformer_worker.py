@@ -26,10 +26,7 @@ CACHE_DIR = ROOT / "cache"
 STATE_FILE = CACHE_DIR / "transformer_worker_state.json"
 LOG_FILE = CACHE_DIR / "transformer_worker.log"
 CORR_DIR = CACHE_DIR / "correlations"
-WORDS_TARGETS = [
-    *sorted((ROOT.parent / "library" / "sources" / "journal_of_discourses").glob("vol_*_words.json")),
-    *sorted((ROOT.parent / "library" / "sources" / "history_of_church").glob("vol*_words.json")),
-]
+SOURCE_TOC = ROOT.parent / "library" / "source_toc.json"
 
 WATCH_PATHS = [
     CACHE_DIR / "verse_catalog.json",
@@ -112,9 +109,33 @@ def correlations_missing() -> bool:
 
 
 def source_sidecars_missing() -> bool:
-    if not WORDS_TARGETS:
+    if not SOURCE_TOC.exists():
         return True
-    return any(not path.exists() for path in WORDS_TARGETS)
+    return any(not path.exists() for path in expected_source_sidecars())
+
+
+def expected_source_sidecars() -> list[Path]:
+    try:
+        from build_source_words import TARGET_GROUPS
+    except Exception:
+        return []
+
+    try:
+        toc = json.loads(SOURCE_TOC.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+    sidecars = []
+    for collection in toc:
+        if collection.get("id") not in TARGET_GROUPS:
+            continue
+        for item in collection.get("items", []):
+            href = item.get("href")
+            if not href or not href.endswith(".html"):
+                continue
+            html_path = ROOT.parent / "library" / href
+            sidecars.append(html_path.with_name(html_path.stem + "_words.json"))
+    return sidecars
 
 
 def run_correlations() -> tuple[bool, str]:
