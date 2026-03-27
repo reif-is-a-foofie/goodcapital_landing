@@ -4,6 +4,7 @@ Source Worker — continuously downloads and caches all source corpora.
 
 Run in a separate terminal:
   python3 source_worker.py
+  python3 transformer_worker.py
 
 Checks every source, downloads what's missing, sleeps, repeats.
 Safe to kill and restart anytime — all downloads are idempotent.
@@ -453,12 +454,19 @@ def main() -> None:
     parser.add_argument("--once", action="store_true", help="Run one sweep then exit")
     parser.add_argument("--no-correlate", action="store_true",
                         help="Skip correlation step even when new content found")
-    parser.add_argument("--source", choices=["jd", "gutenberg", "gc", "hoc", "jsp"],
+    parser.add_argument("--source", choices=["jd", "gutenberg", "gc", "hoc", "jsp", "transformer"],
                         help="Run only a specific source")
     args = parser.parse_args()
 
     if args.source:
-        {"jd": sync_jd, "gutenberg": sync_gutenberg, "gc": sync_gc, "hoc": sync_hoc, "jsp": sync_jsp}[args.source]()
+        {
+            "jd": sync_jd,
+            "gutenberg": sync_gutenberg,
+            "gc": sync_gc,
+            "hoc": sync_hoc,
+            "jsp": sync_jsp,
+            "transformer": run_correlations,
+        }[args.source]()
         return
 
     correlate = not args.no_correlate
