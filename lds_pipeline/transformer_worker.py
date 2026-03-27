@@ -26,6 +26,10 @@ CACHE_DIR = ROOT / "cache"
 STATE_FILE = CACHE_DIR / "transformer_worker_state.json"
 LOG_FILE = CACHE_DIR / "transformer_worker.log"
 CORR_DIR = CACHE_DIR / "correlations"
+WORDS_TARGETS = [
+    *sorted((ROOT.parent / "library" / "sources" / "journal_of_discourses").glob("vol_*_words.json")),
+    *sorted((ROOT.parent / "library" / "sources" / "history_of_church").glob("vol*_words.json")),
+]
 
 WATCH_PATHS = [
     CACHE_DIR / "verse_catalog.json",
@@ -107,9 +111,28 @@ def correlations_missing() -> bool:
     return not any(CORR_DIR.glob("*.json"))
 
 
+def source_sidecars_missing() -> bool:
+    if not WORDS_TARGETS:
+        return True
+    return any(not path.exists() for path in WORDS_TARGETS)
+
+
 def run_correlations() -> tuple[bool, str]:
     result = subprocess.run(
         [sys.executable, str(ROOT / "correlate_embeddings.py")],
+        capture_output=True,
+        text=True,
+        cwd=str(ROOT),
+    )
+    output = (result.stdout or "").strip()
+    error = (result.stderr or "").strip()
+    tail = "\n".join((output or error).splitlines()[-8:])
+    return result.returncode == 0, tail
+
+
+def run_source_word_sidecars() -> tuple[bool, str]:
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "build_source_words.py")],
         capture_output=True,
         text=True,
         cwd=str(ROOT),
@@ -125,33 +148,59 @@ def maybe_run(force: bool = False) -> bool:
     signature = build_signature()
     previous = state.get("signature", {})
 
-    changed = force or correlations_missing() or previous.get("digest") != signature["digest"]
-    if not changed:
-        log("No corpus changes detected; semantic correlations remain current")
+    need_correlations = force or correlations_missing() or previous.get("digest") != signature["digest"]
+    need_sidecars = force or source_sidecars_missing() or need_correlations
+
+    if not need_correlations and not need_sidecars:
+        log("No corpus or sidecar changes detected; semantic correlations remain current")
         return False
 
-    reason = "forced" if force else "changed inputs"
-    if correlations_missing():
-        reason = "missing correlation artifacts"
-    log(f"Running sentence-transformer correlations ({reason})")
-    ok, tail = run_correlations()
-    if ok:
+    if need_correlations:
+        reason = "forced" if force else "changed inputs"
+        if correlations_missing():
+            reason = "missing correlation artifacts"
+        log(f"Running sentence-transformer correlations ({reason})")
+        ok, tail = run_correlations()
+        if not ok:
+            log("Transformer correlation ERROR")
+            if tail:
+                for line in tail.splitlines():
+                    log(f"  {line}")
+            state["last_error_ts"] = int(time.time())
+            save_state(state)
+            return False
         log("Transformer correlations complete ✓")
         if tail:
             for line in tail.splitlines():
                 log(f"  {line}")
-        state["signature"] = signature
-        state["last_success_ts"] = int(time.time())
-        save_state(state)
-        return True
 
-    log("Transformer correlation ERROR")
-    if tail:
-        for line in tail.splitlines():
-            log(f"  {line}")
-    state["last_error_ts"] = int(time.time())
+    if need_sidecars:
+        sidecar_reason = "forced" if force and not need_correlations else "changed sources"
+        if source_sidecars_missing():
+            sidecar_reason = "missing source-word artifacts"
+        if need_correlations:
+            sidecar_reason = "fresh correlations"
+        log(f"Refreshing source-word sidecars ({sidecar_reason})")
+        words_ok, words_tail = run_source_word_sidecars()
+        if not words_ok:
+            log("Source-word sidecar ERROR")
+            if words_tail:
+                for line in words_tail.splitlines():
+                    log(f"  {line}")
+            state["last_error_ts"] = int(time.time())
+            save_state(state)
+            return False
+        log("Source-word sidecars complete ✓")
+        if words_tail:
+            for line in words_tail.splitlines():
+                log(f"  {line}")
+
+    state["signature"] = signature
+    state["last_success_ts"] = int(time.time())
+    if need_sidecars:
+        state["last_sidecar_ts"] = int(time.time())
     save_state(state)
-    return False
+    return True
 
 
 def main() -> None:
