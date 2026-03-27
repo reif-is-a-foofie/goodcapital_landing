@@ -99,6 +99,9 @@ def preprocess_source_text(group_key: str, txt_path: Path, raw: str) -> str:
                 matches = list(re.finditer(r"\bCHAPTER\s+I\b", text, re.I))
                 if matches:
                     text = text[matches[-1].start():]
+            end_match = re.search(r"Herewith\s+is\s+completed\s+the\s+account\s+of\s+the\s+division\s+of\s+the\s+days\.", text, re.I)
+            if end_match:
+                text = text[:end_match.end()]
         elif stem == "josephus_antiquities":
             hits = [m.start() for m in re.finditer(re.escape("BOOK I."), text)]
             if len(hits) >= 2:
@@ -115,6 +118,9 @@ def preprocess_source_text(group_key: str, txt_path: Path, raw: str) -> str:
                 matches = list(re.finditer(r"\b1\.\s+The\s+copy\s+of\s+the\s+Testament\s+of\s+Reuben\b", text, re.I))
                 if matches:
                     text = text[matches[-1].start():]
+            end_match = re.search(r"Printed\s+in\s+G\w+\s+B\w+\s+b[vy]\s+R\w+\s+Clay", text, re.I)
+            if end_match:
+                text = text[:end_match.start()]
         text = text.lstrip("\ufeff").strip()
 
     return text

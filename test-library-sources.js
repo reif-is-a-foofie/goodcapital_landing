@@ -170,6 +170,7 @@ async function run() {
   assert(jubileesState.title === 'Book of Jubilees', 'Book of Jubilees source title did not load');
   assert(/And it came to pass in the first year/i.test(jubileesState.first), 'Book of Jubilees still opens on front matter instead of chapter I');
   assert(!/Louisa Pallant/i.test(jubileesState.body), 'Book of Jubilees still contains the old wrong Gutenberg source text');
+  assert(!/INDEX II|Library Bureau Cat\\. No\\.|BS 1830 \\.J7 A3 1902/i.test(jubileesState.body), 'Book of Jubilees still contains trailing index/library apparatus');
   await page.$eval('#toc-back', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
@@ -191,6 +192,7 @@ async function run() {
   assert(patriarchsState.title === 'Testament Twelve Patriarchs', 'Testament of the Twelve Patriarchs source title did not load');
   assert(/THE TESTAMENT OF REUBEN/i.test(patriarchsState.first), 'Testament of the Twelve Patriarchs still opens on introduction instead of Reuben');
   assert(!/U\\.S\\. Copyright Renewals/i.test(patriarchsState.body), 'Testament of the Twelve Patriarchs still contains the old wrong Gutenberg source text');
+  assert(!/TRANSLATIONS OF EARLY DOCUMENTS|SOCIETY FOR PROMOTING CHRISTIAN KNOWLEDGE|ALL BOOKSELLERS/i.test(patriarchsState.body), 'Testament of the Twelve Patriarchs still contains trailing publisher/series apparatus');
   await page.$eval('#toc-back', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
