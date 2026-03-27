@@ -289,6 +289,17 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
+  await page.evaluate(() => jumpTo('john_1'));
+  await page.waitForSelector('#v1 .verse-text', { timeout: 20000 });
+  const johnCleanState = await page.evaluate(() => ({
+    v1: document.querySelector('#v1 .verse-text')?.innerText || '',
+    v17: document.querySelector('#v17 .verse-text')?.innerText || '',
+    v1Html: document.querySelector('#v1 .verse-text')?.innerHTML || '',
+  }));
+  assert(/In the beginning was the Word/i.test(johnCleanState.v1), 'John 1:1 did not restore full canonical verse text');
+  assert(/grace and truth came by Jesus Christ/i.test(johnCleanState.v17), 'John 1:17 did not restore full canonical verse text');
+  assert(!/&lt;span class=|&amp;quot;cw/i.test(johnCleanState.v1Html), 'John 1 still leaks escaped critical-word wrappers');
+
   await page.evaluate(() => jumpTo('1_nephi_8'));
   await page.waitForSelector('#v23 .verse-text .w', { timeout: 20000 });
   await page.evaluate(() => {
@@ -342,7 +353,7 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
-  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, loveState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
+  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, loveState, johnCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
   await browser.close();
 }
 
