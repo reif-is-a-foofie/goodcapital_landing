@@ -30,3 +30,5 @@
 {"ts": "2026-03-27T14:01:31+00:00", "type": "queue", "title": "Trim Enuma Elish to the core tablet translation section so the source opens on the epic text instead of the long historical introduction", "status": "pending"}
 {"ts": "2026-03-27T14:04:03+00:00", "type": "queue", "title": "Trim Enuma Elish to the core tablet translation section so the source opens on the epic text instead of the long historical introduction", "status": "completed"}
 {"ts": "2026-03-27T14:04:03+00:00", "type": "queue", "title": "Audit other Ancient Texts source openings so each document begins on its primary text instead of boilerplate or editorial front matter", "status": "pending"}
+{"ts": "2026-03-27T18:34:58+00:00", "type": "queue", "title": "Replace the wrong-source Ancient Texts artifacts for Book of Jubilees and Testament of the Twelve Patriarchs with correct readable source texts", "status": "pending"}
+{"ts": "2026-03-27T18:34:58+00:00", "type": "queue", "title": "Trim boilerplate/front matter from Ancient Texts documents that already have the correct corpus, including Book of Enoch and Josephus Antiquities", "status": "completed"}

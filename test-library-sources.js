@@ -96,6 +96,44 @@ async function run() {
     document.querySelector('#toc-subtitle').textContent.trim() === ''
   );
 
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="ancient_texts"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Ancient Texts'
+  );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="ancient_texts:book_of_enoch"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const enochState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    first: document.querySelector('.source-doc .source-para')?.textContent.trim() || '',
+  }));
+  assert(enochState.title === 'Book Of Enoch', 'Book of Enoch source title did not load');
+  assert(/The words of the blessing of Enoch/i.test(enochState.first), 'Book of Enoch still opens on front matter instead of the text');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="ancient_texts"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Ancient Texts'
+  );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="ancient_texts:josephus_antiquities"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const josephusState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    first: document.querySelector('.source-doc .source-para')?.textContent.trim() || '',
+  }));
+  assert(josephusState.title === 'Josephus Antiquities', 'Josephus source title did not load');
+  assert(/^BOOK I\./i.test(josephusState.first), 'Josephus still opens on contents/front matter instead of Book I');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
   await page.$eval('.toc-tile[data-action="source-collection"][data-collection="journal_of_discourses"]', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
@@ -394,7 +432,7 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
-  console.log(JSON.stringify({ rootTiles, timesState, starState, enumaState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, genesisCleanState, loveState, johnCleanState, secondThessCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
+  console.log(JSON.stringify({ rootTiles, timesState, starState, enumaState, enochState, josephusState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, genesisCleanState, loveState, johnCleanState, secondThessCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
   await browser.close();
 }
 

@@ -76,6 +76,30 @@ def split_paragraphs(text: str) -> list[str]:
     return paragraphs
 
 
+def preprocess_source_text(group_key: str, txt_path: Path, raw: str) -> str:
+    text = raw.replace("\r\n", "\n").replace("\r", "\n")
+    stem = txt_path.stem
+
+    if "*** START OF THE PROJECT GUTENBERG EBOOK" in text:
+        text = text.split("*** START OF THE PROJECT GUTENBERG EBOOK", 1)[1]
+        text = text.split("\n", 1)[1] if "\n" in text else text
+    if "*** END OF THE PROJECT GUTENBERG EBOOK" in text:
+        text = text.split("*** END OF THE PROJECT GUTENBERG EBOOK", 1)[0]
+
+    if group_key == "ancient_texts":
+        if stem == "book_of_enoch":
+            hits = [m.start() for m in re.finditer(re.escape("The words of the blessing of Enoch"), text)]
+            if hits:
+                text = text[hits[-1]:]
+        elif stem == "josephus_antiquities":
+            hits = [m.start() for m in re.finditer(re.escape("BOOK I."), text)]
+            if len(hits) >= 2:
+                text = text[hits[1]:]
+        text = text.lstrip("\ufeff").strip()
+
+    return text
+
+
 MONTH_ALIASES = {
     "jan": "January",
     "january": "January",
@@ -378,6 +402,7 @@ def build_group(group: dict, gc_meta: dict) -> Optional[dict]:
             raw = txt.read_text(encoding="utf-8", errors="replace")
         except Exception:
             continue
+        raw = preprocess_source_text(group["key"], txt, raw)
         paragraphs = split_paragraphs(raw)
         if not paragraphs:
             continue
