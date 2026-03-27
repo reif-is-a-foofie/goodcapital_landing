@@ -76,10 +76,8 @@ def sync_jd() -> None:
 GUTENBERG_SOURCES = {
     # Ancient texts
     "book_of_enoch":    ("https://www.gutenberg.org/cache/epub/77935/pg77935.txt",   "cache/ancient_myths/book_of_enoch.txt"),
-    "book_of_jubilees": ("https://archive.org/download/bookofjubileesor00char/bookofjubileesor00char_djvu.txt", "cache/ancient_myths/book_of_jubilees.txt"),
     "gilgamesh":        ("https://www.gutenberg.org/cache/epub/18897/pg18897.txt",   "cache/ancient_myths/gilgamesh.txt"),
     "enuma_elish":      ("https://www.gutenberg.org/ebooks/9914.txt.utf-8",          "cache/ancient_myths/enuma_elish.txt"),
-    "test_patriarchs":  ("https://archive.org/download/testamentsoftwel00char/testamentsoftwel00char_djvu.txt", "cache/ancient_myths/testament_twelve_patriarchs.txt"),
     "josephus":         ("https://www.gutenberg.org/files/2848/2848-0.txt",          "cache/ancient_myths/josephus_antiquities.txt"),
     # LDS historical
     "parley_pratt":     ("https://www.gutenberg.org/files/44896/44896-0.txt",        "cache/gutenberg_lds/parley_pratt.txt"),
@@ -94,6 +92,35 @@ GUTENBERG_SOURCES = {
     "anf_vol5":         ("https://www.gutenberg.org/cache/epub/28853/pg28853.txt",   "cache/church_fathers/anf_vol5.txt"),   # Hippolytus, Cyprian, Caius, Novatian, Appendix
     "anf_vol6":         ("https://www.gutenberg.org/cache/epub/32468/pg32468.txt",   "cache/church_fathers/anf_vol6.txt"),   # Gregory Thaumaturgus, Dionysius, Julius Africanus, Anatolius, Methodius, Arnobius
 }
+
+
+def sync_clean_ancient_texts() -> None:
+    """Refresh cache files that now have better clean-source fetchers than raw OCR."""
+    try:
+        from sources import ancient_myths
+    except Exception as e:
+        log(f"Clean ancient texts: import ERROR — {e}")
+        return
+
+    targets = ["book_of_jubilees", "testament_twelve_patriarchs"]
+    refreshed = 0
+    for key in targets:
+        cache = ancient_myths._cache_path(key)
+        dirty = True
+        if cache.exists() and cache.stat().st_size > 1000:
+            dirty = not ancient_myths._is_clean_cache(key, cache.read_text(encoding="utf-8", errors="replace"))
+        if not dirty:
+            continue
+        try:
+            text = ancient_myths.download_text(key)
+            if text:
+                refreshed += 1
+                log(f"  clean {key}: {len(text):,} chars")
+        except Exception as e:
+            log(f"  clean {key}: ERROR — {e}")
+        time.sleep(SLEEP_BETWEEN_VOLS)
+    if refreshed == 0:
+        log("Clean ancient texts: caches already clean ✓")
 
 
 def sync_gutenberg() -> None:
@@ -397,6 +424,9 @@ def run_once(correlate: bool = True) -> None:
 
     log("--- Gutenberg texts ---")
     sync_gutenberg()
+
+    log("--- Clean ancient text transcriptions ---")
+    sync_clean_ancient_texts()
 
     log("--- History of the Church ---")
     sync_hoc()

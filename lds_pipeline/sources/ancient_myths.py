@@ -16,11 +16,11 @@ a curated verse → text mapping for high-value parallels. This is
 supplemented by automated reference scanning.
 """
 
-import re
 import json
+import re
 import urllib.request
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Set
 
 CACHE_DIR = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache/ancient_myths")
 
@@ -33,7 +33,7 @@ TEXTS = {
     "book_of_jubilees": {
         "title": "Book of Jubilees",
         "short": "Book of Jubilees",
-        "url": "https://archive.org/download/bookofjubileesor00char/bookofjubileesor00char_djvu.txt",
+        "url": "https://archive.sacred-texts.com/bib/jub/index.htm",
     },
     "gilgamesh": {
         "title": "Epic of Gilgamesh",
@@ -48,7 +48,7 @@ TEXTS = {
     "testament_twelve_patriarchs": {
         "title": "Testaments of the Twelve Patriarchs",
         "short": "Testament of the Patriarchs",
-        "url": "https://archive.org/download/testamentsoftwel00char/testamentsoftwel00char_djvu.txt",
+        "url": "https://archive.sacred-texts.com/bib/fbe/fbe.txt.gz",
     },
     "josephus_antiquities": {
         "title": "Josephus, Antiquities of the Jews",
@@ -179,6 +179,94 @@ def _index_cache() -> Path:
     return CACHE_DIR / "scripture_index.json"
 
 
+def _create_sacred_scraper():
+    try:
+        import cloudscraper
+    except Exception:
+        return None
+    return cloudscraper.create_scraper(browser={"browser": "chrome", "platform": "darwin", "mobile": False})
+
+
+def _clean_html_text(text: str) -> str:
+    text = text.replace("\xa0", " ")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def _extract_sacred_blocks(html: str, *, keep_h1: bool = False, stop_headings: Optional[Set[str]] = None) -> list[str]:
+    from bs4 import BeautifulSoup
+
+    soup = BeautifulSoup(html, "html.parser")
+    blocks = []
+    stop_headings = stop_headings or set()
+    seen_h1 = False
+    for tag in soup.find_all(["h1", "h3", "p"]):
+        text = _clean_html_text(tag.get_text(" ", strip=True))
+        if not text:
+            continue
+        if re.fullmatch(r"p\.\s*\d+", text, re.I):
+            continue
+        if text.startswith("Next:") or text == "Sacred Texts | Bible":
+            continue
+        if "at sacred-texts.com" in text:
+            continue
+        if tag.name == "h1":
+            if not keep_h1 or seen_h1:
+                continue
+            blocks.append(text)
+            seen_h1 = True
+            continue
+        if tag.name == "h3":
+            if text in stop_headings:
+                break
+            blocks.append(text)
+            continue
+        blocks.append(text)
+    return blocks
+
+
+def _fetch_clean_jubilees_text() -> Optional[str]:
+    scraper = _create_sacred_scraper()
+    if scraper is None:
+        return None
+    try:
+        index_html = scraper.get("https://archive.sacred-texts.com/bib/jub/index.htm", timeout=60).text
+    except Exception:
+        return None
+
+    links = sorted(set(re.findall(r'href="(jub(\d+)\.htm)"', index_html, re.I)), key=lambda item: int(item[1]))
+    pages = [href for href, num in links if int(num) >= 12]
+    parts = []
+    for href in pages:
+        html = scraper.get(f"https://archive.sacred-texts.com/bib/jub/{href}", timeout=60).text
+        blocks = _extract_sacred_blocks(html, keep_h1=False, stop_headings={"Footnotes"})
+        if blocks:
+            parts.append("\n\n".join(blocks))
+    return "\n\n".join(parts).strip() or None
+
+
+def _fetch_clean_testaments_text() -> Optional[str]:
+    scraper = _create_sacred_scraper()
+    if scraper is None:
+        return None
+    parts = []
+    for idx in range(267, 296):
+        html = scraper.get(f"https://archive.sacred-texts.com/bib/fbe/fbe{idx:03d}.htm", timeout=60).text
+        blocks = _extract_sacred_blocks(html, keep_h1=True)
+        if blocks:
+            parts.append("\n\n".join(blocks))
+    return "\n\n".join(parts).strip() or None
+
+
+def _is_clean_cache(key: str, text: str) -> bool:
+    probe = text[:6000]
+    if key == "book_of_jubilees":
+        return "God's Revelation to Moses on Mount Sinai" in probe and "Louisa Pallant" not in probe and "INTRODUCTION, NOTES, AND INDICES" not in probe
+    if key == "testament_twelve_patriarchs":
+        return "TESTAMENT OF REUBEN" in probe and "U.S. Copyright Renewals" not in probe and "TRANSLATIONS OF EARLY DOCUMENTS" not in probe
+    return True
+
+
 def download_text(key: str) -> Optional[str]:
     info = TEXTS.get(key)
     if not info:
@@ -187,7 +275,20 @@ def download_text(key: str) -> Optional[str]:
     cache.parent.mkdir(parents=True, exist_ok=True)
 
     if cache.exists() and cache.stat().st_size > 1000:
-        return cache.read_text(encoding="utf-8", errors="replace")
+        cached = cache.read_text(encoding="utf-8", errors="replace")
+        if _is_clean_cache(key, cached):
+            return cached
+
+    if key == "book_of_jubilees":
+        text = _fetch_clean_jubilees_text()
+        if text:
+            cache.write_text(text, encoding="utf-8")
+            return text
+    if key == "testament_twelve_patriarchs":
+        text = _fetch_clean_testaments_text()
+        if text:
+            cache.write_text(text, encoding="utf-8")
+            return text
 
     for url in [info["url"]] + ([info.get("alt_url")] if info.get("alt_url") else []):
         try:
