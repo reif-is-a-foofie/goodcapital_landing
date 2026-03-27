@@ -33,7 +33,7 @@ TEXTS = {
     "book_of_jubilees": {
         "title": "Book of Jubilees",
         "short": "Book of Jubilees",
-        "url": "https://www.gutenberg.org/cache/epub/8081/pg8081.txt",
+        "url": "https://archive.org/download/bookofjubileesor00char/bookofjubileesor00char_djvu.txt",
     },
     "gilgamesh": {
         "title": "Epic of Gilgamesh",
@@ -48,7 +48,7 @@ TEXTS = {
     "testament_twelve_patriarchs": {
         "title": "Testaments of the Twelve Patriarchs",
         "short": "Testament of the Patriarchs",
-        "url": "https://www.gutenberg.org/cache/epub/11827/pg11827.txt",
+        "url": "https://archive.org/download/testamentsoftwel00char/testamentsoftwel00char_djvu.txt",
     },
     "josephus_antiquities": {
         "title": "Josephus, Antiquities of the Jews",

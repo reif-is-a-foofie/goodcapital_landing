@@ -134,6 +134,48 @@ async function run() {
     document.querySelector('#toc-subtitle').textContent.trim() === ''
   );
 
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="ancient_texts"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Ancient Texts'
+  );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="ancient_texts:book_of_jubilees"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const jubileesState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    first: document.querySelector('.source-doc .source-para')?.textContent.trim() || '',
+    body: document.querySelector('.source-doc')?.innerText || '',
+  }));
+  assert(jubileesState.title === 'Book of Jubilees', 'Book of Jubilees source title did not load');
+  assert(/And it came to pass in the first year/i.test(jubileesState.first), 'Book of Jubilees still opens on front matter instead of chapter I');
+  assert(!/Louisa Pallant/i.test(jubileesState.body), 'Book of Jubilees still contains the old wrong Gutenberg source text');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="ancient_texts"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Ancient Texts'
+  );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="ancient_texts:testament_twelve_patriarchs"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const patriarchsState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    first: document.querySelector('.source-doc .source-para')?.textContent.trim() || '',
+    body: document.querySelector('.source-doc')?.innerText || '',
+  }));
+  assert(patriarchsState.title === 'Testament Twelve Patriarchs', 'Testament of the Twelve Patriarchs source title did not load');
+  assert(/THE TESTAMENT OF REUBEN/i.test(patriarchsState.first), 'Testament of the Twelve Patriarchs still opens on introduction instead of Reuben');
+  assert(!/U\\.S\\. Copyright Renewals/i.test(patriarchsState.body), 'Testament of the Twelve Patriarchs still contains the old wrong Gutenberg source text');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
   await page.$eval('.toc-tile[data-action="source-collection"][data-collection="journal_of_discourses"]', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&

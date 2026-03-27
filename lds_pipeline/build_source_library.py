@@ -91,10 +91,26 @@ def preprocess_source_text(group_key: str, txt_path: Path, raw: str) -> str:
             hits = [m.start() for m in re.finditer(re.escape("The words of the blessing of Enoch"), text)]
             if hits:
                 text = text[hits[-1]:]
+        elif stem == "book_of_jubilees":
+            matches = list(re.finditer(r"\bI\.\s+And it came to pass in the first year\b", text, re.I))
+            if matches:
+                text = text[matches[-1].start():]
+            else:
+                matches = list(re.finditer(r"\bCHAPTER\s+I\b", text, re.I))
+                if matches:
+                    text = text[matches[-1].start():]
         elif stem == "josephus_antiquities":
             hits = [m.start() for m in re.finditer(re.escape("BOOK I."), text)]
             if len(hits) >= 2:
                 text = text[hits[1]:]
+        elif stem == "testament_twelve_patriarchs":
+            matches = list(re.finditer(r"\bTHE\s+TESTAMENT\s+OF\s+REUBEN\b", text, re.I))
+            if matches:
+                text = text[matches[-1].start():]
+            else:
+                matches = list(re.finditer(r"\b1\.\s+The\s+copy\s+of\s+the\s+Testament\s+of\s+Reuben\b", text, re.I))
+                if matches:
+                    text = text[matches[-1].start():]
         text = text.lstrip("\ufeff").strip()
 
     return text
