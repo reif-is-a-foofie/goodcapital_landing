@@ -88,7 +88,7 @@ async function run() {
     body: document.querySelector('.source-doc')?.innerText || '',
   }));
   assert(enumaState.title === 'Enuma Elish', 'Enuma Elish source title did not load');
-  assert(/Babylonians and Assyrians about the Creation/i.test(enumaState.first), 'Enuma Elish did not render readable English text');
+  assert(/When the heavens above were yet unnamed/i.test(enumaState.first), 'Enuma Elish did not open on the core tablet translation');
   assert(!/[詩經氓黍離溱洧園有桃伐檀七月]/.test(enumaState.body), 'Enuma Elish still contains the old Chinese source text');
   await page.$eval('#toc-back', (el) => el.click());
   await page.waitForFunction(() =>
