@@ -22,3 +22,5 @@
 {"ts": "2026-03-26T22:15:46+00:00", "type": "queue", "title": "Extend clean verse-text re-annotation to the remaining scripture books with leaked escaped critical-word wrappers, staging them in book-safe slices", "status": "pending"}
 {"ts": "2026-03-27T13:40:31+00:00", "type": "queue", "title": "Restore and clean the Gospel of John chapter HTML from canonical scripture text, then re-annotate critical words to remove leaked escaped wrappers and truncation", "status": "completed"}
 {"ts": "2026-03-27T13:40:31+00:00", "type": "queue", "title": "Restore and clean Genesis chapter HTML from canonical scripture text, then re-annotate critical words as the next safe book slice", "status": "pending"}
+{"ts": "2026-03-27T13:42:13+00:00", "type": "queue", "title": "Restore and clean Genesis chapter HTML from canonical scripture text, then re-annotate critical words to remove leaked escaped wrappers and truncation", "status": "completed"}
+{"ts": "2026-03-27T13:42:13+00:00", "type": "queue", "title": "Restore and clean 2 Thessalonians chapter HTML from canonical scripture text, then re-annotate critical words as the next zero-conflict book slice", "status": "pending"}

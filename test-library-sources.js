@@ -273,6 +273,15 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
+  const genesisCleanState = await page.evaluate(() => ({
+    v6: document.querySelector('#v6 .verse-text')?.innerText || '',
+    v7: document.querySelector('#v7 .verse-text')?.innerText || '',
+    v7Html: document.querySelector('#v7 .verse-text')?.innerHTML || '',
+  }));
+  assert(/there went up a mist from the earth/i.test(genesisCleanState.v6), 'Genesis 2:6 did not restore full canonical verse text');
+  assert(/breath of life; and man became a living soul/i.test(genesisCleanState.v7), 'Genesis 2:7 did not restore full canonical verse text');
+  assert(!/&lt;span class=|&amp;quot;cw/i.test(genesisCleanState.v7Html), 'Genesis 2 still leaks escaped critical-word wrappers');
+
   await page.evaluate(() => jumpTo('john_3'));
   await page.waitForSelector('#v16 .verse-text .w', { timeout: 20000 });
   await page.evaluate(() => {
@@ -353,7 +362,7 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
-  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, loveState, johnCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
+  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, genesisCleanState, loveState, johnCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
   await browser.close();
 }
 
