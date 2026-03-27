@@ -43,7 +43,7 @@ TEXTS = {
     "enuma_elish": {
         "title": "Enuma Elish (Babylonian Creation Epic)",
         "short": "Enuma Elish",
-        "url": "https://www.gutenberg.org/cache/epub/23873/pg23873.txt",
+        "url": "https://www.gutenberg.org/ebooks/9914.txt.utf-8",
     },
     "testament_twelve_patriarchs": {
         "title": "Testaments of the Twelve Patriarchs",

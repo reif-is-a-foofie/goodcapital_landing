@@ -26,3 +26,5 @@
 {"ts": "2026-03-27T13:42:13+00:00", "type": "queue", "title": "Restore and clean 2 Thessalonians chapter HTML from canonical scripture text, then re-annotate critical words as the next zero-conflict book slice", "status": "pending"}
 {"ts": "2026-03-27T13:54:58+00:00", "type": "queue", "title": "Restore and clean 2 Thessalonians chapter HTML from canonical scripture text, then re-annotate critical words to remove leaked escaped wrappers and truncation", "status": "completed"}
 {"ts": "2026-03-27T13:54:58+00:00", "type": "queue", "title": "Fix the Enuma Elish source artifact so it uses clean readable English text instead of the current wrong-language rendering", "status": "pending"}
+{"ts": "2026-03-27T14:01:31+00:00", "type": "queue", "title": "Fix the Enuma Elish source artifact so it uses clean readable English text instead of the current wrong-language rendering", "status": "completed"}
+{"ts": "2026-03-27T14:01:31+00:00", "type": "queue", "title": "Trim Enuma Elish to the core tablet translation section so the source opens on the epic text instead of the long historical introduction", "status": "pending"}

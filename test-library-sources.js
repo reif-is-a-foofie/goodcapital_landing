@@ -75,6 +75,27 @@ async function run() {
     document.querySelector('#toc-subtitle').textContent.trim() === ''
   );
 
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="ancient_texts"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Ancient Texts'
+  );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="ancient_texts:enuma_elish"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const enumaState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    first: document.querySelector('.source-doc .source-para')?.textContent.trim() || '',
+    body: document.querySelector('.source-doc')?.innerText || '',
+  }));
+  assert(enumaState.title === 'Enuma Elish', 'Enuma Elish source title did not load');
+  assert(/Babylonians and Assyrians about the Creation/i.test(enumaState.first), 'Enuma Elish did not render readable English text');
+  assert(!/[詩經氓黍離溱洧園有桃伐檀七月]/.test(enumaState.body), 'Enuma Elish still contains the old Chinese source text');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
   await page.$eval('.toc-tile[data-action="source-collection"][data-collection="journal_of_discourses"]', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
@@ -373,7 +394,7 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
-  console.log(JSON.stringify({ rootTiles, timesState, starState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, genesisCleanState, loveState, johnCleanState, secondThessCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
+  console.log(JSON.stringify({ rootTiles, timesState, starState, enumaState, sourceState, jdWordState, hocWordState, scriptureState, scriptureToSourceState, rankingState, strongsState, mistState, genesisCleanState, loveState, johnCleanState, secondThessCleanState, nephiMistState, dcPriesthoodState, dcLoveCleanState }, null, 2));
   await browser.close();
 }
 

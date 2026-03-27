@@ -78,7 +78,7 @@ GUTENBERG_SOURCES = {
     "book_of_enoch":    ("https://www.gutenberg.org/cache/epub/77935/pg77935.txt",   "cache/ancient_myths/book_of_enoch.txt"),
     "book_of_jubilees": ("https://www.gutenberg.org/cache/epub/8081/pg8081.txt",     "cache/ancient_myths/book_of_jubilees.txt"),
     "gilgamesh":        ("https://www.gutenberg.org/cache/epub/18897/pg18897.txt",   "cache/ancient_myths/gilgamesh.txt"),
-    "enuma_elish":      ("https://www.gutenberg.org/cache/epub/23873/pg23873.txt",   "cache/ancient_myths/enuma_elish.txt"),
+    "enuma_elish":      ("https://www.gutenberg.org/ebooks/9914.txt.utf-8",          "cache/ancient_myths/enuma_elish.txt"),
     "test_patriarchs":  ("https://www.gutenberg.org/cache/epub/11827/pg11827.txt",   "cache/ancient_myths/testament_twelve_patriarchs.txt"),
     "josephus":         ("https://www.gutenberg.org/files/2848/2848-0.txt",          "cache/ancient_myths/josephus_antiquities.txt"),
     # LDS historical
