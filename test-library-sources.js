@@ -31,6 +31,46 @@ async function run() {
   assert(rootTiles.includes('Times and Seasons'), 'Times and Seasons missing from TOC root');
   assert(rootTiles.includes('Millennial Star'), 'Millennial Star missing from TOC root');
 
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="general_conference"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'General Conference'
+  );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="general_conference:general_conference_2007_10_good_better_best"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  await page.waitForFunction(() => document.querySelectorAll('.source-doc span.w').length > 0, { timeout: 30000 });
+  const gcState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    cwCount: document.querySelectorAll('.source-doc span.w').length,
+    sample: Array.from(document.querySelectorAll('.source-doc span.w')).slice(0, 6).map((el) => el.textContent.trim()),
+  }));
+  assert(gcState.title === '2007 10', 'General Conference talk did not load');
+  assert(gcState.cwCount > 0, 'General Conference talk did not render clickable words');
+  await page.evaluate(() => {
+    const target = Array.from(document.querySelectorAll('.source-doc span.w')).find((el) => /good|better|best/i.test(el.textContent || ''))
+      || document.querySelector('.source-doc span.w');
+    target?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  });
+  await page.waitForFunction(() => !document.querySelector('#channel')?.classList.contains('collapsed'), { timeout: 20000 });
+  await page.waitForFunction(() => {
+    const cards = document.querySelectorAll('#channel .ch-morsel');
+    return cards.length > 0;
+  }, { timeout: 20000 });
+  const gcChannelState = await page.evaluate(() => ({
+    resultCount: document.querySelectorAll('#channel .ch-morsel').length,
+    firstText: document.querySelector('#channel .ch-morsel')?.innerText?.trim() || '',
+  }));
+  assert(gcChannelState.resultCount > 0, 'General Conference word click did not open any semantic results');
+  await page.$eval('#channel .ch-morsel', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('.reader-card .source-title, .source-doc .source-title, #chapter-title')?.textContent?.trim().length > 0
+  , { timeout: 20000 });
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
   await page.$eval('.toc-tile[data-action="source-collection"][data-collection="times_and_seasons"]', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
