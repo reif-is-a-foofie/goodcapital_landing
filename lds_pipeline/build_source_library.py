@@ -317,14 +317,8 @@ def split_large_document(group_key: str, title: str, slug: str, paragraphs: list
 def source_title(group_key: str, txt_path: Path, gc_meta: dict) -> str:
     if group_key == "general_conference":
         meta = gc_meta.get(txt_path.stem, {})
-        speaker = meta.get("speaker", "").strip()
         title = meta.get("title", "").strip()
-        year = str(meta.get("year", "")).strip()
-        session = str(meta.get("session", "")).strip()
-        parts = [p for p in [speaker, title] if p]
-        if year:
-            parts.append(year if not session else f"{year} {session}")
-        return " — ".join(parts) if parts else txt_path.stem.replace("_", " ")
+        return title or txt_path.stem.replace("_", " ")
     if group_key == "journal_of_discourses":
         m = re.search(r"vol[_ ]?0*(\d+)", txt_path.stem, re.I)
         if m:
@@ -357,7 +351,27 @@ def load_gc_meta() -> dict:
     return out
 
 
-def render_source_page(group_label: str, title: str, paragraphs: list[str]) -> str:
+def gc_session_label(meta: dict) -> str:
+    year = str(meta.get("year", "")).strip()
+    session = str(meta.get("session", "")).strip()
+    if not year:
+        return ""
+    if session == "04":
+        return f"April {year}"
+    if session == "10":
+        return f"October {year}"
+    return f"{year} {session}".strip()
+
+
+def source_meta(group_key: str, txt_path: Path, gc_meta: dict, paragraph_count: int) -> str:
+    if group_key == "general_conference":
+        meta = gc_meta.get(txt_path.stem, {})
+        parts = [meta.get("speaker", "").strip(), gc_session_label(meta)]
+        return " · ".join(part for part in parts if part)
+    return f"{paragraph_count} paragraphs"
+
+
+def render_source_page(group_label: str, title: str, paragraphs: list[str], subtitle: str = "") -> str:
     body = "\n".join(f'<p class="source-para">{escape_html(p)}</p>' for p in paragraphs)
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -386,6 +400,12 @@ def render_source_page(group_label: str, title: str, paragraphs: list[str]) -> s
       margin: 0 0 20px;
       color: #26221d;
     }}
+    .source-subtitle {{
+      font-size: 14px;
+      line-height: 1.4;
+      color: #7a7063;
+      margin: -8px 0 20px;
+    }}
     .source-para {{
       font-size: 18px;
       line-height: 1.78;
@@ -398,6 +418,7 @@ def render_source_page(group_label: str, title: str, paragraphs: list[str]) -> s
   <article class="source-doc">
     <div class="source-kicker">{escape_html(group_label)}</div>
     <h1 class="source-title">{escape_html(title)}</h1>
+    {'<div class="source-subtitle">' + escape_html(subtitle) + '</div>' if subtitle else ''}
     {body}
   </article>
 </body>
@@ -433,9 +454,10 @@ def build_group(group: dict, gc_meta: dict) -> Optional[dict]:
         if not paragraphs:
             continue
         title = source_title(group["key"], txt, gc_meta)
+        meta = source_meta(group["key"], txt, gc_meta, len(paragraphs))
         slug = slugify(txt.stem)
         for chunk in split_large_document(group["key"], title, slug, paragraphs):
-            html = render_source_page(group["label"], chunk["title"], chunk["paragraphs"])
+            html = render_source_page(group["label"], chunk["title"], chunk["paragraphs"], meta)
             out_path = group_out / f"{chunk['slug']}.html"
             out_path.write_text(html, encoding="utf-8")
             docs.append({
@@ -443,7 +465,7 @@ def build_group(group: dict, gc_meta: dict) -> Optional[dict]:
                 "label": chunk["title"],
                 "href": f"sources/{group['key']}/{chunk['slug']}.html",
                 "paragraphs": len(chunk["paragraphs"]),
-                "meta": f"{len(chunk['paragraphs'])} paragraphs",
+                "meta": meta if group["key"] == "general_conference" else f"{len(chunk['paragraphs'])} paragraphs",
             })
 
     if not docs:

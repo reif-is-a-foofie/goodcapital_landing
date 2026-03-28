@@ -41,10 +41,14 @@ async function run() {
   await page.waitForFunction(() => document.querySelectorAll('.source-doc span.w').length > 0, { timeout: 30000 });
   const gcState = await page.evaluate(() => ({
     title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    subtitle: document.querySelector('.source-doc .source-subtitle')?.textContent.trim() || '',
+    activeMeta: document.querySelector('.toc-tile.active .toc-tile-meta')?.textContent.trim() || '',
     cwCount: document.querySelectorAll('.source-doc span.w').length,
     sample: Array.from(document.querySelectorAll('.source-doc span.w')).slice(0, 6).map((el) => el.textContent.trim()),
   }));
-  assert(/Good, Better, Best/.test(gcState.title), 'General Conference talk did not load with its real title');
+  assert(gcState.title === 'Good, Better, Best', 'General Conference talk did not load with its real title');
+  assert(/Dallin H\. Oaks/.test(gcState.subtitle), 'General Conference subtitle did not include the speaker');
+  assert(/October 2007/.test(gcState.activeMeta), 'General Conference TOC meta did not include the session');
   assert(gcState.cwCount > 0, 'General Conference talk did not render clickable words');
   await page.evaluate(() => {
     const target = Array.from(document.querySelectorAll('.source-doc span.w')).find((el) => /good|better|best/i.test(el.textContent || ''))
