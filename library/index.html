@@ -258,6 +258,24 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     font-size: 1.12rem;
     line-height: 1.78;
 }
+.scripture div.verse > .jst-block,
+.scripture div.verse > .etymology-block,
+.scripture div.verse > .rabbinical-block,
+.scripture div.verse > .lds-commentary-block,
+.scripture div.verse > .fathers-block,
+.scripture div.verse > .ancient-block,
+.scripture div.verse > .donaldson-block,
+.scripture div.verse > .jsp-block,
+.scripture div.verse > .semantic-quote,
+.scripture div.verse > .semantic-block,
+.scripture div.verse > .backlinks {
+    grid-column: 2 / -1;
+    min-width: 0;
+    margin-left: 0;
+}
+.scripture .semantic-meta > .score-dots:last-child {
+    display: none;
+}
 .scripture span.w {
     cursor: pointer;
     text-decoration: underline;
