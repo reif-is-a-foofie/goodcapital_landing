@@ -44,7 +44,7 @@ async function run() {
     cwCount: document.querySelectorAll('.source-doc span.w').length,
     sample: Array.from(document.querySelectorAll('.source-doc span.w')).slice(0, 6).map((el) => el.textContent.trim()),
   }));
-  assert(gcState.title === '2007 10', 'General Conference talk did not load');
+  assert(/Good, Better, Best/.test(gcState.title), 'General Conference talk did not load with its real title');
   assert(gcState.cwCount > 0, 'General Conference talk did not render clickable words');
   await page.evaluate(() => {
     const target = Array.from(document.querySelectorAll('.source-doc span.w')).find((el) => /good|better|best/i.test(el.textContent || ''))

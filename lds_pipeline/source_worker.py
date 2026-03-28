@@ -203,6 +203,36 @@ def fetch_gc_talk_text(uri: str) -> str:
         return ""
 
 
+def parse_gc_cached_metadata(text: str) -> dict:
+    text = str(text or "").strip()
+    if not text:
+        return {}
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    if not lines:
+        return {}
+    title = lines[0]
+    body = " ".join(lines[1:4])
+    speaker = ""
+    match = re.search(r'\bBy\s+(.+?)(?=\s+Of the\b|\s{2,}|$)', body, re.I)
+    if match:
+        speaker = re.sub(r'\s+', ' ', match.group(1)).strip(' ,')
+    return {
+        "title": title,
+        "speaker": speaker,
+    }
+
+
+def enrich_gc_talk_metadata(talk: dict, text: str) -> bool:
+    meta = parse_gc_cached_metadata(text)
+    changed = False
+    for key in ("title", "speaker"):
+        value = meta.get(key, "").strip()
+        if value and talk.get(key) != value:
+            talk[key] = value
+            changed = True
+    return changed
+
+
 def sync_gc() -> None:
     """
     Build or extend the General Conference talk index and download talk text.
@@ -217,6 +247,7 @@ def sync_gc() -> None:
         index = {}
 
     new_talks = 0
+    meta_updates = 0
     for year in GC_YEAR_RANGE:
         for session in GC_SESSIONS:
             sess_key = f"{year}-{session}"
@@ -235,8 +266,6 @@ def sync_gc() -> None:
         if year % 10 == 0:
             GC_INDEX_FILE.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    GC_INDEX_FILE.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
-
     # Download missing talk texts
     all_talks = [t for talks in index.values() for t in talks]
     log(f"GC: {len(all_talks):,} talks indexed across {len(index)} sessions")
@@ -247,16 +276,22 @@ def sync_gc() -> None:
             continue
         safe_key = re.sub(r'[^\w]', '_', uri.strip("/"))
         dest = GC_CACHE / f"{safe_key}.txt"
+        text = ""
         if dest.exists() and dest.stat().st_size > 100:
-            continue
-
-        text = fetch_gc_talk_text(uri)
-        if text:
-            dest.write_text(text, encoding="utf-8")
-            new_talks += 1
+            text = dest.read_text(encoding="utf-8")
+        else:
+            text = fetch_gc_talk_text(uri)
+            if text:
+                dest.write_text(text, encoding="utf-8")
+                new_talks += 1
+        if text and enrich_gc_talk_metadata(talk, text):
+            meta_updates += 1
         time.sleep(0.15)
 
+    GC_INDEX_FILE.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
     log(f"GC: {new_talks} new talk texts downloaded")
+    if meta_updates:
+        log(f"GC: enriched metadata for {meta_updates} talks")
 
 
 # ── History of Church (B.H. Roberts) ─────────────────────────────────────────
