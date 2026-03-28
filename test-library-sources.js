@@ -442,6 +442,39 @@ async function run() {
   assert(scriptureToSourceState.previewHidden, 'source morsel click fell back to the preview card');
   assert(scriptureToSourceState.focusedText.length > 80, 'source morsel click did not focus a relevant paragraph');
 
+  await page.waitForSelector('.source-doc span.w', { timeout: 20000 });
+  await page.evaluate(() => {
+    const spans = Array.from(document.querySelectorAll('.source-doc span.w'));
+    const target = spans.find((el) => /lord|children|gift|jesus/i.test(el.textContent || '')) || spans[0];
+    if (target) target.click();
+  });
+  await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
+  const secondSourceMorselIndex = await page.evaluate(() => {
+    const morsels = Array.from(document.querySelectorAll('.ch-morsel'));
+    return morsels.findIndex((el) =>
+      /Journal of Discourses|History of the Church|General Conference/i.test(
+        el.querySelector('.ch-src-name')?.textContent || ''
+      )
+    );
+  });
+  assert(secondSourceMorselIndex >= 0, 'source word click did not surface a second source morsel');
+  await page.$eval(`.ch-morsel[data-idx="${secondSourceMorselIndex}"]`, (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const sourceToSourceState = await page.evaluate(() => ({
+    sourceTitle: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    sourceSubtitle: document.querySelector('.source-doc .source-subtitle')?.textContent.trim() || '',
+    location: document.querySelector('#location-label')?.textContent.trim() || '',
+    activeTile: document.querySelector('.toc-tile.active .toc-tile-title')?.textContent.trim() || '',
+    activeMeta: document.querySelector('.toc-tile.active .toc-tile-meta')?.textContent.trim() || '',
+    focusedText: document.querySelector('.source-para-focus')?.textContent.trim() || '',
+  }));
+  assert(sourceToSourceState.sourceTitle, 'second source morsel click did not open a source doc');
+  assert(sourceToSourceState.sourceSubtitle, 'second source morsel click did not preserve the source subtitle');
+  assert(sourceToSourceState.location === `${sourceToSourceState.sourceSubtitle} · ${sourceToSourceState.sourceTitle}`, 'second source morsel click did not preserve the clean location label');
+  assert(sourceToSourceState.activeTile === sourceToSourceState.sourceTitle, 'second source morsel click did not preserve the active source title tile');
+  assert(sourceToSourceState.activeMeta === sourceToSourceState.sourceSubtitle, 'second source morsel click did not preserve the active source meta tile');
+  assert(sourceToSourceState.focusedText.length > 80, 'second source morsel click did not focus a relevant paragraph');
+
   await page.$eval('#toc-back', (el) => el.click());
   await page.$eval('.toc-tile[data-action="volume"][data-volume="New Testament"]', (el) => el.click());
   await page.$eval('.toc-tile[data-action="book"][data-book="John"]', (el) => el.click());
