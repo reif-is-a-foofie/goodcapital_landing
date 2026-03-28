@@ -315,8 +315,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     margin: 0 0 18px;
 }
 .source-para-focus {
-    background: rgba(156,122,77,0.08);
-    box-shadow: inset 3px 0 0 var(--accent);
+    background: rgba(156,122,77,0.12);
+    box-shadow: inset 3px 0 0 var(--accent), 0 0 0 1px rgba(156,122,77,0.18);
     border-radius: 8px;
     padding-left: 8px;
     margin-left: -8px;
@@ -405,6 +405,28 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     background: none; border: none; padding: 0; font-family: inherit;
 }
 .ch-expand:hover { text-decoration: underline; }
+.ch-actions {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.ch-open-context {
+    appearance: none;
+    border: 1px solid rgba(156,122,77,0.22);
+    background: rgba(156,122,77,0.08);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    cursor: pointer;
+    font-family: inherit;
+}
+.ch-open-context:hover {
+    background: rgba(156,122,77,0.14);
+}
 .ch-full-text {
     margin-top: 8px; font-size: 12.5px; line-height: 1.6; color: var(--text);
     border-top: 1px solid var(--divider); padding-top: 8px;
@@ -1872,6 +1894,26 @@ function showMorselPreview(m) {
     host.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+function openMorselInContext(selected) {
+    if (!selected) return;
+    var focusedVerse = document.querySelector('.verse.verse-focus');
+    var focusedVerseNum = focusedVerse ? parseInt(String(focusedVerse.id || '').replace('v', ''), 10) : 0;
+    var ref = resolveScriptureRef((selected.lb || '') + ' ' + (selected.x || ''));
+    var sourceTarget = resolveSourceTarget(selected);
+    if (ref && ref.chapterId && !(ref.chapterId === currentChapter && ref.verse === focusedVerseNum)) {
+        jumpTo(ref.chapterId, ref.verse);
+        return;
+    }
+    if (sourceTarget && sourceMeta[sourceTarget.docId]) {
+        loadSourceDocument(sourceTarget.docId, sourceMeta[sourceTarget.docId].href, {
+            focusPara: sourceTarget.focusPara || null,
+            focusText: sourceTarget.focusText || ''
+        });
+        return;
+    }
+    showMorselPreview(selected);
+}
+
 // Load words JSON for a chapter (cached)
 function loadWordIndex(pathKey, href) {
     if (wordIndexCache[pathKey]) return Promise.resolve(wordIndexCache[pathKey]);
@@ -2070,7 +2112,10 @@ function renderChannelList() {
              + '<span class="ch-score-dots">' + dots + '</span>'
              + '</div>'
              + '<div class="ch-morsel-text">' + text + '</div>'
+             + '<div class="ch-actions">'
+             + '<button class="ch-open-context" data-idx="' + i + '">Open in Context</button>'
              + '<button class="ch-expand" data-idx="' + i + '">expand ↓</button>'
+             + '</div>'
              + '<div class="ch-full-text"></div>'
              + '</div>';
     });
@@ -2082,6 +2127,14 @@ function renderChannelList() {
     if (cur) cur.scrollIntoView({ block: 'nearest' });
 
     list.onclick = function(e) {
+        var openBtn = e.target.closest('.ch-open-context');
+        if (openBtn) {
+            var openIdx = parseInt(openBtn.dataset.idx, 10);
+            channelIdx = openIdx;
+            renderChannelList();
+            openMorselInContext(channelMorsels[openIdx]);
+            return;
+        }
         var btn = e.target.closest('.ch-expand');
         if (btn) {
             var idx  = parseInt(btn.dataset.idx, 10);
@@ -2106,19 +2159,7 @@ function renderChannelList() {
         channelIdx = parseInt(morsel.dataset.idx, 10);
         var selected = channelMorsels[channelIdx];
         renderChannelList();
-        if (!selected) return;
-        var ref = resolveScriptureRef((selected.lb || '') + ' ' + (selected.x || ''));
-        var sourceTarget = resolveSourceTarget(selected);
-        if (ref && ref.chapterId && !(ref.chapterId === currentChapter && ref.verse === parseInt((document.querySelector('.verse.verse-focus') || {}).id?.replace('v','') || '0', 10))) {
-            jumpTo(ref.chapterId, ref.verse);
-        } else if (sourceTarget && sourceMeta[sourceTarget.docId]) {
-            loadSourceDocument(sourceTarget.docId, sourceMeta[sourceTarget.docId].href, {
-                focusPara: sourceTarget.focusPara || null,
-                focusText: sourceTarget.focusText || ''
-            });
-        } else {
-            showMorselPreview(selected);
-        }
+        openMorselInContext(selected);
     };
 }
 

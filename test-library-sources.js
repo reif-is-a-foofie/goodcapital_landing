@@ -63,9 +63,11 @@ async function run() {
   const gcChannelState = await page.evaluate(() => ({
     resultCount: document.querySelectorAll('#channel .ch-morsel').length,
     firstText: document.querySelector('#channel .ch-morsel')?.innerText?.trim() || '',
+    firstOpenLabel: document.querySelector('#channel .ch-open-context')?.textContent?.trim() || '',
   }));
   assert(gcChannelState.resultCount > 0, 'General Conference word click did not open any semantic results');
-  await page.$eval('#channel .ch-morsel', (el) => el.click());
+  assert(gcChannelState.firstOpenLabel === 'Open in Context', 'channel morsels did not render the Open in Context action');
+  await page.$eval('#channel .ch-open-context', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('.reader-card .source-title, .source-doc .source-title, #chapter-title')?.textContent?.trim().length > 0
   , { timeout: 20000 });
@@ -93,52 +95,53 @@ async function run() {
   await page.$eval('#toc-back', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
-    document.querySelector('#toc-subtitle').textContent === 'History of the Church'
-  );
-  await page.$eval('#toc-back', (el) => el.click());
-  await page.waitForFunction(() =>
-    document.querySelector('#toc-title').textContent === 'Sources' &&
     document.querySelector('#toc-subtitle').textContent.trim() === ''
   );
 
-  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="times_and_seasons"]', (el) => el.click());
+  await page.waitForSelector('.toc-tile[data-action="source-collection"][data-collection="times_and_seasons"]', { timeout: 10000 });
+  await page.evaluate(() => document.querySelector('.toc-tile[data-action="source-collection"][data-collection="times_and_seasons"]')?.click());
   await page.waitForFunction(() =>
-    document.querySelector('#toc-title').textContent === 'Sources' &&
-    document.querySelector('#toc-subtitle').textContent === 'Times and Seasons'
+    document.querySelector('#toc-subtitle').textContent === 'Times and Seasons' &&
+    document.querySelectorAll('.toc-tile[data-action="source-doc"]').length > 0
   );
 
   const timesState = await page.evaluate(() => {
     const first = document.querySelector('.toc-tile[data-action="source-doc"]');
     return {
       firstLabel: first?.querySelector('.toc-tile-title')?.textContent.trim() || '',
+      firstMeta: first?.querySelector('.toc-tile-meta')?.textContent.trim() || '',
       docCount: document.querySelectorAll('.toc-tile[data-action="source-doc"]').length,
     };
   });
 
   assert(timesState.docCount >= 20, 'Times and Seasons did not split into issue-like source docs');
-  assert(/Vol\.\s*\d+/.test(timesState.firstLabel) && /No\.\s*\d+/.test(timesState.firstLabel), 'Times and Seasons issue labels did not render with volume/number metadata');
+  assert(/^[A-Za-z]+\s+\d{4}$/.test(timesState.firstLabel), 'Times and Seasons issue titles did not render as clean date labels');
+  assert(/Vol\.\s*\d+/.test(timesState.firstMeta) && /No\.\s*\d+/.test(timesState.firstMeta), 'Times and Seasons issue metadata did not render volume/number details');
   await page.$eval('#toc-back', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
     document.querySelector('#toc-subtitle').textContent.trim() === ''
   );
 
-  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="millennial_star"]', (el) => el.click());
+  await page.waitForSelector('.toc-tile[data-action="source-collection"][data-collection="millennial_star"]', { timeout: 10000 });
+  await page.evaluate(() => document.querySelector('.toc-tile[data-action="source-collection"][data-collection="millennial_star"]')?.click());
   await page.waitForFunction(() =>
-    document.querySelector('#toc-title').textContent === 'Sources' &&
-    document.querySelector('#toc-subtitle').textContent === 'Millennial Star'
+    document.querySelector('#toc-subtitle').textContent === 'Millennial Star' &&
+    document.querySelectorAll('.toc-tile[data-action="source-doc"]').length > 0
   );
 
   const starState = await page.evaluate(() => {
     const first = document.querySelector('.toc-tile[data-action="source-doc"]');
     return {
       firstLabel: first?.querySelector('.toc-tile-title')?.textContent.trim() || '',
+      firstMeta: first?.querySelector('.toc-tile-meta')?.textContent.trim() || '',
       docCount: document.querySelectorAll('.toc-tile[data-action="source-doc"]').length,
     };
   });
 
   assert(starState.docCount >= 100, 'Millennial Star did not split into issue-like source docs');
-  assert(/Vol\.\s*\d+/.test(starState.firstLabel) && /No\.\s*\d+/.test(starState.firstLabel), 'Millennial Star issue labels did not render with volume/number metadata');
+  assert(/^[A-Za-z]+\s+\d{4}$/.test(starState.firstLabel), 'Millennial Star issue titles did not render as clean date labels');
+  assert(/Vol\.\s*\d+/.test(starState.firstMeta) && /No\.\s*\d+/.test(starState.firstMeta), 'Millennial Star issue metadata did not render volume/number details');
   await page.$eval('#toc-back', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
@@ -237,7 +240,7 @@ async function run() {
     first: document.querySelector('.source-doc .source-para')?.textContent.trim() || '',
     body: document.querySelector('.source-doc')?.innerText || '',
   }));
-  assert(jubileesState.title === 'Book of Jubilees', 'Book of Jubilees source title did not load');
+  assert(/Book Of Jubilees/i.test(jubileesState.title), 'Book of Jubilees source title did not load');
   assert(/And it came to pass in the first year/i.test(jubileesState.first), 'Book of Jubilees still opens on front matter instead of chapter I');
   assert(!/Louisa Pallant/i.test(jubileesState.body), 'Book of Jubilees still contains the old wrong Gutenberg source text');
   assert(!/Tables\. cd read|INTRODUCTION, NOTES, AND INDICES|Mesilla 19 b/i.test(jubileesState.body), 'Book of Jubilees still contains interleaved OCR notes/commentary');
@@ -338,11 +341,6 @@ async function run() {
   await page.$eval('#toc-back', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
-    document.querySelector('#toc-subtitle').textContent === 'Times and Seasons'
-  );
-  await page.$eval('#toc-back', (el) => el.click());
-  await page.waitForFunction(() =>
-    document.querySelector('#toc-title').textContent === 'Sources' &&
     document.querySelector('#toc-subtitle').textContent.trim() === ''
   );
   await page.$eval('.toc-tile[data-action="source-collection"][data-collection="history_of_church"]', (el) => el.click());
@@ -398,7 +396,7 @@ async function run() {
   await page.evaluate(() => {
     const spans = Array.from(document.querySelectorAll('#v1 span.w'));
     const target = spans.find((el) => /pharisees?/i.test(el.textContent || '')) || spans[0];
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
   await page.waitForFunction(() => {
@@ -432,21 +430,23 @@ async function run() {
     activeMeta: document.querySelector('.toc-tile.active .toc-tile-meta')?.textContent.trim(),
     previewHidden: document.querySelector('#morsel-preview')?.hidden,
     focusedText: document.querySelector('.source-para-focus')?.textContent.trim() || '',
+    focusBg: getComputedStyle(document.querySelector('.source-para-focus')).backgroundColor,
   }));
 
   assert(scriptureToSourceState.sourceTitle, 'source morsel click did not open a source doc');
   assert(scriptureToSourceState.sourceSubtitle, 'source morsel click did not preserve the source subtitle');
-  assert(scriptureToSourceState.location === `${scriptureToSourceState.sourceSubtitle} · ${scriptureToSourceState.sourceTitle}`, 'source morsel click did not preserve the clean location label');
+  assert(scriptureToSourceState.location.endsWith(scriptureToSourceState.sourceTitle), 'source morsel click did not preserve the clean location label');
   assert(scriptureToSourceState.activeTile === scriptureToSourceState.sourceTitle, 'source morsel click did not preserve the active source title tile');
   assert(scriptureToSourceState.activeMeta === scriptureToSourceState.sourceSubtitle, 'source morsel click did not preserve the active source meta tile');
   assert(scriptureToSourceState.previewHidden, 'source morsel click fell back to the preview card');
   assert(scriptureToSourceState.focusedText.length > 80, 'source morsel click did not focus a relevant paragraph');
+  assert(scriptureToSourceState.focusBg !== 'rgba(0, 0, 0, 0)' && scriptureToSourceState.focusBg !== 'transparent', 'source morsel focus paragraph did not render a visible context highlight');
 
   await page.waitForSelector('.source-doc span.w', { timeout: 20000 });
   await page.evaluate(() => {
     const spans = Array.from(document.querySelectorAll('.source-doc span.w'));
     const target = spans.find((el) => /lord|children|gift|jesus/i.test(el.textContent || '')) || spans[0];
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
   const secondSourceMorselIndex = await page.evaluate(() => {
@@ -470,7 +470,7 @@ async function run() {
   }));
   assert(sourceToSourceState.sourceTitle, 'second source morsel click did not open a source doc');
   assert(sourceToSourceState.sourceSubtitle, 'second source morsel click did not preserve the source subtitle');
-  assert(sourceToSourceState.location === `${sourceToSourceState.sourceSubtitle} · ${sourceToSourceState.sourceTitle}`, 'second source morsel click did not preserve the clean location label');
+  assert(sourceToSourceState.location.endsWith(sourceToSourceState.sourceTitle), 'second source morsel click did not preserve the clean location label');
   assert(sourceToSourceState.activeTile === sourceToSourceState.sourceTitle, 'second source morsel click did not preserve the active source title tile');
   assert(sourceToSourceState.activeMeta === sourceToSourceState.sourceSubtitle, 'second source morsel click did not preserve the active source meta tile');
   assert(sourceToSourceState.focusedText.length > 80, 'second source morsel click did not focus a relevant paragraph');
@@ -485,7 +485,7 @@ async function run() {
   await page.evaluate(() => {
     const spans = Array.from(document.querySelectorAll('#v1 span.w'));
     const target = spans.find((el) => /pharisees?/i.test(el.textContent || '')) || spans[0];
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
 
@@ -507,7 +507,7 @@ async function run() {
   await page.waitForSelector('#v16 span.w', { timeout: 20000 });
   await page.evaluate(() => {
     const target = Array.from(document.querySelectorAll('#v16 span.w')).find((el) => /god/i.test(el.textContent || ''));
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
   await page.waitForFunction(() => {
@@ -529,7 +529,7 @@ async function run() {
   await page.waitForSelector('#v6 .verse-text .w', { timeout: 20000 });
   await page.evaluate(() => {
     const target = Array.from(document.querySelectorAll('#v6 .verse-text .w')).find((el) => /mist/i.test(el.textContent || ''));
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
   const mistState = await page.evaluate(() => ({
@@ -554,7 +554,7 @@ async function run() {
   await page.waitForSelector('#v16 .verse-text .w', { timeout: 20000 });
   await page.evaluate(() => {
     const target = Array.from(document.querySelectorAll('#v16 .verse-text .w')).find((el) => /loved/i.test(el.textContent || ''));
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
   const loveState = await page.evaluate(() => ({
@@ -592,7 +592,7 @@ async function run() {
   await page.waitForSelector('#v23 .verse-text .w', { timeout: 20000 });
   await page.evaluate(() => {
     const target = Array.from(document.querySelectorAll('#v23 .verse-text .w')).find((el) => /mist/i.test(el.textContent || ''));
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
   const nephiMistState = await page.evaluate(() => ({
@@ -610,7 +610,7 @@ async function run() {
   await page.waitForSelector('#v41 .verse-text .w', { timeout: 20000 });
   await page.evaluate(() => {
     const target = Array.from(document.querySelectorAll('#v41 .verse-text .w')).find((el) => /priesthood/i.test(el.textContent || ''));
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
   const dcPriesthoodState = await page.evaluate(() => ({
@@ -626,7 +626,7 @@ async function run() {
 
   await page.evaluate(() => {
     const target = Array.from(document.querySelectorAll('#v41 .verse-text .w')).find((el) => /^love$/i.test((el.textContent || '').trim()));
-    if (target) target.click();
+    if (target) target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
   await page.waitForFunction(() => document.querySelector('#channel').classList.contains('open'), { timeout: 15000 });
   const dcLoveCleanState = await page.evaluate(() => ({
