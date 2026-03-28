@@ -246,17 +246,52 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     border: 1px solid currentColor; border-radius: 10px; }
 
 /* ── Word spans (critical word underlines) ── */
+.scripture .score-legend { display: none !important; }
+.scripture div.verse {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: start;
+}
+.scripture div.verse:first-of-type {
+    margin-top: 0.8em;
+}
+.scripture span.verse-num {
+    display: block;
+    min-width: 0;
+    margin-right: 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    text-align: right;
+    opacity: 0.88;
+}
+.scripture span.verse-num::after {
+    content: '';
+}
+.scripture div.verse.expanded span.verse-num::after {
+    content: '';
+}
+.scripture span.verse-text {
+    display: block;
+    font-size: 1.12rem;
+    line-height: 1.78;
+}
 .scripture span.w {
     cursor: pointer;
     text-decoration: underline;
-    text-decoration-color: rgba(156,122,77, calc(var(--ws,0.5) * 0.7 + 0.1));
-    text-decoration-thickness: calc(var(--ws,0.5) * 1.8px + 0.4px);
+    text-decoration-color: rgba(156,122,77, calc(var(--ws,0.5) * 0.45 + 0.38));
+    text-decoration-thickness: calc(var(--ws,0.5) * 1.4px + 1.1px);
     text-underline-offset: 3px;
     border-radius: 2px;
     transition: background .1s;
 }
 .scripture span.w:hover { background: rgba(156,122,77,0.13); }
 .scripture span.w.cw-active { background: rgba(156,122,77,0.22); }
+.scripture span.w[data-st="god"],
+.scripture span.w[data-st="heaven"],
+.scripture span.w[data-st="earth"] {
+    text-decoration-thickness: max(1.8px, calc(var(--ws,0.5) * 1.4px + 1.2px));
+}
 .verse.verse-focus {
     background: rgba(156,122,77,0.06);
     box-shadow: inset 3px 0 0 var(--accent);
