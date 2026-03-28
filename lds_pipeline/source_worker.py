@@ -213,7 +213,16 @@ def parse_gc_cached_metadata(text: str) -> dict:
     title = lines[0]
     body = " ".join(lines[1:4])
     speaker = ""
-    match = re.search(r'\bBy\s+(.+?)(?=\s+Of the\b|\s{2,}|$)', body, re.I)
+    match = re.search(
+        r'\bBy\s+(.+?)(?='
+        r'\s+(?:Of the|From the|First Counselor|Second Counselor|'
+        r'President of|Presiding Bishop|Presiding Patriarch|Young Women|'
+        r'Relief Society|Sunday School|Primary|Assistant to|'
+        r'Of the Presidency|Of the Quorum|Member of|A member of)\b'
+        r'|\s{2,}|$)',
+        body,
+        re.I
+    )
     if match:
         speaker = re.sub(r'\s+', ' ', match.group(1)).strip(' ,')
     return {
