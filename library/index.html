@@ -22,7 +22,6 @@
     --accent-hover: #7a5e38;
     --divider: rgba(0,0,0,0.09);
     --nav-h: 52px;
-    --filter-h: 32px;
     --toc-w: 340px;
     --reader-max: 760px;
 }
@@ -51,25 +50,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     color: var(--muted); display: flex; align-items: center; }
 #search-btn:hover { background: rgba(0,0,0,0.06); color: var(--text); }
 
-/* ── Filter bar ── */
-#filterbar {
-    position: fixed; top: var(--nav-h); left: 0; right: 0; height: var(--filter-h);
-    background: var(--bg); border-bottom: 1px solid var(--divider);
-    display: flex; align-items: center; padding: 0 14px; gap: 5px; z-index: 190;
-    overflow-x: auto; scrollbar-width: none;
-}
-#filterbar::-webkit-scrollbar { display: none; }
-.filter-pill {
-    flex-shrink: 0; height: 20px; padding: 0 9px; border-radius: 10px;
-    font-size: 11px; font-weight: 500; cursor: pointer; border: none;
-    background: transparent; color: var(--muted); transition: background .12s, color .12s;
-    white-space: nowrap; line-height: 20px;
-}
-.filter-pill:hover { background: rgba(0,0,0,0.06); color: var(--text); }
-.filter-pill.active { background: var(--accent); color: #fff; }
-
 /* ── Shell ── */
-#shell { position: fixed; top: calc(var(--nav-h) + var(--filter-h)); left: 0; right: 0; bottom: 0; display: flex; }
+#shell { position: fixed; top: var(--nav-h); left: 0; right: 0; bottom: 0; display: flex; }
 
 /* ── TOC ── */
 #toc {
@@ -187,7 +169,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 
 /* ── Search panel ── */
 #search-panel {
-    position: fixed; top: calc(var(--nav-h) + var(--filter-h)); left: 0;
+    position: fixed; top: var(--nav-h); left: 0;
     width: var(--toc-w); bottom: 0; background: #FEFCF8;
     border-right: 1px solid var(--divider); display: flex; flex-direction: column;
     z-index: 160; transform: translateX(-100%); transition: transform .2s;
@@ -233,7 +215,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 
 @media (max-width: 600px) {
     :root { --toc-w: 300px; }
-    #toc { position: fixed; top: calc(var(--nav-h) + var(--filter-h)); left: 0; bottom: 0; z-index: 150; }
+    #toc { position: fixed; top: var(--nav-h); left: 0; bottom: 0; z-index: 150; }
     #search-panel { z-index: 162; }
     #location-label { display: none; }
     #content { padding: 24px 18px 80px; }
@@ -359,7 +341,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 
 /* ── Channel panel ── */
 #channel {
-    position: fixed; top: calc(var(--nav-h) + var(--filter-h)); right: 0; bottom: 0;
+    position: fixed; top: var(--nav-h); right: 0; bottom: 0;
     width: 360px; background: #FEFCF8; border-left: 1px solid var(--divider);
     display: flex; flex-direction: column; z-index: 180;
     transform: translateX(100%); transition: transform .22s;
@@ -545,16 +527,6 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
         </svg>
         epub
     </a>
-</div>
-
-<div id="filterbar">
-    <button class="filter-pill active" data-filter="all">All</button>
-    <button class="filter-pill" data-filter="scripture">Scripture</button>
-    <button class="filter-pill" data-filter="jst">JST</button>
-    <button class="filter-pill" data-filter="donaldson">Donaldson</button>
-    <button class="filter-pill" data-filter="wordstudy">Word Study</button>
-    <button class="filter-pill" data-filter="sources">Sources</button>
-    <button class="filter-pill" data-filter="connections">Connections</button>
 </div>
 
 <!-- Search panel overlays the TOC area -->
@@ -818,13 +790,9 @@ function renderTocView() {
 
     if (tocPath.level === 'root') {
         grid.className = 'toc-grid';
-        title.textContent = 'Sources';
+        title.textContent = 'Library';
         subtitle.textContent = '';
         back.classList.remove('show');
-        html += '<div class="toc-note">'
-             + '<span class="toc-note-label">Donaldson Papers</span>'
-             + '<p>Built on the work of <a href="https://donaldsonpapers.com/" target="_blank" rel="noopener noreferrer">Lee Donaldson</a>. The <em>Disk of Knowledge</em> was given to missionaries at the end of their missions in the San Diego California Mission.</p>'
-             + '</div>';
         if (tocTree.front) {
             html += renderTocTile({
                 label: tocTree.front.label,
@@ -833,12 +801,32 @@ function renderTocView() {
                 attrs: `data-action="chapter" data-id="${tocTree.front.id}"`
             });
         }
+        html += renderTocTile({
+            label: 'The Holy Scriptures',
+            wide: true,
+            attrs: 'data-action="scripture-root"'
+        });
+        html += renderTocTile({
+            label: 'Other Church Writings',
+            wide: true,
+            attrs: 'data-action="source-root"'
+        });
+    } else if (tocPath.level === 'scripture-root') {
+        grid.className = 'toc-grid';
+        title.textContent = 'Scriptures';
+        subtitle.textContent = 'The Holy Scriptures';
+        back.classList.add('show');
         tocTree.volumes.forEach(function(volume) {
             html += renderTocTile({
                 label: volume.label,
                 attrs: `data-action="volume" data-volume="${escapeAttr(volume.label)}"`
             });
         });
+    } else if (tocPath.level === 'source-root') {
+        grid.className = 'toc-grid';
+        title.textContent = 'Sources';
+        subtitle.textContent = 'Other Church Writings';
+        back.classList.add('show');
         tocTree.sources.forEach(function(collection) {
             html += renderTocTile({
                 label: collection.label,
@@ -935,6 +923,10 @@ function setTocPathForSource(docId) {
 function tocBack() {
     if (tocPath.level === 'book' && tocPath.volume) {
         tocPath = { level: 'volume', volume: tocPath.volume, book: null, sourceCollection: null };
+    } else if (tocPath.level === 'volume') {
+        tocPath = { level: 'scripture-root', volume: null, book: null, sourceCollection: null };
+    } else if (tocPath.level === 'source-collection') {
+        tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
     } else {
         tocPath = { level: 'root', volume: null, book: null, sourceCollection: null };
     }
@@ -945,7 +937,13 @@ document.getElementById('toc-grid').addEventListener('click', function(e) {
     var tile = e.target.closest('.toc-tile');
     if (!tile) return;
     var action = tile.dataset.action;
-    if (action === 'volume') {
+    if (action === 'scripture-root') {
+        tocPath = { level: 'scripture-root', volume: null, book: null, sourceCollection: null };
+        renderTocView();
+    } else if (action === 'source-root') {
+        tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
+        renderTocView();
+    } else if (action === 'volume') {
         var volume = findVolume(tile.dataset.volume);
         if (!volume) return;
         tocPath = { level: 'volume', volume: volume, book: null, sourceCollection: null };
@@ -1412,105 +1410,6 @@ function getTextOffset(el, chapterId) {
     var text = block.textContent;
     var hlText = el.textContent;
     return text.indexOf(hlText);
-}
-
-// ── Commentary depth filter ───────────────────────────────────────────────
-// Maps each pill data-filter value to the CSS classes it controls.
-// "all" and "scripture" are special modes; others are individual toggles.
-var FILTER_CLASSES = {
-    jst:        ['.jst-block'],
-    donaldson:  ['.donaldson-block'],
-    wordstudy:  ['.etymology-block'],
-    sources:    ['.lds-commentary-block', '.rabbinical-block', '.fathers-block', '.ancient-block'],
-    connections:['.semantic-quote'],
-};
-
-// Active set: a Set of filter keys that are currently "on"
-// Special values: 'all' means everything visible, 'scripture' means nothing visible.
-var activeFilters = new Set(['all']);
-
-(function initFilter() {
-    var stored = localStorage.getItem(SITE.storageKey + '_filter');
-    if (stored) {
-        try {
-            var parsed = JSON.parse(stored);
-            if (Array.isArray(parsed)) {
-                activeFilters = new Set(parsed);
-            }
-        } catch(e) {}
-    }
-    applyFilter();
-    updateFilterPills();
-
-    document.getElementById('filterbar').addEventListener('click', function(e) {
-        var pill = e.target.closest('.filter-pill');
-        if (!pill) return;
-        var key = pill.dataset.filter;
-        onFilterClick(key);
-    });
-})();
-
-function onFilterClick(key) {
-    if (key === 'all') {
-        activeFilters = new Set(['all']);
-    } else if (key === 'scripture') {
-        activeFilters = new Set(['scripture']);
-    } else {
-        // Remove exclusive modes
-        activeFilters.delete('all');
-        activeFilters.delete('scripture');
-        // Toggle this key
-        if (activeFilters.has(key)) {
-            activeFilters.delete(key);
-        } else {
-            activeFilters.add(key);
-        }
-        // If nothing selected, fall back to "all"
-        if (activeFilters.size === 0) {
-            activeFilters.add('all');
-        }
-    }
-    applyFilter();
-    updateFilterPills();
-    localStorage.setItem(SITE.storageKey + '_filter', JSON.stringify(Array.from(activeFilters)));
-}
-
-function applyFilter() {
-    // Remove any previously injected filter style
-    var old = document.getElementById('filter-style');
-    if (old) old.remove();
-
-    if (activeFilters.has('all')) return; // everything visible — no rules needed
-
-    var hiddenSelectors = [];
-
-    if (activeFilters.has('scripture')) {
-        // Hide every commentary class
-        Object.values(FILTER_CLASSES).forEach(function(arr) {
-            hiddenSelectors = hiddenSelectors.concat(arr);
-        });
-    } else {
-        // Show only the selected commentary types — hide the rest
-        Object.keys(FILTER_CLASSES).forEach(function(key) {
-            if (!activeFilters.has(key)) {
-                hiddenSelectors = hiddenSelectors.concat(FILTER_CLASSES[key]);
-            }
-        });
-    }
-
-    if (hiddenSelectors.length === 0) return;
-
-    var style = document.createElement('style');
-    style.id = 'filter-style';
-    style.textContent = hiddenSelectors.join(', ') + ' { display: none !important; }';
-    document.head.appendChild(style);
-}
-
-function updateFilterPills() {
-    document.querySelectorAll('.filter-pill').forEach(function(pill) {
-        var key = pill.dataset.filter;
-        pill.classList.toggle('active', activeFilters.has(key));
-    });
 }
 
 // ── Full-text search ─────────────────────────────────────────────────────
