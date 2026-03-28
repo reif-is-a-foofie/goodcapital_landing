@@ -426,12 +426,19 @@ async function run() {
 
   const scriptureToSourceState = await page.evaluate(() => ({
     sourceTitle: document.querySelector('.source-doc .source-title')?.textContent.trim(),
+    sourceSubtitle: document.querySelector('.source-doc .source-subtitle')?.textContent.trim(),
     location: document.querySelector('#location-label')?.textContent.trim(),
+    activeTile: document.querySelector('.toc-tile.active .toc-tile-title')?.textContent.trim(),
+    activeMeta: document.querySelector('.toc-tile.active .toc-tile-meta')?.textContent.trim(),
     previewHidden: document.querySelector('#morsel-preview')?.hidden,
     focusedText: document.querySelector('.source-para-focus')?.textContent.trim() || '',
   }));
 
   assert(scriptureToSourceState.sourceTitle, 'source morsel click did not open a source doc');
+  assert(scriptureToSourceState.sourceSubtitle, 'source morsel click did not preserve the source subtitle');
+  assert(scriptureToSourceState.location === `${scriptureToSourceState.sourceSubtitle} · ${scriptureToSourceState.sourceTitle}`, 'source morsel click did not preserve the clean location label');
+  assert(scriptureToSourceState.activeTile === scriptureToSourceState.sourceTitle, 'source morsel click did not preserve the active source title tile');
+  assert(scriptureToSourceState.activeMeta === scriptureToSourceState.sourceSubtitle, 'source morsel click did not preserve the active source meta tile');
   assert(scriptureToSourceState.previewHidden, 'source morsel click fell back to the preview card');
   assert(scriptureToSourceState.focusedText.length > 80, 'source morsel click did not focus a relevant paragraph');
 
