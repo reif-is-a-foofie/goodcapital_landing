@@ -1185,6 +1185,7 @@ var reader = document.getElementById('reader');
 var sentinel = document.getElementById('sentinel');
 
 var observer = new IntersectionObserver(entries => {
+    if (sourceMode) return;
     if (entries[0].isIntersecting && !loading && nextToLoad < chapterOrder.length) {
         loading = true;
         var id = chapterOrder[nextToLoad];

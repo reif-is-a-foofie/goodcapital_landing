@@ -75,6 +75,32 @@ async function run() {
     document.querySelector('#toc-subtitle').textContent.trim() === ''
   );
 
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="history_of_church"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'History of the Church'
+  );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="history_of_church:vol1"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const hocState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    subtitle: document.querySelector('.source-doc .source-subtitle')?.textContent.trim() || '',
+    location: document.querySelector('#location-label')?.textContent.trim() || '',
+  }));
+  assert(hocState.title === 'Volume 1', 'History of the Church title did not load');
+  assert(hocState.subtitle === 'History of the Church', 'History of the Church subtitle did not load');
+  assert(hocState.location === 'History of the Church · Volume 1', 'History of the Church location label went stale after source navigation');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'History of the Church'
+  );
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
   await page.$eval('.toc-tile[data-action="source-collection"][data-collection="times_and_seasons"]', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&
