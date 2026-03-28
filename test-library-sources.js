@@ -256,14 +256,18 @@ async function run() {
 
   const sourceState = await page.evaluate(() => ({
     title: document.querySelector('.source-doc .source-title')?.textContent.trim(),
+    subtitle: document.querySelector('.source-doc .source-subtitle')?.textContent.trim(),
     location: document.querySelector('#location-label')?.textContent.trim(),
     activeTile: document.querySelector('.toc-tile.active .toc-tile-title')?.textContent.trim(),
+    activeMeta: document.querySelector('.toc-tile.active .toc-tile-meta')?.textContent.trim(),
     paragraphs: document.querySelectorAll('.source-doc .source-para').length,
   }));
 
-  assert(sourceState.title === 'Journal of Discourses Vol. 1', 'source title did not load');
-  assert(sourceState.location === 'Journal of Discourses · Journal of Discourses Vol. 1', 'source location label mismatch');
-  assert(sourceState.activeTile === 'Journal of Discourses Vol. 1', 'source tile did not become active');
+  assert(sourceState.title === 'Volume 1', 'source title did not load');
+  assert(sourceState.subtitle === 'Journal of Discourses', 'source subtitle did not load');
+  assert(sourceState.location === 'Journal of Discourses · Volume 1', 'source location label mismatch');
+  assert(sourceState.activeTile === 'Volume 1', 'source tile did not become active');
+  assert(sourceState.activeMeta === 'Journal of Discourses', 'source tile meta did not render');
   assert(sourceState.paragraphs > 50, 'source document rendered too few paragraphs');
 
   await page.waitForSelector('.source-doc .source-para span.w', { timeout: 20000 });
@@ -282,6 +286,34 @@ async function run() {
   await page.$eval('#ch-close', (el) => el.click());
   await page.waitForFunction(() => !document.querySelector('#channel').classList.contains('open'));
 
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent.trim() === ''
+  );
+
+  await page.$eval('.toc-tile[data-action="source-collection"][data-collection="times_and_seasons"]', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Times and Seasons'
+  );
+  await page.$eval('.toc-tile[data-action="source-doc"][data-doc="times_and_seasons:times_and_seasons_1839_1846_1839_july_vol_01_no_01"]', (el) => el.click());
+  await page.waitForSelector('.source-doc .source-title', { timeout: 20000 });
+  const tsState = await page.evaluate(() => ({
+    title: document.querySelector('.source-doc .source-title')?.textContent.trim() || '',
+    subtitle: document.querySelector('.source-doc .source-subtitle')?.textContent.trim() || '',
+    activeTile: document.querySelector('.toc-tile.active .toc-tile-title')?.textContent.trim() || '',
+    activeMeta: document.querySelector('.toc-tile.active .toc-tile-meta')?.textContent.trim() || '',
+  }));
+  assert(tsState.title === 'July 1839', 'Times and Seasons title did not become primary');
+  assert(tsState.subtitle === 'Vol. 1 · No. 1', 'Times and Seasons metadata did not move into subtitle');
+  assert(tsState.activeTile === 'July 1839', 'Times and Seasons tile title did not update');
+  assert(tsState.activeMeta === 'Vol. 1 · No. 1', 'Times and Seasons tile meta did not update');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() =>
+    document.querySelector('#toc-title').textContent === 'Sources' &&
+    document.querySelector('#toc-subtitle').textContent === 'Times and Seasons'
+  );
   await page.$eval('#toc-back', (el) => el.click());
   await page.waitForFunction(() =>
     document.querySelector('#toc-title').textContent === 'Sources' &&

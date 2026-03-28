@@ -263,10 +263,7 @@ def extract_issue_marker(group_key: str, para: str) -> Optional[dict]:
     if month:
         slug_parts.insert(1, slugify(month))
     title_bits = [f"Vol. {volume}", f"No. {number}"]
-    if month:
-        title = f"{month} {year} · " + " · ".join(title_bits)
-    else:
-        title = f"{year} · " + " · ".join(title_bits)
+    title = f"{month} {year}" if month else str(year)
     return {
         "year": year,
         "month": month,
@@ -274,6 +271,7 @@ def extract_issue_marker(group_key: str, para: str) -> Optional[dict]:
         "number": number,
         "slug": "_".join(slug_parts),
         "title": title,
+        "meta": " · ".join(title_bits),
     }
 
 
@@ -306,7 +304,8 @@ def split_large_document(group_key: str, title: str, slug: str, paragraphs: list
         used_slugs.add(chunk_slug)
         chunks.append({
             "slug": chunk_slug,
-            "title": f"{title} — {marker['title']}",
+            "title": marker["title"],
+            "meta": marker.get("meta", ""),
             "paragraphs": chunk_paras,
         })
 
@@ -322,15 +321,19 @@ def source_title(group_key: str, txt_path: Path, gc_meta: dict) -> str:
     if group_key == "journal_of_discourses":
         m = re.search(r"vol[_ ]?0*(\d+)", txt_path.stem, re.I)
         if m:
-            return f"Journal of Discourses Vol. {int(m.group(1))}"
+            return f"Volume {int(m.group(1))}"
     if group_key == "history_of_church":
         m = re.search(r"vol[_ ]?0*(\d+)", txt_path.stem, re.I)
         if m:
-            return f"History of the Church Vol. {int(m.group(1))}"
+            return f"Volume {int(m.group(1))}"
     if group_key == "times_and_seasons":
         return "Times and Seasons"
     if group_key == "millennial_star":
         return "Millennial Star"
+    if group_key == "church_fathers":
+        m = re.search(r"anf[_ ]?vol[_ ]?0*(\d+)", txt_path.stem, re.I)
+        if m:
+            return f"Volume {int(m.group(1))}"
     return txt_path.stem.replace("_", " ").replace("-", " ").title()
 
 
@@ -368,6 +371,12 @@ def source_meta(group_key: str, txt_path: Path, gc_meta: dict, paragraph_count: 
         meta = gc_meta.get(txt_path.stem, {})
         parts = [meta.get("speaker", "").strip(), gc_session_label(meta)]
         return " · ".join(part for part in parts if part)
+    if group_key == "journal_of_discourses":
+        return "Journal of Discourses"
+    if group_key == "history_of_church":
+        return "History of the Church"
+    if group_key == "church_fathers":
+        return "Ante-Nicene Fathers"
     return f"{paragraph_count} paragraphs"
 
 
@@ -457,7 +466,8 @@ def build_group(group: dict, gc_meta: dict) -> Optional[dict]:
         meta = source_meta(group["key"], txt, gc_meta, len(paragraphs))
         slug = slugify(txt.stem)
         for chunk in split_large_document(group["key"], title, slug, paragraphs):
-            html = render_source_page(group["label"], chunk["title"], chunk["paragraphs"], meta)
+            chunk_meta = chunk.get("meta", meta)
+            html = render_source_page(group["label"], chunk["title"], chunk["paragraphs"], chunk_meta)
             out_path = group_out / f"{chunk['slug']}.html"
             out_path.write_text(html, encoding="utf-8")
             docs.append({
@@ -465,7 +475,7 @@ def build_group(group: dict, gc_meta: dict) -> Optional[dict]:
                 "label": chunk["title"],
                 "href": f"sources/{group['key']}/{chunk['slug']}.html",
                 "paragraphs": len(chunk["paragraphs"]),
-                "meta": meta if group["key"] == "general_conference" else f"{len(chunk['paragraphs'])} paragraphs",
+                "meta": chunk_meta,
             })
 
     if not docs:
