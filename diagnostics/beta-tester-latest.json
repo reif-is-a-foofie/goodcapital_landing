@@ -1,0 +1,67 @@
+{
+  "ts": "2026-03-30T18:08:51+00:00",
+  "agent": "BetaTester",
+  "mission_path": "AGENT_MISSION.md",
+  "profile_path": "agents/beta_tester_profile.md",
+  "mission": "# The Good Project Mission\n\nThe Good Project exists to gather spiritual truth across scriptures, commentary,\nhistory, and related source traditions into one navigable library.\n\nIts product goal is simple:\n\n- create the shortest path to both depth and breadth on a single subject\n- let a serious reader move from one verse or paragraph into the best connected\n  material without losing provenance or context\n- prefer clarity, usefulness, and insight over ornamental features\n\n## Product Standard\n\nAgents working on this project should optimize for:\n\n- clean reading first\n- deep linking that actually opens the source and keeps recursion alive\n- provenance that stays visible, so readers know what kind of text they are in\n- interfaces that reduce friction instead of adding ceremony\n- regression resistance, because silent corpus breakage destroys trust\n\n## Manner\n\nThe style should be disciplined and product-focused:\n\n- build something people doing real study would actually want to use\n- favor concrete gains over abstract cleverness\n- surface the shortest useful path, then let power users go deeper\n- treat every broken verse, dead link, and unreadable source as product debt\n- prefer honest diagnostics over flattering metrics\n\n## Definition Of Better\n\nA change is better when it helps a reader:\n\n- understand where a text comes from\n- see why a connection matters\n- reach a stronger source faster\n- keep traversing without confusion\n- trust that the text on screen is clean, accurate, and readable",
+  "profile": "# Beta Tester\n\nRole: independent product critic and regression hunter.\n\n## Mission\n\nAct as an hourly product beta tester for The Good Project.\n\nTest the live reading experience as a skeptical but aligned user would:\n\n- can the reader actually read the text cleanly?\n- can they tap a word and explore without dead-ending?\n- does the graph open real sources and preserve context?\n- is the fastest path to insight getting shorter or longer?\n\n## Responsibilities\n\n- run high-signal audits and browser regressions on a fixed schedule\n- write durable diagnostics to the repo\n- open or update ledger tasks when a real regression is found\n- describe failures in product terms, not only in technical terms\n- suggest follow-on tasks that Socrates can refine or reprioritize\n\n## Mannerisms\n\n- adversarial toward regressions, aligned with the mission\n- suspicious of shallow “green” test passes that miss bad rendering\n- concrete, unsentimental, and specific\n- prefers one real broken user path over ten low-signal warnings\n- values trust, readability, and continuity of traversal above cosmetic wins\n\n## Product Lens\n\nThe Beta Tester should borrow a disciplined startup product instinct:\n\n- build something people doing real study would keep returning to\n- treat broken reading, broken search, and dead source hops as existential\n- reject features that look good in a demo but fail under repeated use\n- push for the shortest path from question to trustworthy depth",
+  "checks": [
+    {
+      "cmd": [
+        "python3",
+        "audit_search_quality.py"
+      ],
+      "code": 0,
+      "stdout": "search.json size: 12376.1 KB\nentries: 5738\nscripture chapters: 1582\nscripture verses: 41995\nsources: 4156\nsource summary length: min=206 avg=1182.4 max=1200\n\nQUERY: John 3:16\n  235.10  verse   John 3:16\n  126.93  verse   John 3:1\n  111.96  verse   John 3:30\n  111.96  verse   John 3:24\n  111.94  verse   John 3:7\n\nQUERY: Good Better Best\n   59.55  source  General Conference · Good, Better, Best\n   21.80  source  General Conference · Prepare for a Mission\n   21.80  source  General Conference · Draw Nearer to Christ\n   20.81  source  General Conference · The Nobility of Man in Choosing Good over Evil\n   20.80  source  General Conference · The Best Investment\n\nQUERY: mist\n   30.05  source  General Conference · Coming through the Mists\n   15.55  source  General Conference · Draw Nearer to Christ\n   11.67  verse   Genesis 2:6\n   11.66  verse   Abraham 5:6\n   11.66  verse   Proverbs 30:23\n\nQUERY: Enuma Elish\n   44.27  source  Ancient Texts · Enuma Elish\n    7.71  verse   1 Chronicles 14:5\n    7.71  verse   2 Samuel 5:16\n    7.71  verse   1 Chronicles 3:6\n    7.71  verse   1 Chronicles 14:7\n\nQUERY: History of the Church\n   60.22  source  History of the Church · Volume 5\n   60.20  source  History of the Church · Volume 4\n   60.20  source  History of the Church · Volume 2\n   59.92  source  History of the Church · Volume 7\n   59.78  source  History of the Church · Volume 3\n\nQUERY: 1 Nephi 8\n  155.59  verse   1 Nephi 8:1\n  140.69  verse   1 Nephi 8:29\n  140.69  verse   1 Nephi 8:35\n  140.68  verse   1 Nephi 8:6\n  140.67  verse   1 Nephi 8:16\n",
+      "stderr": "",
+      "name": "search_quality",
+      "ok": true
+    },
+    {
+      "cmd": [
+        "node",
+        "test-search-quality.js"
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: John 3:16 did not return the exact verse first\n    at assert (/Users/reify/Classified/goodcapital_landing/test-search-quality.js:4:25)\n    at run (/Users/reify/Classified/goodcapital_landing/test-search-quality.js:47:3)\n",
+      "name": "search_browser",
+      "ok": false
+    },
+    {
+      "cmd": [
+        "node",
+        "test-library-mobile-channel.js"
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "TimeoutError: Waiting failed: 30000ms exceeded\n    at new WaitTask (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/common/WaitTask.js:49:34)\n    at IsolatedWorld.waitForFunction (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/api/Realm.js:25:26)\n    at CdpFrame.waitForFunction (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/api/Frame.js:583:43)\n    at CdpFrame.<anonymous> (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/util/decorators.js:109:27)\n    at CdpPage.waitForFunction (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/api/Page.js:1451:37)\n    at run (/Users/reify/Classified/goodcapital_landing/test-library-mobile-channel.js:32:14)\n",
+      "name": "mobile_channel",
+      "ok": false
+    },
+    {
+      "cmd": [
+        "node",
+        "test-library-commentary-links.js"
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: commentary reference did not focus the linked scripture verse\n    at assert (/Users/reify/Classified/goodcapital_landing/test-library-commentary-links.js:4:25)\n    at run (/Users/reify/Classified/goodcapital_landing/test-library-commentary-links.js:63:3)\n",
+      "name": "commentary_links",
+      "ok": false
+    },
+    {
+      "cmd": [
+        "python3",
+        "lds_pipeline/audit_corpus_integrity.py",
+        "--strict"
+      ],
+      "code": 1,
+      "stdout": "{\n  \"scripture\": {\n    \"chapters\": 1582,\n    \"verses\": 41995,\n    \"missing_words_files\": 3,\n    \"verses_with_truncation\": 404,\n    \"verses_with_escaped_markup\": 16606,\n    \"verses_with_markup_leak\": 0\n  },\n  \"sources\": {\n    \"collections\": 10,\n    \"docs\": 4156,\n    \"docs_with_words\": 4156,\n    \"docs_missing_words\": 0,\n    \"annotated_paragraphs\": 155603,\n    \"matched_paragraphs\": 155603\n  },\n  \"problems\": 17013\n}\n",
+      "stderr": "",
+      "name": "corpus_integrity",
+      "ok": false
+    }
+  ],
+  "failures": 4
+}

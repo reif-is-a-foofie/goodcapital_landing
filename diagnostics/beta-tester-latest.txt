@@ -1,0 +1,35 @@
+Beta tester run: 2026-03-30T18:08:51+00:00
+Mission: AGENT_MISSION.md
+Profile: agents/beta_tester_profile.md
+- search_quality: ok
+- search_browser: FAIL
+  task: Beta tester: fix browser search regressions when live query ranking or source opening stops matching expected behavior
+  stderr: Error: John 3:16 did not return the exact verse first
+    at assert (/Users/reify/Classified/goodcapital_landing/test-search-quality.js:4:25)
+    at run (/Users/reify/Classified/goodcapital_landing/test-search-quality.js:47:3)
+- mobile_channel: FAIL
+  task: Beta tester: fix mobile reference-panel scrolling and touch interaction so word-click results remain usable on phones
+  stderr: TimeoutError: Waiting failed: 30000ms exceeded
+    at new WaitTask (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/common/WaitTask.js:49:34)
+    at IsolatedWorld.waitForFunction (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cj
+- commentary_links: FAIL
+  task: Beta tester: repair commentary reference navigation so inline references open the linked chapter or source instead of dead-ending
+  stderr: Error: commentary reference did not focus the linked scripture verse
+    at assert (/Users/reify/Classified/goodcapital_landing/test-library-commentary-links.js:4:25)
+    at run (/Users/reify/Classified/goodcapital_landing/test-library-commentary-links.js:63:3)
+- corpus_integrity: FAIL
+  task: Beta tester: resolve scripture/source corpus integrity failures flagged by the strict audit before they ship as silent regressions
+  stdout: {
+  "scripture": {
+    "chapters": 1582,
+    "verses": 41995,
+    "missing_words_files": 3,
+    "verses_with_truncation": 404,
+    "verses_with_escaped_markup": 16606,
+    "verses_with_markup_leak": 0
+  },
+  "sources": {
+    "collections": 10,
+    "docs": 4156,
+    "docs_with_words": 4156,
+    "docs

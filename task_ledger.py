@@ -207,6 +207,37 @@ def add_task(args: argparse.Namespace) -> int:
     return 0
 
 
+def ensure_task(args: argparse.Namespace) -> int:
+    rows = load_rows()
+    states = derive_states(rows)
+    wanted = title_key(args.title)
+    for state in states.values():
+        if title_key(state.title) == wanted and state.status != "completed":
+            print(json.dumps({
+                "task_id": state.task_id,
+                "title": state.title,
+                "status": state.status,
+                "created": False,
+            }, indent=2, ensure_ascii=False))
+            return 0
+    task_id = next_task_id(rows)
+    append_event({
+        "event": "task_registered",
+        "task_id": task_id,
+        "title": args.title,
+        "status": "pending",
+        "priority": args.priority,
+        "source": args.source or "",
+    })
+    print(json.dumps({
+        "task_id": task_id,
+        "title": args.title,
+        "status": "pending",
+        "created": True,
+    }, indent=2, ensure_ascii=False))
+    return 0
+
+
 def claim_task(args: argparse.Namespace) -> int:
     rows = load_rows()
     states = derive_states(rows)
@@ -279,6 +310,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("title")
     p.add_argument("--priority", default="normal")
     p.set_defaults(func=add_task)
+
+    p = sub.add_parser("ensure")
+    p.add_argument("title")
+    p.add_argument("--priority", default="normal")
+    p.add_argument("--source", default="")
+    p.set_defaults(func=ensure_task)
 
     p = sub.add_parser("claim")
     p.add_argument("--task-id")
