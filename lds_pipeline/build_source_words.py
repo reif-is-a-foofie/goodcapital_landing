@@ -2,10 +2,9 @@
 """
 Build clickable word indexes for generated source docs.
 
-First pass:
+Default behavior:
   - Standard Works verses
-  - Journal of Discourses paragraphs
-  - History of the Church paragraphs
+  - All generated source collections from library/source_toc.json
 
 Outputs:
   library/sources/<group>/<slug>_words.json
@@ -14,6 +13,7 @@ Outputs:
 import json
 import math
 import re
+import argparse
 from collections import defaultdict
 from pathlib import Path
 
@@ -24,7 +24,6 @@ REPO = Path(__file__).resolve().parent.parent
 LIBRARY = REPO / "library"
 SOURCE_TOC = LIBRARY / "source_toc.json"
 STANDARD_WORKS_CATALOG = REPO / "lds_pipeline" / "cache" / "standard_works" / "verse_catalog.json"
-TARGET_GROUPS = {"general_conference", "journal_of_discourses", "history_of_church"}
 MAX_SELECTED_STEMS = 10
 MAX_CANDIDATES = 60
 MAX_POSTINGS = 6000
@@ -63,13 +62,19 @@ def build_scripture_morsels():
     return morsels
 
 
-def load_target_docs():
+def available_groups():
+    toc = json.loads(SOURCE_TOC.read_text(encoding="utf-8"))
+    return [collection["id"] for collection in toc]
+
+
+def load_target_docs(target_groups=None):
     toc = json.loads(SOURCE_TOC.read_text(encoding="utf-8"))
     docs = []
     morsels = []
+    target_groups = set(target_groups or available_groups())
 
     for collection in toc:
-        if collection["id"] not in TARGET_GROUPS:
+        if collection["id"] not in target_groups:
             continue
         for item in collection.get("items", []):
             html_path = LIBRARY / item["href"]
@@ -108,8 +113,8 @@ def load_target_docs():
     return docs, morsels
 
 
-def build_indexes():
-    docs, source_morsels = load_target_docs()
+def build_indexes(target_groups=None):
+    docs, source_morsels = load_target_docs(target_groups)
     all_morsels = build_scripture_morsels() + source_morsels
     postings = defaultdict(list)
     for idx, morsel in enumerate(all_morsels):
@@ -198,8 +203,15 @@ def build_indexes():
         words_path = doc["html_path"].with_name(doc["html_path"].stem + "_words.json")
         payload = {"_m": morsel_catalog, "v": words_out}
         words_path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-        print(f"{doc['item']['label']}: {len(words_out)} annotated paragraphs")
+        print(f"{doc['collection']} :: {doc['item']['label']}: {len(words_out)} annotated paragraphs")
 
 
 if __name__ == "__main__":
-    build_indexes()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--groups",
+        nargs="*",
+        help="Optional source collection ids to build. Defaults to all collections in source_toc.json.",
+    )
+    args = parser.parse_args()
+    build_indexes(args.groups)
