@@ -41,10 +41,6 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     color: var(--accent); text-decoration: none; margin-right: auto; }
 #location-label { font-size: 12px; color: var(--muted); max-width: 200px;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-#dl-btn { display: flex; align-items: center; gap: 5px; background: var(--accent); color: #fff;
-    text-decoration: none; padding: 6px 13px; border-radius: 6px; font-size: 12px; font-weight: 500; }
-#dl-btn:hover { background: var(--accent-hover); }
-
 /* ── Search button ── */
 #search-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px;
     color: var(--muted); display: flex; align-items: center; }
@@ -276,6 +272,82 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .scripture .semantic-meta > .score-dots:last-child {
     display: none;
 }
+.scripture .jst-block,
+.scripture .lds-commentary-block,
+.scripture .donaldson-block,
+.scripture .semantic-quote,
+.scripture .semantic-block,
+.scripture .ancient-block,
+.scripture .fathers-block,
+.scripture .jsp-block,
+.scripture .rabbinical-block,
+.scripture .etymology-block {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-left: 2px solid rgba(156,122,77,0.18);
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+.scripture .source-label,
+.scripture .semantic-source,
+.scripture .semantic-ref,
+.scripture .vol-ref,
+.scripture .backlinks-label {
+    font-size: 10px;
+    line-height: 1.3;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.scripture .jst-text,
+.scripture .jd-quote,
+.scripture .gc-quote,
+.scripture .fathers-quote,
+.scripture .ancient-quote,
+.scripture .donaldson-para,
+.scripture .semantic-text {
+    margin-top: 5px;
+    font-size: 14px;
+    line-height: 1.62;
+    color: #3b342d;
+}
+.scripture .donaldson-para + .donaldson-para,
+.scripture .jd-quote + .jd-quote,
+.scripture .gc-quote + .gc-quote,
+.scripture .ancient-quote + .ancient-quote,
+.scripture .fathers-quote + .fathers-quote {
+    margin-top: 8px;
+}
+.scripture .semantic-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+.scripture .score-dots {
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: rgba(156,122,77,0.38);
+}
+.scripture .backlinks {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.scripture a.ref-link,
+.scripture a.backlink-ref {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+.scripture a.ref-link:hover,
+.scripture .backlink-ref:hover {
+    color: #76572f;
+}
 .scripture span.w {
     cursor: pointer;
     text-decoration: underline;
@@ -364,6 +436,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     display: flex; flex-direction: column; z-index: 180;
     transform: translateX(100%); transition: transform .22s;
     box-shadow: -4px 0 20px rgba(0,0,0,0.06);
+    min-height: 0;
 }
 #channel.open { transform: translateX(0); }
 #ch-header {
@@ -415,7 +488,14 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     border-radius: 5px; color: var(--muted); flex-shrink: 0; display: flex;
 }
 #ch-close:hover { background: rgba(0,0,0,0.07); color: var(--text); }
-#ch-list { flex: 1; overflow-y: auto; }
+#ch-list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+}
 .ch-morsel {
     padding: 12px 14px; border-bottom: 1px solid var(--divider);
     cursor: pointer; transition: background .1s;
@@ -475,12 +555,12 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
         border-top: 1px solid var(--divider);
         transform: translateY(100%); transition: transform .22s; }
     #channel.open { transform: translateY(0); }
+    #ch-list {
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+    }
 }
 
 /* ── Graph panel ── */
-#graph-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px;
-    color: var(--muted); display: flex; align-items: center; }
-#graph-btn:hover { background: rgba(0,0,0,0.06); color: var(--text); }
 #graph-panel {
     position: fixed; inset: 0; background: var(--bg);
     z-index: 300; display: flex; flex-direction: column;
@@ -527,24 +607,12 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     </button>
     <a id="site-home" href="../index.html" class="logo">The Good Project</a>
     <span id="location-label"></span>
-    <button id="graph-btn" onclick="openGraph()" title="Cross-reference graph">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
-            <circle cx="4" cy="9" r="2"/><circle cx="14" cy="4" r="2"/><circle cx="14" cy="14" r="2"/>
-            <line x1="6" y1="8.3" x2="12" y2="5"/><line x1="6" y1="9.7" x2="12" y2="13"/>
-        </svg>
-    </button>
     <button id="search-btn" onclick="openSearch()" title="Search scriptures">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="16" y2="16"/>
         </svg>
     </button>
     <span id="offline-badge">Offline</span>
-    <a href="./LDS_Scriptures_Enriched.epub" id="dl-btn" download>
-        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M7 2v7M4 7l3 3 3-3M2 12h10"/>
-        </svg>
-        epub
-    </a>
 </div>
 
 <!-- Search panel overlays the TOC area -->
@@ -553,7 +621,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
         <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--muted)">
             <circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="16" y2="16"/>
         </svg>
-        <input id="search-input" type="search" placeholder="Search scriptures…" autocomplete="off" spellcheck="false">
+        <input id="search-input" type="search" placeholder="Search scriptures and sources…" autocomplete="off" spellcheck="false">
         <button id="search-close" onclick="closeSearch()" title="Close search">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                 <line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/>
@@ -1432,6 +1500,7 @@ function getTextOffset(el, chapterId) {
 
 // ── Full-text search ─────────────────────────────────────────────────────
 var searchIndex = null;       // loaded lazily on first open
+var searchRows = null;        // flattened entries for scoring
 var searchLoading = false;
 var searchDebounce = null;
 var searchOpen = false;
@@ -1450,6 +1519,7 @@ function openSearch() {
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 searchIndex = data;
+                searchRows = null;
                 searchLoading = false;
                 document.getElementById('search-status').textContent = 'Type to search…';
                 // Run any pending query
@@ -1485,25 +1555,162 @@ document.getElementById('search-input').addEventListener('input', function() {
     searchDebounce = setTimeout(function() { runSearch(q); }, 200);
 });
 
+function flattenSearchIndex() {
+    if (searchRows) return searchRows;
+    searchRows = [];
+    if (!searchIndex) return searchRows;
+
+    searchIndex.forEach(function(doc) {
+        if (!doc || typeof doc !== 'object') return;
+        if (doc.kind === 'source') {
+            (doc.pp || []).forEach(function(item) {
+                var text = String(item.t || '').trim();
+                if (!text) return;
+                searchRows.push({
+                    kind: 'source',
+                    id: doc.id,
+                    collection: doc.collection || '',
+                    label: doc.label || '',
+                    meta: doc.meta || '',
+                    href: doc.href || '',
+                    n: item.n,
+                    t: text,
+                    ref: (doc.collection ? doc.collection + ' · ' : '') + (doc.label || '') + ' · ¶' + item.n,
+                    hay: normalizeExcerpt([doc.collection || '', doc.label || '', doc.meta || '', text].join(' '))
+                });
+            });
+        } else {
+            (doc.vv || []).forEach(function(item) {
+                var text = String(item.t || '').trim();
+                if (!text) return;
+                searchRows.push({
+                    kind: 'verse',
+                    id: doc.id,
+                    book: doc.b || '',
+                    chapter: doc.c || 0,
+                    n: item.v,
+                    t: text,
+                    ref: (doc.b || '') + ' ' + doc.c + ':' + item.v,
+                    hay: normalizeExcerpt([doc.b || '', String(doc.c || ''), String(item.v || ''), text].join(' '))
+                });
+            });
+        }
+    });
+
+    return searchRows;
+}
+
+function parseSearchQuery(query) {
+    var phrases = [];
+    var stripped = String(query || '').replace(/"([^"]+)"/g, function(_, phrase) {
+        var clean = normalizeExcerpt(phrase);
+        if (clean) phrases.push(clean);
+        return ' ';
+    });
+    var terms = normalizeExcerpt(stripped).split(' ').filter(function(tok) {
+        if (!tok) return false;
+        if (tok.length > 2) return true;
+        return /^\d+$/.test(tok);
+    });
+    return {
+        raw: normalizeExcerpt(query),
+        terms: terms,
+        phrases: phrases
+    };
+}
+
+function searchPriority(row) {
+    if (row.kind === 'verse') return 3;
+    if (row.kind === 'source') {
+        if (row.collection === 'General Conference') return 2.5;
+        if (row.collection === 'Journal of Discourses' || row.collection === 'History of the Church') return 2.2;
+        return 1.8;
+    }
+    return 1.0;
+}
+
+function scoreSearchRow(row, q) {
+    var score = searchPriority(row);
+    var hay = row.hay || '';
+    var ref = normalizeExcerpt(row.ref || '');
+    var title = normalizeExcerpt([row.book || '', row.collection || '', row.label || '', row.meta || ''].join(' '));
+
+    if (!q.terms.length && !q.phrases.length && q.raw) {
+        q.terms = q.raw.split(' ').filter(Boolean);
+    }
+
+    var phraseHit = false;
+    q.phrases.forEach(function(phrase) {
+        if (!phrase) return;
+        if (hay.indexOf(phrase) !== -1 || ref.indexOf(phrase) !== -1 || title.indexOf(phrase) !== -1) {
+            score += 12;
+            phraseHit = true;
+        }
+    });
+
+    var hitCount = 0;
+    q.terms.forEach(function(term) {
+        if (!term) return;
+        if (hay.indexOf(term) !== -1) {
+            score += 3.5;
+            hitCount += 1;
+        }
+        if (ref.indexOf(term) !== -1) score += 4.5;
+        if (title.indexOf(term) !== -1) score += 5.5;
+    });
+
+    if (q.terms.length) {
+        score += hitCount * 1.25;
+        if (hitCount === q.terms.length) score += 4;
+    }
+
+    var exactRef = resolveScriptureRef(q.raw);
+    if (exactRef && row.kind === 'verse' && row.ref === exactRef.label) {
+        score += 100;
+    }
+
+    if (q.raw && ref.indexOf(q.raw) !== -1) score += 10;
+    if (phraseHit && row.kind === 'verse') score += 4;
+    if (phraseHit && row.kind === 'source') score += 6;
+
+    score -= Math.min(row.t.length / 1000, 4);
+    return score;
+}
+
+function snippetForRow(row, q) {
+    var text = String(row.t || '');
+    if (!text) return '';
+    var hay = text.toLowerCase();
+    var needles = q.phrases.concat(q.terms).filter(Boolean);
+    var idx = -1;
+    needles.some(function(term) {
+        idx = hay.indexOf(term);
+        return idx >= 0;
+    });
+    if (idx < 0) {
+        return highlightTerms(escapeHtml(text.length > 220 ? text.slice(0, 220) + '…' : text), needles);
+    }
+    var start = Math.max(0, idx - 72);
+    var end = Math.min(text.length, idx + 180);
+    var snippet = text.slice(start, end);
+    if (start > 0) snippet = '…' + snippet;
+    if (end < text.length) snippet = snippet + '…';
+    return highlightTerms(escapeHtml(snippet), needles);
+}
+
 function runSearch(query) {
     if (!searchIndex) return;
-
-    var words = query.toLowerCase().split(/\s+/).filter(Boolean);
-    var results = [];
-
-    for (var ci = 0; ci < searchIndex.length && results.length < 20; ci++) {
-        var ch = searchIndex[ci];
-        var bookLower = ch.b.toLowerCase();
-        for (var vi = 0; vi < ch.vv.length && results.length < 20; vi++) {
-            var verse = ch.vv[vi];
-            var haystack = bookLower + ' ' + verse.t.toLowerCase();
-            // AND logic: all words must appear
-            var allMatch = words.every(function(w) { return haystack.indexOf(w) !== -1; });
-            if (allMatch) {
-                results.push({ ch: ch, verse: verse });
-            }
-        }
-    }
+    var q = parseSearchQuery(query);
+    var rows = flattenSearchIndex();
+    var results = rows.map(function(row) {
+        return { row: row, score: scoreSearchRow(row, q) };
+    }).filter(function(hit) {
+        return hit.score > 0;
+    }).sort(function(a, b) {
+        if (b.score !== a.score) return b.score - a.score;
+        if (a.row.kind !== b.row.kind) return a.row.kind === 'verse' ? -1 : 1;
+        return String(a.row.ref || '').localeCompare(String(b.row.ref || ''));
+    }).slice(0, 20);
 
     var status = document.getElementById('search-status');
     var container = document.getElementById('search-results');
@@ -1517,12 +1724,12 @@ function runSearch(query) {
 
     var html = '';
     results.forEach(function(r) {
-        var ref = r.ch.b + ' ' + r.ch.c + ':' + r.verse.v;
-        var snippet = highlightTerms(escapeHtml(r.verse.t), words);
-        // Store chapter id and verse number as data attrs
-        html += '<div class="search-result" data-chid="' + escapeAttr(r.ch.id) + '" data-vnum="' + r.verse.v + '">'
-             + '<div class="search-result-ref">' + escapeHtml(ref) + '</div>'
-             + '<div class="search-result-text">' + snippet + '</div>'
+        html += '<div class="search-result" data-kind="' + escapeAttr(r.row.kind) + '"'
+             + ' data-id="' + escapeAttr(r.row.id) + '"'
+             + ' data-n="' + escapeAttr(String(r.row.n || '')) + '"'
+             + ' data-href="' + escapeAttr(r.row.href || '') + '">'
+             + '<div class="search-result-ref">' + escapeHtml(r.row.ref || '') + '</div>'
+             + '<div class="search-result-text">' + snippetForRow(r.row, q) + '</div>'
              + '</div>';
     });
     container.innerHTML = html;
@@ -1531,18 +1738,30 @@ function runSearch(query) {
     container.onclick = function(e) {
         var row = e.target.closest('.search-result');
         if (!row) return;
-        var chId = row.dataset.chid;
-        var vNum = parseInt(row.dataset.vnum, 10);
         closeSearch();
+        if (row.dataset.kind === 'source') {
+            var docId = row.dataset.id;
+            var para = parseInt(row.dataset.n, 10);
+            var meta = sourceMeta[docId];
+            if (meta) {
+                loadSourceDocument(docId, meta.href, {
+                    focusPara: para || null
+                });
+                return;
+            }
+        }
+        var chId = row.dataset.id;
+        var vNum = parseInt(row.dataset.n, 10);
         jumpTo(chId, vNum);
     };
 }
 
 function highlightTerms(text, words) {
     // Build a regex that matches any of the search words (case-insensitive)
-    var escaped = words.map(function(w) {
+    var escaped = words.filter(Boolean).map(function(w) {
         return w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    });
+    }).sort(function(a, b) { return b.length - a.length; });
+    if (!escaped.length) return text;
     var re = new RegExp('(' + escaped.join('|') + ')', 'gi');
     return text.replace(re, '<mark class="search-hl">$1</mark>');
 }
@@ -1984,9 +2203,43 @@ function focusVerse(verse, toggleExpand) {
 document.getElementById('content').addEventListener('click', function(e) {
     // Word click handled separately below — don't toggle verse for word clicks
     if (e.target.closest('span.w')) return;
+    if (e.target.closest('a.ref-link, a.backlink-ref')) return;
     var verse = e.target.closest('div.verse');
     if (!verse) return;
     focusVerse(verse, true);
+});
+
+document.getElementById('content').addEventListener('click', function(e) {
+    var link = e.target.closest('a.ref-link, a.backlink-ref');
+    if (!link) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    var href = link.getAttribute('href') || '';
+    if (!href) return;
+
+    var chapterMatch = href.match(/chapters\/([a-z0-9_]+)\.html(?:#v(\d+))?$/i);
+    if (chapterMatch) {
+        jumpTo(chapterMatch[1], chapterMatch[2] ? parseInt(chapterMatch[2], 10) : null);
+        return;
+    }
+
+    var notesMatch = href.match(/chapters\/([a-z0-9_]+)_notes\.html(?:#v(\d+))?$/i);
+    if (notesMatch) {
+        jumpTo(notesMatch[1], notesMatch[2] ? parseInt(notesMatch[2], 10) : null);
+        return;
+    }
+
+    var sourceHref = href.replace(/^\.\//, '').replace(/^\.\.\//, '');
+    var sourceId = Object.keys(sourceMeta).find(function(id) {
+        return sourceMeta[id] && sourceMeta[id].href === sourceHref;
+    });
+    if (sourceId && sourceMeta[sourceId]) {
+        loadSourceDocument(sourceId, sourceMeta[sourceId].href, {});
+        return;
+    }
+
+    window.open(href, '_blank', 'noopener');
 });
 
 // Called when user clicks a .w span
