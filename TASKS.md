@@ -100,6 +100,7 @@ Repo-owned agent profiles live in:
 
 - [agents/socrates_profile.md](/Users/reify/Classified/goodcapital_landing/agents/socrates_profile.md)
 - [agents/beta_tester_profile.md](/Users/reify/Classified/goodcapital_landing/agents/beta_tester_profile.md)
+- [agents/semantic_steward_profile.md](/Users/reify/Classified/goodcapital_landing/agents/semantic_steward_profile.md)
 
 These files are intended to keep agent behavior durable across sessions instead
 of leaving project intent only in chat context.
@@ -124,4 +125,26 @@ mkdir -p ~/Library/LaunchAgents
 cp /Users/reify/Classified/goodcapital_landing/launchd/com.goodproject.beta-tester.plist ~/Library/LaunchAgents/
 launchctl unload ~/Library/LaunchAgents/com.goodproject.beta-tester.plist 2>/dev/null || true
 launchctl load ~/Library/LaunchAgents/com.goodproject.beta-tester.plist
+```
+
+## Hourly Semantic Steward
+
+There is a second hourly daemon at [semantic_steward.py](/Users/reify/Classified/goodcapital_landing/semantic_steward.py).
+
+- It refreshes semantic correlations through [lds_pipeline/transformer_worker.py](/Users/reify/Classified/goodcapital_landing/lds_pipeline/transformer_worker.py).
+- It rebuilds the dashboard through [lds_pipeline/build_source_dashboard.py](/Users/reify/Classified/goodcapital_landing/lds_pipeline/build_source_dashboard.py).
+- It writes reports to `diagnostics/semantic-steward-latest.json` and `diagnostics/semantic-steward-latest.txt`.
+- When the semantic refresh or dashboard build fails, it appends durable tasks to the ledger.
+
+Launchd job template:
+
+- [launchd/com.goodproject.semantic-steward.plist](/Users/reify/Classified/goodcapital_landing/launchd/com.goodproject.semantic-steward.plist)
+
+Install locally:
+
+```bash
+mkdir -p ~/Library/LaunchAgents
+cp /Users/reify/Classified/goodcapital_landing/launchd/com.goodproject.semantic-steward.plist ~/Library/LaunchAgents/
+launchctl unload ~/Library/LaunchAgents/com.goodproject.semantic-steward.plist 2>/dev/null || true
+launchctl load ~/Library/LaunchAgents/com.goodproject.semantic-steward.plist
 ```

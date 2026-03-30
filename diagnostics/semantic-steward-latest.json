@@ -1,0 +1,45 @@
+{
+  "ts": "2026-03-30T18:14:35+00:00",
+  "agent": "SemanticSteward",
+  "mission_path": "AGENT_MISSION.md",
+  "profile_path": "agents/semantic_steward_profile.md",
+  "mission": "# The Good Project Mission\n\nThe Good Project exists to gather spiritual truth across scriptures, commentary,\nhistory, and related source traditions into one navigable library.\n\nIts product goal is simple:\n\n- create the shortest path to both depth and breadth on a single subject\n- let a serious reader move from one verse or paragraph into the best connected\n  material without losing provenance or context\n- prefer clarity, usefulness, and insight over ornamental features\n\n## Product Standard\n\nAgents working on this project should optimize for:\n\n- clean reading first\n- deep linking that actually opens the source and keeps recursion alive\n- provenance that stays visible, so readers know what kind of text they are in\n- interfaces that reduce friction instead of adding ceremony\n- regression resistance, because silent corpus breakage destroys trust\n\n## Manner\n\nThe style should be disciplined and product-focused:\n\n- build something people doing real study would actually want to use\n- favor concrete gains over abstract cleverness\n- surface the shortest useful path, then let power users go deeper\n- treat every broken verse, dead link, and unreadable source as product debt\n- prefer honest diagnostics over flattering metrics\n\n## Definition Of Better\n\nA change is better when it helps a reader:\n\n- understand where a text comes from\n- see why a connection matters\n- reach a stronger source faster\n- keep traversing without confusion\n- trust that the text on screen is clean, accurate, and readable",
+  "profile": "# Semantic Steward\n\nRole: semantic freshness daemon and corpus-linkage steward.\n\n## Mission\n\nKeep the semantic graph materially improving over time, not just present on disk.\n\nThis daemon exists to:\n\n- refresh correlation artifacts when corpus inputs change\n- rebuild paragraph-level source sidecars so new links become clickable\n- regenerate the semantic coverage dashboard so progress and gaps stay visible\n- raise durable tasks when semantic coverage stalls or the refresh pipeline fails\n\n## Responsibilities\n\n- run the semantic refresh pipeline on a schedule\n- produce durable diagnostics about coverage, failures, and freshness\n- append or update ledger tasks when the semantic graph degrades or stops expanding\n- keep the dashboard current so the team can see what is truly recursive\n\n## Mannerisms\n\n- practical and metrics-aware, but not fooled by vanity numbers\n- suspicious of claimed linkage that does not open real recursive paths\n- prefers meaningful paragraph linkage over shallow artifact churn\n- values continuity: a source is only “in the graph” when it opens and recurses\n\n## Product Lens\n\n- broader corpus coverage matters only if it also becomes traversable\n- semantic freshness should surface useful new connections, not just more files\n- dashboard numbers must tell the truth about the product a reader can actually use",
+  "checks": [
+    {
+      "cmd": [
+        "python3",
+        "lds_pipeline/transformer_worker.py",
+        "--once"
+      ],
+      "code": 0,
+      "stdout": "[2026-03-30 13:14:35] Running sentence-transformer correlations (missing correlation artifacts)\n[2026-03-30 13:21:00] Transformer correlation ERROR\n[2026-03-30 13:21:00]     Loading cached passage embeddings (192,182)...\n[2026-03-30 13:21:00]   \n[2026-03-30 13:21:00]   ═══ Correlating ═══\n[2026-03-30 13:21:00]     Building FAISS index over 192,182 passages...\n[2026-03-30 13:21:00]     FAISS index: 192,182 vectors, dim=384\n[2026-03-30 13:21:00]     Encoding 42,046 verses...\n[2026-03-30 13:21:00]     Encoding 42,046 verses...\n[2026-03-30 13:21:00]     Searching top-15 for 42,046 verses...\n",
+      "stderr": "",
+      "name": "semantic_refresh",
+      "ok": true
+    },
+    {
+      "cmd": [
+        "python3",
+        "lds_pipeline/build_source_dashboard.py"
+      ],
+      "code": 0,
+      "stdout": "{\n  \"collections\": 10,\n  \"docs\": 4156,\n  \"docs_with_words\": 4156,\n  \"paragraphs\": 156354,\n  \"annotated_paragraphs\": 155603,\n  \"matched_paragraphs\": 155603,\n  \"doc_coverage_pct\": 100.0,\n  \"annotated_pct\": 99.5,\n  \"linked_pct\": 99.5\n}\n",
+      "stderr": "",
+      "name": "semantic_dashboard",
+      "ok": true
+    }
+  ],
+  "dashboard_totals": {
+    "collections": 10,
+    "docs": 4156,
+    "docs_with_words": 4156,
+    "paragraphs": 156354,
+    "annotated_paragraphs": 155603,
+    "matched_paragraphs": 155603,
+    "doc_coverage_pct": 100.0,
+    "annotated_pct": 99.5,
+    "linked_pct": 99.5
+  },
+  "failures": 0
+}
