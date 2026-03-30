@@ -148,3 +148,33 @@ cp /Users/reify/Classified/goodcapital_landing/launchd/com.goodproject.semantic-
 launchctl unload ~/Library/LaunchAgents/com.goodproject.semantic-steward.plist 2>/dev/null || true
 launchctl load ~/Library/LaunchAgents/com.goodproject.semantic-steward.plist
 ```
+
+## Four-Hourly Source Scout
+
+There is a third scheduled daemon at [source_scout.py](/Users/reify/Classified/goodcapital_landing/source_scout.py).
+
+- It searches the web for public-domain or open-licensed texts relevant to scripture study.
+- It evaluates each candidate on two dimensions: copyright status and semantic relevance.
+- Copyright check is strict: trusted archive domains, explicit PD declarations, CC licenses,
+  or pre-1928 publication dates only. When in doubt, the candidate is rejected.
+- Semantic relevance is scored against existing collection descriptions from `source-dashboard.json`.
+- Candidates that pass both thresholds are proposed as ledger tasks via `task_ledger.py ensure`.
+- It never auto-ingests: the ledger task is the handoff to a human or agent with ingestion authority.
+- It writes reports to `diagnostics/source-scout-latest.json` and `diagnostics/source-scout-latest.txt`.
+
+Runs every 4 hours (14400 seconds) to keep web search costs reasonable.
+
+Agent profile: [agents/source_scout_profile.md](/Users/reify/Classified/goodcapital_landing/agents/source_scout_profile.md)
+
+Launchd job template:
+
+- [launchd/com.goodproject.source-scout.plist](/Users/reify/Classified/goodcapital_landing/launchd/com.goodproject.source-scout.plist)
+
+Install locally:
+
+```bash
+mkdir -p ~/Library/LaunchAgents
+cp /Users/reify/Classified/goodcapital_landing/launchd/com.goodproject.source-scout.plist ~/Library/LaunchAgents/
+launchctl unload ~/Library/LaunchAgents/com.goodproject.source-scout.plist 2>/dev/null || true
+launchctl load ~/Library/LaunchAgents/com.goodproject.source-scout.plist
+```

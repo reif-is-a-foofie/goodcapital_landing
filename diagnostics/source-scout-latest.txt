@@ -1,0 +1,31 @@
+Source scout run: 2026-03-30T21:09:25+00:00
+Mission: AGENT_MISSION.md
+Profile: agents/source_scout_profile.md
+Existing collections: 10
+
+Query: public domain pseudepigrapha ancient Jewish texts scripture commentary site:gute
+  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+
+Query: early Christian writings public domain theology scripture site:ccel.org OR site:
+  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+
+Query: Nag Hammadi texts public domain translation scripture study
+  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+
+Query: Dead Sea Scrolls translation public domain online text
+  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+
+Query: midrash rabbinic commentary public domain English translation site:archive.org
+  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+
+Query: Joseph Smith restoration theology public domain 19th century
+  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+
+Query: ancient Near East creation flood texts public domain translation site:gutenberg.
+  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+
+Query: Philo of Alexandria works public domain English translation site:ccel.org OR sit
+  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+
+Summary: queries=8 found=0 evaluated=0 passed=0 tasks_created=0
+Errors: 8
