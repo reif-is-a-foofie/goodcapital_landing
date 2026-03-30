@@ -166,3 +166,4 @@
 {"event": "task_claimed", "task_id": "T-0071", "agent": "Codex", "ts": "2026-03-30T18:25:10+00:00"}
 {"event": "task_claimed", "task_id": "T-0072", "agent": "Codex", "ts": "2026-03-30T18:25:10+00:00"}
 {"event": "task_completed", "task_id": "T-0071", "agent": "Codex", "commit": "", "summary": "Added an hourly semantic steward daemon, launchd template, mission/profile docs, and first semantic refresh report.", "ts": "2026-03-30T18:25:25+00:00"}
+{"event": "task_completed", "task_id": "T-0072", "agent": "Codex", "commit": "", "summary": "Put live semantic dashboard metrics and agent activity directly on the title page, with browser regression coverage.", "ts": "2026-03-30T18:25:52+00:00"}

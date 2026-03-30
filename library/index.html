@@ -723,6 +723,7 @@ var nextToLoad = 0;             // index into chapterOrder for infinite scroll
 var loading = false;
 var visitStack = [];
 var activeContextText = '';
+var titlePageDataPromise = null;
 
 // Highlights: { chapterId: [{start,end,color,text,note}] }
 var highlights = JSON.parse(localStorage.getItem(SITE.storageKey + '_highlights') || '{}');
@@ -867,6 +868,26 @@ function buildToc() {
     renderTocView();
 }
 
+window.addEventListener('message', function(event) {
+    var data = event && event.data;
+    if (!data || data.type !== 'title-page-open-shelf') return;
+    if (data.key === 'scriptures') {
+        tocPath = { level: 'scripture-root', volume: null, book: null, sourceCollection: null };
+        renderTocView();
+        if (window.innerWidth < 900) {
+            tocOpen = true;
+            document.getElementById('toc').classList.remove('hidden');
+        }
+    } else if (data.key === 'sources') {
+        tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
+        renderTocView();
+        if (window.innerWidth < 900) {
+            tocOpen = true;
+            document.getElementById('toc').classList.remove('hidden');
+        }
+    }
+});
+
 function renderTocView() {
     var grid = document.getElementById('toc-grid');
     var back = document.getElementById('toc-back');
@@ -962,6 +983,86 @@ function renderTocView() {
     }
 
     grid.innerHTML = html;
+}
+
+function getTitlePageData() {
+    if (!titlePageDataPromise) {
+        titlePageDataPromise = Promise.all([
+            fetch('./source-dashboard.json').then(function(r) { return r.json(); }).catch(function() { return null; }),
+            fetch('./project-progress.json').then(function(r) { return r.json(); }).catch(function() { return null; })
+        ]);
+    }
+    return titlePageDataPromise;
+}
+
+function hydrateTitlePage() {
+    var root = document.getElementById('ch-title_page');
+    if (!root) return;
+
+    function setText(id, value) {
+        var el = root.querySelector('#' + id);
+        if (el) el.textContent = value;
+    }
+
+    function fmt(n) {
+        return Number(n || 0).toLocaleString();
+    }
+
+    getTitlePageData().then(function(payloads) {
+        var dashboard = payloads[0] || {};
+        var progress = payloads[1] || {};
+        var t = dashboard.totals || {};
+
+        setText('metric-docs', fmt(t.docs));
+        setText('metric-doc-coverage', (t.doc_coverage_pct || 0) + '%');
+        setText('metric-paragraphs', fmt(t.paragraphs));
+        setText('metric-links', fmt(t.matched_paragraphs));
+        setText('metric-linked-pct', (t.linked_pct || 0) + '% of paragraphs now recursively linked');
+        setText('metric-collections', fmt(t.collections));
+        setText('metric-annotated', (t.annotated_pct || 0) + '%');
+
+        var bars = root.querySelector('#agent-bars');
+        var recent = root.querySelector('#recent-completions');
+        if (bars && progress.agents) {
+            var max = 1;
+            progress.agents.forEach(function(row) { max = Math.max(max, row.completed || 0); });
+            bars.innerHTML = progress.agents.slice(0, 8).map(function(row) {
+                var pct = Math.max(8, Math.round(((row.completed || 0) / max) * 100));
+                return '<div class="bar-row">'
+                    + '<div class="bar-label">' + escapeHtml(row.agent || 'Unknown') + '</div>'
+                    + '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div>'
+                    + '<div class="bar-value">' + (row.completed || 0) + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+        if (recent && progress.recent_completions) {
+            recent.innerHTML = progress.recent_completions.slice(0, 6).map(function(row) {
+                return '<li class="recent-item">'
+                    + '<div class="recent-meta"><span>' + escapeHtml(row.agent || 'Unknown') + '</span><span>' + escapeHtml(row.commit || 'no commit') + '</span><span>' + escapeHtml(row.ts || '') + '</span></div>'
+                    + '<div class="recent-summary">' + escapeHtml(row.summary || row.task_id || 'Completed work') + '</div>'
+                    + '</li>';
+            }).join('');
+        }
+    });
+
+    root.querySelectorAll('[data-open-shelf]').forEach(function(link) {
+        if (link.dataset.boundShelfClick === '1') return;
+        link.dataset.boundShelfClick = '1';
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            var key = link.getAttribute('data-open-shelf');
+            if (key === 'scriptures') {
+                tocPath = { level: 'scripture-root', volume: null, book: null, sourceCollection: null };
+            } else if (key === 'sources') {
+                tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
+            }
+            renderTocView();
+            if (window.innerWidth < 900) {
+                tocOpen = true;
+                document.getElementById('toc').classList.remove('hidden');
+            }
+        });
+    });
 }
 
 function renderTocTile(opts) {
@@ -1272,6 +1373,10 @@ function loadChapter(id, prepend) {
                 content.appendChild(block);
             }
 
+            if (id === 'title_page') {
+                hydrateTitlePage();
+            }
+
             loadedChapters.add(id);
             restoreHighlights(id, block);
             setNextToLoad(id);
@@ -1563,21 +1668,19 @@ function flattenSearchIndex() {
     searchIndex.forEach(function(doc) {
         if (!doc || typeof doc !== 'object') return;
         if (doc.kind === 'source') {
-            (doc.pp || []).forEach(function(item) {
-                var text = String(item.t || '').trim();
-                if (!text) return;
-                searchRows.push({
-                    kind: 'source',
-                    id: doc.id,
-                    collection: doc.collection || '',
-                    label: doc.label || '',
-                    meta: doc.meta || '',
-                    href: doc.href || '',
-                    n: item.n,
-                    t: text,
-                    ref: (doc.collection ? doc.collection + ' · ' : '') + (doc.label || '') + ' · ¶' + item.n,
-                    hay: normalizeExcerpt([doc.collection || '', doc.label || '', doc.meta || '', text].join(' '))
-                });
+            var text = String(doc.t || '').trim();
+            if (!text) return;
+            searchRows.push({
+                kind: 'source',
+                id: doc.id,
+                collection: doc.collection || '',
+                label: doc.label || '',
+                meta: doc.meta || '',
+                href: doc.href || '',
+                n: 1,
+                t: text,
+                ref: (doc.collection ? doc.collection + ' · ' : '') + (doc.label || ''),
+                hay: normalizeExcerpt([doc.collection || '', doc.label || '', doc.meta || '', text].join(' '))
             });
         } else {
             (doc.vv || []).forEach(function(item) {
@@ -1601,19 +1704,22 @@ function flattenSearchIndex() {
 }
 
 function parseSearchQuery(query) {
+    var raw = String(query || '').trim();
     var phrases = [];
-    var stripped = String(query || '').replace(/"([^"]+)"/g, function(_, phrase) {
+    var stripped = raw.replace(/"([^"]+)"/g, function(_, phrase) {
         var clean = normalizeExcerpt(phrase);
         if (clean) phrases.push(clean);
         return ' ';
     });
-    var terms = normalizeExcerpt(stripped).split(' ').filter(function(tok) {
+    var norm = normalizeExcerpt(stripped);
+    var terms = norm.split(' ').filter(function(tok) {
         if (!tok) return false;
         if (tok.length > 2) return true;
         return /^\d+$/.test(tok);
     });
     return {
-        raw: normalizeExcerpt(query),
+        raw: raw,
+        norm: norm,
         terms: terms,
         phrases: phrases
     };
@@ -1636,7 +1742,7 @@ function scoreSearchRow(row, q) {
     var title = normalizeExcerpt([row.book || '', row.collection || '', row.label || '', row.meta || ''].join(' '));
 
     if (!q.terms.length && !q.phrases.length && q.raw) {
-        q.terms = q.raw.split(' ').filter(Boolean);
+        q.terms = normalizeExcerpt(q.raw).split(' ').filter(Boolean);
     }
 
     var phraseHit = false;
@@ -1669,7 +1775,13 @@ function scoreSearchRow(row, q) {
         score += 100;
     }
 
-    if (q.raw && ref.indexOf(q.raw) !== -1) score += 10;
+    var chapterRef = resolveScriptureChapter(q.raw);
+    if (chapterRef && row.kind === 'verse' && row.book === chapterRef.book && row.chapter === chapterRef.chapter) {
+        score += 85;
+        if (row.n === 1) score += 15;
+    }
+
+    if (q.norm && ref.indexOf(q.norm) !== -1) score += 10;
     if (phraseHit && row.kind === 'verse') score += 4;
     if (phraseHit && row.kind === 'source') score += 6;
 
@@ -1727,7 +1839,8 @@ function runSearch(query) {
         html += '<div class="search-result" data-kind="' + escapeAttr(r.row.kind) + '"'
              + ' data-id="' + escapeAttr(r.row.id) + '"'
              + ' data-n="' + escapeAttr(String(r.row.n || '')) + '"'
-             + ' data-href="' + escapeAttr(r.row.href || '') + '">'
+             + ' data-href="' + escapeAttr(r.row.href || '') + '"'
+             + ' data-text="' + escapeAttr(r.row.t || '') + '">'
              + '<div class="search-result-ref">' + escapeHtml(r.row.ref || '') + '</div>'
              + '<div class="search-result-text">' + snippetForRow(r.row, q) + '</div>'
              + '</div>';
@@ -1741,11 +1854,10 @@ function runSearch(query) {
         closeSearch();
         if (row.dataset.kind === 'source') {
             var docId = row.dataset.id;
-            var para = parseInt(row.dataset.n, 10);
             var meta = sourceMeta[docId];
             if (meta) {
                 loadSourceDocument(docId, meta.href, {
-                    focusPara: para || null
+                    focusText: row.dataset.text || ''
                 });
                 return;
             }
@@ -1771,7 +1883,7 @@ function escapeHtml(str) {
 }
 
 function escapeAttr(str) {
-    return str.replace(/"/g, '&quot;');
+    return escapeHtml(String(str || '')).replace(/'/g, '&#39;');
 }
 
 // ── Channel ───────────────────────────────────────────────────────────────
@@ -1958,12 +2070,8 @@ function findBookRecord(label) {
 }
 
 function resolveScriptureRef(text) {
-    var names = [];
-    tocTree.volumes.forEach(function(volume) {
-        volume.books.forEach(function(book) { names.push(book.label); });
-    });
+    var names = scriptureBookNames();
     if (!names.length) return null;
-    names.sort(function(a, b) { return b.length - a.length; });
     var re = new RegExp('\\b(' + names.map(escapeRegex).join('|') + ')\\.?\\s+(\\d+):(\\d+)\\b', 'i');
     var m = String(text || '').match(re);
     if (!m) return null;
@@ -1975,6 +2083,29 @@ function resolveScriptureRef(text) {
         verse: parseInt(m[3], 10),
         label: m[1] + ' ' + parseInt(m[2], 10) + ':' + parseInt(m[3], 10)
     };
+}
+
+function resolveScriptureChapter(text) {
+    var names = scriptureBookNames();
+    if (!names.length) return null;
+    var re = new RegExp('\\b(' + names.map(escapeRegex).join('|') + ')\\.?\\s+(\\d+)\\b', 'i');
+    var m = String(text || '').match(re);
+    if (!m) return null;
+    var book = findBookRecord(m[1]);
+    if (!book || !book.firstChapter) return null;
+    return {
+        book: m[1],
+        chapter: parseInt(m[2], 10)
+    };
+}
+
+function scriptureBookNames() {
+    var names = [];
+    tocTree.volumes.forEach(function(volume) {
+        volume.books.forEach(function(book) { names.push(book.label); });
+    });
+    names.sort(function(a, b) { return b.length - a.length; });
+    return names;
 }
 
 function normalizeExcerpt(text) {
