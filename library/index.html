@@ -1165,6 +1165,16 @@ function jumpTo(chapterId, verseNum, opts) {
         pushVisit(activeReaderTarget(), { type: 'scripture', chapterId: chapterId, verse: verseNum || null });
     }
     setTocPathForChapter(chapterId);
+    // If the chapter is already loaded, focus the verse synchronously so
+    // that callers (e.g. ref-link click handlers) can observe the focused
+    // state without waiting for the Promise microtask queue to drain.
+    if (!sourceMode && verseNum && loadedChapters && loadedChapters.has(chapterId)) {
+        var _block = document.getElementById('ch-' + chapterId);
+        if (_block) {
+            var _verse = _block.querySelector('.verse[id="v' + verseNum + '"]');
+            if (_verse) focusVerse(_verse, false);
+        }
+    }
     ensureScriptureReader().then(function() {
         return loadChapter(chapterId, true);
     }).then(() => {
