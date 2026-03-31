@@ -1,5 +1,5 @@
 {
-  "ts": "2026-03-31T13:01:18+00:00",
+  "ts": "2026-03-31T15:20:42+00:00",
   "agent": "SemanticSteward",
   "mission_path": "AGENT_MISSION.md",
   "profile_path": "agents/semantic_steward_profile.md",
@@ -13,7 +13,7 @@
         "--once"
       ],
       "code": 0,
-      "stdout": "[2026-03-31 08:01:19] Running sentence-transformer correlations (missing correlation artifacts)\n[2026-03-31 08:19:16] Transformer correlation ERROR\n[2026-03-31 08:19:16]     Loading cached passage embeddings (192,182)...\n[2026-03-31 08:19:16]   \n[2026-03-31 08:19:16]   ═══ Correlating ═══\n[2026-03-31 08:19:16]     Building FAISS index over 192,182 passages...\n[2026-03-31 08:19:16]     FAISS index: 192,182 vectors, dim=384\n[2026-03-31 08:19:16]     Encoding 42,046 verses...\n[2026-03-31 08:19:16]     Encoding 42,046 verses...\n[2026-03-31 08:19:16]     Searching top-15 for 42,046 verses...\n",
+      "stdout": "[2026-03-31 10:20:42] Running sentence-transformer correlations (changed inputs)\n[2026-03-31 10:26:32] Transformer correlation ERROR\n[2026-03-31 10:26:32]     Loading cached passage embeddings (192,182)...\n[2026-03-31 10:26:32]   \n[2026-03-31 10:26:32]   ═══ Correlating ═══\n[2026-03-31 10:26:32]     Building FAISS index over 192,182 passages...\n[2026-03-31 10:26:32]     FAISS index: 192,182 vectors, dim=384\n[2026-03-31 10:26:32]     Encoding 42,046 verses...\n[2026-03-31 10:26:32]     Encoding 42,046 verses...\n[2026-03-31 10:26:32]     Searching top-15 for 42,046 verses...\n",
       "stderr": "",
       "name": "semantic_refresh",
       "ok": true
