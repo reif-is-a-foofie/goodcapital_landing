@@ -7,8 +7,7 @@
 
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/bin/python3</string>
-    <string>/Users/reify/Classified/goodcapital_landing/source_scout.py</string>
+    <string>/Users/reify/Classified/goodcapital_landing/launchd/run_source_scout.sh</string>
   </array>
 
   <key>WorkingDirectory</key>

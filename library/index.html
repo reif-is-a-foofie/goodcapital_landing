@@ -2417,9 +2417,25 @@ document.getElementById('content').addEventListener('click', function(e) {
 document.addEventListener('click', function(e) {
     // On mobile, touch events may land on a containing element rather than the
     // inner span.w, so fall back to hit-testing at the click coordinates.
+    // If elementFromPoint still returns a container (e.g. span.verse-text), find
+    // the nearest child span.w by comparing bounding rects to the click position.
+    function nearestWordSpan(container, cx, cy) {
+        var words = container.querySelectorAll('span.w');
+        if (!words.length) return null;
+        var best = null, bestDist = Infinity;
+        for (var i = 0; i < words.length; i++) {
+            var r = words[i].getBoundingClientRect();
+            var midX = r.left + r.width / 2;
+            var midY = r.top + r.height / 2;
+            var dist = Math.abs(cx - midX) + Math.abs(cy - midY);
+            if (dist < bestDist) { bestDist = dist; best = words[i]; }
+        }
+        return best;
+    }
+    var elAtPoint = (e.clientX != null) ? document.elementFromPoint(e.clientX, e.clientY) : null;
     var span = e.target.closest('span.w')
-        || (e.clientX != null && document.elementFromPoint(e.clientX, e.clientY)
-            && document.elementFromPoint(e.clientX, e.clientY).closest('span.w'));
+        || (elAtPoint && (elAtPoint.closest('span.w') || nearestWordSpan(elAtPoint, e.clientX, e.clientY)))
+        || (e.target.closest('.verse-text, .scripture') && nearestWordSpan(e.target.closest('.verse-text, .scripture'), e.clientX, e.clientY));
     if (!span) return;
     e.stopPropagation();
 
