@@ -12,8 +12,14 @@
     margin: 0 auto;
     padding: 0 22px 48px;
   }
+  .dashboard-title {
+    margin: 1.4rem auto 0.3rem;
+    font: 700 2.1rem/1.1 "EB Garamond", Georgia, serif;
+    color: #26221d;
+    text-align: center;
+  }
   .title-kicker {
-    margin: 1.4rem auto 0;
+    margin: 0 auto 0;
     max-width: 840px;
     color: #7f7467;
     font-size: 1.05rem;
@@ -39,11 +45,13 @@
     font: 700 1.55rem/1.15 "EB Garamond", Georgia, serif;
     color: #32281f;
   }
-  .panel p {
-    margin: 0;
+  .panel > p {
+    margin: 0 0 4px;
     color: #776b5d;
     line-height: 1.55;
   }
+
+  /* ── Corpus stats table ── */
   .corpus-table {
     width: 100%;
     border-collapse: collapse;
@@ -93,37 +101,115 @@
   .corpus-table tbody tr:last-child td {
     border-bottom: none;
   }
-  .toc-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin-top: 16px;
+
+  /* ── Start Here list ── */
+  .start-here-list {
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .toc-card {
+  .start-here-list li a {
     display: block;
-    padding: 16px 16px 18px;
-    border-radius: 18px;
+    padding: 14px 16px;
+    border-radius: 14px;
     background: #fcfaf6;
     border: 1px solid rgba(156,122,77,0.14);
     text-decoration: none;
     color: inherit;
+    transition: background 0.12s, border-color 0.12s;
   }
-  .toc-card:hover {
+  .start-here-list li a:hover {
     background: rgba(156,122,77,0.07);
     border-color: rgba(156,122,77,0.30);
   }
-  .toc-label {
+  .start-here-label {
     display: block;
     font-weight: 700;
     color: #342a21;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
+    font-size: 1rem;
   }
-  .toc-meta {
+  .start-here-desc {
     display: block;
     color: #7e7264;
-    font-size: .94rem;
+    font-size: .92rem;
     line-height: 1.45;
   }
+
+  /* ── Collection category grid ── */
+  .collections-section {
+    margin-top: 28px;
+  }
+  .collections-section h2 {
+    font: 700 1.55rem/1.15 "EB Garamond", Georgia, serif;
+    color: #32281f;
+    margin: 0 0 6px;
+  }
+  .collections-section > p {
+    color: #776b5d;
+    font-size: 1rem;
+    line-height: 1.55;
+    margin: 0 0 18px;
+  }
+  .collection-category {
+    margin-bottom: 24px;
+  }
+  .collection-category-label {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #9C7A4D;
+    margin-bottom: 10px;
+  }
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+  .collection-card {
+    display: block;
+    padding: 14px 16px 16px;
+    border-radius: 16px;
+    background: #fcfaf6;
+    border: 1px solid rgba(156,122,77,0.14);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+  }
+  .collection-card:hover {
+    background: rgba(156,122,77,0.07);
+    border-color: rgba(156,122,77,0.30);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+  }
+  .collection-card-name {
+    display: block;
+    font-weight: 700;
+    color: #342a21;
+    font-size: .97rem;
+    margin-bottom: 4px;
+  }
+  .collection-card-count {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #9C7A4D;
+    margin-bottom: 6px;
+  }
+  .collection-card-desc {
+    display: block;
+    color: #7e7264;
+    font-size: .88rem;
+    line-height: 1.4;
+  }
+
+  /* ── Agent activity ── */
   .chart-wrap {
     margin-top: 16px;
     display: grid;
@@ -151,6 +237,8 @@
     border-radius: 999px;
     background: linear-gradient(90deg, #a7885b 0%, #6f8b63 100%);
   }
+
+  /* ── Recent completions ── */
   .recent-list {
     margin: 16px 0 0;
     padding: 0;
@@ -178,6 +266,8 @@
     color: #40362c;
     line-height: 1.5;
   }
+
+  /* ── Donaldson attribution ── */
   .donaldson-card {
     margin-top: 20px;
     padding: 1.2rem 1.3rem;
@@ -196,103 +286,208 @@
     font-weight: 700;
     margin-bottom: .7rem;
   }
+
   @media (max-width: 980px) {
     .hero-grid { grid-template-columns: 1fr; }
-    .toc-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 760px) {
     .title-shell { padding: 0 14px 36px; }
     .corpus-table { font-size: .88rem; }
     .bar-row { grid-template-columns: 100px 1fr 42px; }
+    .collection-grid { grid-template-columns: 1fr; }
   }
 </style>
+
 <div class="title-shell">
-<h1 class="book-title">LDS Scriptures — Enriched Edition</h1>
-<p class="title-kicker">A library built to gather spiritual truth across scripture, commentary, history, and related traditions, and to create the shortest path to both depth and breadth on a single subject.</p>
 
-<div class="hero-grid">
-  <section class="panel">
-    <h2>Live Corpus Status</h2>
-    <p>The dashboard is now part of the front door. These numbers should keep rising as the semantic graph gets wider, cleaner, and more recursive.</p>
-    <table class="corpus-table">
-      <thead>
-        <tr>
-          <th>Metric</th>
-          <th>Value</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Collections</td>
-          <td id="metric-collections">…</td>
-          <td>top-level source families</td>
-        </tr>
-        <tr>
-          <td>Documents</td>
-          <td id="metric-docs">…</td>
-          <td>sources in the library</td>
-        </tr>
-        <tr>
-          <td>Documents cleaned</td>
-          <td id="metric-doc-coverage">…</td>
-          <td>processed into semantic sidecars</td>
-        </tr>
-        <tr>
-          <td>Paragraphs</td>
-          <td id="metric-paragraphs">…</td>
-          <td>units available to connect</td>
-        </tr>
-        <tr>
-          <td>Annotated</td>
-          <td id="metric-annotated">…</td>
-          <td>paragraphs carrying clickable words</td>
-        </tr>
-        <tr class="totals-row">
-          <td>Recursively linked</td>
-          <td id="metric-links">…</td>
-          <td id="metric-linked-pct">…</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+  <h1 class="dashboard-title">Home Dashboard</h1>
+  <p class="title-kicker">A library built to gather spiritual truth across scripture, commentary, history, and related traditions — and to create the shortest path to both depth and breadth on a single subject.</p>
 
-  <section class="panel">
-    <h2>Start Here</h2>
-    <p>The front door should make the library legible before you ever click into a chapter.</p>
-    <div class="toc-grid">
-      <a class="toc-card" href="#" data-open-shelf="scriptures">
-        <span class="toc-label">The Holy Scriptures</span>
-        <span class="toc-meta">Open the standard works shelf and move by volume, book, and chapter.</span>
-      </a>
-      <a class="toc-card" href="#" data-open-shelf="sources">
-        <span class="toc-label">Other Church Writings</span>
-        <span class="toc-meta">Open historical and interpretive source collections in the same reader.</span>
-      </a>
-      <a class="toc-card" href="../source-dashboard.html">
-        <span class="toc-label">Full Dashboard</span>
-        <span class="toc-meta">Open the detailed coverage table for every collection.</span>
-      </a>
+  <div class="hero-grid">
+    <!-- Left: Corpus stats -->
+    <section class="panel">
+      <h2>Live Corpus Status</h2>
+      <p>These numbers rise as the semantic graph gets wider, cleaner, and more recursive.</p>
+      <table class="corpus-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Collections</td>
+            <td id="metric-collections">…</td>
+            <td>top-level source families</td>
+          </tr>
+          <tr>
+            <td>Documents</td>
+            <td id="metric-docs">…</td>
+            <td>sources in the library</td>
+          </tr>
+          <tr>
+            <td>Documents cleaned</td>
+            <td id="metric-doc-coverage">…</td>
+            <td>processed into semantic sidecars</td>
+          </tr>
+          <tr>
+            <td>Paragraphs</td>
+            <td id="metric-paragraphs">…</td>
+            <td>units available to connect</td>
+          </tr>
+          <tr>
+            <td>Annotated</td>
+            <td id="metric-annotated">…</td>
+            <td>paragraphs carrying clickable words</td>
+          </tr>
+          <tr class="totals-row">
+            <td>Recursively linked</td>
+            <td id="metric-links">…</td>
+            <td id="metric-linked-pct">…</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Right: Start Here -->
+    <section class="panel">
+      <h2>Start Here</h2>
+      <p>Three entry points into the library.</p>
+      <ul class="start-here-list">
+        <li>
+          <a href="#" data-open-shelf="scriptures">
+            <span class="start-here-label">The Holy Scriptures</span>
+            <span class="start-here-desc">Open the standard works shelf and browse by volume, book, and chapter.</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" data-open-shelf="sources">
+            <span class="start-here-label">Other Church Writings</span>
+            <span class="start-here-desc">Open historical and interpretive source collections in the same reader.</span>
+          </a>
+        </li>
+        <li>
+          <a href="../source-dashboard.html">
+            <span class="start-here-label">Full Coverage Dashboard</span>
+            <span class="start-here-desc">View the detailed annotation and linkage metrics for every collection.</span>
+          </a>
+        </li>
+      </ul>
+      <div class="donaldson-card">
+        <div class="status-kicker">Donaldson Papers</div>
+        Built on the work of <a href="https://donaldsonpapers.com/" target="_blank" rel="noopener noreferrer" style="color:#9C7A4D;">Lee Donaldson</a>. The <em>Disk of Knowledge</em> was given to missionaries at the end of their missions in the San Diego California Mission.
+      </div>
+    </section>
+  </div>
+
+  <!-- Collections by category -->
+  <section class="collections-section panel" style="margin-top:20px;">
+    <h2>Collections</h2>
+    <p>Ten source families organized by type. Click any tile to open that collection in the reader.</p>
+
+    <div class="collection-category">
+      <div class="collection-category-label">Scripture</div>
+      <div class="collection-grid">
+        <a class="collection-card" href="#" data-open-shelf="scriptures">
+          <span class="collection-card-name">The Holy Scriptures</span>
+          <span class="collection-card-count">Standard Works</span>
+          <span class="collection-card-desc">Old Testament, New Testament, Book of Mormon, Doctrine &amp; Covenants, Pearl of Great Price.</span>
+        </a>
+      </div>
     </div>
-    <div class="donaldson-card">
-      <div class="status-kicker">Donaldson Papers</div>
-      Built on the work of <a href="https://donaldsonpapers.com/" target="_blank" rel="noopener noreferrer" style="color:#9C7A4D;">Lee Donaldson</a>. The <em>Disk of Knowledge</em> was given to missionaries at the end of their missions in the San Diego California Mission.
+
+    <div class="collection-category">
+      <div class="collection-category-label">Church History &amp; Documents</div>
+      <div class="collection-grid">
+        <a class="collection-card" href="#" data-open-shelf-collection="history_of_church">
+          <span class="collection-card-name">History of the Church</span>
+          <span class="collection-card-count">7 volumes</span>
+          <span class="collection-card-desc">Joseph Smith's official history of the early Church, compiled and edited by B.H. Roberts.</span>
+        </a>
+        <a class="collection-card" href="#" data-open-shelf-collection="joseph_smith_papers">
+          <span class="collection-card-name">Joseph Smith Papers</span>
+          <span class="collection-card-count">9 documents</span>
+          <span class="collection-card-desc">Primary documents from the Joseph Smith Papers Project — journals, letters, and revelations.</span>
+        </a>
+        <a class="collection-card" href="#" data-open-shelf-collection="times_and_seasons">
+          <span class="collection-card-name">Times and Seasons</span>
+          <span class="collection-card-count">26 issues</span>
+          <span class="collection-card-desc">The official Church newspaper published in Nauvoo, Illinois from 1839 to 1846.</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="collection-category">
+      <div class="collection-category-label">Periodicals &amp; Discourses</div>
+      <div class="collection-grid">
+        <a class="collection-card" href="#" data-open-shelf-collection="general_conference">
+          <span class="collection-card-name">General Conference</span>
+          <span class="collection-card-count">3,908 talks</span>
+          <span class="collection-card-desc">Collected addresses from Church general conferences spanning over a century of teaching.</span>
+        </a>
+        <a class="collection-card" href="#" data-open-shelf-collection="journal_of_discourses">
+          <span class="collection-card-name">Journal of Discourses</span>
+          <span class="collection-card-count">26 volumes</span>
+          <span class="collection-card-desc">Sermons by Brigham Young and other early Church leaders, recorded verbatim 1851–1886.</span>
+        </a>
+        <a class="collection-card" href="#" data-open-shelf-collection="millennial_star">
+          <span class="collection-card-name">Millennial Star</span>
+          <span class="collection-card-count">162 issues</span>
+          <span class="collection-card-desc">The Church's British periodical, published in Liverpool and London from 1840 to 1970.</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="collection-category">
+      <div class="collection-category-label">Journals &amp; Early Writings</div>
+      <div class="collection-grid">
+        <a class="collection-card" href="#" data-open-shelf-collection="pioneer_journals">
+          <span class="collection-card-name">Pioneer Journals</span>
+          <span class="collection-card-count">2 journals</span>
+          <span class="collection-card-desc">Personal accounts from early Latter-day Saint pioneers — firsthand records of faith and hardship.</span>
+        </a>
+        <a class="collection-card" href="#" data-open-shelf-collection="gutenberg_lds">
+          <span class="collection-card-name">Early LDS Writings</span>
+          <span class="collection-card-count">4 works</span>
+          <span class="collection-card-desc">Early Latter-day Saint texts preserved through Project Gutenberg and related archives.</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="collection-category" style="margin-bottom:0;">
+      <div class="collection-category-label">Ancient &amp; Patristic Texts</div>
+      <div class="collection-grid">
+        <a class="collection-card" href="#" data-open-shelf-collection="ancient_texts">
+          <span class="collection-card-name">Ancient Texts</span>
+          <span class="collection-card-count">6 works</span>
+          <span class="collection-card-desc">Pseudepigrapha, apocrypha, and related ancient writings that illuminate the scriptural world.</span>
+        </a>
+        <a class="collection-card" href="#" data-open-shelf-collection="church_fathers">
+          <span class="collection-card-name">Church Fathers</span>
+          <span class="collection-card-count">6 works</span>
+          <span class="collection-card-desc">Writings of early Christian theologians — Origen, Irenaeus, Clement, and others.</span>
+        </a>
+      </div>
     </div>
   </section>
-</div>
 
-<div class="hero-grid" style="margin-top:20px;">
-  <section class="panel">
-    <h2>Agent Activity</h2>
-    <p>Work should be visible. This shows which agents have recorded completed tasks in the immutable ledger.</p>
-    <div class="chart-wrap" id="agent-bars"></div>
-  </section>
+  <!-- Agent activity + Recent work -->
+  <div class="hero-grid" style="margin-top:20px;">
+    <section class="panel">
+      <h2>Agent Activity</h2>
+      <p>Work is visible. This shows which agents have recorded completed tasks in the immutable ledger.</p>
+      <div class="chart-wrap" id="agent-bars"></div>
+    </section>
 
-  <section class="panel">
-    <h2>Recent Completed Work</h2>
-    <p>Recent completions should show what changed, who did it, and how the library is actually moving forward.</p>
-    <ul class="recent-list" id="recent-completions"></ul>
-  </section>
+    <section class="panel">
+      <h2>Recent Completed Work</h2>
+      <p>Recent completions show what changed, who did it, and how the library is moving forward.</p>
+      <ul class="recent-list" id="recent-completions"></ul>
+    </section>
+  </div>
+
 </div>
 
 <script>
@@ -343,13 +538,25 @@
     }).join('');
   }
 
-  function bindToc() {
+  function bindShelfLinks() {
+    // data-open-shelf → opens scriptures or sources panel
     document.querySelectorAll('[data-open-shelf]').forEach(function (link) {
       link.addEventListener('click', function (event) {
         event.preventDefault();
         var key = link.getAttribute('data-open-shelf');
         if (window.parent && typeof window.parent.postMessage === 'function') {
           window.parent.postMessage({ type: 'title-page-open-shelf', key: key }, '*');
+        }
+      });
+    });
+
+    // data-open-shelf-collection → opens sources panel then navigates to that collection
+    document.querySelectorAll('[data-open-shelf-collection]').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        var collectionId = link.getAttribute('data-open-shelf-collection');
+        if (window.parent && typeof window.parent.postMessage === 'function') {
+          window.parent.postMessage({ type: 'title-page-open-collection', collectionId: collectionId }, '*');
         }
       });
     });
@@ -363,9 +570,8 @@
     renderProgress(payloads[1]);
   }).catch(function () {});
 
-  bindToc();
+  bindShelfLinks();
 }());
 </script>
-</div>
 </body>
 </html>

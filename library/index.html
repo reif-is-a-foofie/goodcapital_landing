@@ -55,7 +55,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     border-right: 1px solid var(--divider); display: flex; flex-direction: column;
     transition: width .2s, min-width .2s; overflow: hidden;
 }
-#toc.hidden { width: 0; min-width: 0; }
+#toc.hidden { width: 0; min-width: 0; pointer-events: none; }
 #toc-head {
     padding: 12px 14px 10px; border-bottom: 1px solid var(--divider);
     flex-shrink: 0; display: flex; align-items: flex-start; gap: 8px;
@@ -856,7 +856,7 @@ Promise.all([
         setTocPathForChapter(startId);
         loadChapter(startId, true).then(() => {
             document.getElementById('splash').classList.add('gone');
-            if (window.innerWidth >= 900) {
+            if (window.innerWidth >= 768) {
                 tocOpen = true;
                 document.getElementById('toc').classList.remove('hidden');
             }
@@ -874,17 +874,31 @@ window.addEventListener('message', function(event) {
     if (data.key === 'scriptures') {
         tocPath = { level: 'scripture-root', volume: null, book: null, sourceCollection: null };
         renderTocView();
-        if (window.innerWidth < 900) {
-            tocOpen = true;
-            document.getElementById('toc').classList.remove('hidden');
-        }
+        tocOpen = true;
+        document.getElementById('toc').classList.remove('hidden');
     } else if (data.key === 'sources') {
         tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
         renderTocView();
-        if (window.innerWidth < 900) {
-            tocOpen = true;
-            document.getElementById('toc').classList.remove('hidden');
-        }
+        tocOpen = true;
+        document.getElementById('toc').classList.remove('hidden');
+    }
+});
+
+window.addEventListener('message', function(event) {
+    var data = event && event.data;
+    if (!data || data.type !== 'title-page-open-collection') return;
+    var collection = findSourceCollection(data.collectionId);
+    if (collection) {
+        tocPath = { level: 'source-collection', volume: null, book: null, sourceCollection: collection };
+        renderTocView();
+        tocOpen = true;
+        document.getElementById('toc').classList.remove('hidden');
+    } else {
+        // Fall back to source root if collection not found
+        tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
+        renderTocView();
+        tocOpen = true;
+        document.getElementById('toc').classList.remove('hidden');
     }
 });
 
@@ -1057,10 +1071,26 @@ function hydrateTitlePage() {
                 tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
             }
             renderTocView();
-            if (window.innerWidth < 900) {
-                tocOpen = true;
-                document.getElementById('toc').classList.remove('hidden');
+            tocOpen = true;
+            document.getElementById('toc').classList.remove('hidden');
+        });
+    });
+
+    root.querySelectorAll('[data-open-shelf-collection]').forEach(function(link) {
+        if (link.dataset.boundCollectionClick === '1') return;
+        link.dataset.boundCollectionClick = '1';
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            var collectionId = link.getAttribute('data-open-shelf-collection');
+            var collection = findSourceCollection(collectionId);
+            if (collection) {
+                tocPath = { level: 'source-collection', volume: null, book: null, sourceCollection: collection };
+            } else {
+                tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
             }
+            renderTocView();
+            tocOpen = true;
+            document.getElementById('toc').classList.remove('hidden');
         });
     });
 }
@@ -2385,7 +2415,11 @@ document.getElementById('content').addEventListener('click', function(e) {
 
 // Called when user clicks a .w span
 document.addEventListener('click', function(e) {
-    var span = e.target.closest('span.w');
+    // On mobile, touch events may land on a containing element rather than the
+    // inner span.w, so fall back to hit-testing at the click coordinates.
+    var span = e.target.closest('span.w')
+        || (e.clientX != null && document.elementFromPoint(e.clientX, e.clientY)
+            && document.elementFromPoint(e.clientX, e.clientY).closest('span.w'));
     if (!span) return;
     e.stopPropagation();
 
