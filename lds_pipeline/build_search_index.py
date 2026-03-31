@@ -197,7 +197,14 @@ def load_source_docs():
     toc = json.loads(SOURCE_TOC.read_text(encoding="utf-8"))
     docs = []
     for collection in toc:
-        for item in collection.get("items", []):
+        raw_items = collection.get("items", [])
+        flat_items = []
+        for it in raw_items:
+            if it.get("type") == "group":
+                flat_items.extend(it.get("items", []))
+            else:
+                flat_items.append(it)
+        for item in flat_items:
             html_path = REPO_ROOT / "library" / item.get("href", "")
             if not html_path.exists():
                 continue

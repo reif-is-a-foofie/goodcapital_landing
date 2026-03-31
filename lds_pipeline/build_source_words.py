@@ -76,7 +76,14 @@ def load_target_docs(target_groups=None):
     for collection in toc:
         if collection["id"] not in target_groups:
             continue
-        for item in collection.get("items", []):
+        raw_items = collection.get("items", [])
+        flat_items = []
+        for it in raw_items:
+            if it.get("type") == "group":
+                flat_items.extend(it.get("items", []))
+            else:
+                flat_items.append(it)
+        for item in flat_items:
             html_path = LIBRARY / item["href"]
             if not html_path.exists():
                 continue

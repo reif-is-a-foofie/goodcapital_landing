@@ -28,24 +28,104 @@ TOC_OUT = LIBRARY / "source_toc.json"
 
 
 SOURCE_GROUPS = [
-    {"key": "general_conference", "label": "General Conference", "dir": CACHE / "general_conference"},
-    {"key": "journal_of_discourses", "label": "Journal of Discourses", "dir": CACHE / "jd"},
-    {"key": "history_of_church", "label": "History of the Church", "dir": CACHE / "hoc"},
-    {"key": "joseph_smith_papers", "label": "Joseph Smith Papers", "dir": CACHE / "joseph_smith_papers"},
-    {"key": "times_and_seasons", "label": "Times and Seasons", "dir": CACHE / "times_and_seasons"},
-    {"key": "millennial_star", "label": "Millennial Star", "dir": CACHE / "millennial_star"},
-    {"key": "pioneer_journals", "label": "Pioneer Journals", "dir": CACHE / "pioneer_journals"},
-    {"key": "gutenberg_lds", "label": "Early LDS Writings", "dir": CACHE / "gutenberg_lds"},
-    {"key": "church_fathers", "label": "Church Fathers", "dir": CACHE / "church_fathers"},
-    {"key": "ancient_texts", "label": "Ancient Texts", "dir": CACHE / "ancient_myths"},
-    {"key": "pseudepigrapha", "label": "Pseudepigrapha", "dir": CACHE / "pseudepigrapha"},
-    {"key": "apocrypha", "label": "LXX Apocrypha", "dir": CACHE / "apocrypha"},
-    {"key": "nag_hammadi", "label": "Nag Hammadi", "dir": CACHE / "nag_hammadi"},
-    {"key": "dead_sea_scrolls", "label": "Dead Sea Scrolls", "dir": CACHE / "dead_sea_scrolls"},
-    {"key": "bh_roberts", "label": "B.H. Roberts", "dir": CACHE / "bh_roberts"},
-    {"key": "nibley", "label": "Nibley", "dir": CACHE / "nibley"},
-    {"key": "nauvoo_theology", "label": "Nauvoo Theology", "dir": CACHE / "nauvoo_theology"},
-    {"key": "jst", "label": "Joseph Smith Translation", "dir": CACHE / "jst"},
+    {
+        "key": "general_conference",
+        "label": "General Conference",
+        "description": (
+            "Addresses delivered at the semi-annual LDS General Conference from 1971 to present. "
+            "The primary record of modern prophetic teaching, doctrinal instruction, and covenant counsel from the First Presidency and Quorum of the Twelve."
+        ),
+        "dir": CACHE / "general_conference",
+    },
+    {
+        "key": "journal_of_discourses",
+        "label": "Journal of Discourses",
+        "description": (
+            "Twenty-six volumes of sermons by early Latter-day Saint leaders, transcribed and published in England from 1854 to 1886. "
+            "An essential primary source for 19th-century LDS theology, cosmology, and prophetic exposition."
+        ),
+        "dir": CACHE / "jd",
+    },
+    {
+        "key": "history_of_church",
+        "label": "History of the Church",
+        "description": (
+            "The official seven-volume history of The Church of Jesus Christ of Latter-day Saints, compiled largely from Joseph Smith's journals and records. "
+            "Covers the founding era from 1820 through the Nauvoo period."
+        ),
+        "dir": CACHE / "hoc",
+    },
+    {
+        "key": "joseph_smith_papers",
+        "label": "Joseph Smith Papers",
+        "description": (
+            "Selected primary documents from the Joseph Smith Papers project, including revelations, letters, discourses, and administrative records. "
+            "Direct access to the founding prophet's voice in its historical context."
+        ),
+        "dir": CACHE / "joseph_smith_papers",
+    },
+    {
+        "key": "times_and_seasons",
+        "label": "Times and Seasons",
+        "description": (
+            "The official LDS periodical published in Nauvoo, Illinois from 1839 to 1846. "
+            "Contains early revelations, doctrinal essays, correspondence, and news from the formative period of the Restoration."
+        ),
+        "dir": CACHE / "times_and_seasons",
+    },
+    {
+        "key": "millennial_star",
+        "label": "Millennial Star",
+        "description": (
+            "The longest-running LDS periodical, published in England from 1840 to 1970. "
+            "A primary window into the European mission, early convert experience, and doctrinal development across 130 years."
+        ),
+        "dir": CACHE / "millennial_star",
+    },
+    {
+        "key": "pioneer_journals",
+        "label": "Pioneer Journals",
+        "description": (
+            "First-person journals and histories from the founding generation of Latter-day Saints. "
+            "Includes Lucy Mack Smith's family history and accounts of faith, migration, and frontier life."
+        ),
+        "dir": CACHE / "pioneer_journals",
+    },
+    {
+        "key": "gutenberg_lds",
+        "label": "Early LDS Writings",
+        "description": (
+            "Public-domain LDS texts from Project Gutenberg and related archives, including early theological works and discourses. "
+            "Preserves voices and arguments from the 19th-century Latter-day Saint intellectual tradition."
+        ),
+        "dir": CACHE / "gutenberg_lds",
+    },
+    {
+        "key": "church_fathers",
+        "label": "Church Fathers",
+        "description": (
+            "Ante-Nicene writings of the early Christian church, drawn from the Roberts-Donaldson translation series. "
+            "These writers—Clement, Ignatius, Justin Martyr, Irenaeus, Origen and others—shaped the doctrinal vocabulary of Christianity in its first three centuries."
+        ),
+        "dir": CACHE / "church_fathers",
+    },
+    {
+        "key": "ancient_texts",
+        "label": "Ancient Texts",
+        "description": (
+            "Primary texts from the ancient Near East and Second Temple Judaism: Enoch, Jubilees, the Testaments of the Twelve Patriarchs, Josephus, and creation epics. "
+            "These writings illuminate the world in which scripture was formed and the ideas that shaped it."
+        ),
+        "dir": CACHE / "ancient_myths",
+    },
+    {"key": "pseudepigrapha", "label": "Pseudepigrapha", "description": "Jewish and Christian writings attributed to biblical figures, composed roughly 200 BCE–200 CE. Expands the scriptural conversation with texts that shaped Second Temple and early Christian thought.", "dir": CACHE / "pseudepigrapha"},
+    {"key": "apocrypha", "label": "LXX Apocrypha", "description": "Books included in the Greek Septuagint and Catholic canon but absent from the Hebrew Bible: Tobit, Judith, Wisdom, Sirach, Maccabees, and others. Bridges the Testaments.", "dir": CACHE / "apocrypha"},
+    {"key": "nag_hammadi", "label": "Nag Hammadi", "description": "Coptic Gnostic texts discovered at Nag Hammadi, Egypt in 1945, including the Gospel of Thomas and Gospel of Philip. Reveals the diversity of early Christian interpretation.", "dir": CACHE / "nag_hammadi"},
+    {"key": "dead_sea_scrolls", "label": "Dead Sea Scrolls", "description": "Texts from the Qumran community (c. 200 BCE–70 CE), including biblical manuscripts, commentaries, and community rules. The oldest surviving Hebrew scripture witnesses.", "dir": CACHE / "dead_sea_scrolls"},
+    {"key": "bh_roberts", "label": "B.H. Roberts", "description": "Theological and historical writings of B.H. Roberts (1857–1933), one of the most rigorous LDS intellectual voices of his era. Includes Studies of the Book of Mormon and The Truth, the Way, the Life.", "dir": CACHE / "bh_roberts"},
+    {"key": "nibley", "label": "Nibley", "description": "Selected works of Hugh Nibley (1910–2005), scholar of ancient scripture and LDS apologist. Bridges ancient Near Eastern studies with Latter-day Saint theology.", "dir": CACHE / "nibley"},
+    {"key": "nauvoo_theology", "label": "Nauvoo Theology", "description": "Discourses and documents from the Nauvoo period (1839–1846), when Joseph Smith's theological vision reached its fullest expression in teachings on eternal progression, temple ordinances, and cosmology.", "dir": CACHE / "nauvoo_theology"},
+    {"key": "jst", "label": "Joseph Smith Translation", "description": "Joseph Smith's inspired revision of the Bible, undertaken from 1830 to 1833. Contains significant additions and alterations to the King James text, revealing restored plain and precious parts.", "dir": CACHE / "jst"},
 ]
 
 
@@ -481,9 +561,35 @@ def build_group(group: dict, gc_meta: dict) -> Optional[dict]:
     if not docs:
         return None
 
+    # General Conference: group flat docs by year, newest first
+    if group["key"] == "general_conference":
+        year_buckets: dict[str, list] = {}
+        for doc in docs:
+            m = re.search(r"general_conference_(\d{4})_", doc["id"])
+            year = m.group(1) if m else "other"
+            year_buckets.setdefault(year, []).append(doc)
+        grouped_items = []
+        for year in sorted(year_buckets.keys(), reverse=True):
+            bucket = year_buckets[year]
+            grouped_items.append({
+                "id": f"general_conference:year_{year}",
+                "label": year,
+                "type": "group",
+                "meta": f"{len(bucket)} talks",
+                "items": bucket,
+            })
+        return {
+            "id": group["key"],
+            "label": group["label"],
+            "description": group.get("description", ""),
+            "type": "collection",
+            "items": grouped_items,
+        }
+
     return {
         "id": group["key"],
         "label": group["label"],
+        "description": group.get("description", ""),
         "type": "collection",
         "items": docs,
     }
@@ -500,8 +606,15 @@ def main():
         if not built:
             continue
         toc.append(built)
-        built_docs += len(built["items"])
-        print(f"{group['label']}: {len(built['items'])} documents")
+        # Items may be year-groups (for GC) or flat docs
+        items = built["items"]
+        if items and items[0].get("type") == "group":
+            doc_count = sum(len(g.get("items", [])) for g in items)
+            print(f"{group['label']}: {len(items)} year groups, {doc_count} documents")
+            built_docs += doc_count
+        else:
+            built_docs += len(items)
+            print(f"{group['label']}: {len(items)} documents")
 
     TOC_OUT.write_text(json.dumps(toc, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\nDone. {built_docs} source documents written → {OUT}")

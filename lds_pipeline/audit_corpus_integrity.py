@@ -255,7 +255,14 @@ def source_coverage_report() -> dict:
         collection_docs_with_words = 0
         annotated = 0
         matched = 0
+        # Flatten year-groups (type == "group") into individual doc items
+        flat_items = []
         for item in items:
+            if item.get("type") == "group":
+                flat_items.extend(item.get("items", []))
+            else:
+                flat_items.append(item)
+        for item in flat_items:
             collection_docs += 1
             summary["docs"] += 1
             html_path = LIBRARY / item["href"]

@@ -77,7 +77,14 @@ def load_source_catalog() -> tuple[dict, dict]:
         except Exception:
             data = []
         for collection in data:
-            for item in collection.get('items', []):
+            raw_items = collection.get('items', [])
+            flat_items = []
+            for it in raw_items:
+                if it.get('type') == 'group':
+                    flat_items.extend(it.get('items', []))
+                else:
+                    flat_items.append(it)
+            for item in flat_items:
                 meta = {
                     'id': item['id'],
                     'label': item['label'],

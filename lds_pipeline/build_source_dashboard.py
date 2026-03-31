@@ -67,7 +67,14 @@ def build_data() -> dict:
         coll_annotated = 0
         coll_matched = 0
 
-        for item in collection.get("items", []):
+        raw_items = collection.get("items", [])
+        flat_items = []
+        for it in raw_items:
+            if it.get("type") == "group":
+                flat_items.extend(it.get("items", []))
+            else:
+                flat_items.append(it)
+        for item in flat_items:
             coll_docs += 1
             coll_paragraphs += int(item.get("paragraphs") or 0)
             html_path = LIBRARY / item["href"]

@@ -97,6 +97,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .toc-tile.active .toc-tile-title { color: #fff; }
 .toc-tile-meta { font-size: 10px; line-height: 1.2; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .toc-tile.active .toc-tile-meta { color: rgba(255,255,255,0.82); }
+.toc-provenance { font-size: 11px; line-height: 1.55; color: var(--muted); padding: 2px 4px 12px; grid-column: 1 / -1; }
 .toc-tile.chapter-tile {
     min-height: 0;
     aspect-ratio: 1 / 1;
@@ -817,9 +818,40 @@ function buildTocTree(items) {
 
 function buildSourceTree(items) {
     return (items || []).map(function(collection) {
-        var docs = (collection.items || []).map(function(doc) {
+        var rawItems = collection.items || [];
+        var hasGroups = rawItems.length > 0 && rawItems[0].type === 'group';
+        if (hasGroups) {
+            var groups = rawItems.map(function(grp) {
+                var docs = (grp.items || []).map(function(doc) {
+                    sourceMeta[doc.id] = {
+                        collection: collection.label,
+                        collectionId: collection.id,
+                        groupId: grp.id,
+                        groupLabel: grp.label,
+                        label: doc.label,
+                        href: doc.href
+                    };
+                    return {
+                        id: doc.id,
+                        label: doc.label,
+                        href: doc.href,
+                        meta: doc.meta || ''
+                    };
+                });
+                return { id: grp.id, label: grp.label, meta: grp.meta || '', docs: docs };
+            });
+            return {
+                id: collection.id,
+                label: collection.label,
+                description: collection.description || '',
+                groups: groups,
+                docs: []
+            };
+        }
+        var docs = rawItems.map(function(doc) {
             sourceMeta[doc.id] = {
                 collection: collection.label,
+                collectionId: collection.id,
                 label: doc.label,
                 href: doc.href
             };
@@ -833,6 +865,8 @@ function buildSourceTree(items) {
         return {
             id: collection.id,
             label: collection.label,
+            description: collection.description || '',
+            groups: null,
             docs: docs
         };
     });
@@ -996,9 +1030,36 @@ function renderTocView() {
     } else if (tocPath.level === 'source-collection' && tocPath.sourceCollection) {
         grid.className = 'toc-grid';
         title.textContent = 'Sources';
-        subtitle.textContent = tocPath.sourceCollection.label;
+        var coll = tocPath.sourceCollection;
+        subtitle.textContent = coll.label;
         back.classList.add('show');
-        tocPath.sourceCollection.docs.forEach(function(doc) {
+        if (coll.description) {
+            html += `<div class="toc-provenance">${escapeHtml(coll.description)}</div>`;
+        }
+        if (coll.groups && coll.groups.length > 0) {
+            coll.groups.forEach(function(grp) {
+                html += renderTocTile({
+                    label: grp.label,
+                    meta: grp.meta,
+                    attrs: `data-action="source-group" data-collection="${escapeAttr(coll.id)}" data-group="${escapeAttr(grp.id)}"`
+                });
+            });
+        } else {
+            coll.docs.forEach(function(doc) {
+                html += renderTocTile({
+                    label: doc.label,
+                    meta: doc.meta,
+                    active: currentSourceDoc === doc.id,
+                    attrs: `data-action="source-doc" data-doc="${escapeAttr(doc.id)}"`
+                });
+            });
+        }
+    } else if (tocPath.level === 'source-group' && tocPath.sourceGroup) {
+        grid.className = 'toc-grid';
+        title.textContent = tocPath.sourceCollection ? tocPath.sourceCollection.label : 'Sources';
+        subtitle.textContent = tocPath.sourceGroup.label;
+        back.classList.add('show');
+        tocPath.sourceGroup.docs.forEach(function(doc) {
             html += renderTocTile({
                 label: doc.label,
                 meta: doc.meta,
@@ -1156,8 +1217,16 @@ function findSourceCollection(id) {
 function setTocPathForSource(docId) {
     var meta = sourceMeta[docId];
     if (!meta) return;
-    var collection = tocTree.sources.find(function(entry) { return entry.label === meta.collection; });
+    var collection = tocTree.sources.find(function(entry) { return entry.id === meta.collectionId || entry.label === meta.collection; });
     if (!collection) return;
+    if (meta.groupId && collection.groups) {
+        var group = collection.groups.find(function(g) { return g.id === meta.groupId; });
+        if (group) {
+            tocPath = { level: 'source-group', volume: null, book: null, sourceCollection: collection, sourceGroup: group };
+            renderTocView();
+            return;
+        }
+    }
     tocPath = { level: 'source-collection', volume: null, book: null, sourceCollection: collection };
     renderTocView();
 }
@@ -1167,6 +1236,8 @@ function tocBack() {
         tocPath = { level: 'volume', volume: tocPath.volume, book: null, sourceCollection: null };
     } else if (tocPath.level === 'volume') {
         tocPath = { level: 'scripture-root', volume: null, book: null, sourceCollection: null };
+    } else if (tocPath.level === 'source-group') {
+        tocPath = { level: 'source-collection', volume: null, book: null, sourceCollection: tocPath.sourceCollection, sourceGroup: null };
     } else if (tocPath.level === 'source-collection') {
         tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
     } else {
@@ -1200,6 +1271,13 @@ document.getElementById('toc-grid').addEventListener('click', function(e) {
         var collection = findSourceCollection(tile.dataset.collection);
         if (!collection) return;
         tocPath = { level: 'source-collection', volume: null, book: null, sourceCollection: collection };
+        renderTocView();
+    } else if (action === 'source-group') {
+        var collection = findSourceCollection(tile.dataset.collection);
+        var group = collection && collection.groups &&
+                    collection.groups.find(function(g) { return g.id === tile.dataset.group; });
+        if (!group) return;
+        tocPath = { level: 'source-group', volume: null, book: null, sourceCollection: collection, sourceGroup: group };
         renderTocView();
     } else if (action === 'source-doc') {
         var docMeta = sourceMeta[tile.dataset.doc];
