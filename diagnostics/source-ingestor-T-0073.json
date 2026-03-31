@@ -1,0 +1,14 @@
+{
+  "ts": "2026-03-30T21:13:28+00:00",
+  "task_id": "T-0073",
+  "agent": "source-ingestor",
+  "dry_run": true,
+  "steps": [
+    {
+      "step": "parse_task",
+      "ok": false,
+      "detail": "could not parse URL from task title or notes"
+    }
+  ],
+  "outcome": "error"
+}

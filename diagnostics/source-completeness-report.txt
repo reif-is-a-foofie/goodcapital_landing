@@ -1,0 +1,18 @@
+Source Completeness Audit
+
+- General Conference: 3908 items, 3908 html, 0 words, years 1971-2025, disk 3908 html/3908 words
+- Journal of Discourses: 26 items, 26 html, 0 words, years n/a, disk 26 html/26 words
+- History of the Church: 7 items, 7 html, 0 words, years n/a, disk 7 html/7 words
+- Joseph Smith Papers: 9 items, 9 html, 0 words, years 1832-1842, disk 9 html/0 words
+- Times and Seasons: 26 items, 26 html, 0 words, years 1839-1846, disk 26 html/0 words
+- Millennial Star: 162 items, 162 html, 0 words, years 1840-1859, disk 162 html/0 words
+- Pioneer Journals: 2 items, 2 html, 0 words, years n/a, disk 2 html/0 words
+- Early LDS Writings: 4 items, 4 html, 0 words, years n/a, disk 4 html/0 words
+- Church Fathers: 6 items, 6 html, 0 words, years n/a, disk 6 html/0 words
+- Ancient Texts: 6 items, 6 html, 0 words, years n/a, disk 6 html/0 words
+
+Recommendations
+- General Conference starts at 1971 in the repo; add pre-1971 conference reports to cover the historical gap.
+- Times and Seasons is present as a 26-issue subset spanning 1839-1846; add the remaining run if the goal is publication completeness.
+- Millennial Star is present as a 162-issue subset spanning 1840-1859; expand beyond the current tranche if a fuller magazine archive is desired.
+- Joseph Smith Papers is only 9 documents here; treat it as a seed corpus, not a complete archive.
