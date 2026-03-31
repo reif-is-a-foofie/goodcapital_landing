@@ -9,8 +9,10 @@ and appends durable tasks into the immutable ledger when high-signal checks fail
 from __future__ import annotations
 
 import json
+import socket
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -122,6 +124,49 @@ def note_failure(task_title: str, source: str, output: dict) -> None:
     )
 
 
+BROWSER_CHECKS = {"search_browser", "mobile_channel", "commentary_links"}
+HTTP_PORT = 4173
+
+
+def _port_in_use(port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(("127.0.0.1", port)) == 0
+
+
+def start_http_server() -> tuple[subprocess.Popen | None, bool]:
+    """Start python http.server on HTTP_PORT serving ROOT.
+
+    Returns (proc, started_by_us).  If the port is already bound, returns
+    (None, False) so callers know not to stop it.
+    """
+    if _port_in_use(HTTP_PORT):
+        return None, False
+    proc = subprocess.Popen(
+        [sys.executable, "-m", "http.server", str(HTTP_PORT), "--bind", "127.0.0.1"],
+        cwd=ROOT,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    # Wait up to 5 s for the port to become available.
+    for _ in range(50):
+        if _port_in_use(HTTP_PORT):
+            return proc, True
+        time.sleep(0.1)
+    # Server didn't come up — terminate and signal failure.
+    proc.terminate()
+    return None, True  # started_by_us=True so caller records the attempt
+
+
+def stop_http_server(proc: subprocess.Popen | None) -> None:
+    if proc is None:
+        return
+    proc.terminate()
+    try:
+        proc.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+
+
 def main() -> int:
     DIAG.mkdir(parents=True, exist_ok=True)
     report = {
@@ -140,21 +185,45 @@ def main() -> int:
         lines.append(f"Profile: {report['profile_path']}")
     failures = 0
 
-    for check in CHECKS:
-        result = run(check.cmd)
-        result["name"] = check.name
-        ok = result["code"] == 0
-        result["ok"] = ok
-        report["checks"].append(result)
-        lines.append(f"- {check.name}: {'ok' if ok else 'FAIL'}")
-        if not ok:
-            failures += 1
-            note_failure(check.task_title, check.name, result)
-            lines.append(f"  task: {check.task_title}")
-            if result["stderr"].strip():
-                lines.append(f"  stderr: {result['stderr'].strip()[:300]}")
-            elif result["stdout"].strip():
-                lines.append(f"  stdout: {result['stdout'].strip()[:300]}")
+    # Start HTTP server before any browser-based checks.
+    http_proc, started_by_us = start_http_server()
+    server_ready = _port_in_use(HTTP_PORT)
+
+    try:
+        for check in CHECKS:
+            # Skip browser checks if server couldn't start.
+            if check.name in BROWSER_CHECKS and not server_ready:
+                result = {
+                    "cmd": check.cmd,
+                    "code": 1,
+                    "stdout": "",
+                    "stderr": f"HTTP server failed to start on port {HTTP_PORT}; skipping browser test.",
+                    "name": check.name,
+                    "ok": False,
+                }
+                failures += 1
+                report["checks"].append(result)
+                lines.append(f"- {check.name}: FAIL (no server)")
+                note_failure(check.task_title, check.name, result)
+                continue
+
+            result = run(check.cmd)
+            result["name"] = check.name
+            ok = result["code"] == 0
+            result["ok"] = ok
+            report["checks"].append(result)
+            lines.append(f"- {check.name}: {'ok' if ok else 'FAIL'}")
+            if not ok:
+                failures += 1
+                note_failure(check.task_title, check.name, result)
+                lines.append(f"  task: {check.task_title}")
+                if result["stderr"].strip():
+                    lines.append(f"  stderr: {result['stderr'].strip()[:300]}")
+                elif result["stdout"].strip():
+                    lines.append(f"  stdout: {result['stdout'].strip()[:300]}")
+    finally:
+        if started_by_us:
+            stop_http_server(http_proc)
 
     report["failures"] = failures
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
