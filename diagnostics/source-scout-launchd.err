@@ -2,3 +2,7 @@ ERROR: ANTHROPIC_API_KEY is not set. source_scout.py requires a billing-attached
   Anthropic API key (sk-ant-api...). Store it in the macOS Keychain:
     security add-generic-password -s ANTHROPIC_API_KEY -a ANTHROPIC_API_KEY -w sk-ant-api...
   Or add 'export ANTHROPIC_API_KEY=sk-ant-api...' to ~/.secrets
+ERROR: ANTHROPIC_API_KEY is not set. source_scout.py requires a billing-attached
+  Anthropic API key (sk-ant-api...). Store it in the macOS Keychain:
+    security add-generic-password -s ANTHROPIC_API_KEY -a ANTHROPIC_API_KEY -w sk-ant-api...
+  Or add 'export ANTHROPIC_API_KEY=sk-ant-api...' to ~/.secrets
