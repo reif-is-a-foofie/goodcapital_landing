@@ -1,0 +1,124 @@
+Scripture Integrity
+Note: 'verses_with_escaped_markup' counts literal leaked cw/span markup embedded in verse text.
+{
+  "chapters": 1582,
+  "verses": 41995,
+  "missing_words_files": 3,
+  "verses_with_truncation": 1634,
+  "verses_with_escaped_markup": 97,
+  "verses_with_markup_leak": 0
+}
+
+Lowest-coverage chapters
+articles_of_faith_1: verses=13 annotated=0 matched=0 coverage=0.0 match_coverage=0.0
+joseph_smith_matthew_1: verses=55 annotated=0 matched=0 coverage=0.0 match_coverage=0.0
+joseph_smith_history_1: verses=75 annotated=0 matched=0 coverage=0.0 match_coverage=0.0
+mosiah_19: verses=29 annotated=1 matched=1 coverage=0.034 match_coverage=0.034
+alma_47: verses=36 annotated=2 matched=2 coverage=0.056 match_coverage=0.056
+  - truncation v27: And it came to pass that Amalickiah commanded that his armies should march forth and see what had happened to the king; 
+  - truncation v35: And it came to pass that Amalickiah sought the favor of the queen, and took her unto him to wife; and thus by his fraud,
+mosiah_10: verses=22 annotated=2 matched=2 coverage=0.091 match_coverage=0.091
+  - truncation v19: And now I, Zeniff, after having told all these things unto my people concerning the
+3_nephi_7: verses=26 annotated=3 matched=3 coverage=0.115 match_coverage=0.115
+  - truncation v12: Therefore, Jacob seeing that their enemies were more numerous than they, he being the king
+  - truncation v25: Therefore, there were ordained of Nephi, men unto this ministry, that all such as should come unto them should be baptiz
+alma_51: verses=37 annotated=5 matched=5 coverage=0.135 match_coverage=0.135
+  - truncation v2: Nevertheless, they did not long maintain an entire peace in the land, for there began to be a contention among the peopl
+  - truncation v10: But behold , we shall see that his promise which he made was rash; nevertheless, he did
+mormon_2: verses=29 annotated=4 matched=4 coverage=0.138 match_coverage=0.138
+alma_52: verses=40 annotated=6 matched=6 coverage=0.15 match_coverage=0.15
+  - truncation v3: And it came to pass that the brother of Amalickiah was appointed king over the people; and his
+  - truncation v15: But behold, it came to pass in the twenty and seventh year of the reign of the judges, that Teancum, by the command of M
+alma_20: verses=30 annotated=5 matched=5 coverage=0.167 match_coverage=0.167
+  - truncation v9: And behold, the father of Lamoni said unto him: Why did ye not come to the feast on that great
+  - truncation v16: Now when his father had heard these words, he was angry with him, and he drew his sword
+alma_58: verses=41 annotated=7 matched=7 coverage=0.171 match_coverage=0.171
+  - truncation v8: But it came to pass that we did receive food, which was guarded to us by an army of two thousand men to our assistance ;
+  - truncation v24: And when the Lamanites saw that they were marching towards the land of Zarahemla , they
+mosiah_22: verses=16 annotated=3 matched=3 coverage=0.188 match_coverage=0.188
+mosiah_20: verses=26 annotated=5 matched=5 coverage=0.192 match_coverage=0.192
+  - truncation v13: And they took him and bound up his wounds, and brought him before Limhi, and said:
+mosiah_21: verses=36 annotated=7 matched=7 coverage=0.194 match_coverage=0.194
+  - truncation v7: And they gathered themselves together again, and put on their armor, and went forth against
+  - truncation v17: Now there was a great number of women, more than there was of men; therefore king Limhi commanded that every man should 
+1_nephi_18: verses=25 annotated=5 matched=5 coverage=0.2 match_coverage=0.2
+  - truncation v15: And it came to pass that we were about to be swallowed up in the depths of the sea . And after we had been driven back u
+alma_15: verses=19 annotated=4 matched=4 coverage=0.211 match_coverage=0.211
+  - truncation v17: Therefore, after Alma having established the church at Sidom, seeing a great check, yea, seeing that the people were che
+mosiah_9: verses=19 annotated=4 matched=4 coverage=0.211 match_coverage=0.211
+  - truncation v17: Yea, in the strength of the Lord did we go forth to battle against the Lamanites; for I and my
+helaman_11: verses=38 annotated=8 matched=8 coverage=0.211 match_coverage=0.211
+helaman_8: verses=28 annotated=6 matched=6 coverage=0.214 match_coverage=0.214
+  - truncation v5: Therefore they did cry unto the people, saying: Why do you suffer this man to revile against us? For behold he doth cond
+  - truncation v18: Yea, and behold I say unto you, that Abraham not only knew of these things, but there were many before the days of Abrah
+
+Chapters missing word indexes
+articles_of_faith_1
+joseph_smith_history_1
+joseph_smith_matthew_1
+
+Most markup leakage
+joshua_15: 4
+ezra_10: 3
+doctrine_and_covenants_42: 3
+1_chronicles_4: 3
+leviticus_7: 2
+job_41: 2
+job_18: 2
+jeremiah_32: 2
+exodus_30: 2
+exodus_22: 2
+1_samuel_30: 2
+1_chronicles_8: 2
+leviticus_5: 1
+leviticus_21: 1
+leviticus_11: 1
+lamentations_3: 1
+judges_4: 1
+judges_20: 1
+joshua_19: 1
+job_9: 1
+
+Most truncation
+galatians_6: 8
+galatians_5: 8
+galatians_4: 8
+galatians_3: 8
+galatians_2: 8
+galatians_1: 8
+ether_9: 8
+ether_8: 8
+ether_7: 8
+ether_6: 8
+ether_4: 8
+ether_3: 8
+ether_2: 8
+ether_15: 8
+ether_13: 8
+ether_12: 8
+ether_11: 8
+ether_10: 8
+ether_1: 8
+ephesians_6: 8
+
+Semantic Coverage
+{
+  "collections": 10,
+  "docs": 4156,
+  "docs_with_words": 4156,
+  "docs_missing_words": 0,
+  "annotated_paragraphs": 155603,
+  "matched_paragraphs": 155603
+}
+
+Lowest-coverage source collections
+joseph_smith_papers: docs=9 with_words=9 doc_coverage=1.0 annotated_paragraphs=1037 matched_paragraphs=1037
+church_fathers: docs=6 with_words=6 doc_coverage=1.0 annotated_paragraphs=3148 matched_paragraphs=3148
+general_conference: docs=3908 with_words=3908 doc_coverage=1.0 annotated_paragraphs=3923 matched_paragraphs=3923
+pioneer_journals: docs=2 with_words=2 doc_coverage=1.0 annotated_paragraphs=4304 matched_paragraphs=4304
+ancient_texts: docs=6 with_words=6 doc_coverage=1.0 annotated_paragraphs=4390 matched_paragraphs=4390
+gutenberg_lds: docs=4 with_words=4 doc_coverage=1.0 annotated_paragraphs=6585 matched_paragraphs=6585
+history_of_church: docs=7 with_words=7 doc_coverage=1.0 annotated_paragraphs=7886 matched_paragraphs=7886
+times_and_seasons: docs=26 with_words=26 doc_coverage=1.0 annotated_paragraphs=20690 matched_paragraphs=20690
+journal_of_discourses: docs=26 with_words=26 doc_coverage=1.0 annotated_paragraphs=22427 matched_paragraphs=22427
+millennial_star: docs=162 with_words=162 doc_coverage=1.0 annotated_paragraphs=81213 matched_paragraphs=81213
