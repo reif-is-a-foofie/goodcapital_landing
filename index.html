@@ -1,471 +1,750 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Good Project — Venture Studio</title>
-    <meta name="description" content="The Good Project is a venture studio building, collaborating, and co-investing in durable enterprises.">
-    <meta property="og:title" content="The Good Project — Venture Studio">
-    <meta property="og:description" content="The Good Project is a venture studio building, collaborating, and co-investing in durable enterprises.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LDS Scriptures — Enriched Edition</title>
+<meta name="description" content="A scripture library built to gather spiritual truth across scripture, commentary, history, and related traditions — with the shortest path to depth on any subject.">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCMWDK746H"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PCMWDK746H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PCMWDK746H');
+</script>
 
-      gtag('config', 'G-PCMWDK746H');
-    </script>
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16x16.png">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16x16.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
-
-    <style>
-* { box-sizing: border-box; }
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-    --bg: #F7F6F3;
-    --text: #111111;
-    --muted: #555555;
-    --divider: #E4E2DD;
-    --accent: #087074;
-    --accent-hover: #065A5D;
+    --bg: #F5F2EC;
+    --bg2: #FDFAF5;
+    --text: #26221d;
+    --muted: #776b5d;
+    --faint: #a89880;
+    --accent: #9C7A4D;
+    --accent-hover: #7a5e38;
+    --divider: rgba(156,122,77,0.15);
+    --divider-strong: rgba(156,122,77,0.25);
 }
+
+html { scroll-behavior: smooth; }
 
 body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
-.container {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 80px 24px;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px 0 10px;
-    height: 120px;
-    min-height: 120px;
-    width: 100%;
-    border-bottom: 1px solid var(--divider);
-    position: fixed;
+/* ── Topbar ── */
+#topbar {
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9999;
-    background: #F2F2F2;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
-    overflow: visible;
-}
-
-nav .logo-link {
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--divider);
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    min-height: 0;
-    flex-shrink: 0;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 52px;
 }
 
-nav .logo {
-    display: block;
-    height: 100%;
-    width: auto;
-    max-height: none;
-    object-fit: contain;
-    object-position: left center;
-    margin: 0;
-    padding: 0;
-}
-
-nav .nav-links {
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
-}
-
-nav .nav-links a {
-    text-decoration: none;
-    color: var(--text);
-    margin-left: 24px;
-    font-size: 14px;
-}
-
-nav .nav-links a:hover {
-    opacity: 0.6;
-}
-
-.hero {
-    padding: calc(120px + 64px) 24px 98px;
-}
-
-.hero .mission {
-    font-family: 'Nanum Myeongjo', serif;
-    font-size: clamp(46px, 6.4vw, 78px);
-    font-weight: 700;
-    line-height: 1.14;
-    letter-spacing: -0.01em;
-    max-width: 1040px;
-    margin: 0 0 28px;
-}
-
-.hero .deck {
-    max-width: 680px;
-    color: #3F3F3F;
-    font-size: 26px;
-    line-height: 1.45;
-    margin: 0 0 14px;
-}
-
-.hero .method {
-    max-width: 680px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 24px;
-    color: #6B6B6B;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    line-height: 1.6;
-    margin-bottom: 34px;
-}
-
-.section {
-    border-top: 1px solid var(--divider);
-}
-
-#work,
-#contact {
-    scroll-margin-top: 130px;
-}
-
-.section .section-title {
-    font-size: 32px;
-    margin-bottom: 60px;
-    font-weight: 500;
-}
-
-.project-category {
-    margin-bottom: 110px;
-}
-
-.project-category h2 {
-    font-size: 20px;
-    margin-bottom: 16px;
+#topbar .site-name {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    font-weight: 600;
     color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    text-decoration: none;
+    letter-spacing: -0.01em;
 }
 
-.project-category .category-intro {
-    max-width: 720px;
+#topbar nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+#topbar nav a {
+    font-size: 13px;
+    font-weight: 500;
     color: var(--muted);
-    font-size: 18px;
-    margin-bottom: 40px;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.15s;
 }
 
-.project {
+#topbar nav a:hover { color: var(--text); }
+
+#topbar .open-reader-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+#topbar .open-reader-btn:hover { background: var(--accent-hover); }
+
+/* ── Hero ── */
+.hero {
+    padding: 64px 28px 48px;
+    max-width: 860px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--divider);
+}
+
+.hero h1 {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: clamp(36px, 5.5vw, 60px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: clamp(16px, 2vw, 19px);
+    color: var(--muted);
+    line-height: 1.55;
+    max-width: 640px;
     margin-bottom: 32px;
 }
 
-.project:last-child {
+.hero .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 11px 22px;
+    border-radius: 7px;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.btn-primary:hover { background: var(--accent-hover); }
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(156,122,77,0.3);
+    padding-bottom: 1px;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.btn-secondary:hover { color: var(--accent-hover); border-color: var(--accent-hover); }
+
+/* ── Stats strip ── */
+.stats-strip {
+    border-bottom: 1px solid var(--divider);
+    background: var(--bg2);
+}
+
+.stats-strip-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.stats-strip-inner::-webkit-scrollbar { display: none; }
+
+.stat-cell {
+    flex: 1;
+    min-width: 110px;
+    padding: 18px 14px;
+    border-right: 1px solid var(--divider);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-cell:first-child { padding-left: 0; }
+.stat-cell:last-child { border-right: none; }
+
+.stat-value {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--faint);
+    white-space: nowrap;
+}
+
+/* ── Main layout ── */
+.main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 28px 80px;
+}
+
+/* ── Section headers ── */
+.section-head {
+    padding: 40px 0 16px;
+    border-bottom: 1px solid var(--divider);
     margin-bottom: 0;
 }
 
-.project h3 {
-    font-size: 20px;
-    margin-bottom: 12px;
-    font-weight: 500;
-}
-
-.project h3 a {
-    color: inherit;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(8, 112, 116, 0.35);
-}
-
-.project h3 a:hover {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-}
-
-.project p {
-    max-width: 760px;
-    color: var(--muted);
-    margin: 6px 0;
-}
-
-.testimonials .reference {
-    margin-bottom: 40px;
-}
-
-.testimonials .reference h3 {
-    font-size: 20px;
-    margin-bottom: 12px;
-    font-weight: 500;
+.section-head h2 {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
     color: var(--text);
 }
 
-.testimonials .reference h3 a {
-    color: inherit;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(8, 112, 116, 0.35);
-}
-
-.testimonials .reference h3 a:hover {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-}
-
-.testimonials .reference p {
-    max-width: 760px;
-    color: var(--muted);
-    margin: 6px 0;
-}
-
-.cta {
-    text-align: center;
-    padding: 120px 24px;
-}
-
-.cta h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    color: var(--text);
-}
-
-.cta a {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 14px 32px;
-    border: 1px solid var(--accent);
-    background: var(--accent);
-    text-decoration: none;
-    color: #FFFFFF;
+.section-head p {
     font-size: 14px;
+    color: var(--muted);
+    margin-top: 4px;
 }
 
-.cta a:hover {
-    background: var(--accent-hover);
-    border-color: var(--accent-hover);
-    color: #FFFFFF;
+/* ── Collection table ── */
+.collection-group {
+    margin-top: 0;
 }
 
+.collection-group-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 20px 0 8px;
+}
+
+.collection-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--divider);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.1s;
+    border-radius: 3px;
+    margin: 0 -8px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.collection-row:hover {
+    background: rgba(156,122,77,0.06);
+}
+
+.collection-row:last-child {
+    border-bottom: none;
+}
+
+.collection-row-main {
+    min-width: 0;
+}
+
+.collection-row-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+
+.collection-row-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.45;
+}
+
+.collection-row-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.collection-count {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--faint);
+    white-space: nowrap;
+}
+
+.collection-arrow {
+    color: var(--divider-strong);
+    font-size: 14px;
+    transition: color 0.15s, transform 0.15s;
+}
+
+.collection-row:hover .collection-arrow {
+    color: var(--accent);
+    transform: translateX(3px);
+}
+
+/* ── Corpus table ── */
+.corpus-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 13.5px;
+}
+
+.corpus-table thead th {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--faint);
+    border-bottom: 1px solid var(--divider-strong);
+    padding: 0 12px 10px 0;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.corpus-table thead th:first-child { text-align: left; padding-left: 0; }
+
+.corpus-table tbody td {
+    padding: 9px 12px 9px 0;
+    border-bottom: 1px solid var(--divider);
+    text-align: right;
+    color: var(--muted);
+    vertical-align: middle;
+}
+
+.corpus-table tbody td:first-child {
+    text-align: left;
+    padding-left: 0;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.corpus-table tbody tr.totals-row td {
+    font-weight: 700;
+    color: var(--accent);
+    border-top: 1px solid var(--divider-strong);
+    border-bottom: 2px solid var(--divider-strong);
+}
+
+.corpus-table tbody tr:last-child td { border-bottom: none; }
+
+/* ── Attribution ── */
+.attribution {
+    margin-top: 32px;
+    padding: 20px 22px;
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    background: var(--bg2);
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.attribution-kicker {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+
+.attribution a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(156,122,77,0.3);
+}
+
+.attribution a:hover { color: var(--accent-hover); }
+
+/* ── Footer ── */
 footer {
     border-top: 1px solid var(--divider);
-    padding: 60px 24px 40px;
-    font-size: 14px;
-    color: var(--muted);
-    text-align: center;
-    overflow: visible;
+    padding: 28px 28px;
+    font-size: 12px;
+    color: var(--faint);
 }
 
-footer .footer-quote {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 24px;
-    font-style: italic;
-    line-height: 1.35;
-    overflow: visible;
+footer .footer-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-footer .footer-build {
-    display: inline-block;
-    line-height: 1.1;
-    padding: 0 4px;
-    overflow: visible;
-    position: relative;
+footer a {
+    color: var(--faint);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
 }
 
-footer .footer-build svg {
-    overflow: visible !important;
+footer a:hover { color: var(--accent); border-bottom-color: rgba(156,122,77,0.3); }
+
+footer .footer-links {
+    display: flex;
+    gap: 20px;
 }
 
-    </style>
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    #topbar { padding: 0 16px; }
+    #topbar nav { gap: 14px; }
+    #topbar nav .hide-mobile { display: none; }
+
+    .hero { padding: 40px 16px 36px; }
+    .hero h1 { font-size: 32px; }
+
+    .stats-strip-inner { padding: 0 16px; }
+    .stat-cell { min-width: 90px; padding: 14px 10px; }
+    .stat-value { font-size: 22px; }
+
+    .main { padding: 0 16px 60px; }
+
+    footer { padding: 24px 16px; }
+    footer .footer-links { gap: 14px; }
+}
+</style>
 </head>
 <body>
 
-<nav>
-    <a href="/" class="logo-link"><img src="./logo.png" alt="The Good Project" class="logo"></a>
-    <div class="nav-links">
-        <a href="#work">Our Work</a>
-        <a href="#contact">Contact Us</a>
-    </div>
-</nav>
+<!-- ── Topbar ── -->
+<header id="topbar">
+    <a href="/" class="site-name">LDS Scriptures — Enriched Edition</a>
+    <nav>
+        <a href="#collections" class="hide-mobile">Collections</a>
+        <a href="#corpus" class="hide-mobile">Corpus</a>
+        <a href="library/source-dashboard.html" class="hide-mobile">Dashboard</a>
+        <a href="/library/" class="open-reader-btn">Open Reader →</a>
+    </nav>
+</header>
 
+<!-- ── Hero ── -->
 <section class="hero">
-    <div class="container">
-        <h1 class="mission">We believe better companies make for a better world.</h1>
-        <p class="deck">We exist to support exceptional founders.</p>
-        <p class="method">
-            <span>Capital raising</span>
-            <span>Go-to-market support</span>
-            <span>Tool building</span>
-        </p>
+    <h1>Scripture, commentary, and tradition — deeply linked.</h1>
+    <p>An enriched library of 4,156 sources across scripture, general conference, church history, pioneer journals, ancient texts, and patristic writings — with every paragraph semantically annotated and recursively cross-linked.</p>
+    <div class="cta-row">
+        <a href="/library/" class="btn-primary">Open the Reader</a>
+        <a href="library/source-dashboard.html" class="btn-secondary">View coverage dashboard</a>
     </div>
 </section>
 
-<section id="work" class="section">
-<div class="container">
-<h2 class="section-title">Selected Work</h2>
-
-<div class="project-category">
-<h2>We help founders raise capital</h2>
-<p class="category-intro">We help founders raise capital for projects that are ready to grow</p>
-
-<div class="project">
-<h3><a href="https://turninghearts.com" target="_blank" rel="noopener noreferrer">Turning Hearts</a></h3>
-<p>Full platform rebuild from legacy WordPress infrastructure.</p>
-<p>Head of Technology role leading scalable software architecture and professional development transition.</p>
-<p>Result: Enabled significant user growth.</p>
+<!-- ── Stats strip ── -->
+<div class="stats-strip">
+    <div class="stats-strip-inner">
+        <div class="stat-cell">
+            <span class="stat-value" id="stat-docs">4,156</span>
+            <span class="stat-label">Sources</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-value" id="stat-collections">10</span>
+            <span class="stat-label">Collections</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-value" id="stat-paragraphs">156,354</span>
+            <span class="stat-label">Paragraphs</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-value" id="stat-annotated">99.5%</span>
+            <span class="stat-label">Annotated</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-value" id="stat-linked">99.5%</span>
+            <span class="stat-label">Linked</span>
+        </div>
+    </div>
 </div>
 
-<div class="project">
-<h3><a href="https://colourhills.com/home" target="_blank" rel="noopener noreferrer">Colour Hills</a></h3>
-<p>AUD 10M SPV capital formation initiative.</p>
-<p>Partner engagement in structuring and capital sourcing.</p>
-<p>Status: Raise ongoing.</p>
-</div>
+<!-- ── Collections ── -->
+<div class="main">
 
-</div>
+    <div id="collections" class="section-head">
+        <h2>Collections</h2>
+        <p>Ten source families. Click any row to open that collection in the reader.</p>
+    </div>
 
-<div class="project-category">
-<h2>We help founders go to market</h2>
-<p class="category-intro">We work alongside founders on sales, distribution, and execution</p>
+    <div class="collection-group">
 
-<div class="project">
-<h3><a href="https://www.practiceoflife.com/" target="_blank" rel="noopener noreferrer">Practice of Life</a></h3>
-<p>Pre-revenue digital health platform.</p>
-<p>Founder support building outbound BD systems, refining product delivery, and digitizing operations.</p>
-<p>Result: Paying customers and pilot validation secured.</p>
-</div>
+        <div class="collection-group-label">Scripture</div>
 
-<div class="project">
-<h3><a href="https://www.goldback.com/" target="_blank" rel="noopener noreferrer">GoldBack</a></h3>
-<p>Affiliate-led retail expansion initiative.</p>
-<p>Established new retail distributor partnerships and supported multi-state expansion.</p>
-<p>Status: Ongoing channel growth.</p>
-</div>
+        <a class="collection-row" href="/library/?open=scriptures">
+            <div class="collection-row-main">
+                <div class="collection-row-name">The Holy Scriptures</div>
+                <div class="collection-row-desc">Old Testament, New Testament, Book of Mormon, Doctrine &amp; Covenants, Pearl of Great Price — standard works with full verse-level annotation.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count">Standard Works</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-</div>
+        <div class="collection-group-label">Church History &amp; Documents</div>
 
-<div class="project-category">
-<h2>We help founders build the tools they need</h2>
-<p class="category-intro">When key systems are missing, we build practical tools founders can run on</p>
+        <a class="collection-row" href="/library/?open=history_of_church">
+            <div class="collection-row-main">
+                <div class="collection-row-name">History of the Church</div>
+                <div class="collection-row-desc">Joseph Smith's official history of the early Church, compiled and edited by B.H. Roberts — 7 volumes.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-history_of_church">7 vols</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-<div class="project">
-<h3>Kyros Consulting</h3>
-<p>Retail hardware operation (&gt;$5M revenue).</p>
-<p>Founder support focused on real-time analytics dashboards and reporting infrastructure.</p>
-<p>Status: Ongoing operational refinement.</p>
-</div>
+        <a class="collection-row" href="/library/?open=joseph_smith_papers">
+            <div class="collection-row-main">
+                <div class="collection-row-name">Joseph Smith Papers</div>
+                <div class="collection-row-desc">Primary documents from the Joseph Smith Papers Project — journals, letters, and early revelations.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-joseph_smith_papers">9 docs</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-<div class="project">
-<h3>Liahona</h3>
-<p>Community task management infrastructure.</p>
-<p>Founder support focused on structured workflows and AI-assisted task sizing.</p>
-<p>Status: Alpha stage.</p>
-</div>
+        <a class="collection-row" href="/library/?open=times_and_seasons">
+            <div class="collection-row-main">
+                <div class="collection-row-name">Times and Seasons</div>
+                <div class="collection-row-desc">The official Church newspaper published in Nauvoo, Illinois from 1839 to 1846.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-times_and_seasons">26 issues</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-</div>
+        <div class="collection-group-label">Periodicals &amp; Discourses</div>
 
-</div>
-</section>
+        <a class="collection-row" href="/library/?open=general_conference">
+            <div class="collection-row-main">
+                <div class="collection-row-name">General Conference</div>
+                <div class="collection-row-desc">Collected addresses from Church general conferences — over a century of teaching, spanning thousands of talks.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-general_conference">3,908 talks</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-<section class="section testimonials">
-<div class="container">
-<h2 class="section-title">References</h2>
+        <a class="collection-row" href="/library/?open=journal_of_discourses">
+            <div class="collection-row-main">
+                <div class="collection-row-name">Journal of Discourses</div>
+                <div class="collection-row-desc">Sermons by Brigham Young and other early Church leaders, recorded verbatim 1851–1886 — 26 volumes.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-journal_of_discourses">26 vols</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-<div class="reference">
-<h3>Kate Larson, Founder of <a href="https://www.practiceoflife.com/" target="_blank" rel="noopener noreferrer">Practice of Life</a></h3>
-<p>Reif was an absolute gift to work with. As a bootstrapped founder, I valued having a true partner who understands every part of building a startup. He made our systems clearer, our process stronger, and our team better.</p>
-</div>
+        <a class="collection-row" href="/library/?open=millennial_star">
+            <div class="collection-row-main">
+                <div class="collection-row-name">Millennial Star</div>
+                <div class="collection-row-desc">The Church's British periodical, published in Liverpool and London from 1840 to 1970.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-millennial_star">162 issues</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-<div class="reference">
-<h3>Christopher Hamze, Founder of <a href="https://teelaunch.com" target="_blank" rel="noopener noreferrer">teelaunch</a></h3>
-<p>Reif's versatility is unmatched. He's smart, resourceful, and a tech genius with a heart of gold.</p>
-</div>
+        <div class="collection-group-label">Journals &amp; Early Writings</div>
 
-<div class="reference">
-<h3>Gary Kliegman, COO at <a href="https://matefertility.com" target="_blank" rel="noopener noreferrer">Mate Fertility</a></h3>
-<p>From leading through a merger to handling the challenges of a global pandemic, Reif's leadership is unparalleled. He's the kind of leader every growth-stage company needs.</p>
-</div>
+        <a class="collection-row" href="/library/?open=pioneer_journals">
+            <div class="collection-row-main">
+                <div class="collection-row-name">Pioneer Journals</div>
+                <div class="collection-row-desc">Personal accounts from early Latter-day Saint pioneers — firsthand records of faith and hardship.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-pioneer_journals">2 journals</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-<div class="reference">
-<h3>Mike Kunz, SVP Operations at <a href="https://www.aapc.com" target="_blank" rel="noopener noreferrer">AAPC</a></h3>
-<p>Reif is one of the smartest individuals I have had the pleasure of working with. He streamlines processes and adds value in ways that are both innovative and efficient.</p>
-</div>
+        <a class="collection-row" href="/library/?open=gutenberg_lds">
+            <div class="collection-row-main">
+                <div class="collection-row-name">Early LDS Writings</div>
+                <div class="collection-row-desc">Early Latter-day Saint texts preserved through Project Gutenberg and related archives.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-gutenberg_lds">4 works</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
-<div class="reference">
-<h3>Michael Simon, Managing Principal at <a href="https://traversepoint.com" target="_blank" rel="noopener noreferrer">Traverse Pointe Partners</a></h3>
-<p>Reif is the full package - tech-savvy, resourceful, passionate, and a team player. He's the rare talent who can set vision at a high level and also get scrappy when needed.</p>
-</div>
-</div>
-</section>
+        <div class="collection-group-label">Ancient &amp; Patristic Texts</div>
 
-<section id="contact" class="cta">
-    <h2>Say hello.</h2>
-    <p>Have a project you'd like to collaborate on?</p>
-    <a href="mailto:hello@thegoodproject.net">Contact Us</a>
-</section>
+        <a class="collection-row" href="/library/?open=ancient_texts">
+            <div class="collection-row-main">
+                <div class="collection-row-name">Ancient Texts</div>
+                <div class="collection-row-desc">Pseudepigrapha, apocrypha, and related ancient writings that illuminate the scriptural world.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-ancient_texts">6 works</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
 
+        <a class="collection-row" href="/library/?open=church_fathers">
+            <div class="collection-row-main">
+                <div class="collection-row-name">Church Fathers</div>
+                <div class="collection-row-desc">Writings of early Christian theologians — Origen, Irenaeus, Clement, and others — illuminating the broader Christian tradition.</div>
+            </div>
+            <div class="collection-row-meta">
+                <span class="collection-count" id="count-church_fathers">6 works</span>
+                <span class="collection-arrow">→</span>
+            </div>
+        </a>
+
+    </div><!-- /collection-group -->
+
+    <!-- ── Corpus status ── -->
+    <div id="corpus" class="section-head" style="margin-top: 32px;">
+        <h2>Corpus Status</h2>
+        <p>Live figures from the semantic pipeline. These numbers rise as the graph gets wider, cleaner, and more recursive.</p>
+    </div>
+
+    <table class="corpus-table">
+        <thead>
+            <tr>
+                <th>Collection</th>
+                <th>Sources</th>
+                <th>Paragraphs</th>
+                <th>Linked</th>
+            </tr>
+        </thead>
+        <tbody id="corpus-tbody">
+            <!-- filled by JS -->
+        </tbody>
+    </table>
+
+    <!-- ── Attribution ── -->
+    <div class="attribution">
+        <div class="attribution-kicker">Donaldson Papers</div>
+        Built on the work of <a href="https://donaldsonpapers.com/" target="_blank" rel="noopener noreferrer">Lee Donaldson</a>. The <em>Disk of Knowledge</em> was given to missionaries at the end of their missions in the San Diego California Mission. This library preserves and extends that work with a modern semantic annotation layer.
+    </div>
+
+</div><!-- /main -->
+
+<!-- ── Footer ── -->
 <footer>
-    <p class="footer-quote"><span id="footer-build" class="footer-build">Build</span> the change you wish to see in the world.</p>
-    <p>© 2024 The Good Project</p>
+    <div class="footer-inner">
+        <span>LDS Scriptures — Enriched Edition · The Good Project</span>
+        <div class="footer-links">
+            <a href="/library/">Reader</a>
+            <a href="library/source-dashboard.html">Coverage Dashboard</a>
+            <a href="https://thegoodproject.net/about" target="_blank" rel="noopener noreferrer">About</a>
+        </div>
+    </div>
 </footer>
 
-<script src="https://unpkg.com/rough-notation/lib/rough-notation.iife.js"></script>
 <script>
-const footerBuild = document.getElementById('footer-build');
-if (footerBuild && window.RoughNotation) {
-    const annotationTypes = ['circle', 'bracket', 'underline', 'box'];
-    let annotationIndex = 0;
-    let annotation;
+(function () {
+    var BASE = './library/';
 
-    const showAnnotation = () => {
-        if (annotation) {
-            annotation.hide();
-        }
+    function fmt(n) {
+        return Number(n || 0).toLocaleString();
+    }
 
-        const type = annotationTypes[annotationIndex];
-        const options = {
-            type,
-            color: '#087074',
-            strokeWidth: 2,
-            iterations: 3,
-            padding: 5
-        };
+    function pct(n) {
+        return (n || 0) + '%';
+    }
 
-        if (type === 'bracket') {
-            options.brackets = ['top', 'bottom'];
-        }
+    // Populate stats strip and corpus table from source-dashboard.json
+    fetch(BASE + 'source-dashboard.json')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            var t = data.totals || {};
 
-        annotation = RoughNotation.annotate(footerBuild, options);
-        annotation.show();
-    };
+            // Stats strip
+            setEl('stat-docs', fmt(t.docs));
+            setEl('stat-collections', fmt(t.collections));
+            setEl('stat-paragraphs', fmt(t.paragraphs));
+            setEl('stat-annotated', pct(t.annotated_pct));
+            setEl('stat-linked', pct(t.linked_pct));
 
-    showAnnotation();
-    setInterval(() => {
-        annotationIndex = (annotationIndex + 1) % annotationTypes.length;
-        showAnnotation();
-    }, 10000);
-}
+            // Per-collection counts
+            var colls = data.collections || [];
+            colls.forEach(function (c) {
+                var el = document.getElementById('count-' + c.id);
+                if (el) el.textContent = fmt(c.docs) + ' docs';
+            });
+
+            // Corpus table
+            var tbody = document.getElementById('corpus-tbody');
+            if (!tbody) return;
+            var rows = colls.slice().sort(function (a, b) { return b.paragraphs - a.paragraphs; });
+            var html = rows.map(function (c) {
+                return '<tr>' +
+                    '<td>' + (c.label || c.id) + '</td>' +
+                    '<td>' + fmt(c.docs) + '</td>' +
+                    '<td>' + fmt(c.paragraphs) + '</td>' +
+                    '<td>' + pct(c.linked_pct) + '</td>' +
+                    '</tr>';
+            }).join('');
+            // Totals row
+            html += '<tr class="totals-row">' +
+                '<td>Total</td>' +
+                '<td>' + fmt(t.docs) + '</td>' +
+                '<td>' + fmt(t.paragraphs) + '</td>' +
+                '<td>' + pct(t.linked_pct) + '</td>' +
+                '</tr>';
+            tbody.innerHTML = html;
+        })
+        .catch(function () {});
+
+    function setEl(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = val;
+    }
+}());
 </script>
 
 </body>

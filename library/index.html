@@ -860,6 +860,31 @@ Promise.all([
                 tocOpen = true;
                 document.getElementById('toc').classList.remove('hidden');
             }
+            // Handle ?open= URL parameter from home page collection links
+            var openParam = new URLSearchParams(window.location.search).get('open');
+            if (openParam) {
+                if (openParam === 'scriptures') {
+                    tocPath = { level: 'scripture-root', volume: null, book: null, sourceCollection: null };
+                    renderTocView();
+                    tocOpen = true;
+                    document.getElementById('toc').classList.remove('hidden');
+                } else {
+                    var coll = findSourceCollection(openParam);
+                    if (coll) {
+                        tocPath = { level: 'source-collection', volume: null, book: null, sourceCollection: coll };
+                        renderTocView();
+                        tocOpen = true;
+                        document.getElementById('toc').classList.remove('hidden');
+                    } else {
+                        tocPath = { level: 'source-root', volume: null, book: null, sourceCollection: null };
+                        renderTocView();
+                        tocOpen = true;
+                        document.getElementById('toc').classList.remove('hidden');
+                    }
+                }
+                // Clean the URL without reload
+                history.replaceState(null, '', window.location.pathname);
+            }
         });
     });
 
