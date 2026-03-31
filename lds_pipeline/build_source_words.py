@@ -113,7 +113,7 @@ def load_target_docs(target_groups=None):
     return docs, morsels
 
 
-def build_indexes(target_groups=None):
+def build_indexes(target_groups=None, force=False):
     docs, source_morsels = load_target_docs(target_groups)
     all_morsels = build_scripture_morsels() + source_morsels
     postings = defaultdict(list)
@@ -201,6 +201,8 @@ def build_indexes(target_groups=None):
                 words_out[str(para["idx"])] = para_words
 
         words_path = doc["html_path"].with_name(doc["html_path"].stem + "_words.json")
+        if words_path.exists() and not force:
+            continue
         payload = {"_m": morsel_catalog, "v": words_out}
         words_path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         print(f"{doc['collection']} :: {doc['item']['label']}: {len(words_out)} annotated paragraphs")
@@ -213,5 +215,10 @@ if __name__ == "__main__":
         nargs="*",
         help="Optional source collection ids to build. Defaults to all collections in source_toc.json.",
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Rebuild existing _words.json files instead of skipping them.",
+    )
     args = parser.parse_args()
-    build_indexes(args.groups)
+    build_indexes(args.groups, force=args.force)

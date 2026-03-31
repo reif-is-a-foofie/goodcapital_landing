@@ -24,6 +24,7 @@ MAX_PER_SOURCE = 2
 DISPLAY_MAX    = 5
 
 SOURCE_LABELS = {
+    "standard_works":        "Standard Works",
     "journal_of_discourses": "Journal of Discourses",
     "sefaria":               "Sefaria",
     "general_conference":    "General Conference",

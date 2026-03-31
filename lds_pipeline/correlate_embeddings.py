@@ -33,12 +33,14 @@ os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 
 CACHE_DIR    = Path("/Users/reify/Classified/goodcapital_landing/lds_pipeline/cache")
 CATALOG_PATH = CACHE_DIR / "verse_catalog.json"
+STANDARD_WORKS_CATALOG_PATH = CACHE_DIR / "standard_works" / "verse_catalog.json"
 CORR_DIR     = CACHE_DIR / "correlations"
 EMB_DIR      = CACHE_DIR / "embeddings_dense"
 
 MODEL_NAME = "all-MiniLM-L6-v2"   # 22M params, 384-dim, ~80s for 100K passages on CPU
 BATCH_SIZE = 256
 TOP_N      = 10
+SEARCH_K   = TOP_N + 5
 MIN_SCORE  = 0.30   # cosine similarity (dense embeddings score higher than TF-IDF)
 
 
@@ -202,8 +204,32 @@ def load_plaintext_dir(dir_path: Path, source_name: str, label_prefix: str) -> l
     return passages
 
 
-def load_all_sources() -> list[dict]:
+def load_standard_works_corpus(catalog: list[dict]) -> list[dict]:
+    """Expose scripture verses as a competing source corpus."""
+    passages = []
+    for v in catalog:
+        text = str(v.get("text", "")).strip()
+        book = str(v.get("book", "")).strip()
+        chapter = v.get("chapter")
+        verse = v.get("verse")
+        if not text or not book or not isinstance(chapter, int) or not isinstance(verse, int):
+            continue
+        passages.append({
+            "source": "standard_works",
+            "label":  f"{book} {chapter}:{verse}",
+            "text":   text[:1500],
+            "_origin": (book, chapter, verse),
+            "_volume": v.get("volume", ""),
+        })
+    return passages
+
+
+def load_all_sources(catalog: list[dict]) -> list[dict]:
     all_passages = []
+
+    standard_works = load_standard_works_corpus(catalog)
+    print(f"  Standard Works: {len(standard_works):,} passages")
+    all_passages.extend(standard_works)
 
     jd = load_jd_corpus()
     print(f"  JD: {len(jd):,} passages")
@@ -363,26 +389,32 @@ def correlate(verses: list[dict], passages: list[dict],
     verse_texts = [v["text"] for v in subset]
     verse_vecs  = embed_texts(model, verse_texts, "verses")
 
-    print(f"  Searching top-{TOP_N} for {len(subset):,} verses...", flush=True)
+    print(f"  Searching top-{SEARCH_K} for {len(subset):,} verses...", flush=True)
     # FAISS batch search
-    scores_all, indices_all = index.search(verse_vecs, TOP_N)
+    scores_all, indices_all = index.search(verse_vecs, SEARCH_K)
 
     written = 0
     for i, v in enumerate(subset):
         matches = []
-        for rank in range(TOP_N):
+        next_rank = 1
+        for rank in range(SEARCH_K):
             score = float(scores_all[i, rank])
             if score < MIN_SCORE:
                 continue
             idx = int(indices_all[i, rank])
             p   = passages[idx]
+            if p.get("_origin") == (v["book"], v["chapter"], v["verse"]):
+                continue
             matches.append({
-                "rank":   rank + 1,
+                "rank":   next_rank,
                 "score":  round(score, 4),
                 "source": p["source"],
                 "label":  p["label"],
                 "text":   p["text"],
             })
+            next_rank += 1
+            if len(matches) >= TOP_N:
+                break
 
         key      = f"{v['book']}_{v['chapter']}_{v['verse']}"
         out_file = CORR_DIR / f"{key}.json"
@@ -436,16 +468,17 @@ def main():
         print_verse_correlations(book, ch, v)
         return
 
-    if not CATALOG_PATH.exists():
+    catalog_path = CATALOG_PATH if CATALOG_PATH.exists() else STANDARD_WORKS_CATALOG_PATH
+    if not catalog_path.exists():
         print("ERROR: verse catalog not found. Run: python3 pipeline.py --catalog-only")
         sys.exit(1)
 
     print("\n═══ Loading catalog ═══")
-    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
-    print(f"  {len(catalog):,} verses")
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    print(f"  {len(catalog):,} verses from {catalog_path.name}")
 
     print("\n═══ Loading source corpora ═══")
-    passages = load_all_sources()
+    passages = load_all_sources(catalog)
     print(f"  Total: {len(passages):,} passages")
 
     if not passages:

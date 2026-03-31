@@ -1,5 +1,5 @@
 {
-  "ts": "2026-03-30T18:08:51+00:00",
+  "ts": "2026-03-31T13:32:53+00:00",
   "agent": "BetaTester",
   "mission_path": "AGENT_MISSION.md",
   "profile_path": "agents/beta_tester_profile.md",
@@ -22,33 +22,33 @@
         "node",
         "test-search-quality.js"
       ],
-      "code": 1,
-      "stdout": "",
-      "stderr": "Error: John 3:16 did not return the exact verse first\n    at assert (/Users/reify/Classified/goodcapital_landing/test-search-quality.js:4:25)\n    at run (/Users/reify/Classified/goodcapital_landing/test-search-quality.js:47:3)\n",
+      "code": 0,
+      "stdout": "{\n  \"john\": [\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"John 3:16\",\n      \"text\": \"For God so loved the world , that he gave his only begotten Son , that whosoever believeth in him should not perish , but have everlasting life .\"\n    },\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"John 3:1\",\n      \"text\": \"There was a man of the Pharisees , named Nicodemus , a ruler of the Jews :\"\n    },\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"John 3:30\",\n      \"text\": \"He must increase, but I must decrease.\"\n    },\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"John 3:24\",\n      \"text\": \"For John was not yet cast into prison .\"\n    },\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"John 3:7\",\n      \"text\": \"Marvel not that I said unto thee, Ye must be born again.\"\n    }\n  ],\n  \"best\": [\n    {\n      \"kind\": \"source\",\n      \"ref\": \"General Conference · Good, Better, Best\",\n      \"text\": \"Good, Better, Best By Elder Dallin H. Oaks Of the Quorum of the Twelve Apostles We have to forego some good things in order to choose others that are better or best because they de…\"\n    },\n    {\n      \"kind\": \"source\",\n      \"ref\": \"General Conference · Prepare for a Mission\",\n      \"text\": \"Prepare for a Mission By R. LaVell Edwards Head Football Coach, Brigham Young University My dear brethren, I am both honored and humbled about this assignment to speak with you tonight. I have often been asked, “How do y…\"\n    },\n    {\n      \"kind\": \"source\",\n      \"ref\": \"General Conference · Draw Nearer to Christ\",\n      \"text\": \"…home from birth, and thus my parents have always taken care to teach me good principles. In spite of that, I changed a lot during my junior high school years. I decided to take the way that seemed more fun and apparently easier too. I let myself be gui…\"\n    },\n    {\n      \"kind\": \"source\",\n      \"ref\": \"General Conference · The Nobility of Man in Choosing Good over Evil\",\n      \"text\": \"The Nobility of Man in Choosing Good over Evil By Elder Alvin R. Dyer Assistant to the Council of the Twelve I feel honored this morning, my brothers and sisters, to be in the presence of the First Presidency of …\"\n    },\n    {\n      \"kind\": \"source\",\n      \"ref\": \"General Conference · The Best Investment\",\n      \"text\": \"…nder my precious silver dollars to the bishop, I still remember now how good I felt being obedient to the Lord. On the way home from church, my mother told me how proud she was of me. Then she said, “Your grandfather always told us…\"\n    }\n  ],\n  \"sourceState\": {\n    \"title\": \"Good, Better, Best\",\n    \"subtitle\": \"Elder Dallin H. Oaks · October 2007\",\n    \"location\": \"General Conference · Good, Better, Best\",\n    \"cwCount\": 73\n  },\n  \"enuma\": [\n    {\n      \"kind\": \"source\",\n      \"ref\": \"Ancient Texts · Enuma Elish\",\n      \"text\": \"1. When the heavens above were yet unnamed, 2. And the name of the earth beneath had not been recorded, 3. Apsu, the oldest of beings, their progenitor, 4. \\\"Mummu\\\" Tiamat, who bare each and all of them-- 5. Their waters …\"\n    },\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"1 Chronicles 14:5\",\n      \"text\": \"And Ibhar, and Elishua, and Elpalet,\"\n    },\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"2 Samuel 5:16\",\n      \"text\": \"And Elishama, and Eliada, and Eliphalet.\"\n    },\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"1 Chronicles 3:6\",\n      \"text\": \"Ibhar also, and Elishama, and Eliphelet ,\"\n    },\n    {\n      \"kind\": \"verse\",\n      \"ref\": \"1 Chronicles 14:7\",\n      \"text\": \"And Elishama , and Beeliada, and Eliphalet.\"\n    }\n  ]\n}\n",
+      "stderr": "",
       "name": "search_browser",
-      "ok": false
+      "ok": true
     },
     {
       "cmd": [
         "node",
         "test-library-mobile-channel.js"
       ],
-      "code": 1,
-      "stdout": "",
-      "stderr": "TimeoutError: Waiting failed: 30000ms exceeded\n    at new WaitTask (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/common/WaitTask.js:49:34)\n    at IsolatedWorld.waitForFunction (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/api/Realm.js:25:26)\n    at CdpFrame.waitForFunction (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/api/Frame.js:583:43)\n    at CdpFrame.<anonymous> (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/util/decorators.js:109:27)\n    at CdpPage.waitForFunction (/Users/reify/Classified/goodcapital_landing/node_modules/puppeteer-core/lib/cjs/puppeteer/api/Page.js:1451:37)\n    at run (/Users/reify/Classified/goodcapital_landing/test-library-mobile-channel.js:32:14)\n",
+      "code": 0,
+      "stdout": "{\n  \"initial\": {\n    \"channelOpen\": true,\n    \"count\": 8,\n    \"clientHeight\": 10,\n    \"scrollHeight\": 1068,\n    \"overflowY\": \"auto\",\n    \"touchAction\": \"pan-y\"\n  },\n  \"scrolled\": {\n    \"scrollTop\": 400,\n    \"maxScroll\": 1058\n  }\n}\n",
+      "stderr": "",
       "name": "mobile_channel",
-      "ok": false
+      "ok": true
     },
     {
       "cmd": [
         "node",
         "test-library-commentary-links.js"
       ],
-      "code": 1,
-      "stdout": "",
-      "stderr": "Error: commentary reference did not focus the linked scripture verse\n    at assert (/Users/reify/Classified/goodcapital_landing/test-library-commentary-links.js:4:25)\n    at run (/Users/reify/Classified/goodcapital_landing/test-library-commentary-links.js:63:3)\n",
+      "code": 0,
+      "stdout": "{\n  \"commentaryState\": {\n    \"hasBlock\": true,\n    \"borderRadius\": \"0px\",\n    \"backgroundColor\": \"rgba(0, 0, 0, 0)\",\n    \"firstRefText\": \"Gen. 1:1\"\n  },\n  \"navState\": {\n    \"location\": \"Genesis · 1\",\n    \"focusedVerse\": \"v1\"\n  }\n}\n",
+      "stderr": "",
       "name": "commentary_links",
-      "ok": false
+      "ok": true
     },
     {
       "cmd": [
@@ -57,11 +57,11 @@
         "--strict"
       ],
       "code": 1,
-      "stdout": "{\n  \"scripture\": {\n    \"chapters\": 1582,\n    \"verses\": 41995,\n    \"missing_words_files\": 3,\n    \"verses_with_truncation\": 404,\n    \"verses_with_escaped_markup\": 16606,\n    \"verses_with_markup_leak\": 0\n  },\n  \"sources\": {\n    \"collections\": 10,\n    \"docs\": 4156,\n    \"docs_with_words\": 4156,\n    \"docs_missing_words\": 0,\n    \"annotated_paragraphs\": 155603,\n    \"matched_paragraphs\": 155603\n  },\n  \"problems\": 17013\n}\n",
+      "stdout": "{\n  \"scripture\": {\n    \"chapters\": 1582,\n    \"verses\": 41995,\n    \"missing_words_files\": 3,\n    \"verses_with_truncation\": 0,\n    \"verses_with_escaped_markup\": 97,\n    \"verses_with_markup_leak\": 0\n  },\n  \"sources\": {\n    \"collections\": 10,\n    \"docs\": 4156,\n    \"docs_with_words\": 4156,\n    \"docs_missing_words\": 0,\n    \"annotated_paragraphs\": 155603,\n    \"matched_paragraphs\": 155603\n  },\n  \"problems\": 100\n}\n",
       "stderr": "",
       "name": "corpus_integrity",
       "ok": false
     }
   ],
-  "failures": 4
+  "failures": 1
 }

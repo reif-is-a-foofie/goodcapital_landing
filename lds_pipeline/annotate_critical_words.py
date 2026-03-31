@@ -14,6 +14,7 @@ Run from repo root:
 
 import argparse
 import json
+import html
 import re
 from pathlib import Path
 
@@ -60,10 +61,6 @@ def find_spans(plain: str, word_data: dict, norm: dict) -> list:
                     continue
                 spans.append((s, e, st, ns))
                 used.append((s, e))
-                break
-            else:
-                continue
-            break
 
     return sorted(spans, key=lambda x: x[0])
 
@@ -73,31 +70,33 @@ def _he(text: str) -> str:
                 .replace('>', '&gt;').replace('"', '&quot;'))
 
 
-def annotate_verse(inner: str, vnum: int, word_data: dict) -> str:
-    """Annotate a verse div's inner HTML with .w spans."""
+_LITERAL_MARKUP_NOISE = re.compile(
+    r'(&lt;|<)\s*(?:span|a)\b[^>]*(?:&gt;|>)|'
+    r'(&lt;|<)\s*/\s*(?:span|a)\s*(?:&gt;|>)',
+    re.IGNORECASE,
+)
+
+
+def clean_plain_text(plain: str) -> str:
+    """Strip literal escaped markup that leaked into verse text before re-annotation."""
+    plain = _LITERAL_MARKUP_NOISE.sub(" ", plain)
+    plain = plain.replace("`", " ")
+    plain = re.sub(r"\s+", " ", plain).strip()
+    return plain
+
+
+def annotate_text(plain: str, vnum: int, word_data: dict) -> str:
+    """Annotate clean verse text with .w spans."""
     if not word_data:
-        return inner
+        return _he(plain)
 
     norm = normalise_scores(word_data)
     if not norm:
-        return inner
-
-    m = re.search(r'(<span class="verse-text">)(.*?)(</span>)', inner, re.DOTALL)
-    if not m:
-        return inner
-
-    pre   = inner[:m.start(2)]
-    suf   = inner[m.end(2):]
-    vhtml = m.group(2)
-
-    plain = (vhtml
-             .replace('&amp;', '&').replace('&lt;', '<')
-             .replace('&gt;', '>').replace('&quot;', '"')
-             .replace('&#x27;', "'").replace('&#39;', "'"))
+        return _he(plain)
 
     spans = find_spans(plain, word_data, norm)
     if not spans:
-        return inner
+        return _he(plain)
 
     out = []
     pos = 0
@@ -112,48 +111,75 @@ def annotate_verse(inner: str, vnum: int, word_data: dict) -> str:
         )
         pos = e
     out.append(_he(plain[pos:]))
-
-    return pre + ''.join(out) + suf
+    return ''.join(out)
 
 
 def process_chapter(chapter_path: Path, words_data: dict, dry_run: bool) -> dict:
     """Annotate one chapter HTML file using its pre-built words JSON."""
-    slug = chapter_path.stem
-    html = chapter_path.read_text(encoding='utf-8')
+    from bs4 import BeautifulSoup
 
-    verse_pat = re.compile(
-        r'(<div class="verse" id="v(\d+)">)(.*?)(</div>)',
-        re.DOTALL,
-    )
+    slug = chapter_path.stem
+    html_text = chapter_path.read_text(encoding='utf-8')
+    soup = BeautifulSoup(html_text, 'html.parser')
 
     verse_count = cw_total = 0
+    changed = False
 
-    def replace_verse(m):
-        nonlocal verse_count, cw_total
-        open_tag = m.group(1)
-        vnum     = int(m.group(2))
-        inner    = m.group(3)
-        close    = m.group(4)
+    for verse_div in soup.select('div.verse[id]'):
+        verse_id = verse_div.get('id', '')
+        if not verse_id.startswith('v') or not verse_id[1:].isdigit():
+            continue
+        vnum = int(verse_id[1:])
         verse_count += 1
-
         vdata = words_data.get(str(vnum), {})
         if not vdata:
-            return m.group(0)
+            continue
 
-        new_inner = annotate_verse(inner, vnum, vdata)
+        verse_num = verse_div.find('span', class_='verse-num')
+        if not verse_num:
+            continue
+
+        verse_copy = BeautifulSoup(str(verse_div), 'html.parser').find('div', class_='verse')
+        for tag in verse_copy.find_all('div', class_='backlinks'):
+            tag.decompose()
+        for tag in verse_copy.find_all('span', class_='verse-num'):
+            tag.decompose()
+        plain = html.unescape(verse_copy.get_text('', strip=False))
+        plain = clean_plain_text(plain)
+        if not plain:
+            continue
+
+        new_inner = annotate_text(plain, vnum, vdata)
+        backlinks_html = ''.join(
+            str(tag) for tag in verse_div.find_all('div', class_='backlinks', recursive=False)
+        )
+        rebuilt_html = (
+            f'<div class="verse" id="{verse_id}">'
+            f'{str(verse_num)}'
+            f'<span class="verse-text">{new_inner}</span>'
+            f'{backlinks_html}'
+            f'</div>'
+        )
+        replacement = BeautifulSoup(
+            rebuilt_html,
+            'html.parser',
+        ).find('div', class_='verse')
+        if str(replacement) == str(verse_div):
+            continue
+        verse_div.replace_with(replacement)
         cw_total += len(vdata)
-        return open_tag + new_inner + close
+        changed = True
 
-    new_html = verse_pat.sub(replace_verse, html)
+    new_html = str(soup)
 
-    if not dry_run and new_html != html:
+    if not dry_run and new_html != html_text:
         chapter_path.write_text(new_html, encoding='utf-8')
 
     return {
         'slug':    slug,
         'verses':  verse_count,
         'cw':      cw_total,
-        'changed': new_html != html,
+        'changed': changed or new_html != html_text,
     }
 
 

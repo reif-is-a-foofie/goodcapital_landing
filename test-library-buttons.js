@@ -34,8 +34,8 @@ async function run() {
 
   await page.waitForSelector('#splash.gone', { timeout: 60000 });
   await page.waitForSelector('#toc:not(.hidden)', { timeout: 10000 });
-  await page.waitForSelector('.toc-volume.open', { timeout: 10000 });
-  pass('initial load', 'reader and expanded nav rendered');
+  await page.waitForSelector('#toc-grid .toc-tile', { timeout: 10000 });
+  pass('initial load', 'reader and tile nav rendered');
 
   await page.click('#toc-btn');
   await page.waitForFunction(() => document.querySelector('#toc').classList.contains('hidden'));
@@ -47,28 +47,27 @@ async function run() {
   assert(downloadHref === './LDS_Scriptures_Enriched.epub', 'download link href changed');
   pass('download button', downloadHref);
 
-  await page.click('.toc-volume[data-volume="Old Testament"]');
-  await page.waitForFunction(() => !document.querySelector('.toc-volume[data-volume="Old Testament"]').classList.contains('open'));
-  await page.click('.toc-volume[data-volume="Old Testament"]');
-  await page.waitForFunction(() => document.querySelector('.toc-volume[data-volume="Old Testament"]').classList.contains('open'));
-  pass('volume toggle', 'Old Testament closes and reopens');
+  await page.click('.toc-tile[data-action="volume"][data-volume="Old Testament"]');
+  await page.waitForFunction(() => document.querySelector('#toc-title').textContent === 'Books');
+  pass('volume tile', 'Old Testament opens books view');
 
-  await page.click('.toc-book[data-book="Genesis"]');
-  await page.waitForFunction(() => !document.querySelector('.toc-book[data-book="Genesis"]').classList.contains('open'));
-  await page.click('.toc-book[data-book="Genesis"]');
-  await page.waitForFunction(() => document.querySelector('.toc-book[data-book="Genesis"]').classList.contains('open'));
-  pass('book toggle', 'Genesis closes and reopens');
+  await page.click('.toc-tile[data-action="book"][data-book="Genesis"]');
+  await page.waitForFunction(() => document.querySelector('#toc-title').textContent === 'Chapters' && document.querySelector('#toc-subtitle').textContent === 'Genesis');
+  pass('book tile', 'Genesis opens chapters view');
 
-  await page.click('.toc-ch[data-id="genesis_1"]');
+  await page.click('.toc-tile[data-action="chapter"][data-id="genesis_1"]');
   await page.waitForSelector('#ch-genesis_1', { timeout: 20000 });
   pass('genesis tile', 'Genesis 1 loads from tile click');
 
-  const matthewOpen = await page.$eval('.toc-book[data-book="Matthew"]', (el) => el.classList.contains('open'));
-  if (!matthewOpen) {
-    await page.click('.toc-book[data-book="Matthew"]');
-    await page.waitForFunction(() => document.querySelector('.toc-book[data-book="Matthew"]').classList.contains('open'));
-  }
-  await page.click('.toc-ch[data-id="matthew_28"]');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() => document.querySelector('#toc-title').textContent === 'Books');
+  await page.$eval('#toc-back', (el) => el.click());
+  await page.waitForFunction(() => document.querySelector('#toc-title').textContent === 'Contents');
+  await page.click('.toc-tile[data-action="volume"][data-volume="New Testament"]');
+  await page.waitForFunction(() => document.querySelector('#toc-subtitle').textContent === 'New Testament');
+  await page.click('.toc-tile[data-action="book"][data-book="Matthew"]');
+  await page.waitForFunction(() => document.querySelector('#toc-subtitle').textContent === 'Matthew');
+  await page.click('.toc-tile[data-action="chapter"][data-id="matthew_28"]');
   await page.waitForSelector('#ch-matthew_28', { timeout: 20000 });
   pass('chapter tile', 'Matthew 28 loads from tile click');
 

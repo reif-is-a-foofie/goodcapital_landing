@@ -2,24 +2,30 @@
 """
 Build full-text search index for LDS scripture reader.
 
-Reads all library/chapters/*.html files (skipping *_notes.html) and outputs
-library/search.json — a compact JSON array for client-side search.
+Reads scripture chapters plus generated source documents and outputs
+library/search.json for client-side search.
 
 Usage:
     python3 lds_pipeline/build_search_index.py
 """
 
+import argparse
 import json
 import re
 import sys
 from pathlib import Path
 from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 
 # Resolve paths relative to this script's location
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT   = SCRIPT_DIR.parent
 CHAPTERS_DIR = REPO_ROOT / "library" / "chapters"
+TOC_FILE     = REPO_ROOT / "library" / "toc.json"
+SOURCE_TOC   = REPO_ROOT / "library" / "source_toc.json"
+SOURCE_ROOT  = REPO_ROOT / "library" / "sources"
 OUTPUT_FILE  = REPO_ROOT / "library" / "search.json"
+SOURCE_SUMMARY_LIMIT = 1200
 
 
 class ChapterParser(HTMLParser):
@@ -113,6 +119,42 @@ class ChapterParser(HTMLParser):
             self._current_verse_text_parts.append(data)
 
 
+def build_toc_lookup():
+    if not TOC_FILE.exists():
+        return {}
+    try:
+        toc = json.loads(TOC_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    lookup = {}
+    current_book = ""
+    for item in toc:
+        item_type = item.get("type")
+        if item_type == "book":
+            current_book = item.get("label", "") or current_book
+        elif item_type == "chapter":
+            chapter_id = item.get("id") or ""
+            if not chapter_id:
+                continue
+            chapter_num = 0
+            label = str(item.get("label", "")).strip()
+            if label.isdigit():
+                chapter_num = int(label)
+            else:
+                try:
+                    chapter_num = int(Path(chapter_id).stem.rsplit("_", 1)[-1])
+                except Exception:
+                    chapter_num = 0
+            lookup[chapter_id] = {
+                "book": current_book,
+                "chapter": chapter_num,
+            }
+    return lookup
+
+
+TOC_LOOKUP = build_toc_lookup()
+
+
 def process_chapter(path: Path):
     """Parse a single chapter file and return a search index entry, or None on failure."""
     stem = path.stem  # e.g. "genesis_1"
@@ -130,11 +172,18 @@ def process_chapter(path: Path):
     chapter = parser.chapter
     verses = parser.verses
 
+    fallback = TOC_LOOKUP.get(stem, {})
+    if not book:
+        book = fallback.get("book", "")
+    if not chapter:
+        chapter = fallback.get("chapter", 0)
+
     # Skip files with no verse content (e.g. title page, front matter)
     if not verses:
         return None
 
     return {
+        "kind": "verse",
         "id": stem,
         "b":  book,
         "c":  chapter,
@@ -142,7 +191,51 @@ def process_chapter(path: Path):
     }
 
 
+def load_source_docs():
+    if not SOURCE_TOC.exists():
+        return []
+    toc = json.loads(SOURCE_TOC.read_text(encoding="utf-8"))
+    docs = []
+    for collection in toc:
+        for item in collection.get("items", []):
+            html_path = REPO_ROOT / "library" / item.get("href", "")
+            if not html_path.exists():
+                continue
+            try:
+                soup = BeautifulSoup(html_path.read_text(encoding="utf-8", errors="replace"), "html.parser")
+            except Exception:
+                continue
+            paragraphs = []
+            for idx, para in enumerate(soup.select("p.source-para"), start=1):
+                text = para.get_text(" ", strip=True)
+                text = re.sub(r"\s+", " ", text).strip()
+                if not text:
+                    continue
+                paragraphs.append(text)
+            if not paragraphs:
+                continue
+            summary = " ".join(paragraphs[:3]).strip()
+            summary = re.sub(r"\s+", " ", summary).strip()
+            if len(summary) > SOURCE_SUMMARY_LIMIT:
+                summary = summary[:SOURCE_SUMMARY_LIMIT].rsplit(" ", 1)[0].rstrip() + "…"
+            docs.append({
+                "kind": "source",
+                "id": item.get("id", html_path.stem),
+                "s": collection.get("id", ""),
+                "collection": collection.get("label", ""),
+                "label": item.get("label", ""),
+                "meta": item.get("meta", ""),
+                "href": item.get("href", ""),
+                "t": summary,
+            })
+    return docs
+
+
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--include-sources", action="store_true", default=True)
+    args = parser.parse_args()
+
     chapter_files = sorted(
         p for p in CHAPTERS_DIR.glob("*.html")
         if not p.stem.endswith("_notes")
@@ -162,6 +255,9 @@ def main():
             skipped += 1
             continue
         index.append(entry)
+
+    if args.include_sources:
+        index.extend(load_source_docs())
 
     # Write compact JSON (no unnecessary whitespace)
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
