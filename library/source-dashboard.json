@@ -1,14 +1,14 @@
 {
   "totals": {
     "collections": 10,
-    "docs": 4161,
-    "docs_with_words": 4161,
-    "paragraphs": 159667,
-    "annotated_paragraphs": 158496,
-    "matched_paragraphs": 158496,
+    "docs": 4163,
+    "docs_with_words": 4163,
+    "paragraphs": 160845,
+    "annotated_paragraphs": 159622,
+    "matched_paragraphs": 159622,
     "doc_coverage_pct": 100.0,
-    "annotated_pct": 99.3,
-    "linked_pct": 99.3
+    "annotated_pct": 99.2,
+    "linked_pct": 99.2
   },
   "collections": [
     {
@@ -27,11 +27,11 @@
     {
       "id": "church_fathers",
       "label": "Church Fathers",
-      "docs": 8,
-      "docs_with_words": 8,
-      "paragraphs": 4712,
-      "annotated_paragraphs": 4516,
-      "matched_paragraphs": 4516,
+      "docs": 10,
+      "docs_with_words": 10,
+      "paragraphs": 5890,
+      "annotated_paragraphs": 5640,
+      "matched_paragraphs": 5640,
       "doc_coverage_pct": 100.0,
       "annotated_pct": 95.8,
       "linked_pct": 95.8,
@@ -95,11 +95,11 @@
       "docs": 5,
       "docs_with_words": 5,
       "paragraphs": 7279,
-      "annotated_paragraphs": 7259,
-      "matched_paragraphs": 7259,
+      "annotated_paragraphs": 7261,
+      "matched_paragraphs": 7261,
       "doc_coverage_pct": 100.0,
-      "annotated_pct": 99.7,
-      "linked_pct": 99.7,
+      "annotated_pct": 99.8,
+      "linked_pct": 99.8,
       "recursive": true
     },
     {

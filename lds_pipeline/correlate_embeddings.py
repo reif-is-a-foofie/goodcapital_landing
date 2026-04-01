@@ -382,16 +382,27 @@ def correlate(verses: list[dict], passages: list[dict],
     else:
         subset = verses
 
-    print(f"  Building FAISS index over {len(passages):,} passages...")
-    index = build_faiss_index(passage_vecs)
-
     print(f"  Encoding {len(subset):,} verses...")
     verse_texts = [v["text"] for v in subset]
     verse_vecs  = embed_texts(model, verse_texts, "verses")
 
-    print(f"  Searching top-{SEARCH_K} for {len(subset):,} verses...", flush=True)
-    # FAISS batch search
-    scores_all, indices_all = index.search(verse_vecs, SEARCH_K)
+    # numpy matmul search (avoids FAISS segfault on macOS/Python 3.9)
+    # passage_vecs and verse_vecs are L2-normalized → dot product = cosine similarity
+    print(f"  Searching top-{SEARCH_K} for {len(subset):,} verses (numpy)...", flush=True)
+    SEARCH_BATCH = 256
+    scores_all  = np.empty((len(subset), SEARCH_K), dtype=np.float32)
+    indices_all = np.empty((len(subset), SEARCH_K), dtype=np.int64)
+    for b_start in range(0, len(subset), SEARCH_BATCH):
+        b_end   = min(b_start + SEARCH_BATCH, len(subset))
+        sims    = verse_vecs[b_start:b_end] @ passage_vecs.T  # (batch, N_passages)
+        top_idx = np.argpartition(sims, -SEARCH_K, axis=1)[:, -SEARCH_K:]
+        for row in range(b_end - b_start):
+            top = top_idx[row]
+            order = np.argsort(sims[row, top])[::-1]
+            indices_all[b_start + row] = top[order]
+            scores_all[b_start + row]  = sims[row, top[order]]
+        print(f"    {b_end}/{len(subset)}", end="\r", flush=True)
+    print()
 
     written = 0
     for i, v in enumerate(subset):

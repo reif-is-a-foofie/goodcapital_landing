@@ -458,6 +458,32 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .disc-verse-score { font-size: 11px; color: var(--muted); flex-shrink: 0; }
 .disc-verse-text { font-size: 12px; color: var(--muted); padding: 0 16px 10px; line-height: 1.5; }
 
+/* Verse discovery dot — shown on verse numbers that have cross-tradition links */
+.verse-disc {
+    display: block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin: 1px auto 0;
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity .15s, transform .15s;
+}
+.verse-disc:hover { opacity: 1; transform: scale(1.4); }
+/* Discovery panel entries */
+.disc-entry {
+    padding: 10px 14px 10px;
+    border-bottom: 1px solid var(--divider);
+}
+.disc-entry.has-link { cursor: pointer; }
+.disc-entry.has-link:hover { background: rgba(156,122,77,0.06); }
+.disc-entry-pair {
+    font-size: 10px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 3px;
+}
+.disc-entry-label { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.disc-entry-text { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
 /* ── Channel panel ── */
 #channel {
     position: fixed; top: var(--nav-h); right: 0; bottom: 0;
@@ -740,7 +766,21 @@ var sourceTocData = [];
 var tocTree = { front: null, volumes: [], sources: [] };
 var chapterMeta = {};
 var sourceMeta = {};
-var sourceLinks = {};   // doc_id → {para_idx → [{book,ch,v,score,ref}]}
+var sourceLinks    = {};   // doc_id → {para_idx → [{book,ch,v,score,ref}]}
+var verseDiscovery = {};   // "Book Ch:V" → [{tradition_pair, source_label, source_text, ...}]
+
+var BOOK_SLUG_DISPLAY = {
+    'doctrine_and_covenants': 'D&C',
+    'joseph_smith_matthew':   'Joseph Smith\u2014Matthew',
+    'joseph_smith_history':   'Joseph Smith\u2014History',
+    'articles_of_faith':      'Articles of Faith',
+    'song_of_solomon':        'Song of Solomon',
+    'words_of_mormon':        'Words of Mormon',
+};
+function slugToBookName(slug) {
+    if (BOOK_SLUG_DISPLAY[slug]) return BOOK_SLUG_DISPLAY[slug];
+    return slug.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+}
 var tocPath = { level: 'root', volume: null, book: null, sourceCollection: null };
 var chapterOrder = [];          // ordered array of chapter ids
 var loadedChapters = new Set(); // ids already in DOM
@@ -905,11 +945,13 @@ function buildSourceTree(items) {
 Promise.all([
     fetch('./toc.json').then(function(r) { return r.json(); }),
     fetch('./source_toc.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; }),
-    fetch('./source_links.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; })
+    fetch('./source_links.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
+    fetch('./verse_discovery.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; })
 ]).then(function(results) {
         var data = results[0];
         var sourceData = results[1] || [];
-        sourceLinks = results[2] || {};
+        sourceLinks    = results[2] || {};
+        verseDiscovery = results[3] || {};
         tocData = data;
         sourceTocData = sourceData;
         tocTree = buildTocTree(data);
@@ -1450,6 +1492,56 @@ function annotateSourceBlock(block, wordsIndex) {
     });
 }
 
+function markVerseDiscovery(block, chapterId) {
+    if (!verseDiscovery || !Object.keys(verseDiscovery).length) return;
+    var m = chapterId.match(/^(.+)_(\d+)$/);
+    if (!m) return;
+    var bookName = slugToBookName(m[1]);
+    var chNum    = m[2];
+    Array.from(block.querySelectorAll('.verse[id]')).forEach(function(verseEl) {
+        var vNum    = verseEl.id.replace('v', '');
+        var ref     = bookName + ' ' + chNum + ':' + vNum;
+        var entries = verseDiscovery[ref];
+        if (!entries || !entries.length) return;
+        var numSpan = verseEl.querySelector('.verse-num');
+        if (!numSpan) return;
+        var dot = document.createElement('span');
+        dot.className = 'verse-disc';
+        dot.dataset.ref = ref;
+        dot.title = entries.map(function(e) { return e.tradition_pair; }).filter(function(v, i, a) { return a.indexOf(v) === i; }).join(' · ');
+        numSpan.appendChild(dot);
+    });
+}
+
+function openVerseDiscovery(ref) {
+    var entries = verseDiscovery[ref] || [];
+    if (!entries.length) return;
+    document.getElementById('ch-word').textContent = 'Cross-tradition insights';
+    document.getElementById('ch-hint').textContent = ref;
+    var html = '';
+    entries.forEach(function(e, i) {
+        var hasLink = !!(e.source_doc_id && e.source_para != null && sourceMeta[e.source_doc_id]);
+        html += '<div class="disc-entry' + (hasLink ? ' has-link' : '') + '" data-idx="' + i + '">' +
+            '<div class="disc-entry-pair">' + escapeHtml(e.tradition_pair) + '</div>' +
+            '<div class="disc-entry-label">' + escapeHtml(e.source_label) + '</div>' +
+            '<div class="disc-entry-text">' + escapeHtml((e.source_text || '').slice(0, 220)) + (e.source_text && e.source_text.length > 220 ? '…' : '') + '</div>' +
+            '</div>';
+    });
+    var chList = document.getElementById('ch-list');
+    chList.innerHTML = html;
+    document.getElementById('channel').classList.add('open');
+    channelOpen = true;
+    chList.querySelectorAll('.disc-entry.has-link').forEach(function(row) {
+        row.addEventListener('click', function() {
+            var e = entries[parseInt(row.dataset.idx, 10)];
+            var meta = sourceMeta[e.source_doc_id];
+            if (meta) {
+                loadSourceDocument(e.source_doc_id, meta.href, { focusPara: e.source_para });
+            }
+        });
+    });
+}
+
 function markLinkedSourceParas(block, docId) {
     var docLinks = sourceLinks[docId];
     if (!docLinks) return;
@@ -1616,6 +1708,7 @@ function loadChapter(id, prepend) {
             loadedChapters.add(id);
             restoreHighlights(id, block);
             setNextToLoad(id);
+            markVerseDiscovery(block, id);
 
             // Start watching this block — notes load when it enters the viewport
             notesObserver.observe(block);
@@ -2571,6 +2664,10 @@ document.getElementById('content').addEventListener('click', function(e) {
     // Word click handled separately below — don't toggle verse for word clicks
     if (e.target.closest('span.w')) return;
     if (e.target.closest('a.ref-link, a.backlink-ref')) return;
+
+    // Verse discovery dot
+    var dot = e.target.closest('.verse-disc');
+    if (dot && dot.dataset.ref) { openVerseDiscovery(dot.dataset.ref); return; }
 
     // Source paragraph with verse back-links
     var para = e.target.closest('p.source-para-linked');

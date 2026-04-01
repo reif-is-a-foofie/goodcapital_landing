@@ -29501,6 +29501,13 @@
     "type": "collection",
     "items": [
       {
+        "id": "church_fathers:a_select_library_of_the_nicene_and_post_nicene_fathers_of_the_christian_church",
+        "label": "A Select Library Of The Nicene And Post Nicene Fathers Of The Christian Church",
+        "href": "sources/church_fathers/a_select_library_of_the_nicene_and_post_nicene_fathers_of_the_christian_church.html",
+        "paragraphs": 677,
+        "meta": "Ante-Nicene Fathers"
+      },
+      {
         "id": "church_fathers:anf_vol1",
         "label": "Volume 1",
         "href": "sources/church_fathers/anf_vol1.html",
@@ -29547,6 +29554,13 @@
         "label": "The Ante Nicene Fathers Translations Of The Writings Of The Fathers Down To A D 325",
         "href": "sources/church_fathers/the_ante_nicene_fathers_translations_of_the_writings_of_the_fathers_down_to_a_d_325.html",
         "paragraphs": 840,
+        "meta": "Ante-Nicene Fathers"
+      },
+      {
+        "id": "church_fathers:the_anti_pelagian_writings_volume_6_first_series_of_the_nicene_and_post_nicene_fathers",
+        "label": "The Anti Pelagian Writings Volume 6 First Series Of The Nicene And Post Nicene Fathers",
+        "href": "sources/church_fathers/the_anti_pelagian_writings_volume_6_first_series_of_the_nicene_and_post_nicene_fathers.html",
+        "paragraphs": 501,
         "meta": "Ante-Nicene Fathers"
       },
       {
