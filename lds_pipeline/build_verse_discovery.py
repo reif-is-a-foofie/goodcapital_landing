@@ -205,8 +205,8 @@ def main():
             verse_num = vnode.get("n", 0)
             verse_ref = f"{book_name} {chapter}:{verse_num}"
 
-            # Deduplicate by verse + doc + para
-            pair_key = (verse_ref, pnode.get("d", ""), pnode.get("p"))
+            # Deduplicate by verse + doc + para (fall back to label when d/p absent)
+            pair_key = (verse_ref, pnode.get("d", "") or pnode.get("lb", ""), pnode.get("p"))
             if pair_key in seen_pairs:
                 continue
             seen_pairs.add(pair_key)
