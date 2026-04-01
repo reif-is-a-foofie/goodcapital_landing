@@ -429,6 +429,34 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     padding-left: 8px;
     margin-left: -8px;
 }
+.source-para-linked {
+    cursor: pointer;
+}
+.source-para-linked:hover {
+    background: rgba(156,122,77,0.06);
+    border-radius: 4px;
+}
+.source-para-active {
+    background: rgba(156,122,77,0.14);
+    box-shadow: inset 3px 0 0 var(--accent);
+    border-radius: 4px;
+    padding-left: 8px;
+    margin-left: -8px;
+}
+/* Discovery panel inside channel */
+.disc-header {
+    font-size: 11px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--muted); padding: 12px 16px 6px;
+    border-bottom: 1px solid var(--divider);
+}
+.disc-verse-row {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 8px 16px; cursor: pointer; border-bottom: 1px solid var(--divider);
+}
+.disc-verse-row:hover { background: rgba(156,122,77,0.07); }
+.disc-verse-ref { font-size: 13px; font-weight: 500; color: var(--accent); flex: 1; }
+.disc-verse-score { font-size: 11px; color: var(--muted); flex-shrink: 0; }
+.disc-verse-text { font-size: 12px; color: var(--muted); padding: 0 16px 10px; line-height: 1.5; }
 
 /* ── Channel panel ── */
 #channel {
@@ -712,6 +740,7 @@ var sourceTocData = [];
 var tocTree = { front: null, volumes: [], sources: [] };
 var chapterMeta = {};
 var sourceMeta = {};
+var sourceLinks = {};   // doc_id → {para_idx → [{book,ch,v,score,ref}]}
 var tocPath = { level: 'root', volume: null, book: null, sourceCollection: null };
 var chapterOrder = [];          // ordered array of chapter ids
 var loadedChapters = new Set(); // ids already in DOM
@@ -875,10 +904,12 @@ function buildSourceTree(items) {
 // ── Load TOC ─────────────────────────────────────────────────────────────
 Promise.all([
     fetch('./toc.json').then(function(r) { return r.json(); }),
-    fetch('./source_toc.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; })
+    fetch('./source_toc.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; }),
+    fetch('./source_links.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; })
 ]).then(function(results) {
         var data = results[0];
         var sourceData = results[1] || [];
+        sourceLinks = results[2] || {};
         tocData = data;
         sourceTocData = sourceData;
         tocTree = buildTocTree(data);
@@ -1419,6 +1450,67 @@ function annotateSourceBlock(block, wordsIndex) {
     });
 }
 
+function markLinkedSourceParas(block, docId) {
+    var docLinks = sourceLinks[docId];
+    if (!docLinks) return;
+    Array.from(block.querySelectorAll('p.source-para')).forEach(function(node, idx) {
+        var paraIdx = String(idx + 1);
+        if (docLinks[paraIdx] && docLinks[paraIdx].length) {
+            node.dataset.paraIdx = paraIdx;
+            node.classList.add('source-para-linked');
+        }
+    });
+}
+
+function openSourceParaDiscovery(block, paraNode) {
+    // Remove previous active state
+    Array.from(block.querySelectorAll('.source-para-active')).forEach(function(n) {
+        n.classList.remove('source-para-active');
+    });
+    paraNode.classList.add('source-para-active');
+
+    var docId   = (block.dataset.sourceDocId || currentSourceDoc || '');
+    var paraIdx = paraNode.dataset.paraIdx || '';
+    var refs    = (sourceLinks[docId] && sourceLinks[docId][paraIdx]) || [];
+
+    // Set channel header
+    document.getElementById('ch-word').textContent = 'Verses echoing this passage';
+
+    // Build channel list content
+    var html = '';
+    if (!refs.length) {
+        html = '<div class="ch-empty">No linked verses indexed for this paragraph.</div>';
+    } else {
+        refs.slice(0, 15).forEach(function(r) {
+            var pct  = Math.round(r.score * 100);
+            var dots = scoreDots(r.score);
+            html += '<div class="disc-verse-row" data-book="' + escapeAttr(r.book) +
+                    '" data-ch="' + r.ch + '" data-v="' + r.v + '">' +
+                    '<div class="ch-morsel-src">' +
+                    '<span class="disc-verse-ref">' + escapeHtml(r.ref) + '</span>' +
+                    '<span class="ch-score-dots">' + dots + '</span>' +
+                    '</div>' +
+                    '</div>';
+        });
+    }
+
+    var chList = document.getElementById('ch-list');
+    chList.innerHTML = html;
+    document.getElementById('channel').classList.add('open');
+    channelOpen = true;
+
+    // Click on a verse row → navigate to that verse
+    chList.querySelectorAll('.disc-verse-row').forEach(function(row) {
+        row.addEventListener('click', function() {
+            var book = row.dataset.book;
+            var ch   = parseInt(row.dataset.ch, 10);
+            var v    = parseInt(row.dataset.v, 10);
+            var bookSlug = book.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+            jumpTo(bookSlug + '_' + ch, v);
+        });
+    });
+}
+
 function sanitizeEscapedConnectionMarkup(root) {
     if (!root) return;
     Array.from(root.querySelectorAll('.verse-text, .source-para, .donaldson-para')).forEach(function(node) {
@@ -1459,6 +1551,7 @@ function loadSourceDocument(docId, href, opts) {
             document.getElementById('content').appendChild(block);
             return loadSourceWordIndex(docId).then(function(idx) {
                 annotateSourceBlock(block, idx || {});
+                markLinkedSourceParas(block, docId);
                 renderTocView();
                 updateLocationLabel(docId);
                 var para = null;
@@ -2478,6 +2571,14 @@ document.getElementById('content').addEventListener('click', function(e) {
     // Word click handled separately below — don't toggle verse for word clicks
     if (e.target.closest('span.w')) return;
     if (e.target.closest('a.ref-link, a.backlink-ref')) return;
+
+    // Source paragraph with verse back-links
+    var para = e.target.closest('p.source-para-linked');
+    if (para) {
+        var block = para.closest('.chapter-block');
+        if (block) { openSourceParaDiscovery(block, para); return; }
+    }
+
     var verse = e.target.closest('div.verse');
     if (!verse) return;
     focusVerse(verse, true);
