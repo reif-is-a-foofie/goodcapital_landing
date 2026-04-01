@@ -1,31 +1,55 @@
-Source scout run: 2026-03-31T17:28:39+00:00
+Source scout run: 2026-04-01T02:59:08+00:00
 Mission: AGENT_MISSION.md
 Profile: agents/source_scout_profile.md
 Existing collections: 10
 
-Query: public domain pseudepigrapha ancient Jewish texts scripture commentary site:gute
-  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+Query: Bhagavad Gita public domain English translation
+  SKIP  Devi-Gita
+        relevance fail (0.10): no relevant keywords found in title or page snippet
+  PASS  A Study Of The Bhagavata Purana
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.58 — relevant — 3 keyword matches: yoga, bhagavata, krishna
+        task: T-0076
+  SKIP  Text And Translation
+        relevance fail (0.10): no relevant keywords found in title or page snippet
+  PASS  Sankhya Aphorisms
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.64 — relevant — 4 keyword matches: philo, vedanta, veda, yoga
+        task: T-0077
 
-Query: early Christian writings public domain theology scripture site:ccel.org OR site:
-  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+Query: Dhammapada Buddhist scripture public domain translation
+  no results returned
 
-Query: Nag Hammadi texts public domain translation scripture study
-  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+Query: Tao Te Ching public domain English translation
+  PASS  Navigating Virtue: The Classic of the Way and Virtue
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.52 — relevant — 2 keyword matches: tao te ching, taoism
+        task: T-0078
+  SKIP  The Tao of Holding Space
+        relevance fail (0.46): relevant — 1 keyword matches: tao te ching
 
-Query: Dead Sea Scrolls translation public domain online text
-  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+Query: Upanishads public domain English translation Müller
+  PASS  Upanishads
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.58 — relevant — 3 keyword matches: upanishads, veda, sacred
+        task: T-0079
 
-Query: midrash rabbinic commentary public domain English translation site:archive.org
-  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+Query: Quran public domain English translation Sale Rodwell
+  no results returned
 
-Query: Joseph Smith restoration theology public domain 19th century
-  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+Query: pseudepigrapha ancient Jewish texts public domain scripture
+  no results returned
 
-Query: ancient Near East creation flood texts public domain translation site:gutenberg.
-  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+Query: Nag Hammadi Gnostic texts public domain translation
+  no results returned
 
-Query: Philo of Alexandria works public domain English translation site:ccel.org OR sit
-  ERROR: search API error: "Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+Query: Philo of Alexandria works public domain English translation
+  no results returned
 
-Summary: queries=8 found=0 evaluated=0 passed=0 tasks_created=0
-Errors: 8
+Query: Midrash rabbinic commentary public domain English translation
+  no results returned
+
+Query: Plotinus Enneads public domain English translation
+  no results returned
+
+Summary: queries=10 found=7 evaluated=7 passed=4 tasks_created=4

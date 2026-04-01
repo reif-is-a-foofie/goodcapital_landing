@@ -19,3 +19,10 @@
   "errors": 8,
   "report": "diagnostics/source-scout-latest.json"
 }
+{
+  "agent": "SourceScout",
+  "candidates_passed": 0,
+  "tasks_created": 0,
+  "errors": 8,
+  "report": "diagnostics/source-scout-latest.json"
+}

@@ -138,3 +138,59 @@ Traceback (most recent call last):
   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
     raise child_exception_type(errno_num, err_msg, err_filename)
 FileNotFoundError: [Errno 2] No such file or directory: 'node'
+Traceback (most recent call last):
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 240, in <module>
+    raise SystemExit(main())
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 210, in main
+    result = run(check.cmd)
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 77, in run
+    proc = subprocess.run(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'node'
+Traceback (most recent call last):
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 240, in <module>
+    raise SystemExit(main())
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 210, in main
+    result = run(check.cmd)
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 77, in run
+    proc = subprocess.run(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'node'
+Traceback (most recent call last):
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 240, in <module>
+    raise SystemExit(main())
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 210, in main
+    result = run(check.cmd)
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 77, in run
+    proc = subprocess.run(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'node'
+Traceback (most recent call last):
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 240, in <module>
+    raise SystemExit(main())
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 210, in main
+    result = run(check.cmd)
+  File "/Users/reify/Classified/goodcapital_landing/beta_tester.py", line 77, in run
+    proc = subprocess.run(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'node'

@@ -48,16 +48,21 @@ TRUSTED_DOMAINS = {
     "newadvent.org",
 }
 
-# Search queries aimed at gaps in the current corpus
+# Archive.org subject/keyword queries for each gap in the corpus.
+# These are used by both the Archive.org backend (keyword search) and
+# the Brave backend (full web search).  Keep them specific enough to
+# surface primary source texts rather than study guides.
 SEARCH_QUERIES = [
-    "public domain pseudepigrapha ancient Jewish texts scripture commentary site:gutenberg.org OR site:archive.org",
-    "early Christian writings public domain theology scripture site:ccel.org OR site:earlychristianwritings.com",
-    "Nag Hammadi texts public domain translation scripture study",
-    "Dead Sea Scrolls translation public domain online text",
-    "midrash rabbinic commentary public domain English translation site:archive.org",
-    "Joseph Smith restoration theology public domain 19th century",
-    "ancient Near East creation flood texts public domain translation site:gutenberg.org",
-    "Philo of Alexandria works public domain English translation site:ccel.org OR site:gutenberg.org",
+    "Bhagavad Gita public domain English translation",
+    "Dhammapada Buddhist scripture public domain translation",
+    "Tao Te Ching public domain English translation",
+    "Upanishads public domain English translation Müller",
+    "Quran public domain English translation Sale Rodwell",
+    "pseudepigrapha ancient Jewish texts public domain scripture",
+    "Nag Hammadi Gnostic texts public domain translation",
+    "Philo of Alexandria works public domain English translation",
+    "Midrash rabbinic commentary public domain English translation",
+    "Plotinus Enneads public domain English translation",
 ]
 
 
@@ -197,8 +202,9 @@ def score_relevance(title: str, snippet: str, collections: list[dict]) -> tuple[
     existing_labels = " ".join(c.get("label", "") for c in collections).lower()
     existing_ids = " ".join(c.get("id", "") for c in collections).lower()
 
-    # High-value keywords for this corpus
+    # High-value keywords for this corpus — both Abrahamic and cross-tradition
     HIGH_VALUE = [
+        # Abrahamic / LDS
         "scripture", "bible", "testament", "enoch", "apocrypha", "pseudepigrapha",
         "nag hammadi", "dead sea scrolls", "midrash", "talmud", "targum", "mishnah",
         "church fathers", "origen", "clement", "irenaeus", "tertullian", "justin martyr",
@@ -206,6 +212,26 @@ def score_relevance(title: str, snippet: str, collections: list[dict]) -> tuple[
         "theological", "covenant", "atonement", "resurrection", "creation", "flood",
         "ancient near east", "ugaritic", "biblical", "hebrew", "greek testament",
         "septuagint", "lxx", "vulgate", "dead sea", "qumran",
+        # Hindu / Vedic
+        "bhagavad gita", "upanishads", "vedanta", "veda", "vedic", "brahman",
+        "atman", "dharma", "karma", "yoga", "sanskrit", "mahabharata", "ramayana",
+        "puranas", "bhagavata", "vishnu", "shiva", "brahma", "krishna", "arjuna",
+        # Buddhist
+        "dhammapada", "buddhist", "buddhism", "pali canon", "suttas", "nirvana",
+        "eightfold path", "four noble truths", "theravada", "mahayana", "zen",
+        "lotus sutra", "diamond sutra", "heart sutra",
+        # Taoist / Chinese
+        "tao te ching", "taoism", "taoist", "confucius", "analects", "i ching",
+        "lao tzu", "chuang tzu", "wu wei",
+        # Sufi / Islamic mysticism
+        "sufi", "sufism", "rumi", "hafiz", "quran", "koran", "islam", "islamic",
+        "al-ghazali", "ibn arabi",
+        # Ancient / Hermetic
+        "hermetica", "hermeticism", "plotinus", "neoplatonism", "enneads",
+        "plato", "platonic", "mystery", "mysticism", "mystical",
+        # General spiritual
+        "spiritual", "wisdom", "enlightenment", "meditation", "sacred", "holy",
+        "eternal", "divine", "soul", "spirit", "prayer", "revelation",
     ]
 
     text = (title + " " + snippet).lower()
@@ -225,52 +251,112 @@ def score_relevance(title: str, snippet: str, collections: list[dict]) -> tuple[
     return score, f"relevant — {len(matched)} keyword matches: {', '.join(matched[:6])}"
 
 
+def _search_archive_org(query: str) -> list[dict]:
+    """
+    Search Internet Archive for public-domain texts matching query.
+    Free, no API key required.
+    Returns list of dicts with keys: title, url, snippet.
+    """
+    import urllib.parse
+
+    # mediatype filter must live inside the query string, not as a separate param
+    full_query = f"{query} AND mediatype:texts"
+    params = urllib.parse.urlencode({"q": full_query, "output": "json", "rows": "5"})
+    api_url = (
+        f"https://archive.org/advancedsearch.php?{params}"
+        "&fl[]=identifier&fl[]=title&fl[]=description&fl[]=subject"
+    )
+    req = urllib.request.Request(
+        api_url,
+        headers={"User-Agent": "TheGoodProject-SourceScout/1.0 (research; public domain text discovery)"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8", errors="replace"))
+    except Exception as exc:
+        return [{"_error": f"archive.org API error: {exc}"}]
+
+    docs = data.get("response", {}).get("docs", [])
+    results = []
+    for doc in docs:
+        identifier = doc.get("identifier", "")
+        if not identifier:
+            continue
+        title = doc.get("title", identifier)
+        if isinstance(title, list):
+            title = title[0] if title else identifier
+        desc = doc.get("description", "")
+        if isinstance(desc, list):
+            desc = " ".join(desc)
+        subj = doc.get("subject", [])
+        if isinstance(subj, list):
+            subj = ", ".join(subj[:4])
+        snippet = (desc[:200] + " | " + subj).strip(" |")
+        url = f"https://archive.org/details/{identifier}"
+        results.append({"title": str(title), "url": url, "snippet": snippet})
+    return results
+
+
+def _search_brave(query: str, api_key: str) -> list[dict]:
+    """
+    Brave Search API (free tier: 2,000 queries/month, no credit card).
+    Get a free key at https://api.search.brave.com
+    Returns list of dicts with keys: title, url, snippet.
+    """
+    import urllib.parse
+
+    params = urllib.parse.urlencode({"q": query, "count": "5"})
+    api_url = f"https://api.search.brave.com/res/v1/web/search?{params}"
+    req = urllib.request.Request(
+        api_url,
+        headers={
+            "Accept": "application/json",
+            "Accept-Encoding": "gzip",
+            "X-Subscription-Token": api_key,
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            raw = resp.read()
+            # Handle gzip if returned
+            try:
+                import gzip as _gzip
+                raw = _gzip.decompress(raw)
+            except Exception:
+                pass
+            data = json.loads(raw.decode("utf-8", errors="replace"))
+    except Exception as exc:
+        return [{"_error": f"Brave API error: {exc}"}]
+
+    results = []
+    for item in data.get("web", {}).get("results", []):
+        results.append({
+            "title": item.get("title", ""),
+            "url": item.get("url", ""),
+            "snippet": item.get("description", ""),
+        })
+    return results
+
+
 def run_web_search(query: str) -> list[dict]:
     """
-    Use the Anthropic SDK with web_search tool to find candidate URLs.
-    Returns a list of dicts with keys: title, url, snippet.
-    Falls back to empty list on any error.
-    """
-    try:
-        import anthropic  # type: ignore
-    except ImportError:
-        return []
+    Search for public-domain text candidates.
 
-    try:
-        client = anthropic.Anthropic()
-        response = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=1024,
-            tools=[{"type": "web_search_20250305", "name": "web_search"}],
-            messages=[
-                {
-                    "role": "user",
-                    "content": (
-                        f"Search for: {query}\n\n"
-                        "Return the top 3 results as a JSON array with fields: "
-                        "title, url, snippet. "
-                        "Only include results that are clearly primary source texts "
-                        "(not blog posts or study guides). "
-                        "Respond with only the JSON array, nothing else."
-                    ),
-                }
-            ],
-        )
-        # Extract text content from response
-        for block in response.content:
-            if hasattr(block, "text"):
-                text = block.text.strip()
-                # Find JSON array in the response
-                import re
-                m = re.search(r'\[.*\]', text, re.DOTALL)
-                if m:
-                    try:
-                        return json.loads(m.group(0))
-                    except Exception:
-                        pass
-        return []
-    except Exception as exc:
-        return [{"_error": str(exc)}]
+    Backend priority:
+      1. Brave Search API  — if BRAVE_API_KEY env var is set
+                             (free tier, get key at api.search.brave.com)
+      2. Internet Archive  — always available, no key required
+    Returns list of dicts with keys: title, url, snippet.
+    """
+    import os
+    brave_key = os.environ.get("BRAVE_API_KEY", "").strip()
+    if brave_key:
+        results = _search_brave(query, brave_key)
+        # Fall through to Archive.org if Brave returned an error
+        if results and "_error" not in results[0]:
+            return results
+
+    return _search_archive_org(query)
 
 
 def evaluate_candidate(title: str, url: str, snippet_from_search: str, collections: list[dict]) -> dict:
