@@ -1,0 +1,82 @@
+{
+  "ts": "2026-04-01T15:08:36+00:00",
+  "task_id": "T-0110",
+  "agent": "source-ingestor",
+  "dry_run": true,
+  "steps": [
+    {
+      "step": "parse_task",
+      "ok": true,
+      "detail": "title='The Apocrypha and Pseudepigrapha Of The Old Testament In English' url=https://archive.org/details/workstowhichare00josegoog copyright=1.0 relevance=0.64"
+    },
+    {
+      "step": "score_gate",
+      "ok": true,
+      "detail": "copyright=1.0 >= 0.7, relevance=0.64 >= 0.5"
+    },
+    {
+      "step": "resolve_url",
+      "ok": true,
+      "detail": "archive.org → workstowhichare00josegoog_djvu.txt"
+    },
+    {
+      "step": "fetch",
+      "ok": true,
+      "detail": "78777 words fetched"
+    },
+    {
+      "step": "select_group",
+      "ok": true,
+      "detail": "group='pseudepigrapha' → cache=lds_pipeline/cache/pseudepigrapha"
+    },
+    {
+      "step": "write_cache",
+      "ok": true,
+      "detail": "lds_pipeline/cache/pseudepigrapha/the_apocrypha_and_pseudepigrapha_of_the_old_testament_in_english.txt (78777 words)"
+    },
+    {
+      "step": "build_source_library",
+      "ok": true,
+      "detail": "skipped (dry run)"
+    },
+    {
+      "step": "build_source_words",
+      "ok": true,
+      "detail": "skipped (dry run)"
+    },
+    {
+      "step": "build_search_index",
+      "ok": true,
+      "detail": "skipped (dry run)"
+    },
+    {
+      "step": "build_source_dashboard",
+      "ok": true,
+      "detail": "skipped (dry run)"
+    },
+    {
+      "step": "create_review_task",
+      "ok": true,
+      "detail": "skipped (dry run)"
+    },
+    {
+      "step": "complete_task",
+      "ok": true,
+      "detail": "skipped (dry run)"
+    }
+  ],
+  "outcome": "dry_run_success",
+  "meta": {
+    "task_id": "T-0110",
+    "raw_title": "Source Scout: ingest 'The Apocrypha and Pseudepigrapha Of The Old Testament In English' — copyright=1.00 (trusted archive domain (archive.org)), relevance=0.64 (relevant — 4 keyword matches: testament, pseudepigrapha, apocrypha, old testament) — URL: https://archive.org/details/apocryphapseudep0002rhch_e2s5",
+    "title": "The Apocrypha and Pseudepigrapha Of The Old Testament In English",
+    "url": "https://archive.org/details/apocryphapseudep0002rhch_e2s5",
+    "copyright_score": 1.0,
+    "copyright_reason": "trusted archive domain (archive.org",
+    "relevance_score": 0.64,
+    "relevance_reason": "relevant — 4 keyword matches: testament, pseudepigrapha, apocrypha, old testament",
+    "error": ""
+  },
+  "group": "pseudepigrapha",
+  "cache_file": "lds_pipeline/cache/pseudepigrapha/the_apocrypha_and_pseudepigrapha_of_the_old_testament_in_english.txt"
+}

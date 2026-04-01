@@ -29465,6 +29465,13 @@
         "meta": "2901 paragraphs"
       },
       {
+        "id": "gutenberg_lds:jesus_the_christ_a_study_of_the_messiah_and_his_mission_according_to_holy_scriptures_both_ancient_and_modern",
+        "label": "Jesus The Christ A Study Of The Messiah And His Mission According To Holy Scriptures Both Ancient And Modern",
+        "href": "sources/gutenberg_lds/jesus_the_christ_a_study_of_the_messiah_and_his_mission_according_to_holy_scriptures_both_ancient_and_modern.html",
+        "paragraphs": 691,
+        "meta": "691 paragraphs"
+      },
+      {
         "id": "gutenberg_lds:lucy_mack_smith",
         "label": "Lucy Mack Smith",
         "href": "sources/gutenberg_lds/lucy_mack_smith.html",
@@ -29534,6 +29541,20 @@
         "href": "sources/church_fathers/anf_vol6.html",
         "paragraphs": 53,
         "meta": "Ante-Nicene Fathers"
+      },
+      {
+        "id": "church_fathers:the_ante_nicene_fathers_translations_of_the_writings_of_the_fathers_down_to_a_d_325",
+        "label": "The Ante Nicene Fathers Translations Of The Writings Of The Fathers Down To A D 325",
+        "href": "sources/church_fathers/the_ante_nicene_fathers_translations_of_the_writings_of_the_fathers_down_to_a_d_325.html",
+        "paragraphs": 840,
+        "meta": "Ante-Nicene Fathers"
+      },
+      {
+        "id": "church_fathers:the_apostolic_fathers",
+        "label": "The Apostolic Fathers",
+        "href": "sources/church_fathers/the_apostolic_fathers.html",
+        "paragraphs": 621,
+        "meta": "Ante-Nicene Fathers"
       }
     ]
   },
@@ -29584,6 +29605,20 @@
         "href": "sources/ancient_texts/testament_twelve_patriarchs.html",
         "paragraphs": 1016,
         "meta": "1016 paragraphs"
+      },
+      {
+        "id": "ancient_texts:the_works_of_josephus_complete_and_unabridged",
+        "label": "The Works Of Josephus Complete And Unabridged",
+        "href": "sources/ancient_texts/the_works_of_josephus_complete_and_unabridged.html",
+        "paragraphs": 547,
+        "meta": "547 paragraphs"
+      },
+      {
+        "id": "ancient_texts:the_works_of_philo_complete_and_unabridged",
+        "label": "The Works Of Philo Complete And Unabridged",
+        "href": "sources/ancient_texts/the_works_of_philo_complete_and_unabridged.html",
+        "paragraphs": 614,
+        "meta": "614 paragraphs"
       }
     ]
   }

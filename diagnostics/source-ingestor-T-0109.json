@@ -1,0 +1,83 @@
+{
+  "ts": "2026-04-01T15:12:59+00:00",
+  "task_id": "T-0109",
+  "agent": "source-ingestor",
+  "dry_run": false,
+  "steps": [
+    {
+      "step": "parse_task",
+      "ok": true,
+      "detail": "title='The Apostolic fathers' url=https://archive.org/details/apostolicfathers02lakeuoft copyright=1.0 relevance=0.64"
+    },
+    {
+      "step": "score_gate",
+      "ok": true,
+      "detail": "copyright=1.0 >= 0.7, relevance=0.64 >= 0.5"
+    },
+    {
+      "step": "resolve_url",
+      "ok": true,
+      "detail": "archive.org → apostolicfathers02lakeuoft_djvu.txt"
+    },
+    {
+      "step": "fetch",
+      "ok": true,
+      "detail": "63352 words fetched"
+    },
+    {
+      "step": "select_group",
+      "ok": true,
+      "detail": "group='church_fathers' → cache=lds_pipeline/cache/church_fathers"
+    },
+    {
+      "step": "write_cache",
+      "ok": true,
+      "detail": "lds_pipeline/cache/church_fathers/the_apostolic_fathers.txt (63352 words)"
+    },
+    {
+      "step": "build_source_library",
+      "ok": true,
+      "detail": "ts\nPioneer Journals: 2 documents\nEarly LDS Writings: 5 documents\nChurch Fathers: 8 documents\nAncient Texts: 6 documents\n\nDone. 4159 source documents written → /Users/reify/Classified/goodcapital_landing/library/sources\nSource TOC → /Users/reify/Classified/goodcapital_landing/library/source_toc.json\n"
+    },
+    {
+      "step": "build_source_words",
+      "ok": true,
+      "detail": "\nchurch_fathers :: Volume 5: 241 annotated paragraphs\nchurch_fathers :: Volume 6: 53 annotated paragraphs\nchurch_fathers :: The Ante Nicene Fathers Translations Of The Writings Of The Fathers Down To A D 325: 811 annotated paragraphs\nchurch_fathers :: The Apostolic Fathers: 572 annotated paragraphs\n"
+    },
+    {
+      "step": "build_search_index",
+      "ok": true,
+      "detail": "Processing 1583 chapter files…\nDone. 5741 chapters indexed, 1 skipped. Output: /Users/reify/Classified/goodcapital_landing/library/search.json  (13236 KB)\n"
+    },
+    {
+      "step": "build_source_dashboard",
+      "ok": true,
+      "detail": "4159,\n  \"docs_with_words\": 4159,\n  \"paragraphs\": 158506,\n  \"annotated_paragraphs\": 157645,\n  \"matched_paragraphs\": 157645,\n  \"doc_coverage_pct\": 100.0,\n  \"annotated_pct\": 99.5,\n  \"linked_pct\": 99.5\n}\n"
+    },
+    {
+      "step": "create_review_task",
+      "ok": true,
+      "detail": "T-0115"
+    },
+    {
+      "step": "complete_task",
+      "ok": true,
+      "detail": "Ingested 'The Apostolic fathers' → church_fathers (copyright=1.0, relevance=0.64). Library updated. "
+    }
+  ],
+  "outcome": "success",
+  "meta": {
+    "task_id": "T-0109",
+    "raw_title": "Source Scout: ingest 'The Apostolic fathers' — copyright=1.00 (trusted archive domain (archive.org)), relevance=0.64 (relevant — 4 keyword matches: epistle, clement, didache, apostolic) — URL: https://archive.org/details/apostolicfathers02lakeuoft",
+    "title": "The Apostolic fathers",
+    "url": "https://archive.org/details/apostolicfathers02lakeuoft",
+    "copyright_score": 1.0,
+    "copyright_reason": "trusted archive domain (archive.org",
+    "relevance_score": 0.64,
+    "relevance_reason": "relevant — 4 keyword matches: epistle, clement, didache, apostolic",
+    "error": ""
+  },
+  "group": "church_fathers",
+  "cache_file": "lds_pipeline/cache/church_fathers/the_apostolic_fathers.txt",
+  "review_task_id": "T-0115"
+}

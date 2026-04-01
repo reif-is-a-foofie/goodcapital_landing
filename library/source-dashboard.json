@@ -1,27 +1,40 @@
 {
   "totals": {
     "collections": 10,
-    "docs": 4156,
-    "docs_with_words": 4156,
-    "paragraphs": 156354,
-    "annotated_paragraphs": 155603,
-    "matched_paragraphs": 155603,
+    "docs": 4161,
+    "docs_with_words": 4161,
+    "paragraphs": 159667,
+    "annotated_paragraphs": 158496,
+    "matched_paragraphs": 158496,
     "doc_coverage_pct": 100.0,
-    "annotated_pct": 99.5,
-    "linked_pct": 99.5
+    "annotated_pct": 99.3,
+    "linked_pct": 99.3
   },
   "collections": [
     {
+      "id": "ancient_texts",
+      "label": "Ancient Texts",
+      "docs": 8,
+      "docs_with_words": 8,
+      "paragraphs": 5565,
+      "annotated_paragraphs": 5241,
+      "matched_paragraphs": 5241,
+      "doc_coverage_pct": 100.0,
+      "annotated_pct": 94.2,
+      "linked_pct": 94.2,
+      "recursive": true
+    },
+    {
       "id": "church_fathers",
       "label": "Church Fathers",
-      "docs": 6,
-      "docs_with_words": 6,
-      "paragraphs": 3251,
-      "annotated_paragraphs": 3148,
-      "matched_paragraphs": 3148,
+      "docs": 8,
+      "docs_with_words": 8,
+      "paragraphs": 4712,
+      "annotated_paragraphs": 4516,
+      "matched_paragraphs": 4516,
       "doc_coverage_pct": 100.0,
-      "annotated_pct": 96.8,
-      "linked_pct": 96.8,
+      "annotated_pct": 95.8,
+      "linked_pct": 95.8,
       "recursive": true
     },
     {
@@ -77,13 +90,13 @@
       "recursive": true
     },
     {
-      "id": "ancient_texts",
-      "label": "Ancient Texts",
-      "docs": 6,
-      "docs_with_words": 6,
-      "paragraphs": 4404,
-      "annotated_paragraphs": 4390,
-      "matched_paragraphs": 4390,
+      "id": "gutenberg_lds",
+      "label": "Early LDS Writings",
+      "docs": 5,
+      "docs_with_words": 5,
+      "paragraphs": 7279,
+      "annotated_paragraphs": 7259,
+      "matched_paragraphs": 7259,
       "doc_coverage_pct": 100.0,
       "annotated_pct": 99.7,
       "linked_pct": 99.7,
@@ -113,19 +126,6 @@
       "doc_coverage_pct": 100.0,
       "annotated_pct": 99.9,
       "linked_pct": 99.9,
-      "recursive": true
-    },
-    {
-      "id": "gutenberg_lds",
-      "label": "Early LDS Writings",
-      "docs": 4,
-      "docs_with_words": 4,
-      "paragraphs": 6588,
-      "annotated_paragraphs": 6585,
-      "matched_paragraphs": 6585,
-      "doc_coverage_pct": 100.0,
-      "annotated_pct": 100.0,
-      "linked_pct": 100.0,
       "recursive": true
     },
     {

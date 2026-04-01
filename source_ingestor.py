@@ -90,6 +90,7 @@ GROUP_KEYWORDS: list[tuple[str, list[str]]] = [
                           "josephus", "philo of alexandria", "akkadian"]),
     ("pioneer_journals", ["pioneer", "wilford woodruff", "heber kimball", "brigham young journal"]),
     ("nauvoo_theology",  ["nauvoo", "times and seasons", "millennial star"]),
+    ("bh_roberts",        ["b.h. roberts", "comprehensive history", "seventy's course", "defense of the faith"]),
     ("history_of_church", ["history of the church", "joseph smith history"]),
     ("joseph_smith_papers", ["joseph smith papers"]),
     ("journal_of_discourses", ["journal of discourses"]),
@@ -293,6 +294,43 @@ class _TextExtractor(HTMLParser):
         return raw.strip()
 
 
+def resolve_archive_org_url(url: str) -> str:
+    """
+    If url is an archive.org/details/{identifier} page, resolve it to the
+    best available plain-text download URL using the metadata API.
+    Returns the original url unchanged if not an archive.org details link
+    or if resolution fails.
+    """
+    m = re.match(r'https?://archive\.org/details/([^/?#]+)', url)
+    if not m:
+        return url
+    identifier = m.group(1)
+    meta_url = f"https://archive.org/metadata/{identifier}/files"
+    try:
+        req = urllib.request.Request(
+            meta_url,
+            headers={"User-Agent": "TheGoodProject-Ingestor/1.0 (research; public-domain text ingestion)"},
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8", errors="replace"))
+    except Exception:
+        return url
+
+    files = data.get("result", [])
+    # Prefer: full .txt → _djvu.txt → _abbyy.gz (skip images/zips/pdfs)
+    txt_files = [f["name"] for f in files if isinstance(f, dict) and f.get("name", "").endswith(".txt")]
+    djvu_files = [f["name"] for f in files if isinstance(f, dict) and f.get("name", "").endswith("_djvu.txt")]
+    # Pick shortest name (usually the primary text file, not _meta.txt)
+    candidates = [n for n in txt_files if not n.endswith("_meta.txt") and not n.endswith("_files.xml")]
+    if not candidates:
+        candidates = djvu_files
+    if not candidates:
+        return url  # fall through — let fetch deal with the HTML page
+
+    best = sorted(candidates, key=len)[0]
+    return f"https://archive.org/download/{identifier}/{best}"
+
+
 def fetch_and_clean(url: str, max_bytes: int = 500_000) -> tuple[str, str]:
     """
     Fetch URL and return (clean_plaintext, error_string).
@@ -406,7 +444,8 @@ def write_report(task_id: str, report: dict) -> Path:
 
 # ── Main ingest logic ────────────────────────────────────────────────────────
 
-def ingest(task_id: str, forced_group: Optional[str] = None, dry_run: bool = False) -> int:
+def ingest(task_id: str, forced_group: Optional[str] = None, dry_run: bool = False,
+           url_override: Optional[str] = None) -> int:
     """
     Full ingest pipeline for a single task.
     Returns 0 on success, 1 on error, 2 if routed to human review.
@@ -451,7 +490,7 @@ def ingest(task_id: str, forced_group: Optional[str] = None, dry_run: bool = Fal
         write_report(task_id, report)
         return 1
 
-    url = meta["url"]
+    url = url_override or meta["url"]
     title = meta["title"]
     copyright_score = meta["copyright_score"]
     relevance_score = meta["relevance_score"]
@@ -471,6 +510,12 @@ def ingest(task_id: str, forced_group: Optional[str] = None, dry_run: bool = Fal
             f"reason: {meta.get('relevance_reason', 'unknown')}",
         )
     step("score_gate", True, f"copyright={copyright_score} >= {COPYRIGHT_PASS}, relevance={relevance_score} >= {RELEVANCE_PASS}")
+
+    # ── Step 2b: Resolve archive.org details URL to actual text file ─────────
+    resolved_url = resolve_archive_org_url(url)
+    if resolved_url != url:
+        step("resolve_url", True, f"archive.org → {resolved_url.split('/')[-1]}")
+        url = resolved_url
 
     # ── Step 3: Fetch and clean ──────────────────────────────────────────────
     print(f"\n[3] Fetching {url}...")
@@ -662,10 +707,15 @@ def main() -> int:
         "--dry-run", action="store_true",
         help="Parse and validate but do not write files or mutate the ledger",
     )
+    parser.add_argument(
+        "--url",
+        default=None,
+        help="Override the URL from the task (useful when the scout found a restricted scan)",
+    )
     args = parser.parse_args()
 
     try:
-        return ingest(args.task_id, forced_group=args.group, dry_run=args.dry_run)
+        return ingest(args.task_id, forced_group=args.group, dry_run=args.dry_run, url_override=args.url)
     except KeyboardInterrupt:
         print("\nInterrupted.", file=sys.stderr)
         return 1
