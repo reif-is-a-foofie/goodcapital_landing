@@ -48,21 +48,28 @@ TRUSTED_DOMAINS = {
     "newadvent.org",
 }
 
-# Archive.org subject/keyword queries for each gap in the corpus.
-# These are used by both the Archive.org backend (keyword search) and
-# the Brave backend (full web search).  Keep them specific enough to
-# surface primary source texts rather than study guides.
+# Archive.org queries targeting gaps in the LDS / Christian / Jewish corpus.
+# Priority order: LDS primary sources → widely-cited Christianity → Judaism as root.
+# Quality bar: prefer primary texts and patristic/scholarly editions over commentary.
+# Queries are tuned to Archive.org full-text search — use quoted phrases for precision.
 SEARCH_QUERIES = [
-    "Bhagavad Gita public domain English translation",
-    "Dhammapada Buddhist scripture public domain translation",
-    "Tao Te Ching public domain English translation",
-    "Upanishads public domain English translation Müller",
-    "Quran public domain English translation Sale Rodwell",
-    "pseudepigrapha ancient Jewish texts public domain scripture",
-    "Nag Hammadi Gnostic texts public domain translation",
-    "Philo of Alexandria works public domain English translation",
-    "Midrash rabbinic commentary public domain English translation",
-    "Plotinus Enneads public domain English translation",
+    # LDS — key theologians, all pre-1928 (US public domain)
+    'talmage "jesus the christ"',
+    'talmage "articles of faith"',
+    '"B.H. Roberts" "comprehensive history" "latter-day saints"',
+    '"parley pratt" theology',
+    '"orson pratt" theology',
+    # Christianity — Schaff patristic series, the gold standard PD edition
+    'schaff "post-nicene fathers" augustine',
+    'schaff "post-nicene fathers" chrysostom eusebius',
+    '"ante-nicene fathers" tertullian origen clement',
+    '"ante-nicene christian library" fathers translation',
+    '"apostolic fathers" didache early christian translation',
+    # Judaism — R.H. Charles 1913 editions (PD), Philo, Josephus
+    '"R.H. Charles" pseudepigrapha "old testament"',
+    '"R.H. Charles" apocrypha "old testament"',
+    '"philo" "alexandria" yonge translation',
+    '"wars of the jews" josephus whiston',
 ]
 
 
@@ -202,36 +209,33 @@ def score_relevance(title: str, snippet: str, collections: list[dict]) -> tuple[
     existing_labels = " ".join(c.get("label", "") for c in collections).lower()
     existing_ids = " ".join(c.get("id", "") for c in collections).lower()
 
-    # High-value keywords for this corpus — both Abrahamic and cross-tradition
+    # High-value keywords: LDS first, then widely-cited Christianity, then Judaism.
+    # Quality bar: prefer primary sources and patristic/scholarly editions.
     HIGH_VALUE = [
-        # Abrahamic / LDS
-        "scripture", "bible", "testament", "enoch", "apocrypha", "pseudepigrapha",
-        "nag hammadi", "dead sea scrolls", "midrash", "talmud", "targum", "mishnah",
-        "church fathers", "origen", "clement", "irenaeus", "tertullian", "justin martyr",
-        "josephus", "philo", "early christian", "gnostic", "restoration", "joseph smith",
-        "theological", "covenant", "atonement", "resurrection", "creation", "flood",
-        "ancient near east", "ugaritic", "biblical", "hebrew", "greek testament",
-        "septuagint", "lxx", "vulgate", "dead sea", "qumran",
-        # Hindu / Vedic
-        "bhagavad gita", "upanishads", "vedanta", "veda", "vedic", "brahman",
-        "atman", "dharma", "karma", "yoga", "sanskrit", "mahabharata", "ramayana",
-        "puranas", "bhagavata", "vishnu", "shiva", "brahma", "krishna", "arjuna",
-        # Buddhist
-        "dhammapada", "buddhist", "buddhism", "pali canon", "suttas", "nirvana",
-        "eightfold path", "four noble truths", "theravada", "mahayana", "zen",
-        "lotus sutra", "diamond sutra", "heart sutra",
-        # Taoist / Chinese
-        "tao te ching", "taoism", "taoist", "confucius", "analects", "i ching",
-        "lao tzu", "chuang tzu", "wu wei",
-        # Sufi / Islamic mysticism
-        "sufi", "sufism", "rumi", "hafiz", "quran", "koran", "islam", "islamic",
-        "al-ghazali", "ibn arabi",
-        # Ancient / Hermetic
-        "hermetica", "hermeticism", "plotinus", "neoplatonism", "enneads",
-        "plato", "platonic", "mystery", "mysticism", "mystical",
-        # General spiritual
-        "spiritual", "wisdom", "enlightenment", "meditation", "sacred", "holy",
-        "eternal", "divine", "soul", "spirit", "prayer", "revelation",
+        # LDS — primary sources and key theologians
+        "joseph smith", "brigham young", "restoration", "latter-day saint", "latter day saint",
+        "book of mormon", "doctrine and covenants", "pearl of great price",
+        "talmage", "b.h. roberts", "parley pratt", "orson pratt", "nibley",
+        "nauvoo", "endowment", "priesthood", "zion", "millennium",
+        # Christianity — widely cited, patristic, scholarly standard
+        "scripture", "bible", "testament", "gospel", "epistle",
+        "church fathers", "ante-nicene", "nicene", "post-nicene",
+        "origen", "clement", "irenaeus", "tertullian", "justin martyr",
+        "augustine", "chrysostom", "jerome", "ambrose", "athanasius",
+        "eusebius", "basil", "gregory", "cyril", "didache", "apostolic",
+        "early christian", "patristic", "philip schaff", "schaff",
+        "theology", "theological", "covenant", "atonement", "resurrection",
+        "incarnation", "trinity", "christology", "soteriology", "ecclesiology",
+        "reformation", "calvin", "luther", "protestant",
+        # Ancient texts bridging Judaism and Christianity
+        "gnostic", "nag hammadi", "dead sea", "qumran", "essene",
+        "enoch", "jubilees", "testaments", "pseudepigrapha", "apocrypha",
+        "septuagint", "lxx", "vulgate", "creation", "flood",
+        # Judaism — foundational, as root of Christianity
+        "hebrew scripture", "old testament", "tanakh", "torah",
+        "midrash", "talmud", "mishnah", "targum", "rabbinic",
+        "josephus", "philo", "ancient near east", "biblical",
+        "hebrew", "jewish", "synagogue", "prophecy", "prophet",
     ]
 
     text = (title + " " + snippet).lower()
@@ -472,6 +476,13 @@ def main() -> int:
             if url in seen_urls:
                 continue
             seen_urls.add(url)
+
+            # Deduplicate by normalised title to avoid multiple archive scans of the same work
+            import re as _re
+            title_key = _re.sub(r'[^a-z0-9]', '', title.lower())[:60]
+            if title_key in seen_urls:
+                continue
+            seen_urls.add(title_key)
 
             report["candidates_found"] += 1
 

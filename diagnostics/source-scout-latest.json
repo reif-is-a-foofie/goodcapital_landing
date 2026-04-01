@@ -1,89 +1,309 @@
 {
-  "ts": "2026-04-01T02:59:08+00:00",
+  "ts": "2026-04-01T14:32:46+00:00",
   "agent": "SourceScout",
   "mission_path": "AGENT_MISSION.md",
   "profile_path": "agents/source_scout_profile.md",
   "mission": "# The Good Project Mission\n\nThe Good Project exists to gather spiritual truth across scriptures, commentary,\nhistory, and related source traditions into one navigable library.\n\nIts product goal is simple:\n\n- create the shortest path to both depth and breadth on a single subject\n- let a serious reader move from one verse or paragraph into the best connected\n  material without losing provenance or context\n- prefer clarity, usefulness, and insight over ornamental features\n\n## Product Standard\n\nAgents working on this project should optimize for:\n\n- clean reading first\n- deep linking that actually opens the source and keeps recursion alive\n- provenance that stays visible, so readers know what kind of text they are in\n- interfaces that reduce friction instead of adding ceremony\n- regression resistance, because silent corpus breakage destroys trust\n\n## Manner\n\nThe style should be disciplined and product-focused:\n\n- build something people doing real study would actually want to use\n- favor concrete gains over abstract cleverness\n- surface the shortest useful path, then let power users go deeper\n- treat every broken verse, dead link, and unreadable source as product debt\n- prefer honest diagnostics over flattering metrics\n\n## Definition Of Better\n\nA change is better when it helps a reader:\n\n- understand where a text comes from\n- see why a connection matters\n- reach a stronger source faster\n- keep traversing without confusion\n- trust that the text on screen is clean, accurate, and readable",
   "profile": "# Source Scout\n\nRole: web searcher and corpus expansion scout.\n\n## Mission\n\nExpand the library's source corpus by finding public-domain and open-licensed texts\nthat belong alongside what is already here.\n\nThis daemon exists to:\n\n- search the web for candidate texts relevant to scripture study: ancient texts,\n  early Christian writings, Jewish commentary, religious history, theological works\n- check copyright status rigorously before proposing anything\n- evaluate semantic fit against the existing corpus so every candidate earns its place\n- propose candidates as ledger tasks rather than ingesting without review\n- keep the signal-to-noise ratio high: one strong candidate per run is better than ten weak ones\n\n## Responsibilities\n\n- run a structured web search every four hours, targeting source categories underrepresented\n  in the current library\n- fetch enough of each candidate URL to evaluate it: title, publication date, license text,\n  body sample\n- reject anything where copyright status is ambiguous — when in doubt, reject\n- score semantic relevance against the existing collection descriptions in source-dashboard.json\n- write durable diagnostics about what was found, what was rejected, and why\n- append ledger tasks only for candidates that pass both the copyright and relevance thresholds\n- never auto-ingest: the ledger task is the handoff to a human or agent with ingestion authority\n\n## Copyright Standard\n\nA candidate qualifies only if it meets at least one of:\n\n1. Explicit Public Domain declaration on the source page\n2. Creative Commons license (CC0, CC-BY, CC-BY-SA) clearly stated\n3. Publication date before 1928 (US public domain by date)\n4. Government or archive source (archive.org, gutenberg.org, ccel.org, sacred-texts.com)\n\nAny candidate that does not clearly satisfy one of these criteria is rejected.\n\"Probably old enough\" is not sufficient. \"Seems free\" is not sufficient.\n\n## Semantic Standard\n\nA candidate qualifies semantically if it would add real depth to the traversal graph —\nnot just more text, but text that connects to what is already here.\n\nStrong categories:\n- Ancient pseudepigrapha and apocrypha not yet in the corpus\n- Early Christian writers not yet covered\n- Jewish midrash, targum, or commentary in translation\n- Historical works about the scriptural period\n- Restoration-era theological writings clearly in the public domain\n\nWeak signals that do not raise the bar:\n- General religious history with no specific scripture anchoring\n- Devotional content with no cross-reference structure\n- Works whose primary value is biographical rather than doctrinal or textual\n\n## Mannerisms\n\n- conservative: a missed candidate costs nothing; a bad ingest costs trust\n- suspicious of \"public domain\" claims that are not backed by a date or license\n- prefers texts that open recursive paths over texts that are merely interesting\n- direct about rejection reasons — \"pre-1928 date not confirmed\" is a complete reason\n- values depth over breadth: one well-chosen text enriches the graph more than five marginal ones\n\n## Product Lens\n\nThe Source Scout should ask, for every candidate:\n\n- Would a serious student of scripture want this alongside what is already here?\n- Does it have real cross-reference density with texts already in the library?\n- Is the copyright status beyond reasonable dispute?\n- Will it be traversable once ingested, or will it be an island?\n\nIf any of these answers is uncertain, the scout waits for a better candidate.",
   "queries_run": [
-    "Bhagavad Gita public domain English translation",
-    "Dhammapada Buddhist scripture public domain translation",
-    "Tao Te Ching public domain English translation",
-    "Upanishads public domain English translation Müller",
-    "Quran public domain English translation Sale Rodwell",
-    "pseudepigrapha ancient Jewish texts public domain scripture",
-    "Nag Hammadi Gnostic texts public domain translation",
-    "Philo of Alexandria works public domain English translation",
-    "Midrash rabbinic commentary public domain English translation",
-    "Plotinus Enneads public domain English translation"
+    "talmage \"jesus the christ\"",
+    "talmage \"articles of faith\"",
+    "\"B.H. Roberts\" \"comprehensive history\" \"latter-day saints\"",
+    "\"parley pratt\" theology",
+    "\"orson pratt\" theology",
+    "schaff \"post-nicene fathers\" augustine",
+    "schaff \"post-nicene fathers\" chrysostom eusebius",
+    "\"ante-nicene fathers\" tertullian origen clement",
+    "\"ante-nicene christian library\" fathers translation",
+    "\"apostolic fathers\" didache early christian translation",
+    "\"R.H. Charles\" pseudepigrapha \"old testament\"",
+    "\"R.H. Charles\" apocrypha \"old testament\"",
+    "\"philo\" \"alexandria\" yonge translation",
+    "\"wars of the jews\" josephus whiston"
   ],
-  "candidates_found": 7,
-  "candidates_evaluated": 7,
-  "candidates_passed": 4,
+  "candidates_found": 31,
+  "candidates_evaluated": 31,
+  "candidates_passed": 21,
   "tasks_created": [
     {
-      "task_id": "T-0076",
-      "title": "A Study Of The Bhagavata Purana",
-      "url": "https://archive.org/details/a-study-of-the-bhagavata-purana",
-      "copyright_score": 1.0,
-      "copyright_reason": "trusted archive domain (archive.org)",
-      "relevance_score": 0.58,
-      "relevance_reason": "relevant — 3 keyword matches: yoga, bhagavata, krishna"
-    },
-    {
-      "task_id": "T-0077",
-      "title": "Sankhya Aphorisms",
-      "url": "https://archive.org/details/sankhya-aphorisms-ed-1",
-      "copyright_score": 1.0,
-      "copyright_reason": "trusted archive domain (archive.org)",
-      "relevance_score": 0.64,
-      "relevance_reason": "relevant — 4 keyword matches: philo, vedanta, veda, yoga"
-    },
-    {
-      "task_id": "T-0078",
-      "title": "Navigating Virtue: The Classic of the Way and Virtue",
-      "url": "https://archive.org/details/navigatingvirtue2025",
+      "task_id": "T-0094",
+      "title": "jesus the christ: a study of the messiah and his mission according to holy scriptures both ancient and modern",
+      "url": "https://archive.org/details/bwb_S0-DGL-163",
       "copyright_score": 1.0,
       "copyright_reason": "trusted archive domain (archive.org)",
       "relevance_score": 0.52,
-      "relevance_reason": "relevant — 2 keyword matches: tao te ching, taoism"
+      "relevance_reason": "relevant — 2 keyword matches: talmage, scripture"
     },
     {
-      "task_id": "T-0079",
-      "title": "Upanishads",
-      "url": "https://archive.org/details/upanishads-ed-1",
+      "task_id": "T-0095",
+      "title": "Die Glaubensartikel",
+      "url": "https://archive.org/details/dieglaubensartik00talm",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: latter-day saint, talmage"
+    },
+    {
+      "task_id": "T-0096",
+      "title": "De artikelen des geloofs ...",
+      "url": "https://archive.org/details/deartikelendesge00talm",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: latter-day saint, talmage"
+    },
+    {
+      "task_id": "T-0097",
+      "title": "Shinsho Kogi",
+      "url": "https://archive.org/details/shinshokogi00talm",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: latter-day saint, talmage"
+    },
+    {
+      "task_id": "T-0092",
+      "title": "A Comprehensive History of The Church of Jesus Christ og Latter-day Saints Century 1",
+      "url": "https://archive.org/details/comprehensivehis0004bhro",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: latter-day saint, b.h. roberts"
+    },
+    {
+      "task_id": "T-0091",
+      "title": "A Comprehensive History of The Church of Jesus Christ of Latter-day Saints Century 1",
+      "url": "https://archive.org/details/comprehensivehis0000bhro_c5f0",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: latter-day saint, b.h. roberts"
+    },
+    {
+      "task_id": "T-0098",
+      "title": "The kingdom of God",
+      "url": "https://archive.org/details/kingdomofgod00prat",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: latter-day saint, theology"
+    },
+    {
+      "task_id": "T-0099",
+      "title": "The day they martyred the prophet",
+      "url": "https://archive.org/details/daytheymartyredp0000smit",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: theology, prophet"
+    },
+    {
+      "task_id": "T-0100",
+      "title": "The Bible & Polygamy. Does the bible sanction polygamy?... 1877",
+      "url": "https://archive.org/details/per_utah-and-the-mormons_prest-george-a-sm_1877",
       "copyright_score": 1.0,
       "copyright_reason": "trusted archive domain (archive.org)",
       "relevance_score": 0.58,
-      "relevance_reason": "relevant — 3 keyword matches: upanishads, veda, sacred"
+      "relevance_reason": "relevant — 3 keyword matches: orson pratt, bible, theology"
+    },
+    {
+      "task_id": "T-0101",
+      "title": "A select library of the Nicene and Post-Nicene Fathers of the Christian Church",
+      "url": "https://archive.org/details/saintchrysostomh0011sain",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.7,
+      "relevance_reason": "relevant — 5 keyword matches: nicene, post-nicene, chrysostom, jerome, trinity"
+    },
+    {
+      "task_id": "T-0102",
+      "title": "The Anti-Pelagian Writings, volume 6, first series, of The Nicene and Post-Nicene Fathers",
+      "url": "https://archive.org/details/TheAnti-pelagianWritingsVolume6FirstSeriesOfTheNiceneAnd",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.82,
+      "relevance_reason": "relevant — 7 keyword matches: church fathers, nicene, post-nicene, augustine, early christian, patristic"
+    },
+    {
+      "task_id": "T-0103",
+      "title": "Nicene And Post Nicene Fathers 14 Vols",
+      "url": "https://archive.org/details/schaff-philip-ed.-nicene-and-post-nicene-fathers.-series-1.-in-14-vols.-volume-0",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.58,
+      "relevance_reason": "relevant — 3 keyword matches: nicene, post-nicene, schaff"
+    },
+    {
+      "task_id": "T-0104",
+      "title": "Post-Nicene Fathers of the Church",
+      "url": "https://archive.org/details/Post-niceneFathersOfTheChurch",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.7,
+      "relevance_reason": "relevant — 5 keyword matches: nicene, post-nicene, augustine, philip schaff, schaff"
+    },
+    {
+      "task_id": "T-0105",
+      "title": "The Ante-Nicene fathers : translations of the writings of the fathers down to A.D. 325",
+      "url": "https://archive.org/details/antenicenefather0002unse_s3t5",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.76,
+      "relevance_reason": "relevant — 6 keyword matches: ante-nicene, nicene, irenaeus, justin martyr, apostolic, theology"
+    },
+    {
+      "task_id": "T-0106",
+      "title": "Ante-Nicene Christian Library: Translation of The Writings of the Fathers",
+      "url": "https://archive.org/details/bwb_W9-DDI-005",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: ante-nicene, nicene"
+    },
+    {
+      "task_id": "T-0107",
+      "title": "Ante-Nicene Christian library; translations of the writings of the Fathers down to A.D. 325",
+      "url": "https://archive.org/details/antenicenechris13donagoog",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.58,
+      "relevance_reason": "relevant — 3 keyword matches: ante-nicene, nicene, apostolic"
+    },
+    {
+      "task_id": "T-0108",
+      "title": "The Apostolic Fathers : a new translation and commentary",
+      "url": "https://archive.org/details/lccn_64-11546_2",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: clement, apostolic"
+    },
+    {
+      "task_id": "T-0109",
+      "title": "The Apostolic fathers",
+      "url": "https://archive.org/details/apostolicfathers02lakeuoft",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.64,
+      "relevance_reason": "relevant — 4 keyword matches: epistle, clement, didache, apostolic"
+    },
+    {
+      "task_id": "T-0110",
+      "title": "The Apocrypha and Pseudepigrapha Of The Old Testament In English",
+      "url": "https://archive.org/details/apocryphapseudep0002rhch_e2s5",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.64,
+      "relevance_reason": "relevant — 4 keyword matches: testament, pseudepigrapha, apocrypha, old testament"
+    },
+    {
+      "task_id": "T-0111",
+      "title": "The works of Philo : complete and unabridged",
+      "url": "https://archive.org/details/worksofphilocomp0000phil",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.58,
+      "relevance_reason": "relevant — 3 keyword matches: theology, philo, jewish"
+    },
+    {
+      "task_id": "T-0112",
+      "title": "The works of Josephus : complete and unabridged",
+      "url": "https://archive.org/details/worksofjosephusc0000jose",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.58,
+      "relevance_reason": "relevant — 3 keyword matches: testament, theology, josephus"
     }
   ],
   "rejections": [
     {
-      "title": "Devi-Gita",
-      "url": "https://archive.org/details/dli.bengal.10689.9088",
-      "copyright_score": 1.0,
-      "copyright_reason": "trusted archive domain (archive.org)",
-      "relevance_score": 0.1,
-      "relevance_reason": "no relevant keywords found in title or page snippet",
-      "error": ""
-    },
-    {
-      "title": "Text And Translation",
-      "url": "https://archive.org/details/in.ernet.dli.2015.502356",
-      "copyright_score": 1.0,
-      "copyright_reason": "trusted archive domain (archive.org)",
-      "relevance_score": 0.1,
-      "relevance_reason": "no relevant keywords found in title or page snippet",
-      "error": ""
-    },
-    {
-      "title": "The Tao of Holding Space",
-      "url": "https://archive.org/details/TheTaoOfHoldingSpace",
+      "title": "Jesus The Christ",
+      "url": "https://archive.org/details/bwb_S0-EKB-756",
       "copyright_score": 1.0,
       "copyright_reason": "trusted archive domain (archive.org)",
       "relevance_score": 0.46,
-      "relevance_reason": "relevant — 1 keyword matches: tao te ching",
+      "relevance_reason": "relevant — 1 keyword matches: talmage",
+      "error": ""
+    },
+    {
+      "title": "Articles of Faith",
+      "url": "https://archive.org/details/bwb_C0-AEA-082",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: talmage",
+      "error": ""
+    },
+    {
+      "title": "A study of the articles of faith",
+      "url": "https://archive.org/details/studyofarticleso0000jame_o2p1",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: talmage",
+      "error": ""
+    },
+    {
+      "title": "The Angel of the Prairies; ... 1880",
+      "url": "https://archive.org/details/per_utah-and-the-mormons_the-angel-of-the-prairies-_elder-parley-parker_1880",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: theology",
+      "error": ""
+    },
+    {
+      "title": "An Interesting Account of several remarkable vision, ... 1840",
+      "url": "https://archive.org/details/per_utah-and-the-mormons_1840",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: theology",
+      "error": ""
+    },
+    {
+      "title": "THE GRAND BIBLE - An Encyclopaedic Compilation Of The Original And Complete Contents Of Religious And Affiliated Texts From East And West In English",
+      "url": "https://archive.org/details/the-grand-bible-3rd-edition-2021",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: bible",
+      "error": ""
+    },
+    {
+      "title": "Complete works of Josephus. Antiquities of the Jews; The wars of the Jews against Apion, etc., ..",
+      "url": "https://archive.org/details/completeworksofj02jose",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: josephus",
+      "error": ""
+    },
+    {
+      "title": "Josephus - Complete Works. Includes Life Of Flavius Josephus, Antiquities Of The Jews, Wars Of The Jews and others",
+      "url": "https://archive.org/details/josephuscomplete0000jose",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: josephus",
+      "error": ""
+    },
+    {
+      "title": "The works of Flavius Josephus",
+      "url": "https://archive.org/details/worksofjosephus0003unse",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: josephus",
+      "error": ""
+    },
+    {
+      "title": "The works of Flavius Josephus : in three volumes ; with illustrations",
+      "url": "https://archive.org/details/worksofflaviusjo1873jose",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: josephus",
       "error": ""
     }
   ],

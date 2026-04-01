@@ -1,55 +1,139 @@
-Source scout run: 2026-04-01T02:59:08+00:00
+Source scout run: 2026-04-01T14:32:46+00:00
 Mission: AGENT_MISSION.md
 Profile: agents/source_scout_profile.md
 Existing collections: 10
 
-Query: Bhagavad Gita public domain English translation
-  SKIP  Devi-Gita
-        relevance fail (0.10): no relevant keywords found in title or page snippet
-  PASS  A Study Of The Bhagavata Purana
+Query: talmage "jesus the christ"
+  SKIP  Jesus The Christ
+        relevance fail (0.46): relevant — 1 keyword matches: talmage
+  PASS  jesus the christ: a study of the messiah and his mission according to holy scriptures both ancient and modern
         copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.58 — relevant — 3 keyword matches: yoga, bhagavata, krishna
-        task: T-0076
-  SKIP  Text And Translation
-        relevance fail (0.10): no relevant keywords found in title or page snippet
-  PASS  Sankhya Aphorisms
+        relevance=0.52 — relevant — 2 keyword matches: talmage, scripture
+        task: T-0094
+
+Query: talmage "articles of faith"
+  PASS  Die Glaubensartikel
         copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.64 — relevant — 4 keyword matches: philo, vedanta, veda, yoga
-        task: T-0077
-
-Query: Dhammapada Buddhist scripture public domain translation
-  no results returned
-
-Query: Tao Te Ching public domain English translation
-  PASS  Navigating Virtue: The Classic of the Way and Virtue
+        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, talmage
+        task: T-0095
+  PASS  De artikelen des geloofs ...
         copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.52 — relevant — 2 keyword matches: tao te ching, taoism
-        task: T-0078
-  SKIP  The Tao of Holding Space
-        relevance fail (0.46): relevant — 1 keyword matches: tao te ching
-
-Query: Upanishads public domain English translation Müller
-  PASS  Upanishads
+        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, talmage
+        task: T-0096
+  SKIP  Articles of Faith
+        relevance fail (0.46): relevant — 1 keyword matches: talmage
+  SKIP  A study of the articles of faith
+        relevance fail (0.46): relevant — 1 keyword matches: talmage
+  PASS  Shinsho Kogi
         copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.58 — relevant — 3 keyword matches: upanishads, veda, sacred
-        task: T-0079
+        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, talmage
+        task: T-0097
 
-Query: Quran public domain English translation Sale Rodwell
+Query: "B.H. Roberts" "comprehensive history" "latter-day saints"
+  PASS  A Comprehensive History of The Church of Jesus Christ og Latter-day Saints Century 1
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, b.h. roberts
+        task: T-0092
+  PASS  A Comprehensive History of The Church of Jesus Christ of Latter-day Saints Century 1
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, b.h. roberts
+        task: T-0091
+
+Query: "parley pratt" theology
   no results returned
 
-Query: pseudepigrapha ancient Jewish texts public domain scripture
-  no results returned
+Query: "orson pratt" theology
+  SKIP  The Angel of the Prairies; ... 1880
+        relevance fail (0.46): relevant — 1 keyword matches: theology
+  PASS  The kingdom of God
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, theology
+        task: T-0098
+  PASS  The day they martyred the prophet
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.52 — relevant — 2 keyword matches: theology, prophet
+        task: T-0099
+  SKIP  An Interesting Account of several remarkable vision, ... 1840
+        relevance fail (0.46): relevant — 1 keyword matches: theology
+  PASS  The Bible & Polygamy. Does the bible sanction polygamy?... 1877
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.58 — relevant — 3 keyword matches: orson pratt, bible, theology
+        task: T-0100
 
-Query: Nag Hammadi Gnostic texts public domain translation
-  no results returned
+Query: schaff "post-nicene fathers" augustine
+  PASS  A select library of the Nicene and Post-Nicene Fathers of the Christian Church
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.7 — relevant — 5 keyword matches: nicene, post-nicene, chrysostom, jerome, trinity
+        task: T-0101
+  PASS  The Anti-Pelagian Writings, volume 6, first series, of The Nicene and Post-Nicene Fathers
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.82 — relevant — 7 keyword matches: church fathers, nicene, post-nicene, augustine, early christian, patristic
+        task: T-0102
 
-Query: Philo of Alexandria works public domain English translation
-  no results returned
+Query: schaff "post-nicene fathers" chrysostom eusebius
+  PASS  Nicene And Post Nicene Fathers 14 Vols
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.58 — relevant — 3 keyword matches: nicene, post-nicene, schaff
+        task: T-0103
+  PASS  Post-Nicene Fathers of the Church
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.7 — relevant — 5 keyword matches: nicene, post-nicene, augustine, philip schaff, schaff
+        task: T-0104
 
-Query: Midrash rabbinic commentary public domain English translation
-  no results returned
+Query: "ante-nicene fathers" tertullian origen clement
+  PASS  The Ante-Nicene fathers : translations of the writings of the fathers down to A.D. 325
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.76 — relevant — 6 keyword matches: ante-nicene, nicene, irenaeus, justin martyr, apostolic, theology
+        task: T-0105
 
-Query: Plotinus Enneads public domain English translation
-  no results returned
+Query: "ante-nicene christian library" fathers translation
+  PASS  Ante-Nicene Christian Library: Translation of The Writings of the Fathers
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.52 — relevant — 2 keyword matches: ante-nicene, nicene
+        task: T-0106
+  PASS  Ante-Nicene Christian library; translations of the writings of the Fathers down to A.D. 325
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.58 — relevant — 3 keyword matches: ante-nicene, nicene, apostolic
+        task: T-0107
 
-Summary: queries=10 found=7 evaluated=7 passed=4 tasks_created=4
+Query: "apostolic fathers" didache early christian translation
+  PASS  The Apostolic Fathers : a new translation and commentary
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.52 — relevant — 2 keyword matches: clement, apostolic
+        task: T-0108
+  PASS  The Apostolic fathers
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.64 — relevant — 4 keyword matches: epistle, clement, didache, apostolic
+        task: T-0109
+
+Query: "R.H. Charles" pseudepigrapha "old testament"
+  PASS  The Apocrypha and Pseudepigrapha Of The Old Testament In English
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.64 — relevant — 4 keyword matches: testament, pseudepigrapha, apocrypha, old testament
+        task: T-0110
+
+Query: "R.H. Charles" apocrypha "old testament"
+
+Query: "philo" "alexandria" yonge translation
+  PASS  The works of Philo : complete and unabridged
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.58 — relevant — 3 keyword matches: theology, philo, jewish
+        task: T-0111
+  SKIP  THE GRAND BIBLE - An Encyclopaedic Compilation Of The Original And Complete Contents Of Religious And Affiliated Texts From East And West In English
+        relevance fail (0.46): relevant — 1 keyword matches: bible
+
+Query: "wars of the jews" josephus whiston
+  SKIP  Complete works of Josephus. Antiquities of the Jews; The wars of the Jews against Apion, etc., ..
+        relevance fail (0.46): relevant — 1 keyword matches: josephus
+  SKIP  Josephus - Complete Works. Includes Life Of Flavius Josephus, Antiquities Of The Jews, Wars Of The Jews and others
+        relevance fail (0.46): relevant — 1 keyword matches: josephus
+  PASS  The works of Josephus : complete and unabridged
+        copyright=1.0 — trusted archive domain (archive.org)
+        relevance=0.58 — relevant — 3 keyword matches: testament, theology, josephus
+        task: T-0112
+  SKIP  The works of Flavius Josephus
+        relevance fail (0.46): relevant — 1 keyword matches: josephus
+  SKIP  The works of Flavius Josephus : in three volumes ; with illustrations
+        relevance fail (0.46): relevant — 1 keyword matches: josephus
+
+Summary: queries=14 found=31 evaluated=31 passed=21 tasks_created=21

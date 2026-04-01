@@ -26,3 +26,24 @@
   "errors": 8,
   "report": "diagnostics/source-scout-latest.json"
 }
+{
+  "agent": "SourceScout",
+  "candidates_passed": 4,
+  "tasks_created": 4,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 4,
+  "tasks_created": 4,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 4,
+  "tasks_created": 4,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
