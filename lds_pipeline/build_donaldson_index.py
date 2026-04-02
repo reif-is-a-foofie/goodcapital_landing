@@ -244,6 +244,36 @@ def parse_attribution(raw: str) -> dict:
     }
 
 
+# ── Reference tools that should never appear as quote speakers ───────────────
+# These are lexicons, commentaries, and study tools — not people giving talks
+# or writing books about scripture. Page-header splits in the PDF cause their
+# word-study paragraphs to appear as "quotes" ending with "(Robertson's NT...)"
+_REFERENCE_TOOL_RE = re.compile(
+    r"Robertson'?s?\s*(NT\s*Word\s*Pictures?|New\s*Testament)",
+    re.IGNORECASE
+)
+_REFERENCE_TOOLS = {
+    "robertson", "robertson's nt word pictures", "robertson's new testament",
+    "bdb", "brown-driver-briggs", "tdnt", "theological dictionary",
+    "bdag", "thayer", "gesenius", "strong's", "strongs",
+    "new harper's bible dictionary", "harper's bible dictionary",
+    "vine's expository", "vines expository",
+    "interlinear", "septuagint", "lxx",
+    "old testament student manual", "new testament student manual",
+    "institute manual", "ces institute",
+}
+
+def _is_reference_tool(attr_raw: str) -> bool:
+    """Return True if this attribution is a reference/lexicon tool, not a person."""
+    if _REFERENCE_TOOL_RE.search(attr_raw):
+        return True
+    lower = attr_raw.lower()
+    for tool in _REFERENCE_TOOLS:
+        if tool in lower:
+            return True
+    return False
+
+
 # ── Quote extraction from raw paragraphs ────────────────────────────────────
 
 def extract_quotes_from_paragraphs(paragraphs: list) -> list:
@@ -277,6 +307,9 @@ def extract_quotes_from_paragraphs(paragraphs: list) -> list:
         # Skip pure copyright/publisher lines
         if _BIBREF_RE.match(attr_raw):
             continue
+        # Skip reference tools / lexicons — not attributed quotes
+        if _is_reference_tool(attr_raw):
+            continue
         # Skip very short attribution-like things that are just parenthetical notes
         if len(attr_raw) < 12:
             continue
@@ -287,11 +320,14 @@ def extract_quotes_from_paragraphs(paragraphs: list) -> list:
         # Quote text is everything before the final attribution marker
         text = p[:m.start()].strip()
         # Strip surrounding quotation marks from the quote text
-        text = re.sub(r'^["\u201c\u201d]+', '', text).strip()
-        text = re.sub(r'["\u201c\u201d]+$', '', text).strip()
+        text = re.sub(r'^["\u201c\u201d\u2018\u2019"\']+', '', text).strip()
+        text = re.sub(r'["\u201c\u201d\u2018\u2019"\']+$', '', text).strip()
 
         # Must start with a capital (complete sentence, not mid-sentence fragment)
         if not text or not text[0].isupper():
+            continue
+        # Must look like it starts a real sentence: at least one more word after the first
+        if len(text.split()) < 6:
             continue
         if len(text) < 40:
             continue
