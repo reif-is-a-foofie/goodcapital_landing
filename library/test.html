@@ -65,36 +65,52 @@ h1 { font-family: 'EB Garamond', Georgia, serif; font-size: 28px; font-weight: 4
 
 .panel-section {
     font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-    color: var(--muted); padding: 14px 28px 8px;
+    color: var(--muted); padding: 12px 28px 8px;
     border-bottom: 1px solid var(--divider);
     background: rgba(0,0,0,0.015);
 }
 
-/* ── Donaldson cards ── */
-.dona-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
-.dona-attr { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-.dona-text {
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15px; line-height: 1.75; color: var(--text);
-    padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.3);
-}
+/* ── Greek/Hebrew words ── */
+.word-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--divider); border-bottom: 1px solid var(--divider); }
+.word-cell { padding: 14px 18px; background: var(--panel-bg); }
+.word-original { font-size: 22px; font-family: serif; font-weight: 400; line-height: 1.2; margin-bottom: 3px; }
+.word-english  { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+.word-meaning  { font-size: 12px; color: var(--text); line-height: 1.5; }
 
-/* ── Historical voice cards ── */
-.hist-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
-.hist-badge {
-    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .07em;
-    text-transform: uppercase; color: var(--accent); background: rgba(156,122,77,0.1);
-    border-radius: 4px; padding: 2px 7px; margin-bottom: 8px;
-}
-.hist-badge.gc   { color: #5a7a9c; background: rgba(90,122,156,0.1); }
-.hist-badge.hoc  { color: #7a5c9c; background: rgba(122,92,156,0.1); }
-.hist-author { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-.hist-work   { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
-.hist-quote  {
+/* ── Commentary notes ── */
+.note-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
+.note-body {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15px; line-height: 1.75; color: var(--text); font-style: italic;
+    font-size: 15.5px; line-height: 1.8; color: var(--text);
     padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.3);
 }
+.note-preview { display: block; }
+.note-overflow { display: none; }
+.note-card.expanded .note-overflow { display: inline; }
+.note-more {
+    display: inline; font-size: 11px; font-weight: 600; color: var(--accent);
+    cursor: pointer; background: none; border: none; padding: 0 0 0 4px;
+}
+.note-card.expanded .note-more { display: none; }
+
+/* ── Attributed quotes ── */
+.quote-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
+.quote-attr  { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
+.quote-type-gc  { color: #5a7a9c; }
+.quote-type-jd  { color: #7a5c9c; }
+.quote-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15.5px; line-height: 1.8; color: var(--text); font-style: italic;
+    padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.25);
+}
+.quote-preview { display: block; }
+.quote-overflow { display: none; }
+.quote-card.expanded .quote-overflow { display: inline; }
+.quote-more {
+    display: inline; font-size: 11px; font-weight: 600; color: var(--accent);
+    cursor: pointer; background: none; border: none; padding: 0 0 0 4px;
+}
+.quote-card.expanded .quote-more { display: none; }
 
 /* ── Scripture parallels ── */
 .scrip-card { padding: 14px 28px; border-bottom: 1px solid var(--divider); }
@@ -103,6 +119,22 @@ h1 { font-family: 'EB Garamond', Georgia, serif; font-size: 28px; font-weight: 4
     font-family: 'EB Garamond', Georgia, serif;
     font-size: 15px; line-height: 1.7; color: var(--text); font-style: italic;
     padding-left: 14px; border-left: 2px solid rgba(74,103,65,0.25);
+}
+
+/* ── Historical voices ── */
+.hist-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
+.hist-badge {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--accent); background: rgba(156,122,77,0.1);
+    border-radius: 4px; padding: 2px 7px; margin-bottom: 8px;
+}
+.hist-badge.gc  { color: #5a7a9c; background: rgba(90,122,156,0.1); }
+.hist-author { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.hist-work   { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.hist-quote  {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15.5px; line-height: 1.8; color: var(--text); font-style: italic;
+    padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.3);
 }
 
 /* Mobile */
@@ -317,7 +349,8 @@ function renderVerses() {
     container.innerHTML = '';
     VERSES.forEach(function(row) {
         var num = row[0], text = row[1];
-        var hasData = !!(donaldsonData[String(num)] || discoveryData[num] || scriptureData[num]);
+        var d = donaldsonData[String(num)] || {};
+    var hasData = !!(d.notes || d.words || d.quotes || discoveryData[num] || scriptureData[num]);
         var div = document.createElement('div');
         div.className = 'verse' + (hasData ? ' has-data' : '');
         div.id = 'v' + num;
@@ -329,51 +362,99 @@ function renderVerses() {
     });
 }
 
+var PREVIEW_LEN = 320;  // chars before "Read more →"
+
+function expandCard(btn) {
+    btn.closest('.note-card, .quote-card').classList.add('expanded');
+}
+
+function makeExpandable(text, previewClass, overflowClass, moreClass) {
+    if (text.length <= PREVIEW_LEN) {
+        return '<span class="' + previewClass + '">' + esc(text) + '</span>';
+    }
+    // Split at a word boundary near PREVIEW_LEN
+    var cut = text.lastIndexOf(' ', PREVIEW_LEN) || PREVIEW_LEN;
+    return '<span class="' + previewClass + '">' + esc(text.slice(0, cut)) + '</span>'
+        + '<span class="' + overflowClass + '">' + esc(text.slice(cut)) + '</span>'
+        + '<button class="' + moreClass + '" onclick="expandCard(this)">Read more →</button>';
+}
+
 function selectVerse(num, text) {
     if (activeVerse) activeVerse.classList.remove('active');
     activeVerse = document.getElementById('v' + num);
     if (activeVerse) activeVerse.classList.add('active');
 
-    var dona       = donaldsonData[String(num)] || [];
+    var donaEntry  = donaldsonData[String(num)] || {};
     var historical = discoveryData[num]          || [];
     var scripture  = scriptureData[num]          || [];
     var body       = document.getElementById('panel-body');
     var html       = '';
+
+    var words  = donaEntry.words  || [];
+    var notes  = donaEntry.notes  || [];
+    var quotes = donaEntry.quotes || [];
 
     html += '<div class="panel-header">'
         + '<div class="panel-verse-ref">John 1:' + num + '</div>'
         + '<div class="panel-verse-text">' + esc(text) + '</div>'
         + '</div>';
 
-    if (!dona.length && !historical.length && !scripture.length) {
+    var hasAny = words.length || notes.length || quotes.length || historical.length || scripture.length;
+    if (!hasAny) {
         html += '<div style="padding:28px;color:var(--muted);font-size:13px">No commentary found for this verse.</div>';
     }
 
-    // ── Donaldson commentary ──
-    if (dona.length) {
-        html += '<div class="panel-section">Lee Donaldson · LDS Commentary</div>';
-        dona.forEach(function(para) {
-            // Truncate to 600 chars
-            var t = para.length > 600 ? para.slice(0, 597) + '…' : para;
-            html += '<div class="dona-card">'
-                + '<div class="dona-text">' + esc(t) + '</div>'
+    // ── Greek/Hebrew word studies ──
+    if (words.length) {
+        html += '<div class="panel-section">Key Words</div>';
+        html += '<div class="word-grid">';
+        words.forEach(function(w) {
+            html += '<div class="word-cell">'
+                + '<div class="word-original">' + esc(w.greek) + '</div>'
+                + '<div class="word-english">' + esc(w.word) + '</div>'
+                + '<div class="word-meaning">' + esc(w.meaning.slice(0, 160)) + '</div>'
                 + '</div>';
+        });
+        html += '</div>';
+    }
+
+    // ── Donaldson notes ──
+    if (notes.length) {
+        html += '<div class="panel-section">Lee Donaldson · Commentary</div>';
+        notes.forEach(function(para) {
+            html += '<div class="note-card">'
+                + '<div class="note-body">'
+                + makeExpandable(para, 'note-preview', 'note-overflow', 'note-more')
+                + '</div></div>';
         });
     }
 
-    // ── Historical voices ──
+    // ── Attributed quotes (Donaldson citing others) ──
+    if (quotes.length) {
+        html += '<div class="panel-section">From the Sources</div>';
+        quotes.forEach(function(q) {
+            var typeClass = 'quote-type-' + (q.type || 'other');
+            html += '<div class="quote-card">'
+                + '<div class="quote-attr ' + typeClass + '">' + esc(q.attr) + '</div>'
+                + '<div class="quote-text">'
+                + makeExpandable(q.text, 'quote-preview', 'quote-overflow', 'quote-more')
+                + '</div></div>';
+        });
+    }
+
+    // ── Cross-tradition voices ──
     if (historical.length) {
         html += '<div class="panel-section">Voices from History</div>';
         historical.forEach(function(entry) {
             var meta = parseCard(entry);
             var qt   = cleanText(entry.source_text);
-            if (qt.length > 500) qt = qt.slice(0, 497) + '…';
             html += '<div class="hist-card">'
                 + '<div class="hist-badge ' + (meta.badgeClass || '') + '">' + esc(meta.badge) + '</div>'
                 + '<div class="hist-author">' + esc(meta.author) + '</div>'
                 + (meta.work ? '<div class="hist-work">' + esc(meta.work) + '</div>' : '')
-                + '<div class="hist-quote">' + esc(qt) + '</div>'
-                + '</div>';
+                + '<div class="hist-quote">'
+                + makeExpandable(qt, 'quote-preview', 'quote-overflow', 'quote-more')
+                + '</div></div>';
         });
     }
 

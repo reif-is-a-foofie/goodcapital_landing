@@ -1504,7 +1504,8 @@ function markVerseDiscovery(block, chapterId) {
         var entries = (verseDiscovery[ref] || []).filter(function(e) {
             return e.source !== 'millennial_star' && !discIsRepeat(e.source_text);
         });
-        var donaParas = (donaldsonNotes[chapterId] && donaldsonNotes[chapterId][vNum]) || [];
+        var donaEntry = (donaldsonNotes[chapterId] && donaldsonNotes[chapterId][vNum]) || {};
+        var donaParas = (donaEntry.notes || []).concat(donaEntry.words || []).concat(donaEntry.quotes || []);
         if (!entries.length && !donaParas.length) return;
         var numSpan = verseEl.querySelector('.verse-num');
         if (!numSpan) return;
@@ -1542,21 +1543,47 @@ function openVerseDiscovery(ref) {
     });
 
     // Donaldson notes for this verse
-    var donaParas = (donaldsonNotes[chapterId] && donaldsonNotes[chapterId][vnum]) || [];
+    var donaEntry  = (donaldsonNotes[chapterId] && donaldsonNotes[chapterId][vnum]) || {};
+    var donaWords  = donaEntry.words  || [];
+    var donaNotes  = donaEntry.notes  || [];
+    var donaQuotes = donaEntry.quotes || [];
 
-    if (!entries.length && !donaParas.length) return;
+    if (!entries.length && !donaNotes.length && !donaWords.length && !donaQuotes.length) return;
 
     document.getElementById('ch-word').textContent = 'Verse commentary';
     document.getElementById('ch-hint').textContent = ref;
     var html = '';
 
-    // ── Donaldson section ──
-    if (donaParas.length) {
-        html += '<div style="padding:10px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--divider);background:rgba(0,0,0,0.015)">Lee Donaldson · LDS Commentary</div>';
-        donaParas.forEach(function(para) {
-            var t = para.length > 500 ? para.slice(0, 497) + '…' : para;
+    // ── Key words ──
+    if (donaWords.length) {
+        html += '<div style="padding:8px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--divider);background:rgba(0,0,0,0.015)">Key Words</div>';
+        donaWords.forEach(function(w) {
+            html += '<div class="disc-entry">'
+                + '<div style="font-size:18px;font-family:serif;margin-bottom:2px">' + escapeHtml(w.greek) + '</div>'
+                + '<div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">' + escapeHtml(w.word) + '</div>'
+                + '<div class="disc-entry-text">' + escapeHtml(w.meaning.slice(0, 200)) + '</div>'
+                + '</div>';
+        });
+    }
+
+    // ── Donaldson notes ──
+    if (donaNotes.length) {
+        html += '<div style="padding:8px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--divider);background:rgba(0,0,0,0.015)">Lee Donaldson · Commentary</div>';
+        donaNotes.forEach(function(para) {
+            var t = para.length > 400 ? para.slice(0, 397) + '…' : para;
             html += '<div class="disc-entry">'
                 + '<div class="disc-entry-text" style="color:var(--text-color,#2C2418)">' + escapeHtml(t) + '</div>'
+                + '</div>';
+        });
+    }
+
+    // ── Attributed quotes ──
+    if (donaQuotes.length) {
+        html += '<div style="padding:8px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--divider);background:rgba(0,0,0,0.015)">From the Sources</div>';
+        donaQuotes.forEach(function(q) {
+            html += '<div class="disc-entry">'
+                + '<div class="disc-entry-pair">' + escapeHtml(q.attr) + '</div>'
+                + '<div class="disc-entry-text">' + escapeHtml((q.text || '').slice(0, 300)) + (q.text && q.text.length > 300 ? '…' : '') + '</div>'
                 + '</div>';
         });
     }
@@ -2676,6 +2703,29 @@ function pickStrongsEntries(wordText, stem, entries) {
     return ranked.slice(0, 3);
 }
 
+function strongsCleanDef(gl, kj) {
+    // Take the first plain-English clause from gl, strip technical cross-refs
+    if (gl) {
+        var cleaned = gl.replace(/\([^)]*[A-Z]\d{3,}[^)]*\)/g, '').trim();
+        var first = cleaned.split(';')[0].trim();
+        if (first.length > 6) return first;
+    }
+    // Fall back to first 2 non-abbreviation KJV glosses
+    if (kj) {
+        return kj.split(',')
+            .map(function(s){ return s.trim(); })
+            .filter(function(s){ return s && !s.startsWith('X ') && s.length > 1; })
+            .slice(0, 3).join(', ');
+    }
+    return '';
+}
+
+function strongsRoot(dv) {
+    // "from G3004 (λέγω);" → "λέγω"
+    var m = dv && dv.match(/\(([^\u0000-\u007F][^)]*)\)/);
+    return m ? m[1] : '';
+}
+
 function renderWordStudy(wordText, entries) {
     var host = document.getElementById('ch-study');
     if (!entries || !entries.length) {
@@ -2687,21 +2737,20 @@ function renderWordStudy(wordText, entries) {
     host.innerHTML =
         '<div class="ch-study-title">Original Language</div>' +
         entries.map(function(entry) {
-            // Definition is the most useful thing — lead with it
-            var def = (entry.kj || entry.gl || '');
-            if (entry.gl && entry.kj && entry.gl !== entry.kj) def += ' · ' + entry.gl;
-            // Original-language line: transliteration + script + pronunciation
-            var orig = '';
-            if (entry.xl) orig += '<span class="ch-study-lemma">' + escapeHtml(entry.xl) + '</span>';
-            if (entry.lm) orig += ' <span style="font-size:14px">' + escapeHtml(entry.lm) + '</span>';
-            if (entry.pr) orig += ' <span style="color:var(--muted)">(' + escapeHtml(entry.pr) + ')</span>';
-            // Strong's number as small footnote
-            var sn = entry.sn ? '<span style="font-size:10px;color:var(--muted);float:right">Strong\'s ' + escapeHtml(entry.sn) + '</span>' : '';
-            return '<div class="ch-study-entry">'
-                + sn
-                + (def ? '<div class="ch-study-def" style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px">' + escapeHtml(def) + '</div>' : '')
-                + (orig ? '<div class="ch-study-line">' + orig + '</div>' : '')
+            var script = entry.lm || entry.xl || '';  // Greek/Hebrew character
+            var def    = strongsCleanDef(entry.gl, entry.kj);
+            var root   = strongsRoot(entry.dv || '');
+            var sn     = entry.sn || '';
+
+            var html = '<div class="ch-study-entry">';
+            if (script) html += '<div style="font-size:22px;font-weight:500;margin-bottom:4px;font-family:serif">'
+                + escapeHtml(script)
+                + (sn ? '<span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px;vertical-align:middle">Strong\'s ' + escapeHtml(sn) + '</span>' : '')
                 + '</div>';
+            if (def) html += '<div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">' + escapeHtml(def) + '</div>';
+            if (root) html += '<div style="font-size:11px;color:var(--muted)">from ' + escapeHtml(root) + '</div>';
+            html += '</div>';
+            return html;
         }).join('');
 }
 

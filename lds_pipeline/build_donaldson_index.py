@@ -2,15 +2,14 @@
 """
 build_donaldson_index.py
 ========================
-Extract Donaldson verse-by-verse commentary and write per-chapter JSON files
-to library/donaldson/{book_slug}_{chapter}.json
+Extract Donaldson verse-by-verse commentary → library/donaldson/{book}_{ch}.json
 
-Format (each file):
-  {
-    "1": ["para1", "para2"],   // verse number → curated paragraphs
-    "2": ["para1"],
-    ...
-  }
+Each file: { "verseNum": { "notes": [...], "words": [...], "quotes": [...] } }
+
+  notes  — Donaldson's own running commentary (full text, not truncated)
+  words  — Greek/Hebrew word analyses: [{word, greek, meaning}]
+  quotes — Attributed quotes from GC talks, JD, Talmage, etc.
+           [{text, attr, type}]  type = "gc" | "jd" | "hoc" | "other"
 
 Run from repo root:
     python3 lds_pipeline/build_donaldson_index.py
@@ -23,15 +22,15 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-REPO     = Path(__file__).parent.parent
-CACHE    = REPO / "lds_pipeline" / "cache"
-OUT_DIR  = REPO / "library" / "donaldson"
+REPO    = Path(__file__).parent.parent
+CACHE   = REPO / "lds_pipeline" / "cache"
+OUT_DIR = REPO / "library" / "donaldson"
 
-MAX_PER_VERSE = 4
-MIN_LEN       = 55
+MAX_NOTES  = 4
+MAX_WORDS  = 8
+MAX_QUOTES = 4
 
 BOOK_SLUG = {
-    # OT
     "Genesis": "genesis", "Exodus": "exodus", "Leviticus": "leviticus",
     "Numbers": "numbers", "Deuteronomy": "deuteronomy", "Joshua": "joshua",
     "Judges": "judges", "Ruth": "ruth", "1 Samuel": "1_samuel",
@@ -46,7 +45,6 @@ BOOK_SLUG = {
     "Jonah": "jonah", "Micah": "micah", "Nahum": "nahum",
     "Habakkuk": "habakkuk", "Zephaniah": "zephaniah", "Haggai": "haggai",
     "Zechariah": "zechariah", "Malachi": "malachi",
-    # NT
     "Matthew": "matthew", "Mark": "mark", "Luke": "luke", "John": "john",
     "Acts": "acts", "Romans": "romans", "1 Corinthians": "1_corinthians",
     "2 Corinthians": "2_corinthians", "Galatians": "galatians",
@@ -57,18 +55,16 @@ BOOK_SLUG = {
     "Hebrews": "hebrews", "James": "james", "1 Peter": "1_peter",
     "2 Peter": "2_peter", "1 John": "1_john", "2 John": "2_john",
     "3 John": "3_john", "Jude": "jude", "Revelation": "revelation",
-    # BoM
     "1 Nephi": "1_nephi", "2 Nephi": "2_nephi", "Jacob": "jacob",
     "Enos": "enos", "Jarom": "jarom", "Omni": "omni",
     "Words Of Mormon": "words_of_mormon", "Mosiah": "mosiah",
     "Alma": "alma", "Helaman": "helaman", "3 Nephi": "3_nephi",
     "4 Nephi": "4_nephi", "Mormon": "mormon", "Ether": "ether",
     "Moroni": "moroni",
-    # DC/PGP
     "Doctrine And Covenants": "doctrine_and_covenants",
     "Moses": "moses", "Abraham": "abraham",
-    "Joseph Smith—Matthew": "joseph_smith_matthew",
-    "Joseph Smith—History": "joseph_smith_history",
+    "Joseph Smith\u2014Matthew": "joseph_smith_matthew",
+    "Joseph Smith\u2014History": "joseph_smith_history",
     "Articles Of Faith": "articles_of_faith",
 }
 
@@ -84,33 +80,108 @@ def display_book(raw: str) -> str:
     return BOOK_DISPLAY.get(title, title)
 
 
-def is_noise(para: str) -> bool:
-    p = para.strip()
-    if len(p) < MIN_LEN:
-        return True
-    if re.match(r'^[A-Za-z\s]+\([^)]+\)\s+[a-z]', p) and '.' not in p and len(p) < 150:
-        return True
-    if re.match(r'^(Conference Report|Ensign|D&C|Doc\.?\s*&?\s*Cov)', p):
-        return True
-    return False
+# ── Word study detection ───────────────────────────────────────────────────────
+# Matches: "Word (greek). Explanation..." or "The Word (logos). Logos is from..."
+_WORD_PAT = re.compile(
+    r'^(?:The\s+)?([A-Z][a-zA-Z\s\-\']{1,25}?)\s*\(([a-zA-Z\u0370-\u03FF]{2,20})\)[.,]?\s+(.{30,})',
+    re.DOTALL
+)
+
+def try_extract_word(para: str):
+    """If para is a Greek/Hebrew word study, return dict; else None."""
+    m = _WORD_PAT.match(para.strip())
+    if not m:
+        return None
+    word  = m.group(1).strip()
+    greek = m.group(2).strip()
+    expl  = m.group(3).strip()
+    # Reject if greek looks like a city/publisher name (has uppercase or digits)
+    if re.search(r'[A-Z]', greek) or re.search(r'\d', greek):
+        return None
+    # Reject bibliography entries: meaning is a place/publisher
+    if re.search(r'(Deseret|Bookcraft|Baker|Doubleday|Cambridge|London|Philadelphia)', expl[:60]):
+        return None
+    return {"word": word, "greek": greek, "meaning": expl}
 
 
-def curate(paragraphs: list) -> list:
-    seen = set()
-    candidates = []
+# ── Note curation ─────────────────────────────────────────────────────────────
+_NOISE_PAT = re.compile(
+    r'^(Conference Report|Ensign,|D&C\s+\d|Doc\.?\s*&|^\d{4}\))', re.I
+)
+
+def curate_notes(paragraphs: list) -> tuple:
+    """Split donaldson paragraphs into (notes, words), curated."""
+    seen_notes = set()
+    seen_words = set()
+    notes = []
+    words = []
+
     for raw in paragraphs:
         p = raw.strip()
-        if is_noise(p):
+        if not p:
             continue
+
+        # Try word study first
+        ws = try_extract_word(p)
+        if ws:
+            key = ws['word'].lower()
+            if key not in seen_words:
+                seen_words.add(key)
+                words.append(ws)
+            continue
+
+        # Skip bare noise
+        if len(p) < 55:
+            continue
+        if _NOISE_PAT.match(p):
+            continue
+
         key = p[:80].lower()
+        if key in seen_notes:
+            continue
+        seen_notes.add(key)
+        notes.append(p)
+
+    # Most substantive notes first
+    notes.sort(key=lambda x: -len(x))
+    return notes[:MAX_NOTES], words[:MAX_WORDS]
+
+
+def curate_quotes(commentary_items: list) -> list:
+    """Extract attributed quotes from CommentaryItem objects."""
+    seen = set()
+    quotes = []
+
+    for c in commentary_items:
+        text = (c.text or '').strip()
+        attr = (c.attribution or '').strip()
+
+        if len(text) < 50:
+            continue
+
+        # Skip misclassified bibliography entries
+        if re.search(r':\s*(Deseret|Bookcraft|Baker|Eerdmans|Doubleday|Cambridge)', attr):
+            continue
+        # Skip if attribution is just a city/publisher
+        if re.match(r'^(Salt Lake|New York|Grand Rapids|London|Philadelphia)', attr):
+            continue
+
+        key = text[:60].lower()
         if key in seen:
             continue
         seen.add(key)
-        candidates.append(p)
-    candidates.sort(key=lambda x: -len(x))
-    return candidates[:MAX_PER_VERSE]
+
+        quotes.append({
+            "text": text,
+            "attr": attr,
+            "type": c.source_type or 'other',
+        })
+
+    quotes.sort(key=lambda x: -len(x['text']))
+    return quotes[:MAX_QUOTES]
 
 
+# ── Main ──────────────────────────────────────────────────────────────────────
 def main():
     source_text = CACHE / "source_text.txt"
     if not source_text.exists():
@@ -122,9 +193,9 @@ def main():
     print("Parsing Donaldson commentary…")
     from extract.donaldson_parser import parse_donaldson
     raw_text = source_text.read_text(encoding="utf-8")
-    volumes = parse_donaldson(raw_text)
+    volumes  = parse_donaldson(raw_text)
 
-    files_written = total_with_notes = 0
+    files_written = total_verses = 0
 
     for vol in volumes:
         for book in vol.books:
@@ -132,12 +203,19 @@ def main():
             slug  = BOOK_SLUG.get(bname, bname.lower().replace(" ", "_"))
 
             for ch in book.chapters:
-                chapter_data: dict[str, list] = {}
+                chapter_data: dict = {}
+
                 for v in ch.verses:
-                    paras = curate(v.donaldson or [])
-                    if paras:
-                        total_with_notes += 1
-                        chapter_data[str(v.verse)] = paras
+                    notes, words = curate_notes(v.donaldson or [])
+                    quotes       = curate_quotes(v.commentary or [])
+
+                    if notes or words or quotes:
+                        total_verses += 1
+                        entry: dict = {}
+                        if notes:  entry["notes"]  = notes
+                        if words:  entry["words"]  = words
+                        if quotes: entry["quotes"] = quotes
+                        chapter_data[str(v.verse)] = entry
 
                 if chapter_data:
                     out_path = OUT_DIR / f"{slug}_{ch.number}.json"
@@ -148,15 +226,23 @@ def main():
                     files_written += 1
 
     print(f"\n{files_written} chapter files → {OUT_DIR}/")
-    print(f"{total_with_notes:,} verses have curated Donaldson notes")
+    print(f"{total_verses:,} verses have content")
 
-    # Quick check: John 1
+    # Spot-check John 1
     john1 = OUT_DIR / "john_1.json"
     if john1.exists():
         data = json.loads(john1.read_text())
-        print(f"\nJohn 1: {len(data)} verses with notes ({john1.stat().st_size // 1024} KB)")
-        for vnum in sorted(data.keys(), key=int)[:5]:
-            print(f"  v{vnum}: {len(data[vnum])} paras, first 100: {data[vnum][0][:100]}")
+        print(f"\nJohn 1: {len(data)} verses ({john1.stat().st_size // 1024} KB)")
+        for vnum in ['1', '3', '5', '9', '14']:
+            if vnum not in data: continue
+            e = data[vnum]
+            print(f"  v{vnum}: {len(e.get('notes',[]))} notes, "
+                  f"{len(e.get('words',[]))} words, {len(e.get('quotes',[]))} quotes")
+            for w in e.get('words', [])[:3]:
+                print(f"    {w['word']} ({w['greek']}): {w['meaning'][:70]}")
+            for q in e.get('quotes', [])[:1]:
+                print(f"    quote: [{q['type']}] {q['attr'][:60]}")
+                print(f"           {q['text'][:80]}")
 
 
 if __name__ == "__main__":
