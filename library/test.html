@@ -64,77 +64,77 @@ h1 { font-family: 'EB Garamond', Georgia, serif; font-size: 28px; font-weight: 4
 .panel-verse-text { font-family: 'EB Garamond', Georgia, serif; font-size: 15px; line-height: 1.65; color: var(--text); font-style: italic; }
 
 .panel-section {
-    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-    color: var(--muted); padding: 12px 28px 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); padding: 14px 28px 10px;
     border-bottom: 1px solid var(--divider);
-    background: rgba(0,0,0,0.015);
+    background: rgba(0,0,0,0.018);
 }
 
-/* ── Greek/Hebrew words ── */
-.word-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--divider); border-bottom: 1px solid var(--divider); }
-.word-cell { padding: 14px 18px; background: var(--panel-bg); }
-.word-original { font-size: 22px; font-family: serif; font-weight: 400; line-height: 1.2; margin-bottom: 3px; }
-.word-english  { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
-.word-meaning  { font-size: 12px; color: var(--text); line-height: 1.5; }
+/* ── Greek/Hebrew words — stacked, not grid ── */
+.word-card { padding: 16px 28px; border-bottom: 1px solid var(--divider); display: flex; gap: 16px; align-items: flex-start; }
+.word-original { font-size: 28px; font-family: 'EB Garamond', Georgia, serif; font-weight: 400; line-height: 1; color: var(--text); flex-shrink: 0; min-width: 52px; }
+.word-detail {}
+.word-english  { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+.word-meaning  { font-size: 14px; color: var(--text); line-height: 1.6; }
 
 /* ── Commentary notes ── */
-.note-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
+.note-card { padding: 20px 28px; border-bottom: 1px solid var(--divider); }
 .note-body {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15.5px; line-height: 1.8; color: var(--text);
-    padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.3);
+    font-size: 16px; line-height: 1.8; color: var(--text);
+    padding-left: 16px; border-left: 2px solid rgba(156,122,77,0.35);
 }
 .note-preview { display: block; }
 .note-overflow { display: none; }
 .note-card.expanded .note-overflow { display: inline; }
 .note-more {
-    display: inline; font-size: 11px; font-weight: 600; color: var(--accent);
-    cursor: pointer; background: none; border: none; padding: 0 0 0 4px;
+    display: inline-block; font-size: 12px; font-weight: 600; color: var(--accent);
+    cursor: pointer; background: none; border: none; padding: 6px 0 0; margin-top: 4px;
 }
 .note-card.expanded .note-more { display: none; }
 
 /* ── Attributed quotes ── */
-.quote-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
-.quote-attr  { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
-.quote-type-gc  { color: #5a7a9c; }
-.quote-type-jd  { color: #7a5c9c; }
+.quote-card { padding: 20px 28px; border-bottom: 1px solid var(--divider); }
+.quote-attr  { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
+.quote-type-gc  { color: #4a7090; }
+.quote-type-jd  { color: #6a4a8c; }
 .quote-text {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15.5px; line-height: 1.8; color: var(--text); font-style: italic;
-    padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.25);
+    font-size: 16px; line-height: 1.8; color: var(--text); font-style: italic;
+    padding-left: 16px; border-left: 2px solid rgba(156,122,77,0.25);
 }
 .quote-preview { display: block; }
 .quote-overflow { display: none; }
 .quote-card.expanded .quote-overflow { display: inline; }
 .quote-more {
-    display: inline; font-size: 11px; font-weight: 600; color: var(--accent);
-    cursor: pointer; background: none; border: none; padding: 0 0 0 4px;
+    display: inline-block; font-size: 12px; font-weight: 600; color: var(--accent);
+    cursor: pointer; background: none; border: none; padding: 6px 0 0; margin-top: 4px;
 }
 .quote-card.expanded .quote-more { display: none; }
 
 /* ── Scripture parallels ── */
-.scrip-card { padding: 14px 28px; border-bottom: 1px solid var(--divider); }
-.scrip-ref  { font-size: 11px; font-weight: 600; color: var(--green); margin-bottom: 6px; }
+.scrip-card { padding: 16px 28px; border-bottom: 1px solid var(--divider); }
+.scrip-ref  { font-size: 12px; font-weight: 700; color: var(--green); margin-bottom: 7px; }
 .scrip-text {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15px; line-height: 1.7; color: var(--text); font-style: italic;
-    padding-left: 14px; border-left: 2px solid rgba(74,103,65,0.25);
+    font-size: 16px; line-height: 1.75; color: var(--text); font-style: italic;
+    padding-left: 16px; border-left: 2px solid rgba(74,103,65,0.3);
 }
 
 /* ── Historical voices ── */
-.hist-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
+.hist-card { padding: 20px 28px; border-bottom: 1px solid var(--divider); }
 .hist-badge {
-    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .07em;
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .05em;
     text-transform: uppercase; color: var(--accent); background: rgba(156,122,77,0.1);
-    border-radius: 4px; padding: 2px 7px; margin-bottom: 8px;
+    border-radius: 4px; padding: 3px 8px; margin-bottom: 9px;
 }
-.hist-badge.gc  { color: #5a7a9c; background: rgba(90,122,156,0.1); }
-.hist-author { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-.hist-work   { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.hist-badge.gc  { color: #4a7090; background: rgba(74,112,144,0.1); }
+.hist-author { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.hist-work   { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
 .hist-quote  {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15.5px; line-height: 1.8; color: var(--text); font-style: italic;
-    padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.3);
+    font-size: 16px; line-height: 1.8; color: var(--text); font-style: italic;
+    padding-left: 16px; border-left: 2px solid rgba(156,122,77,0.3);
 }
 
 /* Mobile */
@@ -407,15 +407,14 @@ function selectVerse(num, text) {
     // ── Greek/Hebrew word studies ──
     if (words.length) {
         html += '<div class="panel-section">Key Words</div>';
-        html += '<div class="word-grid">';
         words.forEach(function(w) {
-            html += '<div class="word-cell">'
+            html += '<div class="word-card">'
                 + '<div class="word-original">' + esc(w.greek) + '</div>'
+                + '<div class="word-detail">'
                 + '<div class="word-english">' + esc(w.word) + '</div>'
-                + '<div class="word-meaning">' + esc(w.meaning.slice(0, 160)) + '</div>'
-                + '</div>';
+                + '<div class="word-meaning">' + makeExpandable(w.meaning, 'note-preview', 'note-overflow', 'note-more') + '</div>'
+                + '</div></div>';
         });
-        html += '</div>';
     }
 
     // ── Donaldson notes ──
