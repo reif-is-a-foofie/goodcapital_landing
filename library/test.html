@@ -412,7 +412,7 @@ function selectVerse(num, text) {
                 + '<div class="word-original">' + esc(w.greek) + '</div>'
                 + '<div class="word-detail">'
                 + '<div class="word-english">' + esc(w.word) + '</div>'
-                + '<div class="word-meaning">' + makeExpandable(w.meaning, 'note-preview', 'note-overflow', 'note-more') + '</div>'
+                + '<div class="word-meaning">' + makeExpandable(w.plain || w.meaning, 'note-preview', 'note-overflow', 'note-more') + '</div>'
                 + '</div></div>';
         });
     }
@@ -429,9 +429,14 @@ function selectVerse(num, text) {
     }
 
     // ── Attributed quotes (Donaldson citing others) ──
-    if (quotes.length) {
+    // Filter quotes that start mid-sentence (lowercase = truncated in source)
+    var cleanQuotes = quotes.filter(function(q) {
+        var t = (q.text || '').trim();
+        return t.length > 0 && t[0] === t[0].toUpperCase() && t[0] !== t[0].toLowerCase();
+    });
+    if (cleanQuotes.length) {
         html += '<div class="panel-section">From the Sources</div>';
-        quotes.forEach(function(q) {
+        cleanQuotes.forEach(function(q) {
             var typeClass = 'quote-type-' + (q.type || 'other');
             html += '<div class="quote-card">'
                 + '<div class="quote-attr ' + typeClass + '">' + esc(q.attr) + '</div>'
