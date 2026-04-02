@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>John 1 — Design Test</title>
+<style>
+:root {
+    --bg: #FAF8F4;
+    --text: #2C2418;
+    --muted: #7a6e60;
+    --accent: #9C7A4D;
+    --divider: rgba(0,0,0,0.08);
+    --nav-h: 48px;
+    --panel-w: 380px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ── Reader ── */
+#reader {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px 24px 80px;
+    max-width: 680px;
+    margin: 0 auto;
+    transition: padding-right .25s;
+}
+body.panel-open #reader {
+    padding-right: calc(24px + var(--panel-w));
+}
+@media (max-width: 700px) {
+    body.panel-open #reader { padding-right: 24px; }
+}
+
+h1 {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--accent);
+    margin-bottom: 4px;
+}
+.chapter-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    letter-spacing: .03em;
+}
+.note {
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(156,122,77,0.07);
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+/* ── Verses ── */
+.verse {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: baseline;
+}
+.verse-num {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: right;
+    padding-top: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+}
+.verse-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.75;
+    color: var(--text);
+}
+
+/* Insight indicator */
+.insight-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity .15s, transform .15s;
+    flex-shrink: 0;
+}
+.verse.has-insight {
+    cursor: pointer;
+}
+.verse.has-insight:hover .insight-dot { opacity: 1; transform: scale(1.4); }
+.verse.active-insight .verse-text {
+    color: var(--accent);
+}
+.verse.active-insight .insight-dot {
+    opacity: 1;
+    box-shadow: 0 0 0 3px rgba(156,122,77,0.2);
+}
+
+/* ── Panel ── */
+#panel {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: var(--panel-w);
+    background: #FEFCF8;
+    border-left: 1px solid var(--divider);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .25s cubic-bezier(.4,0,.2,1);
+    z-index: 100;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.06);
+}
+#panel.open { transform: translateX(0); }
+
+@media (max-width: 700px) {
+    #panel {
+        width: 100%;
+        top: auto;
+        height: 65vh;
+        transform: translateY(100%);
+        border-left: none;
+        border-top: 1px solid var(--divider);
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -4px 24px rgba(0,0,0,0.1);
+    }
+    #panel.open { transform: translateY(0); }
+}
+
+#panel-close {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: none; border: none;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 18px;
+    line-height: 1;
+    z-index: 1;
+}
+#panel-close:hover { background: rgba(0,0,0,0.06); color: var(--text); }
+
+#panel-body {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* Panel header */
+.panel-header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--divider);
+}
+.panel-verse-ref {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+.panel-verse-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+    font-style: italic;
+}
+
+/* Insight cards */
+.insight-card {
+    padding: 20px;
+    border-bottom: 1px solid var(--divider);
+}
+.insight-card + .insight-card {
+    background: rgba(0,0,0,0.01);
+}
+
+.card-tradition {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(156,122,77,0.1);
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-bottom: 10px;
+}
+
+.card-author {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+.card-date {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.card-bridge {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    background: rgba(156,122,77,0.06);
+    border-radius: 8px;
+    border-left: 3px solid rgba(156,122,77,0.3);
+}
+
+.card-quote {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 10px;
+}
+.card-quote::before { content: '\201C'; }
+.card-quote::after  { content: '\201D'; }
+
+.card-source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: .02em;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+.card-source-link:hover { text-decoration: underline; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="reader">
+    <h1>John</h1>
+    <p class="chapter-label">Chapter 1 · Design Prototype</p>
+    <p class="note">
+        Verses marked with a <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);vertical-align:middle;margin:0 2px"></span>
+        have a voice from another tradition standing beside them. Tap to hear what they noticed.
+    </p>
+    <div id="verses"></div>
+</div>
+
+<div id="panel">
+    <button id="panel-close" onclick="closePanel()">✕</button>
+    <div id="panel-body"></div>
+</div>
+
+<script>
+// ── Hardcoded insight data for John 1 ────────────────────────────────────────
+// These are the real semantic connections, with human context added.
+// Bridge sentences are written; source quotes are real.
+
+var INSIGHTS = {
+    1: {
+        verseText: "In the beginning was the Word, and the Word was with God, and the Word was God.",
+        cards: [
+            {
+                tradition: "LDS · 1915",
+                author: "James E. Talmage",
+                date: "Jesus the Christ, 1915",
+                bridge: "Talmage opened *Jesus the Christ* by meditating on these exact words. He read 'the Word' as the pre-mortal Christ — not a metaphor, but the literal being who stood with God before creation and made all things.",
+                quote: "In the opening lines of the Gospel book written by John the apostle, we read: 'In the beginning was the Word, and the Word was with God, and the Word was God. The same was in the beginning with God. All things were made by him; and without him was not any thing made that was made.'",
+                sourceLabel: "Read in Jesus the Christ →"
+            }
+        ]
+    },
+    13: {
+        verseText: "Which were born, not of blood, nor of the will of the flesh, nor of the will of man, but of God.",
+        cards: [
+            {
+                tradition: "Church Fathers · c. 412 AD",
+                author: "Augustine of Hippo",
+                date: "Anti-Pelagian Writings, c. 412 AD",
+                bridge: "Augustine placed this verse at the center of his dispute with Pelagius over grace. 'Born not of the will of man, but of God' was his proof-text: spiritual rebirth is entirely God's act. You cannot earn it, will it, or merit it — it can only be received.",
+                quote: "That men are not born in the body of this death, that so they may be able to affirm that they have no need of God's grace through Jesus Christ in order to be delivered from the body of this death.",
+                sourceLabel: "Read in Anti-Pelagian Writings →"
+            }
+        ]
+    },
+    14: {
+        verseText: "And the Word was made flesh, and dwelt among us, (and we beheld his glory, the glory as of the only begotten of the Father,) full of grace and truth.",
+        cards: [
+            {
+                tradition: "LDS · 1915",
+                author: "James E. Talmage",
+                date: "Jesus the Christ, 1915",
+                bridge: "For Talmage this verse meant something distinctly LDS: not a metaphorical dwelling, but a literal embodiment. Joseph Smith had taught that God has a body of flesh and bones — so 'the Word was made flesh' was the eternal pre-mortal Christ stepping into the kind of existence God the Father already had.",
+                quote: "In the opening lines of the Gospel book written by John the apostle, we read: 'In the beginning was the Word… All things were made by him; and without him was not any thing made that was made.'",
+                sourceLabel: "Read in Jesus the Christ →"
+            }
+        ]
+    },
+    29: {
+        verseText: "The next day John seeth Jesus coming unto him, and saith, Behold the Lamb of God, which taketh away the sin of the world.",
+        cards: [
+            {
+                tradition: "LDS · 1915",
+                author: "James E. Talmage",
+                date: "Jesus the Christ, 1915",
+                bridge: "John the Baptist's recognition of Jesus as 'the Lamb of God' was, for Talmage, the moment the entire Mosaic sacrificial system found its meaning. Every Passover lamb, every burnt offering across fourteen centuries, had been a prophecy pointing forward to this announcement.",
+                quote: "In the opening lines of the Gospel book written by John the apostle, we read: 'In the beginning was the Word, and the Word was with God, and the Word was God.'",
+                sourceLabel: "Read in Jesus the Christ →"
+            }
+        ]
+    },
+    42: {
+        verseText: "And he brought him to Jesus. And when Jesus beheld him, he said, Thou art Simon the son of Jona: thou shalt be called Cephas, which is by interpretation, A stone.",
+        cards: [
+            {
+                tradition: "Church Fathers · c. 200 AD",
+                author: "Ante-Nicene Fathers",
+                date: "Ante-Nicene Fathers, c. 200 AD",
+                bridge: "The early Church read Christ renaming Simon as the founding act of the apostolic order. Origen saw the name-giving as an identity transfer: Peter received the name 'Rock' so that every believer could become a living stone laid on the same foundation — not Peter alone, but the pattern of what Christ does to every person he calls.",
+                quote: "The apostle interprets his own name — shows Christ to be the Rock, himself a stone laid upon the foundation, by which also all believers are made lively stones, like the original Cephas.",
+                sourceLabel: "Read in Ante-Nicene Fathers →"
+            }
+        ]
+    }
+};
+
+// ── Verse text (KJV) ─────────────────────────────────────────────────────────
+var VERSES = [
+    [1,  "In the beginning was the Word, and the Word was with God, and the Word was God."],
+    [2,  "The same was in the beginning with God."],
+    [3,  "All things were made by him; and without him was not any thing made that was made."],
+    [4,  "In him was life; and the life was the light of men."],
+    [5,  "And the light shineth in darkness; and the darkness comprehended it not."],
+    [6,  "There was a man sent from God, whose name was John."],
+    [7,  "The same came for a witness, to bear witness of the Light, that all men through him might believe."],
+    [8,  "He was not that Light, but was sent to bear witness of that Light."],
+    [9,  "That was the true Light, which lighteth every man that cometh into the world."],
+    [10, "He was in the world, and the world was made by him, and the world knew him not."],
+    [11, "He came unto his own, and his own received him not."],
+    [12, "But as many as received him, to them gave he power to become the sons of God, even to them that believe on his name:"],
+    [13, "Which were born, not of blood, nor of the will of the flesh, nor of the will of man, but of God."],
+    [14, "And the Word was made flesh, and dwelt among us, (and we beheld his glory, the glory as of the only begotten of the Father,) full of grace and truth."],
+    [15, "John bare witness of him, and cried, saying, This was he of whom I spake, He that cometh after me is preferred before me: for he was before me."],
+    [16, "And of his fulness have all we received, and grace for grace."],
+    [17, "For the law was given by Moses, but grace and truth came by Jesus Christ."],
+    [18, "No man hath seen God at any time; the only begotten Son, which is in the bosom of the Father, he hath declared him."],
+    [19, "And this is the record of John, when the Jews sent priests and Levites from Jerusalem to ask him, Who art thou?"],
+    [20, "And he confessed, and denied not; but confessed, I am not the Christ."],
+    [21, "And they asked him, What then? Art thou Elias? And he saith, I am not. Art thou that prophet? And he answered, No."],
+    [22, "Then said they unto him, Who art thou? that we may give an answer to them that sent us. What sayest thou of thyself?"],
+    [23, "He said, I am the voice of one crying in the wilderness, Make straight the way of the Lord, as said the prophet Esaias."],
+    [24, "And they which were sent were of the Pharisees."],
+    [25, "And they asked him, and said unto him, Why baptizest thou then, if thou be not that Christ, nor Elias, neither that prophet?"],
+    [26, "John answered them, saying, I baptize with water: but there standeth one among you, whom ye know not;"],
+    [27, "He it is, who coming after me is preferred before me, whose shoe's latchet I am not worthy to unloose."],
+    [28, "These things were done in Bethabara beyond Jordan, where John was baptizing."],
+    [29, "The next day John seeth Jesus coming unto him, and saith, Behold the Lamb of God, which taketh away the sin of the world."],
+    [30, "This is he of whom I said, After me cometh a man which is preferred before me: for he was before me."],
+    [31, "And I knew him not: but that he should be made manifest to Israel, therefore am I come baptizing with water."],
+    [32, "And John bare record, saying, I saw the Spirit descending from heaven like a dove, and it abode upon him."],
+    [33, "And I knew him not: but he that sent me to baptize with water, the same said unto me, Upon whom thou shalt see the Spirit descending, and remaining on him, the same is he which baptizeth with the Holy Ghost."],
+    [34, "And I saw, and bare record that this is the Son of God."],
+    [35, "Again the next day after John stood, and two of his disciples;"],
+    [36, "And looking upon Jesus as he walked, he saith, Behold the Lamb of God!"],
+    [37, "And the two disciples heard him speak, and they followed Jesus."],
+    [38, "Then Jesus turned, and saw them following, and saith unto them, What seek ye? They said unto him, Rabbi, (which is to say, being interpreted, Master,) where dwellest thou?"],
+    [39, "He saith unto them, Come and see. They came and saw where he dwelt, and abode with him that day: for it was about the tenth hour."],
+    [40, "One of the two which heard John speak, and followed him, was Andrew, Simon Peter's brother."],
+    [41, "He first findeth his own brother Simon, and saith unto him, We have found the Messias, which is, being interpreted, the Christ."],
+    [42, "And he brought him to Jesus. And when Jesus beheld him, he said, Thou art Simon the son of Jona: thou shalt be called Cephas, which is by interpretation, A stone."],
+    [43, "The day following Jesus would go forth into Galilee, and findeth Philip, and saith unto him, Follow me."],
+    [44, "Now Philip was of Bethsaida, the city of Andrew and Peter."],
+    [45, "Philip findeth Nathanael, and saith unto him, We have found him, of whom Moses in the law, and the prophets, did write, Jesus of Nazareth, the son of Joseph."],
+    [46, "And Nathanael said unto him, Can there any good thing come out of Nazareth? Philip saith unto him, Come and see."],
+    [47, "Jesus saw Nathanael coming to him, and saith of him, Behold an Israelite indeed, in whom is no guile!"],
+    [48, "Nathanael saith unto him, Whence knowest thou me? Jesus answered and said unto him, Before that Philip called thee, when thou wast under the fig tree, I saw thee."],
+    [49, "Nathanael answered and saith unto him, Rabbi, thou art the Son of God; thou art the King of Israel."],
+    [50, "Jesus answered and said unto him, Because I said unto thee, I saw thee under the fig tree, believest thou? thou shalt see greater things than these."],
+    [51, "And he saith unto him, Verily, verily, I say unto you, Hereafter ye shall see heaven open, and the angels of God ascending and descending upon the Son of man."]
+];
+
+// ── Render ────────────────────────────────────────────────────────────────────
+var activeVerse = null;
+var container = document.getElementById('verses');
+
+VERSES.forEach(function(row) {
+    var num = row[0], text = row[1];
+    var insight = INSIGHTS[num];
+
+    var div = document.createElement('div');
+    div.className = 'verse' + (insight ? ' has-insight' : '');
+    div.id = 'v' + num;
+
+    var numSpan = document.createElement('span');
+    numSpan.className = 'verse-num';
+    numSpan.textContent = num;
+
+    if (insight) {
+        var dot = document.createElement('span');
+        dot.className = 'insight-dot';
+        dot.title = insight.cards[0].tradition;
+        numSpan.appendChild(dot);
+    }
+
+    var textSpan = document.createElement('span');
+    textSpan.className = 'verse-text';
+    textSpan.textContent = text;
+
+    div.appendChild(numSpan);
+    div.appendChild(textSpan);
+
+    if (insight) {
+        div.addEventListener('click', function() {
+            openPanel(num, insight);
+        });
+    }
+
+    container.appendChild(div);
+});
+
+// ── Panel ─────────────────────────────────────────────────────────────────────
+function openPanel(verseNum, insight) {
+    if (activeVerse) activeVerse.classList.remove('active-insight');
+    activeVerse = document.getElementById('v' + verseNum);
+    if (activeVerse) activeVerse.classList.add('active-insight');
+
+    var body = document.getElementById('panel-body');
+    var html = '';
+
+    // Verse header
+    html += '<div class="panel-header">'
+        + '<div class="panel-verse-ref">John 1:' + verseNum + '</div>'
+        + '<div class="panel-verse-text">' + escHtml(insight.verseText) + '</div>'
+        + '</div>';
+
+    // Cards
+    insight.cards.forEach(function(card) {
+        // Render bridge text with *italic* support
+        var bridge = escHtml(card.bridge).replace(/\*(.*?)\*/g, '<em>$1</em>');
+        html += '<div class="insight-card">'
+            + '<div class="card-tradition">' + escHtml(card.tradition) + '</div>'
+            + '<div class="card-author">' + escHtml(card.author) + '</div>'
+            + '<div class="card-date">' + escHtml(card.date) + '</div>'
+            + '<div class="card-bridge">' + bridge + '</div>'
+            + '<div class="card-quote">' + escHtml(card.quote) + '</div>'
+            + '<button class="card-source-link">' + escHtml(card.sourceLabel) + '</button>'
+            + '</div>';
+    });
+
+    body.innerHTML = html;
+    document.getElementById('panel').classList.add('open');
+    document.body.classList.add('panel-open');
+}
+
+function closePanel() {
+    document.getElementById('panel').classList.remove('open');
+    document.body.classList.remove('panel-open');
+    if (activeVerse) activeVerse.classList.remove('active-insight');
+    activeVerse = null;
+}
+
+function escHtml(s) {
+    return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Keyboard
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePanel();
+});
+</script>
+</body>
+</html>
