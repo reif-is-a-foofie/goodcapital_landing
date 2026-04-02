@@ -1,3 +1,6 @@
 .DS_Store
 .idea/
 lds_pipeline/cache/
+
+# Large word index files (>100MB)
+library/sources/millennial_star/millennial_star_1840_1859_1859_december_vol_21_no_53_words.json
