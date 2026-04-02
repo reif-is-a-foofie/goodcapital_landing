@@ -12,7 +12,7 @@
     --muted: #7a6e60;
     --accent: #9C7A4D;
     --divider: rgba(0,0,0,0.08);
-    --scripture-accent: #4A6741;
+    --green: #4A6741;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
@@ -26,193 +26,83 @@ body {
     overflow: hidden;
 }
 
-/* ── Left: Reader ── */
+/* ── Reader ── */
 #reader {
     overflow-y: auto;
     padding: 40px 40px 80px 48px;
     border-right: 1px solid var(--divider);
 }
-h1 {
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: 28px;
-    font-weight: 400;
-    color: var(--accent);
-    margin-bottom: 4px;
-}
-.chapter-label {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 36px;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-}
+h1 { font-family: 'EB Garamond', Georgia, serif; font-size: 28px; font-weight: 400; color: var(--accent); margin-bottom: 4px; }
+.chapter-label { font-size: 12px; color: var(--muted); margin-bottom: 36px; letter-spacing: .05em; text-transform: uppercase; }
 
-/* ── Verses ── */
 .verse {
-    display: grid;
-    grid-template-columns: 28px 1fr;
-    gap: 12px;
-    margin-bottom: 14px;
-    align-items: baseline;
-    cursor: pointer;
-    border-radius: 6px;
-    padding: 4px 6px 4px 0;
-    margin-left: -6px;
+    display: grid; grid-template-columns: 28px 1fr; gap: 12px;
+    margin-bottom: 14px; align-items: baseline; cursor: pointer;
+    border-radius: 6px; padding: 4px 6px 4px 0; margin-left: -6px;
     transition: background .1s;
 }
 .verse:hover { background: rgba(156,122,77,0.06); }
 .verse.active { background: rgba(156,122,77,0.1); }
-.verse-num {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--muted);
-    text-align: right;
-    padding-top: 3px;
-    user-select: none;
-}
+.verse-num { font-size: 11px; font-weight: 600; color: var(--muted); text-align: right; padding-top: 3px; user-select: none; }
 .verse.has-data .verse-num { color: var(--accent); }
 .verse.active .verse-num { color: var(--accent); }
-.verse-text {
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: 19px;
-    line-height: 1.75;
-    color: var(--text);
-}
+.verse-text { font-family: 'EB Garamond', Georgia, serif; font-size: 19px; line-height: 1.75; }
 
-/* ── Right: Panel ── */
-#panel {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background: var(--panel-bg);
-}
-#panel-body {
-    flex: 1;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-}
+/* ── Panel ── */
+#panel { display: flex; flex-direction: column; overflow: hidden; background: var(--panel-bg); }
+#panel-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; }
 
-/* Empty state */
 .panel-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 40px;
-    text-align: center;
-    color: var(--muted);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; padding: 40px; text-align: center; color: var(--muted);
 }
 .panel-empty-icon { font-size: 28px; margin-bottom: 16px; opacity: 0.35; }
 .panel-empty-text { font-size: 13px; line-height: 1.7; max-width: 240px; }
 
-/* Panel header */
-.panel-header {
-    padding: 24px 28px 18px;
-    border-bottom: 1px solid var(--divider);
-    flex-shrink: 0;
-}
-.panel-verse-ref {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 8px;
-}
-.panel-verse-text {
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15px;
-    line-height: 1.65;
-    color: var(--text);
-    font-style: italic;
-}
+.panel-header { padding: 24px 28px 18px; border-bottom: 1px solid var(--divider); flex-shrink: 0; }
+.panel-verse-ref { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.panel-verse-text { font-family: 'EB Garamond', Georgia, serif; font-size: 15px; line-height: 1.65; color: var(--text); font-style: italic; }
 
-/* Section headers */
-.panel-section-header {
-    padding: 14px 28px 8px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--muted);
+.panel-section {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); padding: 14px 28px 8px;
     border-bottom: 1px solid var(--divider);
     background: rgba(0,0,0,0.015);
 }
 
-/* No connections */
-.panel-no-connections {
-    padding: 28px 28px;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
+/* ── Donaldson cards ── */
+.dona-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
+.dona-attr { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.dona-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px; line-height: 1.75; color: var(--text);
+    padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.3);
 }
 
 /* ── Historical voice cards ── */
-.insight-card {
-    padding: 20px 28px;
-    border-bottom: 1px solid var(--divider);
+.hist-card { padding: 18px 28px; border-bottom: 1px solid var(--divider); }
+.hist-badge {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--accent); background: rgba(156,122,77,0.1);
+    border-radius: 4px; padding: 2px 7px; margin-bottom: 8px;
 }
-.card-badge {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(156,122,77,0.1);
-    border-radius: 4px;
-    padding: 2px 7px;
-    margin-bottom: 9px;
-}
-.card-badge.gc   { color: #5a7a9c; background: rgba(90,122,156,0.1); }
-.card-badge.jod  { color: #7a5c9c; background: rgba(122,92,156,0.1); }
-.card-badge.hoc  { color: #7a5c9c; background: rgba(122,92,156,0.1); }
-.card-author {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 2px;
-}
-.card-work {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 12px;
-}
-.card-quote {
+.hist-badge.gc   { color: #5a7a9c; background: rgba(90,122,156,0.1); }
+.hist-badge.hoc  { color: #7a5c9c; background: rgba(122,92,156,0.1); }
+.hist-author { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.hist-work   { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.hist-quote  {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15px;
-    line-height: 1.75;
-    color: var(--text);
-    font-style: italic;
-    padding-left: 14px;
-    border-left: 2px solid rgba(156,122,77,0.3);
-}
-.card-score {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 8px;
+    font-size: 15px; line-height: 1.75; color: var(--text); font-style: italic;
+    padding-left: 14px; border-left: 2px solid rgba(156,122,77,0.3);
 }
 
-/* ── Scripture parallel cards ── */
-.scripture-card {
-    padding: 16px 28px;
-    border-bottom: 1px solid var(--divider);
-}
-.scripture-ref {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--scripture-accent);
-    margin-bottom: 6px;
-}
-.scripture-text {
+/* ── Scripture parallels ── */
+.scrip-card { padding: 14px 28px; border-bottom: 1px solid var(--divider); }
+.scrip-ref  { font-size: 11px; font-weight: 600; color: var(--green); margin-bottom: 6px; }
+.scrip-text {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--text);
-    font-style: italic;
-    padding-left: 14px;
-    border-left: 2px solid rgba(74,103,65,0.25);
+    font-size: 15px; line-height: 1.7; color: var(--text); font-style: italic;
+    padding-left: 14px; border-left: 2px solid rgba(74,103,65,0.25);
 }
 
 /* Mobile */
@@ -243,7 +133,6 @@ h1 {
 </div>
 
 <script>
-// ── KJV text ──────────────────────────────────────────────────────────────────
 var VERSES = [
     [1,  "In the beginning was the Word, and the Word was with God, and the Word was God."],
     [2,  "The same was in the beginning with God."],
@@ -298,214 +187,205 @@ var VERSES = [
     [51, "And he saith unto him, Verily, verily, I say unto you, Hereafter ye shall see heaven open, and the angels of God ascending and descending upon the Son of man."]
 ];
 
-// ── Author metadata: doc ID fragment → display name ───────────────────────────
-var AUTHOR_MAP = {
-    'jesus_the_christ':          { author: 'James E. Talmage', work: 'Jesus the Christ (1915)' },
-    'brigham_young_discourses':  { author: 'Brigham Young',    work: 'Discourses of Brigham Young' },
-    'lucy_mack_smith':           { author: 'Lucy Mack Smith',  work: 'History of Joseph Smith' },
-    'anti_pelagian':             { author: 'Augustine of Hippo', work: 'Anti-Pelagian Writings' },
-    'ante_nicene':               { author: 'Ante-Nicene Fathers', work: 'Ante-Nicene Fathers' },
-    'history_of_church':         { author: 'History of the Church', work: '' },
-    'times_and_seasons':         { author: 'Times and Seasons', work: '' },
-    'millennial_star':           { author: 'Millennial Star', work: '' },
-};
+// ── State ─────────────────────────────────────────────────────────────────────
+var donaldsonData  = {};   // verseNum (string) → [para, ...]
+var discoveryData  = {};   // verseNum (int)    → [{...}]  — filtered, verse-specific only
+var scriptureData  = {};   // verseNum (int)    → [{ref, text}]
+var activeVerse    = null;
 
-var BADGE_CLASS = {
-    'NT → LDS Historical':        '',
-    'NT → General Conference':    'gc',
-    'NT → Church Fathers':        '',
-    'NT → Jewish / Ancient Texts':'',
-};
+// Sources that produce one paragraph for many verses (chapter-level noise)
+var SKIP_SOURCES = ['millennial_star'];
 
-function parseCard(entry) {
-    var lb = entry.source_label || '';
-    var src = entry.source || '';
-    var doc = entry.source_doc_id || '';
+// Passage text prefixes that repeat across many verses — suppress
+var REPEAT_PREFIXES = [
+    'in  the  opening  lines',
+    'q. was it by the father',
+    'the lights were immediately extinguished',
+];
 
-    // General Conference: "GC YYYY/MM — Speaker Name"
-    var gcMatch = lb.match(/GC\s+(\d{4})\/(\d{2})\s*[—-]\s*(.+)/);
-    if (gcMatch) {
-        var months = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        var mo = parseInt(gcMatch[2], 10);
-        return {
-            author: gcMatch[3].trim(),
-            work:   'General Conference, ' + (months[mo] || gcMatch[2]) + ' ' + gcMatch[1],
-            badge:  'General Conference',
-            badgeClass: 'gc',
-        };
-    }
-    // Journal of Discourses: "JD Vol N"
-    var jdMatch = lb.match(/JD Vol\s*(\d+)/i);
-    if (jdMatch) {
-        return { author: 'Journal of Discourses', work: 'Volume ' + jdMatch[1], badge: 'LDS Historical', badgeClass: 'jod' };
-    }
-    // HoC
-    if (lb.startsWith('HoC:')) {
-        return { author: 'History of the Church', work: lb.replace('HoC:', '').trim(), badge: 'LDS Historical', badgeClass: 'hoc' };
-    }
-
-    // Match against doc ID fragments
-    for (var key in AUTHOR_MAP) {
-        if (doc.indexOf(key) !== -1 || lb.toLowerCase().indexOf(key.replace(/_/g,' ')) !== -1) {
-            var m = AUTHOR_MAP[key];
-            var badgeSrc = entry.tradition_pair || '';
-            return { author: m.author, work: m.work, badge: badgeSrc.split('→').pop().trim(), badgeClass: '' };
-        }
-    }
-
-    // Fallback: clean up label
-    var cleaned = lb.replace(/^(LDS Historical|Church Fathers|Pioneer Journals|Times & Seasons|Millennial Star|Ante-Nicene Fathers|Ancient Texts):\s*/i, '').replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }).slice(0,60);
-    var badge = (entry.tradition_pair || '').split('→').pop().trim();
-    return { author: cleaned, work: '', badge: badge, badgeClass: '' };
+function isRepeat(text) {
+    if (!text) return false;
+    var t = text.toLowerCase().trim();
+    return REPEAT_PREFIXES.some(function(p) { return t.indexOf(p) === 0; });
 }
 
 function cleanText(t) {
-    if (!t) return '';
-    // Fix OCR double-spacing: "In  the  opening  lines" → "In the opening lines"
-    return t.replace(/  +/g, ' ').replace(/\n\s+/g, ' ').trim();
+    return (t || '').replace(/  +/g, ' ').replace(/\n\s*/g, ' ').trim();
 }
 
-// ── Data: verse_discovery + chapter graph ─────────────────────────────────────
-var discoveryData  = {};   // "John 1:N" → [{tradition_pair, source_label, source_text, ...}]
-var scriptureData  = {};   // verseNum   → [{ref, text, score}]
-var activeVerse    = null;
+// ── Author parsing ────────────────────────────────────────────────────────────
+function parseCard(entry) {
+    var lb  = entry.source_label || '';
+    var src = entry.source || '';
 
-// Sources to skip — they all resolve to the same paragraph regardless of verse
-var SKIP_LABELS = ['millennial_star'];
+    // GC: "GC YYYY/MM — Speaker Name"
+    var gcM = lb.match(/GC\s+(\d{4})\/(\d{2})\s*[—-]\s*(.+)/);
+    if (gcM) {
+        var mo = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(gcM[2],10)] || gcM[2];
+        return { author: gcM[3].trim(), work: 'General Conference, ' + mo + ' ' + gcM[1], badgeClass: 'gc', badge: 'General Conference' };
+    }
+    // JD: "JD Vol N"
+    var jdM = lb.match(/JD Vol\s*(\d+)/i);
+    if (jdM) return { author: 'Journal of Discourses', work: 'Volume ' + jdM[1], badgeClass: '', badge: 'LDS Historical' };
+    // HoC
+    if (lb.startsWith('HoC:')) return { author: 'History of the Church', work: lb.replace('HoC:','').trim(), badgeClass: 'hoc', badge: 'LDS Historical' };
+    // Brigham Young
+    if ((entry.source_doc_id||'').indexOf('brigham_young') !== -1 || lb.indexOf('brigham_young') !== -1)
+        return { author: 'Brigham Young', work: 'Discourses of Brigham Young', badgeClass: '', badge: 'LDS Historical' };
+    // Augustine
+    if ((entry.source_doc_id||'').indexOf('anti_pelagian') !== -1 || lb.toLowerCase().indexOf('anti-pelagian') !== -1)
+        return { author: 'Augustine of Hippo', work: 'Anti-Pelagian Writings', badgeClass: '', badge: 'Church Fathers' };
+    // Ante-Nicene Fathers
+    if ((entry.source_doc_id||'').indexOf('ante_nicene') !== -1 || lb.toLowerCase().indexOf('ante-nicene') !== -1 || lb.toLowerCase().indexOf('ante_nicene') !== -1)
+        return { author: 'Ante-Nicene Fathers', work: '', badgeClass: '', badge: 'Church Fathers' };
+    // Times & Seasons
+    if (src === 'times_and_seasons') return { author: 'Times and Seasons', work: lb.replace(/Times & Seasons:/,'').trim(), badgeClass: '', badge: 'LDS Historical' };
 
+    // Fallback
+    var badge = (entry.tradition_pair || '').split('→').pop().trim();
+    var author = lb.replace(/^(LDS Historical|Church Fathers|Pioneer Journals):\s*/i,'')
+                   .replace(/_/g,' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }).slice(0,60);
+    return { author: author, work: '', badgeClass: '', badge: badge };
+}
+
+// ── Load data ─────────────────────────────────────────────────────────────────
 Promise.all([
+    fetch('./donaldson/john_1.json').then(function(r){ return r.ok ? r.json() : {}; }).catch(function(){ return {}; }),
     fetch('./verse_discovery.json').then(function(r){ return r.ok ? r.json() : {}; }).catch(function(){ return {}; }),
     fetch('./chapters/john_1_graph.json').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
 ]).then(function(results) {
-    var discovery = results[0] || {};
-    var graph     = results[1];
+    donaldsonData = results[0] || {};
 
-    // Filter John 1 discovery entries
+    // ── verse_discovery: filter to John 1, suppress chapter-level passages ──
+    var discovery = results[1] || {};
+
+    // First pass: count how many verses each passage text appears in
+    var textCount = {};
     Object.keys(discovery).forEach(function(ref) {
-        if (ref.startsWith('John 1:')) {
-            var vNum = parseInt(ref.split(':')[1], 10);
-            var entries = (discovery[ref] || []).filter(function(e) {
-                return SKIP_LABELS.indexOf(e.source || '') === -1
-                    && cleanText(e.source_text).length > 20;
-            });
-            if (entries.length) discoveryData[vNum] = entries;
-        }
+        if (!ref.startsWith('John 1:')) return;
+        (discovery[ref] || []).forEach(function(e) {
+            var key = (e.source_text || '').slice(0, 60).toLowerCase();
+            textCount[key] = (textCount[key] || 0) + 1;
+        });
     });
 
-    // Scripture cross-refs from chapter graph
-    if (graph) {
-        var nodeMap    = {};
-        var verseMap   = {};
-        (graph.nodes || []).forEach(function(n) {
-            nodeMap[n.id] = n;
-            if (n.t === 'v') verseMap[n.id] = n;
+    Object.keys(discovery).forEach(function(ref) {
+        if (!ref.startsWith('John 1:')) return;
+        var vNum = parseInt(ref.split(':')[1], 10);
+        var entries = (discovery[ref] || []).filter(function(e) {
+            if (SKIP_SOURCES.indexOf(e.source || '') !== -1) return false;
+            var text = cleanText(e.source_text);
+            if (text.length < 20) return false;
+            if (isRepeat(text)) return false;
+            // Suppress passages that appear in 4+ verses (not verse-specific)
+            var key = text.slice(0, 60).toLowerCase();
+            if ((textCount[key] || 0) >= 4) return false;
+            return true;
         });
+        if (entries.length) discoveryData[vNum] = entries;
+    });
+
+    // ── scripture echoes from chapter graph ──
+    var graph = results[2];
+    if (graph) {
+        var nodeMap  = {}, verseMap = {};
+        (graph.nodes || []).forEach(function(n) { nodeMap[n.id] = n; if (n.t === 'v') verseMap[n.id] = n; });
         (graph.edges || []).forEach(function(edge) {
-            var score = edge.w || 0;
-            if (score < 0.75) return;
-            var vn = verseMap[edge.s];
-            var pn = nodeMap[edge.t];
-            if (!vn || !pn) return;
-            if (pn.src !== 'standard_works') return;
+            if ((edge.w || 0) < 0.75) return;
+            var vn = verseMap[edge.s], pn = nodeMap[edge.t];
+            if (!vn || !pn || pn.src !== 'standard_works') return;
             var ref = (pn.lb || '').trim();
-            // Skip self-references within John 1
             if (ref.startsWith('John 1:')) return;
             var vNum = vn.n;
             if (!scriptureData[vNum]) scriptureData[vNum] = [];
-            // Deduplicate by ref
-            var already = scriptureData[vNum].some(function(x){ return x.ref === ref; });
-            if (!already) {
-                scriptureData[vNum].push({ ref: ref, text: cleanText(pn.x || ''), score: score });
+            if (!scriptureData[vNum].some(function(x){ return x.ref === ref; })) {
+                scriptureData[vNum].push({ ref: ref, text: cleanText(pn.x || ''), score: edge.w || 0 });
             }
         });
-        // Sort each verse's scripture refs by score
         Object.keys(scriptureData).forEach(function(v) {
             scriptureData[v].sort(function(a,b){ return b.score - a.score; });
         });
     }
 
     renderVerses();
-    // Open verse 1 by default
-    var v1 = VERSES[0];
-    selectVerse(v1[0], v1[1]);
+    selectVerse(VERSES[0][0], VERSES[0][1]);
 });
 
-// ── Render verses ─────────────────────────────────────────────────────────────
+// ── Render ────────────────────────────────────────────────────────────────────
 function renderVerses() {
     var container = document.getElementById('verses');
     container.innerHTML = '';
     VERSES.forEach(function(row) {
         var num = row[0], text = row[1];
-        var hasData = !!(discoveryData[num] || scriptureData[num]);
-
+        var hasData = !!(donaldsonData[String(num)] || discoveryData[num] || scriptureData[num]);
         var div = document.createElement('div');
         div.className = 'verse' + (hasData ? ' has-data' : '');
         div.id = 'v' + num;
-
-        var numSpan = document.createElement('span');
-        numSpan.className = 'verse-num';
-        numSpan.textContent = num;
-
-        var textSpan = document.createElement('span');
-        textSpan.className = 'verse-text';
-        textSpan.textContent = text;
-
-        div.appendChild(numSpan);
-        div.appendChild(textSpan);
+        var ns = document.createElement('span'); ns.className = 'verse-num'; ns.textContent = num;
+        var ts = document.createElement('span'); ts.className = 'verse-text'; ts.textContent = text;
+        div.appendChild(ns); div.appendChild(ts);
         div.addEventListener('click', function() { selectVerse(num, text); });
         container.appendChild(div);
     });
 }
 
-// ── Panel ─────────────────────────────────────────────────────────────────────
 function selectVerse(num, text) {
     if (activeVerse) activeVerse.classList.remove('active');
     activeVerse = document.getElementById('v' + num);
     if (activeVerse) activeVerse.classList.add('active');
 
-    var historical = discoveryData[num]   || [];
-    var scripture  = scriptureData[num]   || [];
+    var dona       = donaldsonData[String(num)] || [];
+    var historical = discoveryData[num]          || [];
+    var scripture  = scriptureData[num]          || [];
     var body       = document.getElementById('panel-body');
     var html       = '';
 
-    // Header
     html += '<div class="panel-header">'
         + '<div class="panel-verse-ref">John 1:' + num + '</div>'
         + '<div class="panel-verse-text">' + esc(text) + '</div>'
         + '</div>';
 
-    var hasAny = historical.length || scripture.length;
+    if (!dona.length && !historical.length && !scripture.length) {
+        html += '<div style="padding:28px;color:var(--muted);font-size:13px">No commentary found for this verse.</div>';
+    }
 
-    if (!hasAny) {
-        html += '<div class="panel-no-connections">No cross-tradition connections found for this verse.</div>';
-    } else {
+    // ── Donaldson commentary ──
+    if (dona.length) {
+        html += '<div class="panel-section">Lee Donaldson · LDS Commentary</div>';
+        dona.forEach(function(para) {
+            // Truncate to 600 chars
+            var t = para.length > 600 ? para.slice(0, 597) + '…' : para;
+            html += '<div class="dona-card">'
+                + '<div class="dona-text">' + esc(t) + '</div>'
+                + '</div>';
+        });
+    }
 
-        // ── Historical voices ──
-        if (historical.length) {
-            html += '<div class="panel-section-header">Voices from History</div>';
-            historical.forEach(function(entry) {
-                var meta  = parseCard(entry);
-                var qt    = cleanText(entry.source_text);
-                if (qt.length > 400) qt = qt.slice(0, 400) + '…';
-                html += '<div class="insight-card">'
-                    + '<div class="card-badge ' + (meta.badgeClass || '') + '">' + esc(meta.badge) + '</div>'
-                    + '<div class="card-author">' + esc(meta.author) + '</div>'
-                    + (meta.work ? '<div class="card-work">' + esc(meta.work) + '</div>' : '')
-                    + '<div class="card-quote">' + esc(qt) + '</div>'
-                    + '</div>';
-            });
-        }
+    // ── Historical voices ──
+    if (historical.length) {
+        html += '<div class="panel-section">Voices from History</div>';
+        historical.forEach(function(entry) {
+            var meta = parseCard(entry);
+            var qt   = cleanText(entry.source_text);
+            if (qt.length > 500) qt = qt.slice(0, 497) + '…';
+            html += '<div class="hist-card">'
+                + '<div class="hist-badge ' + (meta.badgeClass || '') + '">' + esc(meta.badge) + '</div>'
+                + '<div class="hist-author">' + esc(meta.author) + '</div>'
+                + (meta.work ? '<div class="hist-work">' + esc(meta.work) + '</div>' : '')
+                + '<div class="hist-quote">' + esc(qt) + '</div>'
+                + '</div>';
+        });
+    }
 
-        // ── Scripture echoes ──
-        if (scripture.length) {
-            html += '<div class="panel-section-header">Scripture Echoes</div>';
-            scripture.forEach(function(s) {
-                html += '<div class="scripture-card">'
-                    + '<div class="scripture-ref">' + esc(s.ref) + '</div>'
-                    + '<div class="scripture-text">' + esc(s.text) + '</div>'
-                    + '</div>';
-            });
-        }
+    // ── Scripture echoes ──
+    if (scripture.length) {
+        html += '<div class="panel-section">Scripture Echoes</div>';
+        scripture.forEach(function(s) {
+            html += '<div class="scrip-card">'
+                + '<div class="scrip-ref">' + esc(s.ref) + '</div>'
+                + '<div class="scrip-text">' + esc(s.text) + '</div>'
+                + '</div>';
+        });
     }
 
     body.innerHTML = html;
@@ -513,7 +393,7 @@ function selectVerse(num, text) {
 }
 
 function esc(s) {
-    return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
 </body>
