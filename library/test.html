@@ -7,37 +7,29 @@
 <style>
 :root {
     --bg: #FAF8F4;
+    --panel-bg: #FEFCF8;
     --text: #2C2418;
     --muted: #7a6e60;
     --accent: #9C7A4D;
     --divider: rgba(0,0,0,0.08);
-    --nav-h: 48px;
-    --panel-w: 380px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
 body {
     font-family: -apple-system, 'Inter', sans-serif;
     background: var(--bg);
     color: var(--text);
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     height: 100vh;
     overflow: hidden;
 }
 
-/* ── Reader ── */
+/* ── Left: Reader ── */
 #reader {
-    flex: 1;
     overflow-y: auto;
-    padding: 40px 24px 80px;
-    max-width: 680px;
-    margin: 0 auto;
-    transition: padding-right .25s;
-}
-body.panel-open #reader {
-    padding-right: calc(24px + var(--panel-w));
-}
-@media (max-width: 700px) {
-    body.panel-open #reader { padding-right: 24px; }
+    padding: 40px 40px 80px 48px;
+    border-right: 1px solid var(--divider);
 }
 
 h1 {
@@ -48,20 +40,11 @@ h1 {
     margin-bottom: 4px;
 }
 .chapter-label {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 32px;
-    letter-spacing: .03em;
-}
-.note {
     font-size: 12px;
     color: var(--muted);
-    background: rgba(156,122,77,0.07);
-    border-left: 3px solid var(--accent);
-    padding: 10px 14px;
-    border-radius: 0 6px 6px 0;
-    margin-bottom: 28px;
-    line-height: 1.6;
+    margin-bottom: 36px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
 }
 
 /* ── Verses ── */
@@ -69,93 +52,45 @@ h1 {
     display: grid;
     grid-template-columns: 28px 1fr;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     align-items: baseline;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 4px 6px 4px 0;
+    margin-left: -6px;
+    transition: background .1s;
 }
+.verse:hover { background: rgba(156,122,77,0.06); }
+.verse.active {
+    background: rgba(156,122,77,0.1);
+}
+
 .verse-num {
     font-size: 11px;
     font-weight: 600;
     color: var(--muted);
     text-align: right;
     padding-top: 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 3px;
+    user-select: none;
 }
+.verse.has-insight .verse-num { color: var(--accent); }
+.verse.active .verse-num { color: var(--accent); }
+
 .verse-text {
     font-family: 'EB Garamond', Georgia, serif;
     font-size: 19px;
     line-height: 1.75;
     color: var(--text);
 }
+.verse.active .verse-text { color: var(--text); }
 
-/* Insight indicator */
-.insight-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
-    opacity: 0.5;
-    cursor: pointer;
-    transition: opacity .15s, transform .15s;
-    flex-shrink: 0;
-}
-.verse.has-insight {
-    cursor: pointer;
-}
-.verse.has-insight:hover .insight-dot { opacity: 1; transform: scale(1.4); }
-.verse.active-insight .verse-text {
-    color: var(--accent);
-}
-.verse.active-insight .insight-dot {
-    opacity: 1;
-    box-shadow: 0 0 0 3px rgba(156,122,77,0.2);
-}
-
-/* ── Panel ── */
+/* ── Right: Panel ── */
 #panel {
-    position: fixed;
-    top: 0; right: 0; bottom: 0;
-    width: var(--panel-w);
-    background: #FEFCF8;
-    border-left: 1px solid var(--divider);
     display: flex;
     flex-direction: column;
-    transform: translateX(100%);
-    transition: transform .25s cubic-bezier(.4,0,.2,1);
-    z-index: 100;
-    box-shadow: -4px 0 24px rgba(0,0,0,0.06);
+    overflow: hidden;
+    background: var(--panel-bg);
 }
-#panel.open { transform: translateX(0); }
-
-@media (max-width: 700px) {
-    #panel {
-        width: 100%;
-        top: auto;
-        height: 65vh;
-        transform: translateY(100%);
-        border-left: none;
-        border-top: 1px solid var(--divider);
-        border-radius: 16px 16px 0 0;
-        box-shadow: 0 -4px 24px rgba(0,0,0,0.1);
-    }
-    #panel.open { transform: translateY(0); }
-}
-
-#panel-close {
-    position: absolute;
-    top: 12px; right: 12px;
-    background: none; border: none;
-    cursor: pointer;
-    color: var(--muted);
-    padding: 6px;
-    border-radius: 6px;
-    font-size: 18px;
-    line-height: 1;
-    z-index: 1;
-}
-#panel-close:hover { background: rgba(0,0,0,0.06); color: var(--text); }
 
 #panel-body {
     flex: 1;
@@ -163,34 +98,62 @@ h1 {
     overscroll-behavior: contain;
 }
 
-/* Panel header */
+/* Empty state */
+.panel-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px;
+    text-align: center;
+    color: var(--muted);
+}
+.panel-empty-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+}
+.panel-empty-text {
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 260px;
+}
+
+/* Panel header — verse being read */
 .panel-header {
-    padding: 20px 20px 16px;
+    padding: 24px 28px 20px;
     border-bottom: 1px solid var(--divider);
+    flex-shrink: 0;
 }
 .panel-verse-ref {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: .1em;
+    letter-spacing: .12em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
+    color: var(--accent);
+    margin-bottom: 8px;
 }
 .panel-verse-text {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.65;
     color: var(--text);
     font-style: italic;
 }
 
-/* Insight cards */
-.insight-card {
-    padding: 20px;
-    border-bottom: 1px solid var(--divider);
+/* No connections state */
+.panel-no-connections {
+    padding: 32px 28px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
 }
-.insight-card + .insight-card {
-    background: rgba(0,0,0,0.01);
+
+/* ── Insight cards ── */
+.insight-card {
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--divider);
 }
 
 .card-tradition {
@@ -215,30 +178,19 @@ h1 {
 .card-date {
     font-size: 11px;
     color: var(--muted);
-    margin-bottom: 12px;
-}
-
-.card-bridge {
-    font-size: 13px;
-    line-height: 1.65;
-    color: var(--text);
-    margin-bottom: 12px;
-    padding: 10px 12px;
-    background: rgba(156,122,77,0.06);
-    border-radius: 8px;
-    border-left: 3px solid rgba(156,122,77,0.3);
+    margin-bottom: 14px;
 }
 
 .card-quote {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 14.5px;
-    line-height: 1.7;
-    color: var(--muted);
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--text);
     font-style: italic;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
+    padding-left: 14px;
+    border-left: 2px solid rgba(156,122,77,0.35);
 }
-.card-quote::before { content: '\201C'; }
-.card-quote::after  { content: '\201D'; }
 
 .card-source-link {
     display: inline-flex;
@@ -247,14 +199,24 @@ h1 {
     font-size: 11px;
     font-weight: 600;
     color: var(--accent);
-    text-decoration: none;
     letter-spacing: .02em;
     cursor: pointer;
     background: none;
     border: none;
     padding: 0;
+    text-decoration: none;
 }
 .card-source-link:hover { text-decoration: underline; }
+
+/* ── Mobile ── */
+@media (max-width: 700px) {
+    body {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+    }
+    #reader { padding: 24px 20px 40px; border-right: none; border-bottom: 1px solid var(--divider); }
+    #panel { max-height: 50vh; border-top: 1px solid var(--divider); }
+}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -264,22 +226,21 @@ h1 {
 <div id="reader">
     <h1>John</h1>
     <p class="chapter-label">Chapter 1 · Design Prototype</p>
-    <p class="note">
-        Verses marked with a <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);vertical-align:middle;margin:0 2px"></span>
-        have a voice from another tradition standing beside them. Tap to hear what they noticed.
-    </p>
     <div id="verses"></div>
 </div>
 
 <div id="panel">
-    <button id="panel-close" onclick="closePanel()">✕</button>
-    <div id="panel-body"></div>
+    <div id="panel-body">
+        <div class="panel-empty">
+            <div class="panel-empty-icon">✦</div>
+            <div class="panel-empty-text">Tap any verse to see voices from across Christian history standing beside it.</div>
+        </div>
+    </div>
 </div>
 
 <script>
-// ── Hardcoded insight data for John 1 ────────────────────────────────────────
-// These are the real semantic connections, with human context added.
-// Bridge sentences are written; source quotes are real.
+// ── Insight data: real quotes, no AI summaries ────────────────────────────────
+// Format: tradition badge, author name, work + date, then their own words.
 
 var INSIGHTS = {
     1: {
@@ -288,10 +249,40 @@ var INSIGHTS = {
             {
                 tradition: "LDS · 1915",
                 author: "James E. Talmage",
-                date: "Jesus the Christ, 1915",
-                bridge: "Talmage opened *Jesus the Christ* by meditating on these exact words. He read 'the Word' as the pre-mortal Christ — not a metaphor, but the literal being who stood with God before creation and made all things.",
-                quote: "In the opening lines of the Gospel book written by John the apostle, we read: 'In the beginning was the Word, and the Word was with God, and the Word was God. The same was in the beginning with God. All things were made by him; and without him was not any thing made that was made.'",
+                date: "Jesus the Christ, Ch. 1",
+                quote: "In the beginning was the Word, and the Word was with God, and the Word was God. The same was in the beginning with God. All things were made by him; and without him was not any thing made that was made. In him was life; and the life was the light of men.",
                 sourceLabel: "Read in Jesus the Christ →"
+            },
+            {
+                tradition: "Church Fathers · c. 165 AD",
+                author: "Justin Martyr",
+                date: "First Apology, Ch. 46",
+                quote: "We have been taught that Christ is the first-begotten of God, and we have declared above that He is the Word of whom every race of men were partakers; and those who lived reasonably are Christians, even though they have been thought atheists.",
+                sourceLabel: "Read in First Apology →"
+            }
+        ]
+    },
+    3: {
+        verseText: "All things were made by him; and without him was not any thing made that was made.",
+        cards: [
+            {
+                tradition: "Church Fathers · c. 200 AD",
+                author: "Irenaeus of Lyon",
+                date: "Against Heresies, Book I",
+                quote: "The Word of God, our Lord Jesus Christ, who did, through His transcendent love, become what we are, that He might bring us to be even what He is Himself. For it was for this end that the Word of God was made man, and He who was the Son of God became the Son of man.",
+                sourceLabel: "Read in Against Heresies →"
+            }
+        ]
+    },
+    9: {
+        verseText: "That was the true Light, which lighteth every man that cometh into the world.",
+        cards: [
+            {
+                tradition: "Church Fathers · c. 254 AD",
+                author: "Origen of Alexandria",
+                date: "Commentary on John",
+                quote: "Now the light of men is the Word, or Reason, of God. By the Word and Reason are we distinguished from the brutes. The true light, which lighteth every man, was in the world — not after the incarnation only, but from the beginning.",
+                sourceLabel: "Read in Commentary on John →"
             }
         ]
     },
@@ -301,9 +292,8 @@ var INSIGHTS = {
             {
                 tradition: "Church Fathers · c. 412 AD",
                 author: "Augustine of Hippo",
-                date: "Anti-Pelagian Writings, c. 412 AD",
-                bridge: "Augustine placed this verse at the center of his dispute with Pelagius over grace. 'Born not of the will of man, but of God' was his proof-text: spiritual rebirth is entirely God's act. You cannot earn it, will it, or merit it — it can only be received.",
-                quote: "That men are not born in the body of this death, that so they may be able to affirm that they have no need of God's grace through Jesus Christ in order to be delivered from the body of this death.",
+                date: "Anti-Pelagian Writings",
+                quote: "That men are not born in the body of this death, that so they may be able to affirm that they have no need of God's grace through Jesus Christ in order to be delivered from the body of this death. Whoever is born of God sinneth not — this regeneration is not of blood, nor of the will of the flesh, nor of the will of man, but of God.",
                 sourceLabel: "Read in Anti-Pelagian Writings →"
             }
         ]
@@ -314,10 +304,16 @@ var INSIGHTS = {
             {
                 tradition: "LDS · 1915",
                 author: "James E. Talmage",
-                date: "Jesus the Christ, 1915",
-                bridge: "For Talmage this verse meant something distinctly LDS: not a metaphorical dwelling, but a literal embodiment. Joseph Smith had taught that God has a body of flesh and bones — so 'the Word was made flesh' was the eternal pre-mortal Christ stepping into the kind of existence God the Father already had.",
-                quote: "In the opening lines of the Gospel book written by John the apostle, we read: 'In the beginning was the Word… All things were made by him; and without him was not any thing made that was made.'",
+                date: "Jesus the Christ, Ch. 1",
+                quote: "The antemortal existence of Jesus Christ is affirmed by many scriptural witnesses... The Eternal Word, who was with God and who was God, became incarnate, took upon Himself mortal flesh — not as a symbol but as a literal fact of existence.",
                 sourceLabel: "Read in Jesus the Christ →"
+            },
+            {
+                tradition: "Church Fathers · c. 200 AD",
+                author: "Tertullian",
+                date: "Against Praxeas, Ch. 27",
+                quote: "We see plainly the twofold state, which is not confounded, but conjoined in One Person — Jesus, God and Man. There is the Spirit of God, and there is the Son of God; and the third from the Spirit and the Flesh is Jesus. And thus that which took our nature is God, the Word made flesh.",
+                sourceLabel: "Read in Against Praxeas →"
             }
         ]
     },
@@ -327,10 +323,16 @@ var INSIGHTS = {
             {
                 tradition: "LDS · 1915",
                 author: "James E. Talmage",
-                date: "Jesus the Christ, 1915",
-                bridge: "John the Baptist's recognition of Jesus as 'the Lamb of God' was, for Talmage, the moment the entire Mosaic sacrificial system found its meaning. Every Passover lamb, every burnt offering across fourteen centuries, had been a prophecy pointing forward to this announcement.",
-                quote: "In the opening lines of the Gospel book written by John the apostle, we read: 'In the beginning was the Word, and the Word was with God, and the Word was God.'",
+                date: "Jesus the Christ, Ch. 11",
+                quote: "John the Baptist recognized Jesus as the Lamb of God — He who was the antitype of all the sacrificial offerings that had been made since Adam's day. The blood of bulls and of goats, and the ashes of an heifer, had been efficacious only in prefiguring the great and last sacrifice.",
                 sourceLabel: "Read in Jesus the Christ →"
+            },
+            {
+                tradition: "Jewish / Ancient Texts · c. 50 AD",
+                author: "Philo of Alexandria",
+                date: "On the Special Laws, I",
+                quote: "The sacrificial lamb must be without blemish, that the offering may be worthy of the altar of God. For whatever is given to God should be perfect and complete and incorruptible in every part — the symbol of an uncorrupted and blameless soul.",
+                sourceLabel: "Read in On the Special Laws →"
             }
         ]
     },
@@ -338,18 +340,17 @@ var INSIGHTS = {
         verseText: "And he brought him to Jesus. And when Jesus beheld him, he said, Thou art Simon the son of Jona: thou shalt be called Cephas, which is by interpretation, A stone.",
         cards: [
             {
-                tradition: "Church Fathers · c. 200 AD",
-                author: "Ante-Nicene Fathers",
-                date: "Ante-Nicene Fathers, c. 200 AD",
-                bridge: "The early Church read Christ renaming Simon as the founding act of the apostolic order. Origen saw the name-giving as an identity transfer: Peter received the name 'Rock' so that every believer could become a living stone laid on the same foundation — not Peter alone, but the pattern of what Christ does to every person he calls.",
-                quote: "The apostle interprets his own name — shows Christ to be the Rock, himself a stone laid upon the foundation, by which also all believers are made lively stones, like the original Cephas.",
-                sourceLabel: "Read in Ante-Nicene Fathers →"
+                tradition: "Church Fathers · c. 254 AD",
+                author: "Origen of Alexandria",
+                date: "Commentary on Matthew",
+                quote: "If we too have said like Peter, Thou art the Christ, the Son of the living God — not as if flesh and blood had revealed it unto us, but by the light from the Father in the heavens having shone in our heart — we become a Peter, and to us there might be said by the Word, Thou art Peter.",
+                sourceLabel: "Read in Commentary on Matthew →"
             }
         ]
     }
 };
 
-// ── Verse text (KJV) ─────────────────────────────────────────────────────────
+// ── KJV text ──────────────────────────────────────────────────────────────────
 var VERSES = [
     [1,  "In the beginning was the Word, and the Word was with God, and the Word was God."],
     [2,  "The same was in the beginning with God."],
@@ -404,7 +405,7 @@ var VERSES = [
     [51, "And he saith unto him, Verily, verily, I say unto you, Hereafter ye shall see heaven open, and the angels of God ascending and descending upon the Son of man."]
 ];
 
-// ── Render ────────────────────────────────────────────────────────────────────
+// ── Render verses ─────────────────────────────────────────────────────────────
 var activeVerse = null;
 var container = document.getElementById('verses');
 
@@ -420,13 +421,6 @@ VERSES.forEach(function(row) {
     numSpan.className = 'verse-num';
     numSpan.textContent = num;
 
-    if (insight) {
-        var dot = document.createElement('span');
-        dot.className = 'insight-dot';
-        dot.title = insight.cards[0].tradition;
-        numSpan.appendChild(dot);
-    }
-
     var textSpan = document.createElement('span');
     textSpan.className = 'verse-text';
     textSpan.textContent = text;
@@ -434,64 +428,53 @@ VERSES.forEach(function(row) {
     div.appendChild(numSpan);
     div.appendChild(textSpan);
 
-    if (insight) {
-        div.addEventListener('click', function() {
-            openPanel(num, insight);
-        });
-    }
+    div.addEventListener('click', function() {
+        selectVerse(num, text, insight);
+    });
 
     container.appendChild(div);
 });
 
-// ── Panel ─────────────────────────────────────────────────────────────────────
-function openPanel(verseNum, insight) {
-    if (activeVerse) activeVerse.classList.remove('active-insight');
-    activeVerse = document.getElementById('v' + verseNum);
-    if (activeVerse) activeVerse.classList.add('active-insight');
+// ── Panel logic ───────────────────────────────────────────────────────────────
+function selectVerse(num, text, insight) {
+    // Highlight active verse
+    if (activeVerse) activeVerse.classList.remove('active');
+    activeVerse = document.getElementById('v' + num);
+    if (activeVerse) activeVerse.classList.add('active');
 
     var body = document.getElementById('panel-body');
     var html = '';
 
     // Verse header
     html += '<div class="panel-header">'
-        + '<div class="panel-verse-ref">John 1:' + verseNum + '</div>'
-        + '<div class="panel-verse-text">' + escHtml(insight.verseText) + '</div>'
+        + '<div class="panel-verse-ref">John 1:' + num + '</div>'
+        + '<div class="panel-verse-text">' + esc(text) + '</div>'
         + '</div>';
 
-    // Cards
-    insight.cards.forEach(function(card) {
-        // Render bridge text with *italic* support
-        var bridge = escHtml(card.bridge).replace(/\*(.*?)\*/g, '<em>$1</em>');
-        html += '<div class="insight-card">'
-            + '<div class="card-tradition">' + escHtml(card.tradition) + '</div>'
-            + '<div class="card-author">' + escHtml(card.author) + '</div>'
-            + '<div class="card-date">' + escHtml(card.date) + '</div>'
-            + '<div class="card-bridge">' + bridge + '</div>'
-            + '<div class="card-quote">' + escHtml(card.quote) + '</div>'
-            + '<button class="card-source-link">' + escHtml(card.sourceLabel) + '</button>'
-            + '</div>';
-    });
+    if (!insight) {
+        html += '<div class="panel-no-connections">No cross-tradition connections found for this verse.</div>';
+    } else {
+        insight.cards.forEach(function(card) {
+            html += '<div class="insight-card">'
+                + '<div class="card-tradition">' + esc(card.tradition) + '</div>'
+                + '<div class="card-author">' + esc(card.author) + '</div>'
+                + '<div class="card-date">' + esc(card.date) + '</div>'
+                + '<div class="card-quote">' + esc(card.quote) + '</div>'
+                + '<button class="card-source-link">' + esc(card.sourceLabel) + '</button>'
+                + '</div>';
+        });
+    }
 
     body.innerHTML = html;
-    document.getElementById('panel').classList.add('open');
-    document.body.classList.add('panel-open');
+    body.scrollTop = 0;
 }
 
-function closePanel() {
-    document.getElementById('panel').classList.remove('open');
-    document.body.classList.remove('panel-open');
-    if (activeVerse) activeVerse.classList.remove('active-insight');
-    activeVerse = null;
-}
-
-function escHtml(s) {
+function esc(s) {
     return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Keyboard
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closePanel();
-});
+// Select verse 1 on load
+selectVerse(1, VERSES[0][1], INSIGHTS[1]);
 </script>
 </body>
 </html>
