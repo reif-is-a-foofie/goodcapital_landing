@@ -12,6 +12,7 @@
     --muted: #7a6e60;
     --accent: #9C7A4D;
     --divider: rgba(0,0,0,0.08);
+    --scripture-accent: #4A6741;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
@@ -31,7 +32,6 @@ body {
     padding: 40px 40px 80px 48px;
     border-right: 1px solid var(--divider);
 }
-
 h1 {
     font-family: 'EB Garamond', Georgia, serif;
     font-size: 28px;
@@ -61,10 +61,7 @@ h1 {
     transition: background .1s;
 }
 .verse:hover { background: rgba(156,122,77,0.06); }
-.verse.active {
-    background: rgba(156,122,77,0.1);
-}
-
+.verse.active { background: rgba(156,122,77,0.1); }
 .verse-num {
     font-size: 11px;
     font-weight: 600;
@@ -73,16 +70,14 @@ h1 {
     padding-top: 3px;
     user-select: none;
 }
-.verse.has-insight .verse-num { color: var(--accent); }
+.verse.has-data .verse-num { color: var(--accent); }
 .verse.active .verse-num { color: var(--accent); }
-
 .verse-text {
     font-family: 'EB Garamond', Georgia, serif;
     font-size: 19px;
     line-height: 1.75;
     color: var(--text);
 }
-.verse.active .verse-text { color: var(--text); }
 
 /* ── Right: Panel ── */
 #panel {
@@ -91,7 +86,6 @@ h1 {
     overflow: hidden;
     background: var(--panel-bg);
 }
-
 #panel-body {
     flex: 1;
     overflow-y: auto;
@@ -109,20 +103,12 @@ h1 {
     text-align: center;
     color: var(--muted);
 }
-.panel-empty-icon {
-    font-size: 32px;
-    margin-bottom: 16px;
-    opacity: 0.4;
-}
-.panel-empty-text {
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 260px;
-}
+.panel-empty-icon { font-size: 28px; margin-bottom: 16px; opacity: 0.35; }
+.panel-empty-text { font-size: 13px; line-height: 1.7; max-width: 240px; }
 
-/* Panel header — verse being read */
+/* Panel header */
 .panel-header {
-    padding: 24px 28px 20px;
+    padding: 24px 28px 18px;
     border-bottom: 1px solid var(--divider);
     flex-shrink: 0;
 }
@@ -142,79 +128,97 @@ h1 {
     font-style: italic;
 }
 
-/* No connections state */
+/* Section headers */
+.panel-section-header {
+    padding: 14px 28px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--divider);
+    background: rgba(0,0,0,0.015);
+}
+
+/* No connections */
 .panel-no-connections {
-    padding: 32px 28px;
+    padding: 28px 28px;
     color: var(--muted);
     font-size: 13px;
     line-height: 1.6;
 }
 
-/* ── Insight cards ── */
+/* ── Historical voice cards ── */
 .insight-card {
-    padding: 22px 28px;
+    padding: 20px 28px;
     border-bottom: 1px solid var(--divider);
 }
-
-.card-tradition {
+.card-badge {
     display: inline-block;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: .08em;
+    letter-spacing: .07em;
     text-transform: uppercase;
     color: var(--accent);
     background: rgba(156,122,77,0.1);
     border-radius: 4px;
     padding: 2px 7px;
-    margin-bottom: 10px;
+    margin-bottom: 9px;
 }
-
+.card-badge.gc   { color: #5a7a9c; background: rgba(90,122,156,0.1); }
+.card-badge.jod  { color: #7a5c9c; background: rgba(122,92,156,0.1); }
+.card-badge.hoc  { color: #7a5c9c; background: rgba(122,92,156,0.1); }
 .card-author {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--text);
     margin-bottom: 2px;
 }
-.card-date {
+.card-work {
     font-size: 11px;
     color: var(--muted);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
-
 .card-quote {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 15.5px;
+    font-size: 15px;
     line-height: 1.75;
     color: var(--text);
     font-style: italic;
-    margin-bottom: 14px;
     padding-left: 14px;
-    border-left: 2px solid rgba(156,122,77,0.35);
+    border-left: 2px solid rgba(156,122,77,0.3);
+}
+.card-score {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 8px;
 }
 
-.card-source-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+/* ── Scripture parallel cards ── */
+.scripture-card {
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--divider);
+}
+.scripture-ref {
     font-size: 11px;
     font-weight: 600;
-    color: var(--accent);
-    letter-spacing: .02em;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    text-decoration: none;
+    color: var(--scripture-accent);
+    margin-bottom: 6px;
 }
-.card-source-link:hover { text-decoration: underline; }
+.scripture-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    font-style: italic;
+    padding-left: 14px;
+    border-left: 2px solid rgba(74,103,65,0.25);
+}
 
-/* ── Mobile ── */
+/* Mobile */
 @media (max-width: 700px) {
-    body {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr auto;
-    }
-    #reader { padding: 24px 20px 40px; border-right: none; border-bottom: 1px solid var(--divider); }
+    body { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+    #reader { padding: 24px 20px 40px; border-right: none; }
     #panel { max-height: 50vh; border-top: 1px solid var(--divider); }
 }
 </style>
@@ -233,123 +237,12 @@ h1 {
     <div id="panel-body">
         <div class="panel-empty">
             <div class="panel-empty-icon">✦</div>
-            <div class="panel-empty-text">Tap any verse to see voices from across Christian history standing beside it.</div>
+            <div class="panel-empty-text">Loading…</div>
         </div>
     </div>
 </div>
 
 <script>
-// ── Insight data: real quotes, no AI summaries ────────────────────────────────
-// Format: tradition badge, author name, work + date, then their own words.
-
-var INSIGHTS = {
-    1: {
-        verseText: "In the beginning was the Word, and the Word was with God, and the Word was God.",
-        cards: [
-            {
-                tradition: "LDS · 1915",
-                author: "James E. Talmage",
-                date: "Jesus the Christ, Ch. 1",
-                quote: "In the beginning was the Word, and the Word was with God, and the Word was God. The same was in the beginning with God. All things were made by him; and without him was not any thing made that was made. In him was life; and the life was the light of men.",
-                sourceLabel: "Read in Jesus the Christ →"
-            },
-            {
-                tradition: "Church Fathers · c. 165 AD",
-                author: "Justin Martyr",
-                date: "First Apology, Ch. 46",
-                quote: "We have been taught that Christ is the first-begotten of God, and we have declared above that He is the Word of whom every race of men were partakers; and those who lived reasonably are Christians, even though they have been thought atheists.",
-                sourceLabel: "Read in First Apology →"
-            }
-        ]
-    },
-    3: {
-        verseText: "All things were made by him; and without him was not any thing made that was made.",
-        cards: [
-            {
-                tradition: "Church Fathers · c. 200 AD",
-                author: "Irenaeus of Lyon",
-                date: "Against Heresies, Book I",
-                quote: "The Word of God, our Lord Jesus Christ, who did, through His transcendent love, become what we are, that He might bring us to be even what He is Himself. For it was for this end that the Word of God was made man, and He who was the Son of God became the Son of man.",
-                sourceLabel: "Read in Against Heresies →"
-            }
-        ]
-    },
-    9: {
-        verseText: "That was the true Light, which lighteth every man that cometh into the world.",
-        cards: [
-            {
-                tradition: "Church Fathers · c. 254 AD",
-                author: "Origen of Alexandria",
-                date: "Commentary on John",
-                quote: "Now the light of men is the Word, or Reason, of God. By the Word and Reason are we distinguished from the brutes. The true light, which lighteth every man, was in the world — not after the incarnation only, but from the beginning.",
-                sourceLabel: "Read in Commentary on John →"
-            }
-        ]
-    },
-    13: {
-        verseText: "Which were born, not of blood, nor of the will of the flesh, nor of the will of man, but of God.",
-        cards: [
-            {
-                tradition: "Church Fathers · c. 412 AD",
-                author: "Augustine of Hippo",
-                date: "Anti-Pelagian Writings",
-                quote: "That men are not born in the body of this death, that so they may be able to affirm that they have no need of God's grace through Jesus Christ in order to be delivered from the body of this death. Whoever is born of God sinneth not — this regeneration is not of blood, nor of the will of the flesh, nor of the will of man, but of God.",
-                sourceLabel: "Read in Anti-Pelagian Writings →"
-            }
-        ]
-    },
-    14: {
-        verseText: "And the Word was made flesh, and dwelt among us, (and we beheld his glory, the glory as of the only begotten of the Father,) full of grace and truth.",
-        cards: [
-            {
-                tradition: "LDS · 1915",
-                author: "James E. Talmage",
-                date: "Jesus the Christ, Ch. 1",
-                quote: "The antemortal existence of Jesus Christ is affirmed by many scriptural witnesses... The Eternal Word, who was with God and who was God, became incarnate, took upon Himself mortal flesh — not as a symbol but as a literal fact of existence.",
-                sourceLabel: "Read in Jesus the Christ →"
-            },
-            {
-                tradition: "Church Fathers · c. 200 AD",
-                author: "Tertullian",
-                date: "Against Praxeas, Ch. 27",
-                quote: "We see plainly the twofold state, which is not confounded, but conjoined in One Person — Jesus, God and Man. There is the Spirit of God, and there is the Son of God; and the third from the Spirit and the Flesh is Jesus. And thus that which took our nature is God, the Word made flesh.",
-                sourceLabel: "Read in Against Praxeas →"
-            }
-        ]
-    },
-    29: {
-        verseText: "The next day John seeth Jesus coming unto him, and saith, Behold the Lamb of God, which taketh away the sin of the world.",
-        cards: [
-            {
-                tradition: "LDS · 1915",
-                author: "James E. Talmage",
-                date: "Jesus the Christ, Ch. 11",
-                quote: "John the Baptist recognized Jesus as the Lamb of God — He who was the antitype of all the sacrificial offerings that had been made since Adam's day. The blood of bulls and of goats, and the ashes of an heifer, had been efficacious only in prefiguring the great and last sacrifice.",
-                sourceLabel: "Read in Jesus the Christ →"
-            },
-            {
-                tradition: "Jewish / Ancient Texts · c. 50 AD",
-                author: "Philo of Alexandria",
-                date: "On the Special Laws, I",
-                quote: "The sacrificial lamb must be without blemish, that the offering may be worthy of the altar of God. For whatever is given to God should be perfect and complete and incorruptible in every part — the symbol of an uncorrupted and blameless soul.",
-                sourceLabel: "Read in On the Special Laws →"
-            }
-        ]
-    },
-    42: {
-        verseText: "And he brought him to Jesus. And when Jesus beheld him, he said, Thou art Simon the son of Jona: thou shalt be called Cephas, which is by interpretation, A stone.",
-        cards: [
-            {
-                tradition: "Church Fathers · c. 254 AD",
-                author: "Origen of Alexandria",
-                date: "Commentary on Matthew",
-                quote: "If we too have said like Peter, Thou art the Christ, the Son of the living God — not as if flesh and blood had revealed it unto us, but by the light from the Father in the heavens having shone in our heart — we become a Peter, and to us there might be said by the Word, Thou art Peter.",
-                sourceLabel: "Read in Commentary on Matthew →"
-            }
-        ]
-    }
-};
-
 // ── KJV text ──────────────────────────────────────────────────────────────────
 var VERSES = [
     [1,  "In the beginning was the Word, and the Word was with God, and the Word was God."],
@@ -405,64 +298,214 @@ var VERSES = [
     [51, "And he saith unto him, Verily, verily, I say unto you, Hereafter ye shall see heaven open, and the angels of God ascending and descending upon the Son of man."]
 ];
 
-// ── Render verses ─────────────────────────────────────────────────────────────
-var activeVerse = null;
-var container = document.getElementById('verses');
+// ── Author metadata: doc ID fragment → display name ───────────────────────────
+var AUTHOR_MAP = {
+    'jesus_the_christ':          { author: 'James E. Talmage', work: 'Jesus the Christ (1915)' },
+    'brigham_young_discourses':  { author: 'Brigham Young',    work: 'Discourses of Brigham Young' },
+    'lucy_mack_smith':           { author: 'Lucy Mack Smith',  work: 'History of Joseph Smith' },
+    'anti_pelagian':             { author: 'Augustine of Hippo', work: 'Anti-Pelagian Writings' },
+    'ante_nicene':               { author: 'Ante-Nicene Fathers', work: 'Ante-Nicene Fathers' },
+    'history_of_church':         { author: 'History of the Church', work: '' },
+    'times_and_seasons':         { author: 'Times and Seasons', work: '' },
+    'millennial_star':           { author: 'Millennial Star', work: '' },
+};
 
-VERSES.forEach(function(row) {
-    var num = row[0], text = row[1];
-    var insight = INSIGHTS[num];
+var BADGE_CLASS = {
+    'NT → LDS Historical':        '',
+    'NT → General Conference':    'gc',
+    'NT → Church Fathers':        '',
+    'NT → Jewish / Ancient Texts':'',
+};
 
-    var div = document.createElement('div');
-    div.className = 'verse' + (insight ? ' has-insight' : '');
-    div.id = 'v' + num;
+function parseCard(entry) {
+    var lb = entry.source_label || '';
+    var src = entry.source || '';
+    var doc = entry.source_doc_id || '';
 
-    var numSpan = document.createElement('span');
-    numSpan.className = 'verse-num';
-    numSpan.textContent = num;
+    // General Conference: "GC YYYY/MM — Speaker Name"
+    var gcMatch = lb.match(/GC\s+(\d{4})\/(\d{2})\s*[—-]\s*(.+)/);
+    if (gcMatch) {
+        var months = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var mo = parseInt(gcMatch[2], 10);
+        return {
+            author: gcMatch[3].trim(),
+            work:   'General Conference, ' + (months[mo] || gcMatch[2]) + ' ' + gcMatch[1],
+            badge:  'General Conference',
+            badgeClass: 'gc',
+        };
+    }
+    // Journal of Discourses: "JD Vol N"
+    var jdMatch = lb.match(/JD Vol\s*(\d+)/i);
+    if (jdMatch) {
+        return { author: 'Journal of Discourses', work: 'Volume ' + jdMatch[1], badge: 'LDS Historical', badgeClass: 'jod' };
+    }
+    // HoC
+    if (lb.startsWith('HoC:')) {
+        return { author: 'History of the Church', work: lb.replace('HoC:', '').trim(), badge: 'LDS Historical', badgeClass: 'hoc' };
+    }
 
-    var textSpan = document.createElement('span');
-    textSpan.className = 'verse-text';
-    textSpan.textContent = text;
+    // Match against doc ID fragments
+    for (var key in AUTHOR_MAP) {
+        if (doc.indexOf(key) !== -1 || lb.toLowerCase().indexOf(key.replace(/_/g,' ')) !== -1) {
+            var m = AUTHOR_MAP[key];
+            var badgeSrc = entry.tradition_pair || '';
+            return { author: m.author, work: m.work, badge: badgeSrc.split('→').pop().trim(), badgeClass: '' };
+        }
+    }
 
-    div.appendChild(numSpan);
-    div.appendChild(textSpan);
+    // Fallback: clean up label
+    var cleaned = lb.replace(/^(LDS Historical|Church Fathers|Pioneer Journals|Times & Seasons|Millennial Star|Ante-Nicene Fathers|Ancient Texts):\s*/i, '').replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }).slice(0,60);
+    var badge = (entry.tradition_pair || '').split('→').pop().trim();
+    return { author: cleaned, work: '', badge: badge, badgeClass: '' };
+}
 
-    div.addEventListener('click', function() {
-        selectVerse(num, text, insight);
+function cleanText(t) {
+    if (!t) return '';
+    // Fix OCR double-spacing: "In  the  opening  lines" → "In the opening lines"
+    return t.replace(/  +/g, ' ').replace(/\n\s+/g, ' ').trim();
+}
+
+// ── Data: verse_discovery + chapter graph ─────────────────────────────────────
+var discoveryData  = {};   // "John 1:N" → [{tradition_pair, source_label, source_text, ...}]
+var scriptureData  = {};   // verseNum   → [{ref, text, score}]
+var activeVerse    = null;
+
+// Sources to skip — they all resolve to the same paragraph regardless of verse
+var SKIP_LABELS = ['millennial_star'];
+
+Promise.all([
+    fetch('./verse_discovery.json').then(function(r){ return r.ok ? r.json() : {}; }).catch(function(){ return {}; }),
+    fetch('./chapters/john_1_graph.json').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
+]).then(function(results) {
+    var discovery = results[0] || {};
+    var graph     = results[1];
+
+    // Filter John 1 discovery entries
+    Object.keys(discovery).forEach(function(ref) {
+        if (ref.startsWith('John 1:')) {
+            var vNum = parseInt(ref.split(':')[1], 10);
+            var entries = (discovery[ref] || []).filter(function(e) {
+                return SKIP_LABELS.indexOf(e.source || '') === -1
+                    && cleanText(e.source_text).length > 20;
+            });
+            if (entries.length) discoveryData[vNum] = entries;
+        }
     });
 
-    container.appendChild(div);
+    // Scripture cross-refs from chapter graph
+    if (graph) {
+        var nodeMap    = {};
+        var verseMap   = {};
+        (graph.nodes || []).forEach(function(n) {
+            nodeMap[n.id] = n;
+            if (n.t === 'v') verseMap[n.id] = n;
+        });
+        (graph.edges || []).forEach(function(edge) {
+            var score = edge.w || 0;
+            if (score < 0.75) return;
+            var vn = verseMap[edge.s];
+            var pn = nodeMap[edge.t];
+            if (!vn || !pn) return;
+            if (pn.src !== 'standard_works') return;
+            var ref = (pn.lb || '').trim();
+            // Skip self-references within John 1
+            if (ref.startsWith('John 1:')) return;
+            var vNum = vn.n;
+            if (!scriptureData[vNum]) scriptureData[vNum] = [];
+            // Deduplicate by ref
+            var already = scriptureData[vNum].some(function(x){ return x.ref === ref; });
+            if (!already) {
+                scriptureData[vNum].push({ ref: ref, text: cleanText(pn.x || ''), score: score });
+            }
+        });
+        // Sort each verse's scripture refs by score
+        Object.keys(scriptureData).forEach(function(v) {
+            scriptureData[v].sort(function(a,b){ return b.score - a.score; });
+        });
+    }
+
+    renderVerses();
+    // Open verse 1 by default
+    var v1 = VERSES[0];
+    selectVerse(v1[0], v1[1]);
 });
 
-// ── Panel logic ───────────────────────────────────────────────────────────────
-function selectVerse(num, text, insight) {
-    // Highlight active verse
+// ── Render verses ─────────────────────────────────────────────────────────────
+function renderVerses() {
+    var container = document.getElementById('verses');
+    container.innerHTML = '';
+    VERSES.forEach(function(row) {
+        var num = row[0], text = row[1];
+        var hasData = !!(discoveryData[num] || scriptureData[num]);
+
+        var div = document.createElement('div');
+        div.className = 'verse' + (hasData ? ' has-data' : '');
+        div.id = 'v' + num;
+
+        var numSpan = document.createElement('span');
+        numSpan.className = 'verse-num';
+        numSpan.textContent = num;
+
+        var textSpan = document.createElement('span');
+        textSpan.className = 'verse-text';
+        textSpan.textContent = text;
+
+        div.appendChild(numSpan);
+        div.appendChild(textSpan);
+        div.addEventListener('click', function() { selectVerse(num, text); });
+        container.appendChild(div);
+    });
+}
+
+// ── Panel ─────────────────────────────────────────────────────────────────────
+function selectVerse(num, text) {
     if (activeVerse) activeVerse.classList.remove('active');
     activeVerse = document.getElementById('v' + num);
     if (activeVerse) activeVerse.classList.add('active');
 
-    var body = document.getElementById('panel-body');
-    var html = '';
+    var historical = discoveryData[num]   || [];
+    var scripture  = scriptureData[num]   || [];
+    var body       = document.getElementById('panel-body');
+    var html       = '';
 
-    // Verse header
+    // Header
     html += '<div class="panel-header">'
         + '<div class="panel-verse-ref">John 1:' + num + '</div>'
         + '<div class="panel-verse-text">' + esc(text) + '</div>'
         + '</div>';
 
-    if (!insight) {
+    var hasAny = historical.length || scripture.length;
+
+    if (!hasAny) {
         html += '<div class="panel-no-connections">No cross-tradition connections found for this verse.</div>';
     } else {
-        insight.cards.forEach(function(card) {
-            html += '<div class="insight-card">'
-                + '<div class="card-tradition">' + esc(card.tradition) + '</div>'
-                + '<div class="card-author">' + esc(card.author) + '</div>'
-                + '<div class="card-date">' + esc(card.date) + '</div>'
-                + '<div class="card-quote">' + esc(card.quote) + '</div>'
-                + '<button class="card-source-link">' + esc(card.sourceLabel) + '</button>'
-                + '</div>';
-        });
+
+        // ── Historical voices ──
+        if (historical.length) {
+            html += '<div class="panel-section-header">Voices from History</div>';
+            historical.forEach(function(entry) {
+                var meta  = parseCard(entry);
+                var qt    = cleanText(entry.source_text);
+                if (qt.length > 400) qt = qt.slice(0, 400) + '…';
+                html += '<div class="insight-card">'
+                    + '<div class="card-badge ' + (meta.badgeClass || '') + '">' + esc(meta.badge) + '</div>'
+                    + '<div class="card-author">' + esc(meta.author) + '</div>'
+                    + (meta.work ? '<div class="card-work">' + esc(meta.work) + '</div>' : '')
+                    + '<div class="card-quote">' + esc(qt) + '</div>'
+                    + '</div>';
+            });
+        }
+
+        // ── Scripture echoes ──
+        if (scripture.length) {
+            html += '<div class="panel-section-header">Scripture Echoes</div>';
+            scripture.forEach(function(s) {
+                html += '<div class="scripture-card">'
+                    + '<div class="scripture-ref">' + esc(s.ref) + '</div>'
+                    + '<div class="scripture-text">' + esc(s.text) + '</div>'
+                    + '</div>';
+            });
+        }
     }
 
     body.innerHTML = html;
@@ -472,9 +515,6 @@ function selectVerse(num, text, insight) {
 function esc(s) {
     return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
-// Select verse 1 on load
-selectVerse(1, VERSES[0][1], INSIGHTS[1]);
 </script>
 </body>
 </html>
