@@ -2629,19 +2629,22 @@ function renderWordStudy(wordText, entries) {
     }
     host.hidden = false;
     host.innerHTML =
-        '<div class="ch-study-title">Word Study</div>' +
+        '<div class="ch-study-title">Original Language</div>' +
         entries.map(function(entry) {
-            var line = '<div class="ch-study-line">'
-                + '<span class="ch-study-num">' + escapeHtml(entry.sn || '') + '</span>'
-                + (entry.xl ? ' <span class="ch-study-lemma">' + escapeHtml(entry.xl) + '</span>' : '')
-                + (entry.lm ? ' <span>' + escapeHtml(entry.lm) + '</span>' : '')
-                + (entry.pr ? ' <span>(' + escapeHtml(entry.pr) + ')</span>' : '')
-                + '</div>';
+            // Definition is the most useful thing — lead with it
             var def = (entry.kj || entry.gl || '');
             if (entry.gl && entry.kj && entry.gl !== entry.kj) def += ' · ' + entry.gl;
-            if (entry.dv) def += (def ? ' · from ' : 'from ') + entry.dv;
-            return '<div class="ch-study-entry">' + line
-                + (def ? '<div class="ch-study-def">' + escapeHtml(def) + '</div>' : '')
+            // Original-language line: transliteration + script + pronunciation
+            var orig = '';
+            if (entry.xl) orig += '<span class="ch-study-lemma">' + escapeHtml(entry.xl) + '</span>';
+            if (entry.lm) orig += ' <span style="font-size:14px">' + escapeHtml(entry.lm) + '</span>';
+            if (entry.pr) orig += ' <span style="color:var(--muted)">(' + escapeHtml(entry.pr) + ')</span>';
+            // Strong's number as small footnote
+            var sn = entry.sn ? '<span style="font-size:10px;color:var(--muted);float:right">Strong\'s ' + escapeHtml(entry.sn) + '</span>' : '';
+            return '<div class="ch-study-entry">'
+                + sn
+                + (def ? '<div class="ch-study-def" style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px">' + escapeHtml(def) + '</div>' : '')
+                + (orig ? '<div class="ch-study-line">' + orig + '</div>' : '')
                 + '</div>';
         }).join('');
 }
@@ -2765,10 +2768,10 @@ document.addEventListener('click', function(e) {
         var verseData = idx[vnum] || {};
         var entry     = verseData[stem];
         if (!entry || !entry.matches || !entry.matches.length) {
-            openChannelEmpty(stem);
+            openChannelEmpty(wordText);
             return;
         }
-        openChannel(stem, entry.matches);
+        openChannel(wordText, entry.matches);
     });
 });
 
@@ -2810,7 +2813,7 @@ function renderChannelList() {
              + '</div>'
              + '<div class="ch-morsel-text">' + text + '</div>'
              + '<div class="ch-actions">'
-             + '<button class="ch-open-context" data-idx="' + i + '">Open in Context</button>'
+             + '<button class="ch-open-context" data-idx="' + i + '">Read Source →</button>'
              + '<button class="ch-expand" data-idx="' + i + '">expand ↓</button>'
              + '</div>'
              + '<div class="ch-full-text"></div>'
