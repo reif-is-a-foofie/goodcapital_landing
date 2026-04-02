@@ -94,8 +94,10 @@ h1 { font-family: 'EB Garamond', Georgia, serif; font-size: 28px; font-weight: 4
 .note-card.expanded .note-more { display: none; }
 
 /* ── Attributed quotes ── */
-.quote-card { padding: 20px 28px; border-bottom: 1px solid var(--divider); }
-.quote-attr  { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
+.quote-card    { padding: 20px 28px; border-bottom: 1px solid var(--divider); }
+.quote-speaker { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; line-height: 1.4; }
+.quote-source  { font-size: 11px; font-weight: 500; color: var(--muted); margin-bottom: 12px; letter-spacing: .02em; }
+.quote-attr    { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
 .quote-type-gc  { color: #4a7090; }
 .quote-type-jd  { color: #6a4a8c; }
 .quote-text {
@@ -429,17 +431,21 @@ function selectVerse(num, text) {
     }
 
     // ── Attributed quotes (Donaldson citing others) ──
-    // Filter quotes that start mid-sentence (lowercase = truncated in source)
-    var cleanQuotes = quotes.filter(function(q) {
-        var t = (q.text || '').trim();
-        return t.length > 0 && t[0] === t[0].toUpperCase() && t[0] !== t[0].toLowerCase();
-    });
-    if (cleanQuotes.length) {
+    if (quotes.length) {
         html += '<div class="panel-section">From the Sources</div>';
-        cleanQuotes.forEach(function(q) {
+        quotes.forEach(function(q) {
             var typeClass = 'quote-type-' + (q.type || 'other');
+            // Build byline from structured fields
+            var speaker = q.speaker || '';
+            var source  = q.source  || '';
+            var date    = q.date    || '';
+            var ref     = q.ref     || '';
+            // Fallback to raw attr string if speaker wasn't parsed
+            var byline  = speaker || q.attr || '';
+            var subline = [source, date, ref].filter(Boolean).join(' · ');
             html += '<div class="quote-card">'
-                + '<div class="quote-attr ' + typeClass + '">' + esc(q.attr) + '</div>'
+                + '<div class="quote-speaker ' + typeClass + '">' + esc(byline) + '</div>'
+                + (subline ? '<div class="quote-source">' + esc(subline) + '</div>' : '')
                 + '<div class="quote-text">'
                 + makeExpandable(q.text, 'quote-preview', 'quote-overflow', 'quote-more')
                 + '</div></div>';
