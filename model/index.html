@@ -61,13 +61,11 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .summary-note b{color:var(--ink);font-weight:500;}
 .summary-note.warn{border-left:2px solid var(--red2);padding-left:26px;}
 
-.body{display:grid;grid-template-columns:minmax(0,1fr);}
-.chart-area{padding:22px 28px 16px;border-bottom:1px solid var(--border);}
+.body{display:grid;grid-template-columns:minmax(0,2fr) minmax(360px,1fr);border-bottom:1px solid var(--border);}
+.chart-area{padding:22px 28px 16px;border-left:1px solid var(--border);background:var(--s1);}
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 svg{display:block;}
-#main-chart,#cash-chart{width:100%;height:auto;}
-.chart-stack{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start;}
-.chart-panel{min-width:0;}
+#main-chart{width:100%;height:auto;}
 .chart-frame{position:relative;}
 .chart-tip{position:absolute;display:none;pointer-events:none;top:10px;left:10px;max-width:220px;padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border2);color:var(--ink);font-size:10px;line-height:1.6;box-shadow:0 8px 20px rgba(38,34,29,0.08);}
 .chart-tip b{font-weight:600;}
@@ -76,7 +74,7 @@ svg{display:block;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
-.tbl-wrap{overflow-x:auto;overflow-y:auto;max-width:100%;max-height:calc(100vh - 640px);background:var(--s1);}
+.tbl-wrap{overflow-x:auto;overflow-y:auto;max-width:100%;max-height:calc(100vh - 290px);background:var(--s1);}
 table{width:100%;min-width:880px;border-collapse:collapse;}
 thead th{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:10px 7px 7px;border-bottom:1px solid var(--border2);text-align:right;font-weight:400;position:sticky;top:0;background:var(--s1);z-index:1;}
 thead th:first-child{text-align:left;}
@@ -100,8 +98,7 @@ tfoot td:first-child{text-align:left;}
 @media (max-width: 1100px) {
   .kpis{grid-template-columns:repeat(3,1fr);}
   .body{grid-template-columns:1fr;}
-  .chart-area{border-bottom:1px solid var(--border);}
-  .chart-stack{grid-template-columns:1fr;}
+  .chart-area{border-left:none;border-top:1px solid var(--border);}
   .tbl-wrap{max-height:none;}
 }
 
@@ -250,35 +247,6 @@ tfoot td:first-child{text-align:left;}
 </div>
 
 <div class="body">
-  <div class="chart-area">
-    <div class="chart-stack">
-      <div class="chart-panel">
-        <div class="sec-label">Projected NAV vs Target IRR Path</div>
-        <div class="chart-frame" id="nav-frame">
-          <svg id="main-chart" height="320"></svg>
-          <div class="chart-tip" id="nav-tip"></div>
-        </div>
-        <div class="legend">
-          <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
-          <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
-          <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
-          <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
-        </div>
-      </div>
-      <div class="chart-panel">
-        <div class="sec-label">Cash Balance</div>
-        <div class="chart-frame" id="cash-frame">
-          <svg id="cash-chart" height="220"></svg>
-          <div class="chart-tip" id="cash-tip"></div>
-        </div>
-        <div class="legend">
-          <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Positive cash</div>
-          <div class="leg"><div class="leg-line" style="background:var(--red2)"></div>Negative cash</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="tbl-wrap">
     <table>
       <thead>
@@ -305,6 +273,22 @@ tfoot td:first-child{text-align:left;}
         </tr>
       </tfoot>
     </table>
+  </div>
+
+  <div class="chart-area">
+    <div class="sec-label">NAV, Target Path, and Cash Balance</div>
+    <div class="chart-frame" id="nav-frame">
+      <svg id="main-chart" height="560"></svg>
+      <div class="chart-tip" id="nav-tip"></div>
+    </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
+      <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
+      <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Cash balance</div>
+      <div class="leg"><div class="leg-line" style="background:var(--red2)"></div>Negative cash</div>
+      <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
+      <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
+    </div>
   </div>
 </div>
 
@@ -612,49 +596,43 @@ function recalc() {
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
-  drawNavChart(navArr, targetNavArr, mcLow, mcMid, mcHigh, shares, S.mc);
-  drawCashChart(cashArr);
+  drawNavChart(navArr, targetNavArr, cashArr, mcLow, mcMid, mcHigh, shares, S.mc);
   bindTooltip('nav-frame', 'nav-tip', evt => {
     const svg = document.getElementById('main-chart');
     const rect = svg.getBoundingClientRect();
     const padLeft = 76;
-    const padRight = 16;
-    const innerW = rect.width - padLeft - padRight;
-    const x = evt.clientX - rect.left - padLeft;
-    if (x < 0 || x > innerW) return '';
-    const month = Math.max(0, Math.min(VIEW, Math.round((x / innerW) * VIEW)));
-    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b><br>NAV: ${fmt(navArr[month], true)}<br>Target: ${fmt(targetNavArr[month], true)}${S.mc ? `<br>MC 10%: ${fmt(mcLow[month], true)}<br>MC 50%: ${fmt(mcMid[month], true)}<br>MC 90%: ${fmt(mcHigh[month], true)}` : ''}`;
-  });
-  bindTooltip('cash-frame', 'cash-tip', evt => {
-    const svg = document.getElementById('cash-chart');
-    const rect = svg.getBoundingClientRect();
-    const padLeft = 76;
-    const padRight = 16;
+    const padRight = 76;
     const innerW = rect.width - padLeft - padRight;
     const x = evt.clientX - rect.left - padLeft;
     if (x < 0 || x > innerW) return '';
     const month = Math.max(0, Math.min(VIEW, Math.round((x / innerW) * VIEW)));
     const net = cashDeltaArr[month];
-    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b><br>Cash balance: ${fmt(cashArr[month], true)}<br>Net cash: ${month === 0 ? '-' : fmt(net, true)}`;
+    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b><br>NAV: ${fmt(navArr[month], true)}<br>Target: ${fmt(targetNavArr[month], true)}<br>Cash: ${fmt(cashArr[month], true)}<br>Net cash: ${month === 0 ? '-' : fmt(net, true)}${S.mc ? `<br>MC 10%: ${fmt(mcLow[month], true)}<br>MC 50%: ${fmt(mcMid[month], true)}<br>MC 90%: ${fmt(mcHigh[month], true)}` : ''}`;
   });
 }
 
-function drawNavChart(navArr, targetNavArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo) {
+function drawNavChart(navArr, targetNavArr, cashArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo) {
   const svg = document.getElementById('main-chart');
   const W = svg.parentElement.clientWidth - 32;
-  const H = 320;
+  const H = 560;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 
-  const pad = {t:16,r:16,b:32,l:76};
+  const pad = {t:16,r:76,b:32,l:76};
   const iW = W - pad.l - pad.r;
   const iH = H - pad.t - pad.b;
 
   const maxNAV = Math.max(...navArr, ...targetNavArr, ...(showMonteCarlo ? mcHigh : []));
   const minNAV = Math.min(...navArr, ...targetNavArr, ...(showMonteCarlo ? mcLow : []));
   const navRange = maxNAV - minNAV || 1;
+  const maxCash = Math.max(...cashArr);
+  const minCash = Math.min(...cashArr);
+  const cashLow = Math.min(minCash, 0);
+  const cashHigh = Math.max(maxCash, 0);
+  const cashRange = cashHigh - cashLow || 1;
 
   const xS = m => pad.l + (m / VIEW) * iW;
   const yNAV = v => pad.t + iH - ((v - minNAV) / navRange) * iH;
+  const yCash = v => pad.t + iH - ((v - cashLow) / cashRange) * iH;
 
   let o = '';
 
@@ -663,9 +641,16 @@ function drawNavChart(navArr, targetNavArr, mcLow, mcMid, mcHigh, shares, showMo
     const v = maxNAV - (i / 4) * navRange;
     o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
     o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="#776b5d">${fmt(v, true)}</text>`;
+    const cashV = cashHigh - (i / 4) * cashRange;
+    o += `<text x="${pad.l + iW + 8}" y="${y + 4}" font-family="DM Mono" font-size="10" fill="${cashV < 0 ? '#9c4f40' : '#3f6d47'}">${fmt(cashV, true)}</text>`;
   }
   for (let m = 0; m <= VIEW; m += 12) {
     o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">${m === 0 ? 'Start' : `Y${m / 12}`}</text>`;
+  }
+
+  if (cashLow < 0 && cashHigh > 0) {
+    const yZero = yCash(0);
+    o += `<line x1="${pad.l}" y1="${yZero}" x2="${pad.l + iW}" y2="${yZero}" stroke="#9c4f40" stroke-width="1" stroke-dasharray="4 3"/>`;
   }
 
   if (showMonteCarlo) {
@@ -684,6 +669,15 @@ function drawNavChart(navArr, targetNavArr, mcLow, mcMid, mcHigh, shares, showMo
   for (let m = 1; m <= VIEW; m++) targetPath += ` L ${xS(m)} ${yNAV(targetNavArr[m])}`;
   o += `<path d="${targetPath}" fill="none" stroke="#506a88" stroke-width="2" stroke-dasharray="7 5"/>`;
 
+  for (let m = 1; m <= VIEW; m++) {
+    const x1 = xS(m - 1);
+    const x2 = xS(m);
+    const y1 = yCash(cashArr[m - 1]);
+    const y2 = yCash(cashArr[m]);
+    const stroke = ((cashArr[m - 1] + cashArr[m]) / 2) < 0 ? '#9c4f40' : '#3f6d47';
+    o += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="2"/>`;
+  }
+
   if (showMonteCarlo) {
     let mcMidPath = `M ${xS(0)} ${yNAV(mcMid[0])}`;
     for (let m = 1; m <= VIEW; m++) mcMidPath += ` L ${xS(m)} ${yNAV(mcMid[m])}`;
@@ -697,48 +691,6 @@ function drawNavChart(navArr, targetNavArr, mcLow, mcMid, mcHigh, shares, showMo
     o += `<text x="${pad.l + iW + 4}" y="${yPar + 4}" font-family="DM Mono" font-size="9" fill="#506a88">PAR</text>`;
   }
 
-  svg.innerHTML = o;
-}
-
-function drawCashChart(cashArr) {
-  const svg = document.getElementById('cash-chart');
-  const W = svg.parentElement.clientWidth - 32;
-  const H = 220;
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-
-  const pad = {t:16,r:16,b:32,l:76};
-  const iW = W - pad.l - pad.r;
-  const iH = H - pad.t - pad.b;
-  const maxCash = Math.max(...cashArr);
-  const minCash = Math.min(...cashArr);
-  const low = Math.min(minCash, 0);
-  const high = Math.max(maxCash, 0);
-  const range = high - low || 1;
-  const xS = m => pad.l + (m / VIEW) * iW;
-  const yS = v => pad.t + iH - ((v - low) / range) * iH;
-
-  let o = '';
-  for (let i = 0; i <= 4; i++) {
-    const y = pad.t + (i / 4) * iH;
-    const v = high - (i / 4) * range;
-    o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
-    o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="${v < 0 ? '#9c4f40' : '#3f6d47'}">${fmt(v, true)}</text>`;
-  }
-  if (low < 0 && high > 0) {
-    const yZero = yS(0);
-    o += `<line x1="${pad.l}" y1="${yZero}" x2="${pad.l + iW}" y2="${yZero}" stroke="#9c4f40" stroke-width="1" stroke-dasharray="4 3"/>`;
-  }
-  for (let m = 0; m <= VIEW; m += 12) {
-    o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">${m === 0 ? 'Start' : `Y${m / 12}`}</text>`;
-  }
-  for (let m = 1; m <= VIEW; m++) {
-    const x1 = xS(m - 1);
-    const y1 = yS(cashArr[m - 1]);
-    const x2 = xS(m);
-    const y2 = yS(cashArr[m]);
-    const stroke = ((cashArr[m - 1] + cashArr[m]) / 2) < 0 ? '#9c4f40' : '#3f6d47';
-    o += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="2"/>`;
-  }
   svg.innerHTML = o;
 }
 recalc();
