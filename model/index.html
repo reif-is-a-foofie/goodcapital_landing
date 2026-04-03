@@ -328,7 +328,7 @@ svg{display:block;}
           <div class="leg"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV @ IRR</div>
           <div class="leg"><div class="leg-line" style="background:#7b4bb3"></div>Loans outstanding</div>
           <div class="leg"><div class="leg-line" style="background:#1c7c54"></div>Cash balance</div>
-          <div class="leg"><div class="leg-line" style="background:rgba(140,121,97,0.55);height:8px"></div>Loans originated / month</div>
+          <div class="leg"><div class="leg-line" style="background:rgba(140,121,97,0.55);height:8px"></div>New loan volume / month</div>
           <div class="leg"><div class="leg-line" style="background:#c0533e"></div>Negative cash</div>
           <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
           <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
@@ -964,21 +964,21 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
   const maxCash = Math.max(...cashArr);
   const minCash = Math.min(...cashArr);
   const bandSpan = showMonteCarlo ? mcHigh.map((v, i) => Math.max(0, v - mcLow[i])) : [];
-  const monthDealCount = dealsArr || originationArr.map((v, i) => (S.size > 0 ? v / (S.size * 1e6) : 0));
-  const maxDeals = Math.max(1, ...monthDealCount);
+  const monthOriginationVolume = originationArr.slice();
+  const maxOriginationVolume = Math.max(1, ...monthOriginationVolume);
   const labelMonths = [];
   const minLabelGap = 14;
-  for (let i = 1; i < monthDealCount.length - 1; i++) {
-    const val = monthDealCount[i];
-    if (val < 0.75) continue;
-    const prev = monthDealCount[i - 1];
-    const next = monthDealCount[i + 1];
+  for (let i = 1; i < monthOriginationVolume.length - 1; i++) {
+    const val = monthOriginationVolume[i];
+    if (val < 1e6) continue;
+    const prev = monthOriginationVolume[i - 1];
+    const next = monthOriginationVolume[i + 1];
     const isPeak = val >= prev && val >= next;
     const isTurn = (val > prev && val > next) || (val < prev && val < next);
     const farEnough = !labelMonths.length || i - labelMonths[labelMonths.length - 1] >= minLabelGap;
     if ((isPeak || isTurn) && farEnough) labelMonths.push(i);
   }
-  if (!labelMonths.includes(VIEW) && monthDealCount[VIEW] >= 0.75) labelMonths.push(VIEW);
+  if (!labelMonths.includes(VIEW) && monthOriginationVolume[VIEW] >= 1e6) labelMonths.push(VIEW);
   const originationLabelData = labelMonths.map(i => {
     const cashMin = Math.min(0, minCash);
     const cashMax = Math.max(0, maxCash);
@@ -986,10 +986,10 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
     const barFloor = cashMin + span * 0.08;
     const barRange = span * 0.34;
     return {
-      value: [i, barFloor + (monthDealCount[i] / maxDeals) * barRange],
+      value: [i, barFloor + (monthOriginationVolume[i] / maxOriginationVolume) * barRange],
       label: {
         show: true,
-        formatter: `${monthDealCount[i].toFixed(1)}x`,
+        formatter: fmt(originationArr[i], true),
         position: 'top',
         distance: 3,
         color: '#8c7961',
@@ -1056,7 +1056,7 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
         type: 'value',
         gridIndex: 0,
         min: 0,
-        max: maxDeals * 1.35,
+        max: 1,
         axisLabel: { show: false },
         axisTick: { show: false },
         axisLine: { show: false },
@@ -1072,13 +1072,13 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
       { name: 'NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: navArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('NAV', '#b38b57'), lineStyle: { color: '#b38b57', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } },
       { name: 'Loans Outstanding', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: loanOutstandingArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Loans', '#7b4bb3'), lineStyle: { color: '#7b4bb3', width: 2.5 }, emphasis: { focus: 'series', lineStyle: { width: 3.75 } } },
       { name: 'Target NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: targetNavArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Target', '#2f6db0'), lineStyle: { color: '#2f6db0', width: 2.25, type: 'dashed', opacity: 0.9 }, emphasis: { focus: 'series', lineStyle: { width: 3.25 } }, markLine: { silent: true, symbol: 'none', lineStyle: { color: 'rgba(47,109,176,0.55)', type: 'dashed' }, data: [{ yAxis: shares * 1000, label: { formatter: 'PAR', color: '#2f6db0', fontFamily: 'DM Mono' } }] } },
-      { name: 'Loans Originated / Month', type: 'bar', xAxisIndex: 1, yAxisIndex: 1, data: monthDealCount.map((v, i) => {
+      { name: 'New Loan Volume / Month', type: 'bar', xAxisIndex: 1, yAxisIndex: 1, data: monthOriginationVolume.map(v => {
         const cashMin = Math.min(0, minCash);
         const cashMax = Math.max(0, maxCash);
         const span = Math.max(1, cashMax - cashMin);
         const barFloor = cashMin + span * 0.08;
         const barRange = span * 0.34;
-        return barFloor + (v / maxDeals) * barRange;
+        return barFloor + (v / maxOriginationVolume) * barRange;
       }), barWidth: '34%', silent: true, z: 1, itemStyle: { color: 'rgba(140,121,97,0.20)', borderColor: 'rgba(140,121,97,0.55)', borderWidth: 1, borderRadius: [2, 2, 0, 0] }, emphasis: { disabled: true }, tooltip: { show: false } },
       { name: 'Origination Labels', type: 'scatter', xAxisIndex: 1, yAxisIndex: 1, data: originationLabelData, symbolSize: 1, silent: true, tooltip: { show: false }, itemStyle: { color: 'rgba(0,0,0,0)' } },
       { name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Cash', '#1c7c54'), lineStyle: { color: '#1c7c54', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } }
