@@ -127,6 +127,9 @@ svg{display:block;}
 .chart-tip .tip-section{display:block;margin-bottom:2px;color:var(--muted);}
 .legend{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;flex:0 0 auto;}
 .leg{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted);}
+.leg-toggle{cursor:pointer;user-select:none;padding:2px 4px;border:1px solid transparent;border-radius:4px;transition:opacity .12s,border-color .12s,background .12s;}
+.leg-toggle:hover{border-color:var(--border2);background:rgba(156,122,77,0.08);}
+.leg-toggle.inactive{opacity:0.38;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .chart-main{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden;}
@@ -362,11 +365,11 @@ svg{display:block;}
           <div id="main-chart"></div>
         </div>
         <div class="legend">
-          <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
-          <div class="leg"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV @ IRR</div>
-          <div class="leg"><div class="leg-line" style="background:#7b4bb3"></div>Loans outstanding</div>
-          <div class="leg"><div class="leg-line" style="background:#1c7c54"></div>Cash balance</div>
-          <div class="leg"><div class="leg-line" style="background:rgba(140,121,97,0.55);height:8px"></div>New loan volume / month</div>
+          <div class="leg leg-toggle" data-series="nav" onclick="toggleSeries('nav')"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
+          <div class="leg leg-toggle" data-series="target" onclick="toggleSeries('target')"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV @ IRR</div>
+          <div class="leg leg-toggle" data-series="loans" onclick="toggleSeries('loans')"><div class="leg-line" style="background:#7b4bb3"></div>Loans outstanding</div>
+          <div class="leg leg-toggle" data-series="cash" onclick="toggleSeries('cash')"><div class="leg-line" style="background:#1c7c54"></div>Cash balance</div>
+          <div class="leg leg-toggle" data-series="volume" onclick="toggleSeries('volume')"><div class="leg-line" style="background:rgba(140,121,97,0.55);height:8px"></div>New loan volume / month</div>
           <div class="leg"><div class="leg-line" style="background:#c0533e"></div>Negative cash</div>
           <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
           <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
@@ -463,6 +466,7 @@ const VIEW = 120;
 const MC_RUNS = 250;
 let mainChart = null;
 let chartHoverBound = false;
+const seriesState = { nav: true, target: true, loans: true, cash: true, volume: true };
 
 const S = { fund:1.0, call:1, size:25, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
 
@@ -491,6 +495,10 @@ function setCapitalCall(enabled) {
 function setMonteCarlo(enabled) {
   S.mc = enabled ? 1 : 0;
   document.getElementById('v-mc').textContent = enabled ? 'On' : 'Off';
+  recalc();
+}
+function toggleSeries(key) {
+  seriesState[key] = !seriesState[key];
   recalc();
 }
 
@@ -1001,6 +1009,10 @@ function recalc() {
   document.getElementById('v-mc').textContent = S.mc ? 'On' : 'Off';
   document.getElementById('leg-mc-band').style.display = S.mc ? 'flex' : 'none';
   document.getElementById('leg-mc-mid').style.display = S.mc ? 'flex' : 'none';
+  document.querySelectorAll('.leg-toggle[data-series]').forEach(el => {
+    const key = el.getAttribute('data-series');
+    el.classList.toggle('inactive', !seriesState[key]);
+  });
 
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
@@ -1138,10 +1150,10 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
         { name: 'MC Band', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: bandSpan, symbol: 'none', lineStyle: { opacity: 0 }, stack: 'mc', areaStyle: { color: 'rgba(47,109,176,0.14)' } },
         { name: 'MC Median', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: mcMid, symbol: 'none', lineStyle: { color: '#2f6db0', width: 1.5, opacity: 0.45 } }
       ] : []),
-      { name: 'NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: navArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('NAV', '#b38b57'), lineStyle: { color: '#b38b57', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } },
-      { name: 'Loans Outstanding', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: loanOutstandingArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Loans', '#7b4bb3'), lineStyle: { color: '#7b4bb3', width: 2.5 }, emphasis: { focus: 'series', lineStyle: { width: 3.75 } } },
-      { name: 'Target NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: targetNavArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Target', '#2f6db0'), lineStyle: { color: '#2f6db0', width: 2.25, type: 'dashed', opacity: 0.9 }, emphasis: { focus: 'series', lineStyle: { width: 3.25 } }, markLine: { silent: true, symbol: 'none', lineStyle: { color: 'rgba(47,109,176,0.55)', type: 'dashed' }, data: [{ yAxis: shares * 1000, label: { formatter: 'PAR', color: '#2f6db0', fontFamily: 'DM Mono' } }] } },
-      { name: 'New Loan Volume / Month', type: 'bar', xAxisIndex: 1, yAxisIndex: 1, data: monthOriginationVolume.map(v => {
+      ...(seriesState.nav ? [{ name: 'NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: navArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('NAV', '#b38b57'), lineStyle: { color: '#b38b57', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } }] : []),
+      ...(seriesState.loans ? [{ name: 'Loans Outstanding', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: loanOutstandingArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Loans', '#7b4bb3'), lineStyle: { color: '#7b4bb3', width: 2.5 }, emphasis: { focus: 'series', lineStyle: { width: 3.75 } } }] : []),
+      ...(seriesState.target ? [{ name: 'Target NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: targetNavArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Target', '#2f6db0'), lineStyle: { color: '#2f6db0', width: 2.25, type: 'dashed', opacity: 0.9 }, emphasis: { focus: 'series', lineStyle: { width: 3.25 } }, markLine: { silent: true, symbol: 'none', lineStyle: { color: 'rgba(47,109,176,0.55)', type: 'dashed' }, data: [{ yAxis: shares * 1000, label: { formatter: 'PAR', color: '#2f6db0', fontFamily: 'DM Mono' } }] } }] : []),
+      ...(seriesState.volume ? [{ name: 'New Loan Volume / Month', type: 'bar', xAxisIndex: 1, yAxisIndex: 1, data: monthOriginationVolume.map(v => {
         const cashMin = Math.min(0, minCash);
         const cashMax = Math.max(0, maxCash);
         const span = Math.max(1, cashMax - cashMin);
@@ -1149,8 +1161,8 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
         const barRange = span * 0.34;
         return barFloor + (v / maxOriginationVolume) * barRange;
       }), barWidth: '34%', silent: true, z: 1, itemStyle: { color: 'rgba(140,121,97,0.20)', borderColor: 'rgba(140,121,97,0.55)', borderWidth: 1, borderRadius: [2, 2, 0, 0] }, emphasis: { disabled: true }, tooltip: { show: false } },
-      { name: 'Origination Labels', type: 'scatter', xAxisIndex: 1, yAxisIndex: 1, data: originationLabelData, symbolSize: 1, silent: true, tooltip: { show: false }, itemStyle: { color: 'rgba(0,0,0,0)' } },
-      { name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Cash', '#1c7c54'), lineStyle: { color: '#1c7c54', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } }
+      { name: 'Origination Labels', type: 'scatter', xAxisIndex: 1, yAxisIndex: 1, data: originationLabelData, symbolSize: 1, silent: true, tooltip: { show: false }, itemStyle: { color: 'rgba(0,0,0,0)' } }] : []),
+      ...(seriesState.cash ? [{ name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Cash', '#1c7c54'), lineStyle: { color: '#1c7c54', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } }] : [])
     ]
   }, true);
   const syncHover = month => {
