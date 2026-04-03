@@ -53,6 +53,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .assumptions-pane .ctrl-label{min-height:auto;justify-content:flex-start;text-align:left;margin-bottom:6px;}
 .assumptions-pane .ctrl-display{justify-content:flex-start;min-height:auto;margin-bottom:8px;}
 .assumptions-pane .ctrl-btns{justify-content:flex-start;}
+.assumptions-pane .settings-wrap{margin:0;border-top:1px solid var(--border);border-bottom:none;background:none;}
+.assumptions-pane .settings-toggle{padding:10px 16px 8px;}
+.assumptions-pane .settings-body{padding:0 0 8px;}
+.assumptions-pane .mode-row{padding:8px 16px 0;}
 .ctrl{flex:1;padding:10px 10px 8px;border-right:1px solid var(--border);min-width:0;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;}
 .ctrl:last-child{border-right:none;}
 .ctrl.hidden{display:none;}
@@ -246,8 +250,6 @@ svg{display:block;}
 </div>
 <div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>How this model works:</b> the fund makes developer loans, pays origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans.</div>
 
-<div class="summary-note" id="summary-note"></div>
-
 <div class="body">
   <div class="assumptions-pane">
     <div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
@@ -347,6 +349,7 @@ svg{display:block;}
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div>
         <div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div>
+      </div>
       </div>
       </div>
     </div>
@@ -604,6 +607,7 @@ svg{display:block;}
     </div>
   </div>
 </div>
+<div class="summary-note" id="summary-note"></div>
 <div class="help-tip" id="help-tip"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
