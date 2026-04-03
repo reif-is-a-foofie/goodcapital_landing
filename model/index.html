@@ -29,7 +29,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .controls{background:var(--s1);border-bottom:1px solid var(--border);flex:0 1 auto;max-height:24vh;overflow:auto;}
 .ctrl-row{display:flex;border-bottom:1px solid var(--border);}
 .ctrl-row:last-child{border-bottom:none;}
-.ctrl{flex:1;padding:14px 22px;border-right:1px solid var(--border);}
+.ctrl{flex:1;padding:12px 14px;border-right:1px solid var(--border);}
 .ctrl:last-child{border-right:none;}
 .ctrl.hidden{display:none;}
 .ctrl.disabled{opacity:0.42;}
@@ -38,9 +38,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .ctrl-label{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
 .ctrl-display{display:flex;align-items:baseline;gap:6px;margin-bottom:8px;}
 .ctrl-val{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--gold2);line-height:1;}
-.ctrl-unit{font-size:11px;color:var(--muted);}
+.ctrl-unit{font-size:10px;color:var(--muted);}
 .ctrl-btns{display:flex;gap:5px;flex-wrap:wrap;}
-.btn{background:var(--s2);border:1px solid var(--border2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap;}
+.btn{background:var(--s2);border:1px solid var(--border2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:3px 8px;cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap;}
 .btn:hover{background:var(--s3);color:var(--ink);border-color:var(--border2);}
 .btn:active{background:var(--gold-dim);color:var(--gold2);}
 .btn.plus{color:var(--green);border-color:var(--green-dim);}
@@ -53,8 +53,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .kpis{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);}
 .kpi{padding:12px 16px;border-right:1px solid var(--border);background:var(--s1);}
 .kpi:last-child{border-right:none;}
-.chart-shell{display:grid;grid-template-columns:minmax(0,1fr) 224px;gap:18px;align-items:start;min-height:100%;}
-.chart-rail{border-left:1px solid var(--border);padding-left:20px;min-height:0;overflow:auto;}
+.chart-shell{display:grid;grid-template-columns:minmax(0,1fr) 224px;gap:18px;align-items:start;height:100%;min-height:0;}
+.chart-rail{border-left:1px solid var(--border);padding-left:20px;min-height:0;max-height:100%;overflow:auto;}
 .chart-rail .panel-label{padding:0 0 10px;background:none;border-bottom:none;}
 .chart-rail .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:none;gap:10px;}
 .chart-rail .kpi{padding:10px 8px 12px;border:1px solid var(--border);background:var(--bg);}
@@ -75,13 +75,15 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .summary-note{padding:10px 20px;border-bottom:1px solid var(--border);background:var(--s1);font-size:10px;line-height:1.6;color:var(--muted2);flex:0 1 auto;max-height:13vh;overflow:auto;}
 .summary-note b{color:var(--ink);font-weight:500;}
 .summary-note.warn{border-left:2px solid var(--red2);padding-left:26px;}
+.assump-note{font-size:10px;line-height:1.7;color:var(--muted);max-height:none;}
+.assump-note b{color:var(--gold2);font-weight:500;}
 
 .body{border-bottom:1px solid var(--border);flex:1 1 auto;min-height:0;}
-.chart-area{padding:12px 16px 10px;background:var(--s1);height:100%;overflow:auto;}
+.chart-area{padding:12px 16px 10px;background:var(--s1);height:100%;overflow:hidden;}
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 svg{display:block;}
-#main-chart{width:100%;height:auto;}
-.chart-frame{position:relative;flex:1 1 auto;min-height:180px;}
+#main-chart{width:100%;height:100%;min-height:220px;}
+.chart-frame{position:relative;flex:1 1 auto;min-height:140px;}
 .chart-tip{position:absolute;display:none;pointer-events:none;top:10px;left:10px;max-width:220px;padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border2);color:var(--ink);font-size:10px;line-height:1.6;box-shadow:0 8px 20px rgba(38,34,29,0.08);}
 .chart-tip b{font-weight:600;}
 .chart-tip .tip-k{color:var(--muted);}
@@ -95,7 +97,7 @@ svg{display:block;}
 .leg{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted);}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.chart-main{display:flex;flex-direction:column;min-height:0;overflow:visible;}
+.chart-main{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden;}
 
 .lev-note{margin:0 28px 0;padding:10px 14px;background:var(--s2);border-left:2px solid var(--gold);font-size:11px;color:var(--muted2);line-height:1.8;}
 .lev-note b{color:var(--gold2);font-weight:400;}
@@ -156,10 +158,6 @@ svg{display:block;}
   <div>
     <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below.">TGP <span>/</span> Fund One - NAV Model</div>
     <div class="hdr-sub"><span id="hdr-fund">1.0B Fund</span> · $1,000 Par · Cash Basis · 7-Year View</div>
-  </div>
-  <div class="hdr-tag">
-    <div>Interest prepaid: <b>Year 1 at settlement · Balance at Month 12</b></div>
-    <div>NAV = opening fund equity + accumulated interest - leverage cost · Share price stays anchored to $1,000 par</div>
   </div>
 </div>
 
@@ -257,6 +255,7 @@ svg{display:block;}
   </div>
 </div>
 
+<div class="summary-note assump-note"><b>Interest prepaid:</b> Year 1 at settlement, then the remaining balance at Month 12. <b>NAV formula:</b> opening fund equity + accumulated interest - leverage cost. Share price stays anchored to $1,000 par.</div>
 <div class="summary-note" id="summary-note"></div>
 
 <div class="body">
@@ -265,12 +264,12 @@ svg{display:block;}
       <div class="chart-main">
         <div class="sec-label" title="This chart shows how fund NAV and cash balance move over time under the current assumptions.">NAV and Cash Balance</div>
         <div class="chart-frame" id="nav-frame">
-          <svg id="main-chart" height="560"></svg>
-          <div class="chart-tip" id="nav-tip"></div>
+          <div id="main-chart"></div>
         </div>
         <div class="legend">
           <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
           <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
+          <div class="leg"><div class="leg-line" style="background:#8a6642"></div>Loans outstanding</div>
           <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Cash balance</div>
           <div class="leg"><div class="leg-line" style="background:var(--red2)"></div>Negative cash</div>
           <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
@@ -323,10 +322,12 @@ svg{display:block;}
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <script>
 const PAR = 1_000;
 const VIEW = 84;
 const MC_RUNS = 250;
+let mainChart = null;
 
 const S = { fund:1.0, size:20, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
 
@@ -437,6 +438,7 @@ function buildScenario(opts = {}) {
   const priceArr = new Array(VIEW + 1).fill(0);
   const activeDebtBal = new Array(VIEW + 1).fill(0);
   const activeEquityBal = new Array(VIEW + 1).fill(0);
+  const loanOutstandingArr = new Array(VIEW + 1).fill(0);
 
   let totInt = 0;
   let totDebt = 0;
@@ -463,7 +465,7 @@ function buildScenario(opts = {}) {
     const mat = o + state.term;
     if (mat <= VIEW) priArr[mat] += equityDeployment;
 
-    for (let m = o; m < Math.min(o + S.term, VIEW + 1); m++) {
+    for (let m = o; m < Math.min(o + state.term, VIEW + 1); m++) {
       activeDebtBal[m] += debtDeployment;
       activeEquityBal[m] += equityDeployment;
       debtArr[m] += debtDeployment * debtCost / 12;
@@ -471,6 +473,7 @@ function buildScenario(opts = {}) {
   }
   const peakEquity = Math.max(...activeEquityBal);
   const peakDebt = Math.max(...activeDebtBal);
+  for (let m = 0; m <= VIEW; m++) loanOutstandingArr[m] = activeEquityBal[m] + activeDebtBal[m];
 
   let runNAV = fundSize;
   let cashBal = fundSize;
@@ -493,13 +496,21 @@ function buildScenario(opts = {}) {
 
   return {
     fundSize, shares, targetIrr,
-    navArr, targetNavArr, cashArr, cashDeltaArr, priceArr,
+    navArr, targetNavArr, cashArr, cashDeltaArr, priceArr, loanOutstandingArr,
     intArr, debtArr, priArr,
     projectedIrr: Math.pow(navArr[VIEW] / fundSize, 12 / VIEW) - 1,
     minCash: Math.min(...cashArr),
     peakEquity, peakDebt,
     totInt, totDebt, totNet
   };
+}
+
+function fmtAxisMoney(n) {
+  const a = Math.abs(n);
+  if (a >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
+  if (a >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
+  if (a >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
+  return `$${n.toFixed(0)}`;
 }
 
 function findSolverRecommendation() {
@@ -552,6 +563,7 @@ function recalc() {
     const intSamples = Array.from({ length: VIEW + 1 }, () => []);
     const debtSamples = Array.from({ length: VIEW + 1 }, () => []);
     const priceSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const outSamples = Array.from({ length: VIEW + 1 }, () => []);
     const irrSamples = [];
     const minCashSamples = [];
     const peakEquitySamples = [];
@@ -576,6 +588,7 @@ function recalc() {
         intSamples[m].push(sim.intArr[m]);
         debtSamples[m].push(sim.debtArr[m]);
         priceSamples[m].push(sim.priceArr[m]);
+        outSamples[m].push(sim.loanOutstandingArr[m]);
       }
     }
 
@@ -585,6 +598,7 @@ function recalc() {
     const intMedian = medianSeries(intSamples);
     const debtMedian = medianSeries(debtSamples);
     const priceMedian = medianSeries(priceSamples);
+    const outMedian = medianSeries(outSamples);
 
     for (let m = 0; m <= VIEW; m++) {
       const samples = navSamples[m].slice().sort((a, b) => a - b);
@@ -601,6 +615,7 @@ function recalc() {
       intArr: intMedian,
       debtArr: debtMedian,
       priceArr: priceMedian,
+      loanOutstandingArr: outMedian,
       projectedIrr: percentile(irrSamples.slice().sort((a, b) => a - b), 0.50),
       minCash: percentile(minCashSamples.slice().sort((a, b) => a - b), 0.50),
       peakEquity: percentile(peakEquitySamples.slice().sort((a, b) => a - b), 0.50),
@@ -611,7 +626,7 @@ function recalc() {
     };
   }
 
-  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, projectedIrr, minCash, peakEquity, peakDebt, totInt, totDebt, totNet } = display;
+  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, loanOutstandingArr, projectedIrr, minCash, peakEquity, peakDebt, totInt, totDebt, totNet } = display;
   const irrGap = projectedIrr - targetIrr;
   const debtLabel = fmtMoneyOrNone(peakDebt);
   const grossApy = S.apy / 100;
@@ -652,132 +667,113 @@ function recalc() {
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
-  drawNavChart(navArr, targetNavArr, cashArr, mcLow, mcMid, mcHigh, shares, S.mc);
-  bindTooltip('nav-frame', 'nav-tip', evt => {
-    const svg = document.getElementById('main-chart');
-    const rect = svg.getBoundingClientRect();
-    const padLeft = 76;
-    const padRight = 20;
-    const innerW = rect.width - padLeft - padRight;
-    const x = evt.clientX - rect.left - padLeft;
-    if (x < 0 || x > innerW) return '';
-    const height = rect.height;
-    const pad = { t:16, r:20, b:32, l:76 };
-    const iH = height - pad.t - pad.b;
-    const gap = 28;
-    const navH = Math.round(iH * 0.58);
-    const cashTop = pad.t + navH + gap;
-    const y = evt.clientY - rect.top;
-    const hoveredPanel = y < cashTop ? 'nav' : 'cash';
-    const month = Math.max(0, Math.min(VIEW, Math.round((x / innerW) * VIEW)));
-    const intIn = intArr[month];
-    const debtCost = debtArr[month];
-    const net = cashDeltaArr[month];
-    const focus = hoveredPanel === 'nav'
-      ? `<span class="tip-section">NAV panel</span><span class="tip-focus nav">NAV ${fmt(navArr[month], true)}</span>`
-      : `<span class="tip-section">Cash panel</span><span class="tip-focus cash${cashArr[month] < 0 ? ' neg' : ''}">Cash ${fmt(cashArr[month], true)}</span>`;
-    const mcBlock = S.mc ? `<br><span class="tip-k">MC 10%</span>: <span class="tip-v">${fmt(mcLow[month], true)}</span><br><span class="tip-k">MC 50%</span>: <span class="tip-v">${fmt(mcMid[month], true)}</span><br><span class="tip-k">MC 90%</span>: <span class="tip-v">${fmt(mcHigh[month], true)}</span>` : '';
-    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b>${focus}<span class="tip-k">Interest in</span>: <span class="tip-v">${month === 0 ? '-' : '+' + fmt(intIn)}</span><br><span class="tip-k">Debt cost</span>: <span class="tip-v">${month === 0 ? '-' : '-' + fmt(debtCost)}</span><br><span class="tip-k">Net cash</span>: <span class="tip-v">${month === 0 ? '-' : fmt(net, true)}</span><br><span class="tip-k">Cash balance</span>: <span class="tip-v">${fmt(cashArr[month], true)}</span><br><span class="tip-k">NAV</span>: <span class="tip-v">${fmt(navArr[month], true)}</span><br><span class="tip-k">NAV / share</span>: <span class="tip-v">${fmtP(priceArr[month])}</span><br><span class="tip-k">Target NAV</span>: <span class="tip-v">${fmt(targetNavArr[month], true)}</span>${mcBlock}`;
-  });
+  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr);
 }
 
-function drawNavChart(navArr, targetNavArr, cashArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo) {
-  const svg = document.getElementById('main-chart');
-  const W = svg.parentElement.clientWidth - 32;
-  const frameH = svg.parentElement.clientHeight;
-  const H = Math.max(260, Math.min(620, (frameH && Number.isFinite(frameH) ? frameH : 560)));
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr) {
+  const el = document.getElementById('main-chart');
+  if (!window.echarts) return;
+  if (!mainChart) mainChart = echarts.init(el, null, { renderer: 'canvas' });
 
-  const pad = {t:16,r:20,b:32,l:76};
-  const iW = W - pad.l - pad.r;
-  const iH = H - pad.t - pad.b;
-  const gap = 28;
-  const navH = Math.round(iH * 0.58);
-  const cashH = iH - navH - gap;
-  const navTop = pad.t;
-  const cashTop = pad.t + navH + gap;
-
-  const maxNAV = Math.max(...navArr, ...targetNavArr, ...(showMonteCarlo ? mcHigh : []));
-  const minNAV = Math.min(...navArr, ...targetNavArr, ...(showMonteCarlo ? mcLow : []));
-  const navRange = maxNAV - minNAV || 1;
+  const categories = Array.from({ length: VIEW + 1 }, (_, m) => m);
+  const xLabel = m => m === 0 ? 'Start' : (m % 12 === 0 ? `Y${m / 12}` : '');
+  const maxNAV = Math.max(...navArr, ...targetNavArr, ...loanOutstandingArr, ...(showMonteCarlo ? mcHigh : []));
+  const minNAV = Math.min(...navArr, ...targetNavArr, ...loanOutstandingArr, ...(showMonteCarlo ? mcLow : []));
   const maxCash = Math.max(...cashArr);
   const minCash = Math.min(...cashArr);
-  const cashLow = Math.min(minCash, 0);
-  const cashHigh = Math.max(maxCash, 0);
-  const cashRange = cashHigh - cashLow || 1;
+  const bandSpan = showMonteCarlo ? mcHigh.map((v, i) => Math.max(0, v - mcLow[i])) : [];
 
-  const xS = m => pad.l + (m / VIEW) * iW;
-  const yNAV = v => navTop + navH - ((v - minNAV) / navRange) * navH;
-  const yCash = v => cashTop + cashH - ((v - cashLow) / cashRange) * cashH;
-
-  let o = '';
-
-  for (let i = 0; i <= 4; i++) {
-    const y = navTop + (i / 4) * navH;
-    const v = maxNAV - (i / 4) * navRange;
-    o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
-    o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="#776b5d">${fmt(v, true)}</text>`;
-  }
-  for (let i = 0; i <= 4; i++) {
-    const y = cashTop + (i / 4) * cashH;
-    const v = cashHigh - (i / 4) * cashRange;
-    o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
-    o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="${v < 0 ? '#9c4f40' : '#3f6d47'}">${fmt(v, true)}</text>`;
-  }
-  o += `<text x="${pad.l}" y="${navTop - 4}" font-family="DM Mono" font-size="9" fill="#776b5d" letter-spacing="1.4">NAV</text>`;
-  o += `<text x="${pad.l}" y="${cashTop - 8}" font-family="DM Mono" font-size="9" fill="#776b5d" letter-spacing="1.4">CASH</text>`;
-
-  if (cashLow < 0 && cashHigh > 0) {
-    const yZero = yCash(0);
-    o += `<line x1="${pad.l}" y1="${yZero}" x2="${pad.l + iW}" y2="${yZero}" stroke="#9c4f40" stroke-width="1" stroke-dasharray="4 3"/>`;
-  }
-
-  if (showMonteCarlo) {
-    let band = `M ${xS(0)} ${yNAV(mcHigh[0])}`;
-    for (let m = 1; m <= VIEW; m++) band += ` L ${xS(m)} ${yNAV(mcHigh[m])}`;
-    for (let m = VIEW; m >= 0; m--) band += ` L ${xS(m)} ${yNAV(mcLow[m])}`;
-    band += ' Z';
-    o += `<path d="${band}" fill="rgba(111,135,163,0.18)" stroke="none"/>`;
-  }
-
-  let navPath = `M ${xS(0)} ${yNAV(navArr[0])}`;
-  for (let m = 1; m <= VIEW; m++) navPath += ` L ${xS(m)} ${yNAV(navArr[m])}`;
-  o += `<path d="${navPath}" fill="none" stroke="#b38b57" stroke-width="2"/>`;
-
-  let targetPath = `M ${xS(0)} ${yNAV(targetNavArr[0])}`;
-  for (let m = 1; m <= VIEW; m++) targetPath += ` L ${xS(m)} ${yNAV(targetNavArr[m])}`;
-  o += `<path d="${targetPath}" fill="none" stroke="#506a88" stroke-width="2" stroke-dasharray="7 5"/>`;
-
-  for (let m = 1; m <= VIEW; m++) {
-    const x1 = xS(m - 1);
-    const x2 = xS(m);
-    const y1 = yCash(cashArr[m - 1]);
-    const y2 = yCash(cashArr[m]);
-    const stroke = ((cashArr[m - 1] + cashArr[m]) / 2) < 0 ? '#9c4f40' : '#3f6d47';
-    o += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="2"/>`;
-  }
-
-  if (showMonteCarlo) {
-    let mcMidPath = `M ${xS(0)} ${yNAV(mcMid[0])}`;
-    for (let m = 1; m <= VIEW; m++) mcMidPath += ` L ${xS(m)} ${yNAV(mcMid[m])}`;
-    o += `<path d="${mcMidPath}" fill="none" stroke="#506a88" stroke-width="1.5" opacity="0.8"/>`;
-  }
-
-  const parNAV = shares * 1000;
-  if (parNAV >= minNAV && parNAV <= maxNAV) {
-    const yPar = yNAV(parNAV);
-    o += `<line x1="${pad.l}" y1="${yPar}" x2="${pad.l + iW}" y2="${yPar}" stroke="rgba(111,135,163,0.7)" stroke-width="1" stroke-dasharray="4 3"/>`;
-    o += `<text x="${pad.l + iW - 22}" y="${yPar - 6}" font-family="DM Mono" font-size="9" fill="#506a88">PAR</text>`;
-  }
-
-  for (let m = 0; m <= VIEW; m += 12) {
-    o += `<text x="${xS(m)}" y="${cashTop + cashH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">${m === 0 ? 'Start' : `Y${m / 12}`}</text>`;
-  }
-
-  svg.innerHTML = o;
+  mainChart.setOption({
+    animation: false,
+    grid: [
+      { left: 68, right: 18, top: 22, height: '50%' },
+      { left: 68, right: 18, bottom: 38, height: '32%' }
+    ],
+    axisPointer: {
+      link: [{ xAxisIndex: [0, 1] }]
+    },
+    tooltip: {
+      trigger: 'axis',
+      confine: true,
+      backgroundColor: 'rgba(253,250,245,0.98)',
+      borderColor: 'rgba(156,122,77,0.28)',
+      textStyle: { color: '#26221d', fontFamily: 'DM Mono', fontSize: 10, lineHeight: 16 },
+      formatter: params => {
+        const month = Array.isArray(params) && params.length ? params[0].dataIndex : 0;
+        const mcBlock = showMonteCarlo
+          ? `<br><span style="color:#776b5d">MC 10%</span>: ${fmt(mcLow[month], true)}<br><span style="color:#776b5d">MC 50%</span>: ${fmt(mcMid[month], true)}<br><span style="color:#776b5d">MC 90%</span>: ${fmt(mcHigh[month], true)}`
+          : '';
+        return `<div style="font-weight:600;margin-bottom:4px">${month === 0 ? 'Start' : `Month ${month}`}</div>
+        <div style="margin-bottom:4px;color:#b38b57;font-weight:600">NAV ${fmt(navArr[month], true)}</div>
+        <div><span style="color:#776b5d">Loans outstanding</span>: ${fmt(loanOutstandingArr[month], true)}</div>
+        <div><span style="color:#776b5d">Cash balance</span>: ${fmt(cashArr[month], true)}</div>
+        <div><span style="color:#776b5d">Interest in</span>: ${month === 0 ? '-' : '+' + fmt(intArr[month])}</div>
+        <div><span style="color:#776b5d">Debt cost</span>: ${month === 0 ? '-' : '-' + fmt(debtArr[month])}</div>
+        <div><span style="color:#776b5d">Net cash</span>: ${month === 0 ? '-' : fmt(cashDeltaArr[month], true)}</div>
+        <div><span style="color:#776b5d">NAV / share</span>: ${fmtP(priceArr[month])}</div>
+        <div><span style="color:#776b5d">Target NAV</span>: ${fmt(targetNavArr[month], true)}</div>${mcBlock}`;
+      }
+    },
+    xAxis: [
+      {
+        type: 'category',
+        gridIndex: 0,
+        data: categories,
+        boundaryGap: false,
+        axisLabel: { show: false },
+        axisTick: { show: false },
+        axisLine: { show: false }
+      },
+      {
+        type: 'category',
+        gridIndex: 1,
+        data: categories,
+        boundaryGap: false,
+        axisLabel: {
+          color: '#776b5d',
+          fontFamily: 'DM Mono',
+          formatter: value => xLabel(Number(value))
+        },
+        axisTick: { show: false },
+        axisLine: { lineStyle: { color: 'rgba(156,122,77,0.16)' } }
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value',
+        gridIndex: 0,
+        min: minNAV,
+        max: maxNAV,
+        axisLabel: { color: '#776b5d', fontFamily: 'DM Mono', formatter: value => fmtAxisMoney(value) },
+        splitLine: { lineStyle: { color: 'rgba(156,122,77,0.12)' } }
+      },
+      {
+        type: 'value',
+        gridIndex: 1,
+        min: Math.min(0, minCash),
+        max: Math.max(0, maxCash),
+        axisLabel: { color: '#567b5b', fontFamily: 'DM Mono', formatter: value => fmtAxisMoney(value) },
+        splitLine: { lineStyle: { color: 'rgba(156,122,77,0.12)' } }
+      }
+    ],
+    series: [
+      ...(showMonteCarlo ? [
+        { name: 'MC Low', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: mcLow, symbol: 'none', lineStyle: { opacity: 0 }, stack: 'mc', areaStyle: { opacity: 0 } },
+        { name: 'MC Band', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: bandSpan, symbol: 'none', lineStyle: { opacity: 0 }, stack: 'mc', areaStyle: { color: 'rgba(111,135,163,0.18)' } },
+        { name: 'MC Median', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: mcMid, symbol: 'none', lineStyle: { color: '#506a88', width: 1.5, opacity: 0.8 } }
+      ] : []),
+      { name: 'NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: navArr, symbol: 'none', lineStyle: { color: '#b38b57', width: 2 } },
+      { name: 'Loans Outstanding', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: loanOutstandingArr, symbol: 'none', lineStyle: { color: '#8a6642', width: 1.75 } },
+      { name: 'Target NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: targetNavArr, symbol: 'none', lineStyle: { color: '#506a88', width: 2, type: 'dashed' }, markLine: { silent: true, symbol: 'none', lineStyle: { color: 'rgba(111,135,163,0.7)', type: 'dashed' }, data: [{ yAxis: shares * 1000, label: { formatter: 'PAR', color: '#506a88', fontFamily: 'DM Mono' } }] } },
+      { name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'none', lineStyle: { color: '#3f6d47', width: 2 } }
+    ]
+  }, true);
 }
 recalc();
-window.addEventListener('resize', recalc);
+window.addEventListener('resize', () => {
+  if (mainChart) mainChart.resize();
+  recalc();
+});
 </script>
 </body>
 </html>
