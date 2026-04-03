@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.goodproject.spoonful</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/reify/Classified/goodcapital_landing/launchd/run_spoonful.sh</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/reify/Classified/goodcapital_landing</string>
+
+  <!-- Run every 2 hours; processes 30 notes per run -->
+  <!-- At ~0.4s per note, 30 notes ≈ 12 seconds. Full corpus ~500 runs ≈ ~40 days -->
+  <key>StartInterval</key>
+  <integer>7200</integer>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/reify/Classified/goodcapital_landing/diagnostics/spoonful-launchd.out</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/reify/Classified/goodcapital_landing/diagnostics/spoonful-launchd.err</string>
+</dict>
+</plist>

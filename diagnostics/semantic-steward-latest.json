@@ -1,5 +1,5 @@
 {
-  "ts": "2026-04-01T12:24:05+00:00",
+  "ts": "2026-04-03T21:55:24+00:00",
   "agent": "SemanticSteward",
   "mission_path": "AGENT_MISSION.md",
   "profile_path": "agents/semantic_steward_profile.md",
@@ -13,7 +13,7 @@
         "--once"
       ],
       "code": 0,
-      "stdout": "[2026-04-01 07:24:05] Running sentence-transformer correlations (changed inputs)\n[2026-04-01 07:28:28] Transformer correlation ERROR\n[2026-04-01 07:28:28]     Loading cached passage embeddings (192,182)...\n[2026-04-01 07:28:28]   \n[2026-04-01 07:28:28]   ═══ Correlating ═══\n[2026-04-01 07:28:28]     Building FAISS index over 192,182 passages...\n[2026-04-01 07:28:28]     FAISS index: 192,182 vectors, dim=384\n[2026-04-01 07:28:28]     Encoding 42,046 verses...\n[2026-04-01 07:28:28]     Encoding 42,046 verses...\n[2026-04-01 07:28:28]     Searching top-15 for 42,046 verses...\n",
+      "stdout": "[2026-04-03 16:55:24] No corpus or sidecar changes detected; semantic correlations remain current\n",
       "stderr": "",
       "name": "semantic_refresh",
       "ok": true
@@ -24,7 +24,7 @@
         "lds_pipeline/build_source_dashboard.py"
       ],
       "code": 0,
-      "stdout": "{\n  \"collections\": 10,\n  \"docs\": 4156,\n  \"docs_with_words\": 4156,\n  \"paragraphs\": 156354,\n  \"annotated_paragraphs\": 155603,\n  \"matched_paragraphs\": 155603,\n  \"doc_coverage_pct\": 100.0,\n  \"annotated_pct\": 99.5,\n  \"linked_pct\": 99.5\n}\n",
+      "stdout": "{\n  \"collections\": 10,\n  \"docs\": 4163,\n  \"docs_with_words\": 4163,\n  \"paragraphs\": 160845,\n  \"annotated_paragraphs\": 159622,\n  \"matched_paragraphs\": 159622,\n  \"doc_coverage_pct\": 100.0,\n  \"annotated_pct\": 99.2,\n  \"linked_pct\": 99.2\n}\n",
       "stderr": "",
       "name": "semantic_dashboard",
       "ok": true
@@ -32,14 +32,14 @@
   ],
   "dashboard_totals": {
     "collections": 10,
-    "docs": 4156,
-    "docs_with_words": 4156,
-    "paragraphs": 156354,
-    "annotated_paragraphs": 155603,
-    "matched_paragraphs": 155603,
+    "docs": 4163,
+    "docs_with_words": 4163,
+    "paragraphs": 160845,
+    "annotated_paragraphs": 159622,
+    "matched_paragraphs": 159622,
     "doc_coverage_pct": 100.0,
-    "annotated_pct": 99.5,
-    "linked_pct": 99.5
+    "annotated_pct": 99.2,
+    "linked_pct": 99.2
   },
   "failures": 0
 }

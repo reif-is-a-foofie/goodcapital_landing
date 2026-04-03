@@ -615,6 +615,72 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     }
 }
 
+/* ── Verse discovery card styles ── */
+.disc-section {
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); padding: 10px 14px 8px;
+    border-bottom: 1px solid var(--divider);
+    background: rgba(0,0,0,0.018);
+}
+.word-card { padding: 12px 14px; border-bottom: 1px solid var(--divider); display: flex; gap: 12px; align-items: flex-start; }
+.word-original { font-size: 22px; font-family: 'EB Garamond', Georgia, serif; font-weight: 400; line-height: 1; color: var(--text); flex-shrink: 0; min-width: 44px; }
+.word-detail {}
+.word-english  { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.word-meaning  { font-size: 13px; color: var(--text); line-height: 1.6; }
+.note-card { padding: 14px 14px; border-bottom: 1px solid var(--divider); }
+.note-body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 14px; line-height: 1.75; color: var(--text);
+    padding-left: 12px; border-left: 2px solid rgba(156,122,77,0.35);
+}
+.note-preview { display: block; }
+.note-overflow { display: none; }
+.note-card.expanded .note-overflow { display: inline; }
+.note-more {
+    display: inline-block; font-size: 12px; font-weight: 600; color: var(--accent);
+    cursor: pointer; background: none; border: none; padding: 5px 0 0; margin-top: 3px;
+}
+.note-card.expanded .note-more { display: none; }
+.quote-card    { padding: 14px 14px; border-bottom: 1px solid var(--divider); }
+.quote-speaker { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; line-height: 1.4; }
+.quote-source  { font-size: 11px; font-weight: 500; color: var(--muted); margin-bottom: 10px; letter-spacing: .02em; }
+.quote-type-gc  { color: #4a7090; }
+.quote-type-jd  { color: #6a4a8c; }
+.quote-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 14px; line-height: 1.75; color: var(--text); font-style: italic;
+    padding-left: 12px; border-left: 2px solid rgba(156,122,77,0.25);
+}
+.quote-preview { display: block; }
+.quote-overflow { display: none; }
+.quote-card.expanded .quote-overflow { display: inline; }
+.quote-more {
+    display: inline-block; font-size: 12px; font-weight: 600; color: var(--accent);
+    cursor: pointer; background: none; border: none; padding: 5px 0 0; margin-top: 3px;
+}
+.quote-card.expanded .quote-more { display: none; }
+.hist-card { padding: 14px 14px; border-bottom: 1px solid var(--divider); }
+.hist-badge {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--accent); background: rgba(156,122,77,0.1);
+    border-radius: 4px; padding: 2px 7px; margin-bottom: 7px;
+}
+.hist-badge.gc  { color: #4a7090; background: rgba(74,112,144,0.1); }
+.hist-author { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.hist-work   { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.hist-quote  {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 14px; line-height: 1.75; color: var(--text); font-style: italic;
+    padding-left: 12px; border-left: 2px solid rgba(156,122,77,0.3);
+}
+.scrip-card { padding: 12px 14px; border-bottom: 1px solid var(--divider); }
+.scrip-ref  { font-size: 11px; font-weight: 700; color: var(--green,#4a6741); margin-bottom: 5px; }
+.scrip-text {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 14px; line-height: 1.7; color: var(--text); font-style: italic;
+    padding-left: 12px; border-left: 2px solid rgba(74,103,65,0.3);
+}
+
 /* ── Graph panel ── */
 #graph-panel {
     position: fixed; inset: 0; background: var(--bg);
@@ -1530,6 +1596,44 @@ function discIsRepeat(text) {
     return DISC_REPEAT_PREFIXES.some(function(p) { return t.indexOf(p) === 0; });
 }
 
+var DISC_PREVIEW_LEN = 320;
+function expandCard(btn) {
+    btn.closest('.note-card, .quote-card, .hist-card').classList.add('expanded');
+}
+function makeExpandable(text, previewClass, overflowClass, moreClass) {
+    if (!text) return '';
+    if (text.length <= DISC_PREVIEW_LEN) {
+        return '<span class="' + previewClass + '">' + escapeHtml(text) + '</span>';
+    }
+    var cut = text.lastIndexOf(' ', DISC_PREVIEW_LEN) || DISC_PREVIEW_LEN;
+    return '<span class="' + previewClass + '">' + escapeHtml(text.slice(0, cut)) + '</span>'
+        + '<span class="' + overflowClass + '">' + escapeHtml(text.slice(cut)) + '</span>'
+        + '<button class="' + moreClass + '" onclick="expandCard(this)">Read more \u2192</button>';
+}
+function discParseCard(entry) {
+    var lb  = entry.source_label || '';
+    var src = entry.source || '';
+    var gcM = lb.match(/GC\s+(\d{4})\/(\d{2})\s*[—\-]\s*(.+)/);
+    if (gcM) {
+        var mo = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(gcM[2],10)] || gcM[2];
+        return { author: gcM[3].trim(), work: 'General Conference, ' + mo + ' ' + gcM[1], badgeClass: 'gc', badge: 'General Conference' };
+    }
+    var jdM = lb.match(/JD Vol\s*(\d+)/i);
+    if (jdM) return { author: 'Journal of Discourses', work: 'Volume ' + jdM[1], badgeClass: '', badge: 'LDS Historical' };
+    if (lb.startsWith('HoC:')) return { author: 'History of the Church', work: lb.replace('HoC:','').trim(), badgeClass: '', badge: 'LDS Historical' };
+    if ((entry.source_doc_id||'').indexOf('brigham_young') !== -1 || lb.indexOf('brigham_young') !== -1)
+        return { author: 'Brigham Young', work: 'Discourses of Brigham Young', badgeClass: '', badge: 'LDS Historical' };
+    if ((entry.source_doc_id||'').indexOf('anti_pelagian') !== -1 || lb.toLowerCase().indexOf('anti-pelagian') !== -1)
+        return { author: 'Augustine of Hippo', work: 'Anti-Pelagian Writings', badgeClass: '', badge: 'Church Fathers' };
+    if ((entry.source_doc_id||'').indexOf('ante_nicene') !== -1 || lb.toLowerCase().indexOf('ante_nicene') !== -1 || lb.toLowerCase().indexOf('ante-nicene') !== -1)
+        return { author: 'Ante-Nicene Fathers', work: '', badgeClass: '', badge: 'Church Fathers' };
+    if (src === 'times_and_seasons') return { author: 'Times and Seasons', work: lb.replace(/Times & Seasons:/,'').trim(), badgeClass: '', badge: 'LDS Historical' };
+    var badge = (entry.tradition_pair || '').split('\u2192').pop().trim();
+    var author = lb.replace(/^(LDS Historical|Church Fathers|Pioneer Journals):\s*/i,'')
+                   .replace(/_/g,' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }).slice(0,60);
+    return { author: author, work: '', badgeClass: '', badge: badge };
+}
+
 function openVerseDiscovery(ref) {
     // Parse chapterId and verse number from ref ("John 1:3" → chapter "john_1", verse "3")
     var vnum = ref.split(':')[1] || '';
@@ -1556,49 +1660,60 @@ function openVerseDiscovery(ref) {
 
     // ── Key words ──
     if (donaWords.length) {
-        html += '<div style="padding:8px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--divider);background:rgba(0,0,0,0.015)">Key Words</div>';
+        html += '<div class="disc-section">Key Words</div>';
         donaWords.forEach(function(w) {
-            html += '<div class="disc-entry">'
-                + '<div style="font-size:18px;font-family:serif;margin-bottom:2px">' + escapeHtml(w.greek) + '</div>'
-                + '<div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">' + escapeHtml(w.word) + '</div>'
-                + '<div class="disc-entry-text">' + escapeHtml(w.meaning.slice(0, 200)) + '</div>'
-                + '</div>';
+            html += '<div class="word-card">'
+                + '<div class="word-original">' + escapeHtml(w.greek || '') + '</div>'
+                + '<div class="word-detail">'
+                + '<div class="word-english">' + escapeHtml(w.word || '') + '</div>'
+                + '<div class="word-meaning">' + makeExpandable(w.plain || w.meaning || '', 'note-preview', 'note-overflow', 'note-more') + '</div>'
+                + '</div></div>';
         });
     }
 
-    // ── Donaldson notes ──
+    // ── Donaldson notes (use spoon.notes when available) ──
+    var spoonNotes = (donaEntry.spoon && donaEntry.spoon.notes) || [];
     if (donaNotes.length) {
-        html += '<div style="padding:8px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--divider);background:rgba(0,0,0,0.015)">Lee Donaldson · Commentary</div>';
-        donaNotes.forEach(function(para) {
-            var t = para.length > 400 ? para.slice(0, 397) + '…' : para;
-            html += '<div class="disc-entry">'
-                + '<div class="disc-entry-text" style="color:var(--text-color,#2C2418)">' + escapeHtml(t) + '</div>'
-                + '</div>';
+        html += '<div class="disc-section">Lee Donaldson · Commentary</div>';
+        donaNotes.forEach(function(para, i) {
+            var text = (spoonNotes[i]) || para;
+            html += '<div class="note-card">'
+                + '<div class="note-body">'
+                + makeExpandable(text, 'note-preview', 'note-overflow', 'note-more')
+                + '</div></div>';
         });
     }
 
     // ── Attributed quotes ──
     if (donaQuotes.length) {
-        html += '<div style="padding:8px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--divider);background:rgba(0,0,0,0.015)">From the Sources</div>';
+        html += '<div class="disc-section">From the Sources</div>';
         donaQuotes.forEach(function(q) {
-            html += '<div class="disc-entry">'
-                + '<div class="disc-entry-pair">' + escapeHtml(q.attr) + '</div>'
-                + '<div class="disc-entry-text">' + escapeHtml((q.text || '').slice(0, 300)) + (q.text && q.text.length > 300 ? '…' : '') + '</div>'
-                + '</div>';
+            var typeClass = 'quote-type-' + (q.type || 'other');
+            var byline  = q.speaker || q.attr || '';
+            var subline = [q.source, q.date, q.ref].filter(Boolean).join(' · ');
+            html += '<div class="quote-card">'
+                + '<div class="quote-speaker ' + typeClass + '">' + escapeHtml(byline) + '</div>'
+                + (subline ? '<div class="quote-source">' + escapeHtml(subline) + '</div>' : '')
+                + '<div class="quote-text">'
+                + makeExpandable(q.text || '', 'quote-preview', 'quote-overflow', 'quote-more')
+                + '</div></div>';
         });
     }
 
     // ── Cross-tradition voices ──
     if (entries.length) {
-        html += '<div style="padding:10px 14px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--divider);background:rgba(0,0,0,0.015)">Voices from History</div>';
+        html += '<div class="disc-section">Voices from History</div>';
         entries.forEach(function(e, i) {
             var hasLink = !!(e.source_doc_id && e.source_para != null && sourceMeta[e.source_doc_id]);
-            var txt = (e.source_text || '').replace(/  +/g, ' ').replace(/\n\s*/g, ' ').trim();
-            html += '<div class="disc-entry' + (hasLink ? ' has-link' : '') + '" data-idx="' + i + '">' +
-                '<div class="disc-entry-pair">' + escapeHtml(e.tradition_pair) + '</div>' +
-                '<div class="disc-entry-label">' + escapeHtml(e.source_label) + '</div>' +
-                '<div class="disc-entry-text">' + escapeHtml(txt.slice(0, 300)) + (txt.length > 300 ? '…' : '') + '</div>' +
-                '</div>';
+            var qt = (e.source_text || '').replace(/  +/g, ' ').replace(/\n\s*/g, ' ').trim();
+            var meta = discParseCard(e);
+            html += '<div class="hist-card' + (hasLink ? ' has-link' : '') + '" data-idx="' + i + '">'
+                + '<div class="hist-badge ' + (meta.badgeClass || '') + '">' + escapeHtml(meta.badge) + '</div>'
+                + '<div class="hist-author">' + escapeHtml(meta.author) + '</div>'
+                + (meta.work ? '<div class="hist-work">' + escapeHtml(meta.work) + '</div>' : '')
+                + '<div class="hist-quote">'
+                + makeExpandable(qt, 'quote-preview', 'quote-overflow', 'quote-more')
+                + '</div></div>';
         });
     }
 
@@ -1606,7 +1721,7 @@ function openVerseDiscovery(ref) {
     chList.innerHTML = html;
     document.getElementById('channel').classList.add('open');
     channelOpen = true;
-    chList.querySelectorAll('.disc-entry.has-link').forEach(function(row) {
+    chList.querySelectorAll('.hist-card.has-link').forEach(function(row) {
         row.addEventListener('click', function() {
             var e = entries[parseInt(row.dataset.idx, 10)];
             var meta = sourceMeta[e.source_doc_id];
@@ -2787,6 +2902,9 @@ document.getElementById('content').addEventListener('click', function(e) {
     var verse = e.target.closest('div.verse');
     if (!verse) return;
     focusVerse(verse, true);
+    // Also open discovery panel if verse has commentary
+    var disc = verse.querySelector('.verse-disc[data-ref]');
+    if (disc) openVerseDiscovery(disc.dataset.ref);
 });
 
 document.getElementById('content').addEventListener('click', function(e) {

@@ -1,139 +1,235 @@
-Source scout run: 2026-04-01T14:32:46+00:00
+Source scout run: 2026-04-03T20:46:28+00:00
 Mission: AGENT_MISSION.md
 Profile: agents/source_scout_profile.md
 Existing collections: 10
 
 Query: talmage "jesus the christ"
-  SKIP  Jesus The Christ
-        relevance fail (0.46): relevant — 1 keyword matches: talmage
-  PASS  jesus the christ: a study of the messiah and his mission according to holy scriptures both ancient and modern
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.52 — relevant — 2 keyword matches: talmage, scripture
-        task: T-0094
+  PASS  Jesus the Christ (book) - Wikipedia
+        copyright=0.8 — publication year 1120 is pre-1928 (US public domain)
+        relevance=0.64 — relevant — 4 keyword matches: latter-day saint, talmage, scripture, bible
+        task: T-0125
+  SKIP  Jesus the Christ
+        copyright fail (0.10): no copyright status signals found
+        relevance fail (0.10): no relevant keywords found in title or page snippet
+  PASS  Jesus the Christ by James E. Talmage | Project Gutenberg
+        copyright=1.0 — trusted archive domain (gutenberg.org)
+        relevance=0.52 — relevant — 2 keyword matches: talmage, philo
+        task: T-0159
+  PASS  Jesus The Christ | Project Gutenberg
+        copyright=1.0 — trusted archive domain (gutenberg.org)
+        relevance=0.82 — relevant — 7 keyword matches: latter-day saint, talmage, scripture, apostolic, atonement, resurrection
+        task: T-0160
+  SKIP  r/latterdaysaints on Reddit: Talmage’s “Jesus the Christ”
+        copyright fail (0.10): no copyright status signals found
 
 Query: talmage "articles of faith"
-  PASS  Die Glaubensartikel
-        copyright=1.0 — trusted archive domain (archive.org)
+  PASS  The Articles of Faith by James E. Talmage | Project Gutenberg
+        copyright=1.0 — trusted archive domain (gutenberg.org)
+        relevance=0.64 — relevant — 4 keyword matches: latter-day saint, talmage, theological, philo
+        task: T-0126
+  PASS  Articles of Faith (Talmage book) - Wikipedia
+        copyright=0.8 — publication year 1120 is pre-1928 (US public domain)
         relevance=0.52 — relevant — 2 keyword matches: latter-day saint, talmage
-        task: T-0095
-  PASS  De artikelen des geloofs ...
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, talmage
-        task: T-0096
-  SKIP  Articles of Faith
+        task: T-0127
+  SKIP  The articles of faith by James Edward Talmage | Open Library
         relevance fail (0.46): relevant — 1 keyword matches: talmage
-  SKIP  A study of the articles of faith
-        relevance fail (0.46): relevant — 1 keyword matches: talmage
-  PASS  Shinsho Kogi
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, talmage
-        task: T-0097
+  PASS  The Articles of Faith — Signature Books
+        copyright=0.8 — publication year 1500 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: doctrine and covenants, talmage, covenant
+        task: T-0128
+  SKIP  Articles of Faith (1968) by James E. Talmage: James E. Talmage: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
 
 Query: "B.H. Roberts" "comprehensive history" "latter-day saints"
-  PASS  A Comprehensive History of The Church of Jesus Christ og Latter-day Saints Century 1
-        copyright=1.0 — trusted archive domain (archive.org)
+  PASS  "Comprehensive History of The Church of Jesus Christ of Latter-day Sain" by B. H. Roberts
+        copyright=0.85 — Creative Commons license found
         relevance=0.52 — relevant — 2 keyword matches: latter-day saint, b.h. roberts
-        task: T-0092
-  PASS  A Comprehensive History of The Church of Jesus Christ of Latter-day Saints Century 1
-        copyright=1.0 — trusted archive domain (archive.org)
+        task: T-0129
+  PASS  B. H. Roberts - Wikipedia
+        copyright=0.8 — publication year 1857 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: latter-day saint, latter day saint, book of mormon
+        task: T-0130
+  PASS  A Comprehensive History of the Church of Jesus Christ of Latter-day Saints by B.H. Roberts | Goodreads
+        copyright=0.85 — Creative Commons license found
         relevance=0.52 — relevant — 2 keyword matches: latter-day saint, b.h. roberts
-        task: T-0091
+        task: T-0131
+  PASS  Comprehensive History of The Church of Jesus Christ of Latter-day Saints - Wikipedia
+        copyright=0.8 — publication year 1120 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: latter-day saint, latter day saint, b.h. roberts
+        task: T-0132
 
 Query: "parley pratt" theology
-  no results returned
+  PASS  Mormon Publications: 19th and 20th Centuries | Digital Collections | Collections | HBLL
+        copyright=0.8 — publication year 1846 is pre-1928 (US public domain)
+        relevance=0.88 — relevant — 8 keyword matches: brigham young, restoration, parley pratt, orson pratt, gospel, theology
+        task: T-0133
+  SKIP  Portland State University Portland State University PDXScholar PDXScholar
+        relevance fail (0.46): relevant — 1 keyword matches: theology
+  PASS  Parley P. Pratt - Wikipedia
+        copyright=0.8 — publication year 1807 is pre-1928 (US public domain)
+        relevance=0.7 — relevant — 5 keyword matches: restoration, latter-day saint, latter day saint, doctrine and covenants, covenant
+        task: T-0134
+  PASS  The Essential Parley P. Pratt - BYU Studies
+        copyright=0.8 — publication year 1080 is pre-1928 (US public domain)
+        relevance=0.64 — relevant — 4 keyword matches: joseph smith, parley pratt, theological, prophet
+        task: T-0135
+  SKIP  Parley P. Pratt: Father of Mormon Pamphleteering - Dialogue Journal
+        copyright fail (0.10): no copyright status signals found
 
 Query: "orson pratt" theology
-  SKIP  The Angel of the Prairies; ... 1880
-        relevance fail (0.46): relevant — 1 keyword matches: theology
-  PASS  The kingdom of God
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, theology
-        task: T-0098
-  PASS  The day they martyred the prophet
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.52 — relevant — 2 keyword matches: theology, prophet
-        task: T-0099
-  SKIP  An Interesting Account of several remarkable vision, ... 1840
-        relevance fail (0.46): relevant — 1 keyword matches: theology
-  PASS  The Bible & Polygamy. Does the bible sanction polygamy?... 1877
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.58 — relevant — 3 keyword matches: orson pratt, bible, theology
-        task: T-0100
+  PASS  Orson Pratt - Wikipedia
+        copyright=0.8 — publication year 1811 is pre-1928 (US public domain)
+        relevance=0.7 — relevant — 5 keyword matches: latter-day saint, latter day saint, doctrine and covenants, orson pratt, covenant
+        task: T-0136
+  PASS  Doctrine and Covenants Historical Resources: Orson Pratt
+        copyright=0.8 — publication year 1834 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: doctrine and covenants, orson pratt, covenant
+        task: T-0138
+  PASS  Orson Pratt – Biography
+        copyright=0.8 — publication year 1874 is pre-1928 (US public domain)
+        relevance=0.52 — relevant — 2 keyword matches: latter-day saint, orson pratt
+        task: T-0137
+  PASS  Orson Pratt: Prolific Pamphleteer - Dialogue Journal
+        copyright=0.8 — publication year 1830 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: joseph smith, orson pratt, theological
+        task: T-0139
+  PASS  Orson Pratt | Doctrine and Covenants Central
+        copyright=0.8 — publication year 1752 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: doctrine and covenants, orson pratt, covenant
+        task: T-0140
 
 Query: schaff "post-nicene fathers" augustine
-  PASS  A select library of the Nicene and Post-Nicene Fathers of the Christian Church
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.7 — relevant — 5 keyword matches: nicene, post-nicene, chrysostom, jerome, trinity
-        task: T-0101
-  PASS  The Anti-Pelagian Writings, volume 6, first series, of The Nicene and Post-Nicene Fathers
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.82 — relevant — 7 keyword matches: church fathers, nicene, post-nicene, augustine, early christian, patristic
-        task: T-0102
+  PASS  A Select Library of the Nicene and Post-Nicene Fathers of the Christian Church, Vol. 1 | Online Library of Liberty
+        copyright=0.8 — publication year 1330 is pre-1928 (US public domain)
+        relevance=0.76 — relevant — 6 keyword matches: nicene, post-nicene, augustine, philip schaff, schaff, philo
+        task: T-0141
+  SKIP  Nicene and Post-Nicene Fathers: First Series (The Early Church Fathers, First Series , So14): Roberts, Alexander, Donaldson, James, Schaff, Philip, Wace, Henry: 9781565630949: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
+  SKIP  Nicene and Post-Nicene Fathers First Series, St. Augustine: Gospel of John, First Epistle of John, Soliliques (7): Schaff, Philip: 9781602066021: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
+  PASS  Work info: NPNF1-01. The Confessions and Letters of St. Augustine, with a Sketch of his Life and Work - Christian Classics Ethereal Library
+        copyright=1.0 — trusted archive domain (ccel.org)
+        relevance=0.58 — relevant — 3 keyword matches: nicene, post-nicene, augustine
+        task: T-0142
+  PASS  Nicene and Post-Nicene Fathers - Wikipedia
+        copyright=0.8 — publication year 1120 is pre-1928 (US public domain)
+        relevance=0.76 — relevant — 6 keyword matches: nicene, post-nicene, augustine, patristic, philip schaff, schaff
+        task: T-0143
 
 Query: schaff "post-nicene fathers" chrysostom eusebius
-  PASS  Nicene And Post Nicene Fathers 14 Vols
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.58 — relevant — 3 keyword matches: nicene, post-nicene, schaff
-        task: T-0103
-  PASS  Post-Nicene Fathers of the Church
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.7 — relevant — 5 keyword matches: nicene, post-nicene, augustine, philip schaff, schaff
-        task: T-0104
+  SKIP  Nicene and Post-Nicene Fathers: Schaff, Philip, D.D.;Wace,Henry D.D.: 9781565631182: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
+  SKIP  Nicene and Post Nicene Fathers, Second Series – Vanderheide's Reformed Christian Books
+        copyright fail (0.10): no copyright status signals found
+  PASS  NPNF2-03. Theodoret, Jerome, Gennadius, & Rufinus
+        copyright=0.8 — publication year 1051 is pre-1928 (US public domain)
+        relevance=0.7 — relevant — 5 keyword matches: jerome, eusebius, apostolic, philip schaff, schaff
+        task: T-0166
+  SKIP  NPNF2-02. Socrates and Sozomenus Ecclesiastical Histories
+        copyright fail (0.10): no copyright status signals found
 
 Query: "ante-nicene fathers" tertullian origen clement
-  PASS  The Ante-Nicene fathers : translations of the writings of the fathers down to A.D. 325
+  PASS  Tertullian : Ante-Nicene Fathers Translations
+        copyright=1.0 — trusted archive domain (tertullian.org)
+        relevance=0.7 — relevant — 5 keyword matches: bible, ante-nicene, nicene, tertullian, early christian
+        task: T-0146
+  PASS  The Ante-Nicene fathers. translations of the writings of the fathers down to A.D. 325. : Roberts, Alexander, 1826-1901 : Free Download, Borrow, and Streaming : Internet Archive
         copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.76 — relevant — 6 keyword matches: ante-nicene, nicene, irenaeus, justin martyr, apostolic, theology
-        task: T-0105
+        relevance=0.88 — relevant — 8 keyword matches: ante-nicene, nicene, origen, clement, irenaeus, tertullian
+        task: T-0145
+  PASS  Ante-Nicene Fathers, Vol. I
+        copyright=1.0 — trusted archive domain (tertullian.org)
+        relevance=0.76 — relevant — 6 keyword matches: epistle, church fathers, ante-nicene, nicene, clement, justin martyr
+        task: T-0147
+  SKIP  Ante-Nicene Fathers: Beginning of Christianity to the Nicene Creed | Bible Study Tools
+        copyright fail (0.10): no copyright status signals found
+  SKIP  Ante-Nicene Fathers - Church Fathers & Other Early Christian Literature - Library Guides at Oral Roberts University
+        copyright fail (0.30): page shows copyright marker without public domain declaration
 
 Query: "ante-nicene christian library" fathers translation
-  PASS  Ante-Nicene Christian Library: Translation of The Writings of the Fathers
-        copyright=1.0 — trusted archive domain (archive.org)
+  PASS  Ante-Nicene Fathers (book) - Wikipedia
+        copyright=0.8 — publication year 1120 is pre-1928 (US public domain)
+        relevance=0.5 — relevant (4 keyword hits) but overlaps existing collection 'church_fathers'
+        task: T-0148
+  PASS  Ante-Nicene Christian Library - Wikisource, the free online library
+        copyright=0.8 — publication year 1120 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: ante-nicene, nicene, early christian
+        task: T-0149
+  SKIP  Ante-Nicene Christian Library, Vol. 1: Translations of the Writings of the Fathers Down to A. D. 325 (Classic Reprint): Roberts, Alexander: 9781440055294: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
+  PASS  Ante-Nicene Christian Library: Translations of the Writings of the Fathers Down to A.D. 325 | LibriVox
+        copyright=0.9 — page declares public domain
         relevance=0.52 — relevant — 2 keyword matches: ante-nicene, nicene
-        task: T-0106
-  PASS  Ante-Nicene Christian library; translations of the writings of the Fathers down to A.D. 325
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.58 — relevant — 3 keyword matches: ante-nicene, nicene, apostolic
-        task: T-0107
+        task: T-0150
 
 Query: "apostolic fathers" didache early christian translation
-  PASS  The Apostolic Fathers : a new translation and commentary
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.52 — relevant — 2 keyword matches: clement, apostolic
-        task: T-0108
-  PASS  The Apostolic fathers
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.64 — relevant — 4 keyword matches: epistle, clement, didache, apostolic
-        task: T-0109
+  PASS  Didache - Wikipedia
+        copyright=0.8 — publication year 1200 is pre-1928 (US public domain)
+        relevance=0.76 — relevant — 6 keyword matches: testament, didache, apostolic, early christian, apocrypha, philo
+        task: T-0164
+  PASS  Didache. The Teaching of the Twelve Apostles (translation J. B. Lightfoot).
+        copyright=1.0 — trusted archive domain (earlychristianwritings.com)
+        relevance=0.52 — relevant — 2 keyword matches: didache, early christian
+        task: T-0152
+  SKIP  Didache: The Teaching of the Twelve Apostles : The Forgotten Manual of the Early Church for Understanding First-Century Christian Life and Worship.(Bilingual English-Greek Edition): Benjamin Blakewel, Apostolic Fathers, Philip Schaff: 9789371236874: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
+  PASS  Church Fathers: The Didache and the Epistle of Barnabas | Catholic Culture
+        copyright=0.8 — publication year 1135 is pre-1928 (US public domain)
+        relevance=0.82 — relevant — 7 keyword matches: epistle, church fathers, origen, clement, athanasius, didache
+        task: T-0153
+  SKIP  What Is the Didache & When Was the Didache Written - The Bart Ehrman Blog
+        copyright fail (0.10): no copyright status signals found
 
 Query: "R.H. Charles" pseudepigrapha "old testament"
-  PASS  The Apocrypha and Pseudepigrapha Of The Old Testament In English
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.64 — relevant — 4 keyword matches: testament, pseudepigrapha, apocrypha, old testament
-        task: T-0110
+  SKIP  The Apocrypha and Pseudepigrapha of the Old Testament: Apocrypha: Charles, R.H.: 9780974762340: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
+  PASS  The Apocrypha and Pseudepigrapha of the Old Testament
+        copyright=1.0 — trusted archive domain (ccel.org)
+        relevance=0.76 — relevant — 6 keyword matches: testament, enoch, jubilees, pseudepigrapha, apocrypha, old testament
+        task: T-0155
+  PASS  The Apocrypha and Pseudepigrapha of the Old Testament in English | Logos Bible Software
+        copyright=0.8 — publication year 1913 is pre-1928 (US public domain)
+        relevance=0.76 — relevant — 6 keyword matches: bible, testament, pseudepigrapha, apocrypha, old testament, jewish
+        task: T-0154
+  SKIP  The Apocrypha and Pseudepigrapha of the Old Testament, Volume Two: Pseudepigrapha: Charles D.D., Robert Henry, Charles, R H: 9780974762371: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
+  SKIP  Apocrypha and Pseudepigrapha of the Old Testament Volume II: Pseudepigrapha: R. H. Charles: 9780198261520: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
 
 Query: "R.H. Charles" apocrypha "old testament"
+  PASS  The Apocrypha & Pseudepigrapha of the Old Testament, Vol 1: Apocrypha by R.H. Charles | Goodreads
+        copyright=0.85 — Creative Commons license found
+        relevance=0.7 — relevant — 5 keyword matches: bible, testament, pseudepigrapha, apocrypha, old testament
+        task: T-0156
 
 Query: "philo" "alexandria" yonge translation
-  PASS  The works of Philo : complete and unabridged
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.58 — relevant — 3 keyword matches: theology, philo, jewish
-        task: T-0111
-  SKIP  THE GRAND BIBLE - An Encyclopaedic Compilation Of The Original And Complete Contents Of Religious And Affiliated Texts From East And West In English
-        relevance fail (0.46): relevant — 1 keyword matches: bible
+  SKIP  THE WORKS OF PHILO Complete and Unabridged Translated by C. D. Yonge
+        relevance fail (0.46): relevant — 1 keyword matches: philo
+  SKIP  The Works of Philo: Complete and Unabridged, New Updated Edition: Yonge, C. D.: 9780943575933: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
+        relevance fail (0.46): relevant — 1 keyword matches: philo
+  SKIP  The Works of Philo: Complete and Unabridged - Philo (of Alexandria.) - Google Books
+        copyright fail (0.10): no copyright status signals found
+  PASS  Philo - Wikipedia
+        copyright=0.8 — publication year 1453 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: philo, hebrew, jewish
+        task: T-0157
+  SKIP  The Works of Philo | Logos Bible Software
+        copyright fail (0.10): no copyright status signals found
 
 Query: "wars of the jews" josephus whiston
-  SKIP  Complete works of Josephus. Antiquities of the Jews; The wars of the Jews against Apion, etc., ..
+  SKIP  Flavius Josephus, The Wars of the Jews, Book I, Whiston chapter pr.
         relevance fail (0.46): relevant — 1 keyword matches: josephus
-  SKIP  Josephus - Complete Works. Includes Life Of Flavius Josephus, Antiquities Of The Jews, Wars Of The Jews and others
+  SKIP  The Wars of the Jews: Josephus, Flavius, Whiston, William: 9781420934915: Amazon.com: Books
+        copyright fail (0.10): no copyright status signals found
         relevance fail (0.46): relevant — 1 keyword matches: josephus
-  PASS  The works of Josephus : complete and unabridged
-        copyright=1.0 — trusted archive domain (archive.org)
-        relevance=0.58 — relevant — 3 keyword matches: testament, theology, josephus
-        task: T-0112
-  SKIP  The works of Flavius Josephus
+  SKIP  Flavius Josephus, The Wars of the Jews, Book V, Whiston chapter 11, Whiston section 1
         relevance fail (0.46): relevant — 1 keyword matches: josephus
-  SKIP  The works of Flavius Josephus : in three volumes ; with illustrations
+  SKIP  The Wars of the Jews by Flavius Josephus
         relevance fail (0.46): relevant — 1 keyword matches: josephus
+  PASS  The Jewish War - Wikipedia
+        copyright=0.8 — publication year 1120 is pre-1928 (US public domain)
+        relevance=0.58 — relevant — 3 keyword matches: josephus, hebrew, jewish
+        task: T-0158
 
-Summary: queries=14 found=31 evaluated=31 passed=21 tasks_created=21
+Summary: queries=14 found=63 evaluated=63 passed=36 tasks_created=36

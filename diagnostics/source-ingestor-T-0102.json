@@ -1,0 +1,83 @@
+{
+  "ts": "2026-04-01T17:29:34+00:00",
+  "task_id": "T-0102",
+  "agent": "source-ingestor",
+  "dry_run": false,
+  "steps": [
+    {
+      "step": "parse_task",
+      "ok": true,
+      "detail": "title='The Anti-Pelagian Writings, volume 6, first series, of The Nicene and Post-Nicene Fathers' url=https://archive.org/details/TheAnti-pelagianWritingsVolume6FirstSeriesOfTheNiceneAnd copyright=1.0 relevance=0.82"
+    },
+    {
+      "step": "score_gate",
+      "ok": true,
+      "detail": "copyright=1.0 >= 0.7, relevance=0.82 >= 0.5"
+    },
+    {
+      "step": "resolve_url",
+      "ok": true,
+      "detail": "archive.org → 06_augustine_saint_bishop_of_hippo_anti_pelagian_writings_djvu.txt"
+    },
+    {
+      "step": "fetch",
+      "ok": true,
+      "detail": "87741 words fetched"
+    },
+    {
+      "step": "select_group",
+      "ok": true,
+      "detail": "group='gutenberg_lds' → cache=lds_pipeline/cache/gutenberg_lds"
+    },
+    {
+      "step": "write_cache",
+      "ok": true,
+      "detail": "lds_pipeline/cache/gutenberg_lds/the_anti_pelagian_writings_volume_6_first_series_of_the_nicene_and_post_nicene_fathers.txt (87741 words)"
+    },
+    {
+      "step": "build_source_library",
+      "ok": true,
+      "detail": "ts\nPioneer Journals: 2 documents\nEarly LDS Writings: 6 documents\nChurch Fathers: 8 documents\nAncient Texts: 8 documents\n\nDone. 4162 source documents written → /Users/reify/Classified/goodcapital_landing/library/sources\nSource TOC → /Users/reify/Classified/goodcapital_landing/library/source_toc.json\n"
+    },
+    {
+      "step": "build_source_words",
+      "ok": true,
+      "detail": "erg_lds :: Lucy Mack Smith: 1097 annotated paragraphs\ngutenberg_lds :: Parley Pratt: 2076 annotated paragraphs\ngutenberg_lds :: The Anti Pelagian Writings Volume 6 First Series Of The Nicene And Post Nicene Fathers: 488 annotated paragraphs\ngutenberg_lds :: William Clayton: 507 annotated paragraphs\n"
+    },
+    {
+      "step": "build_search_index",
+      "ok": true,
+      "detail": "Processing 1583 chapter files…\nDone. 5744 chapters indexed, 1 skipped. Output: /Users/reify/Classified/goodcapital_landing/library/search.json  (13238 KB)\n"
+    },
+    {
+      "step": "build_source_dashboard",
+      "ok": true,
+      "detail": "4162,\n  \"docs_with_words\": 4162,\n  \"paragraphs\": 160168,\n  \"annotated_paragraphs\": 158986,\n  \"matched_paragraphs\": 158986,\n  \"doc_coverage_pct\": 100.0,\n  \"annotated_pct\": 99.3,\n  \"linked_pct\": 99.3\n}\n"
+    },
+    {
+      "step": "create_review_task",
+      "ok": true,
+      "detail": "T-0122"
+    },
+    {
+      "step": "complete_task",
+      "ok": true,
+      "detail": "Ingested 'The Anti-Pelagian Writings, volume 6, first series, of The Nicene and Post-Nicene Fathers'"
+    }
+  ],
+  "outcome": "success",
+  "meta": {
+    "task_id": "T-0102",
+    "raw_title": "Source Scout: ingest 'The Anti-Pelagian Writings, volume 6, first series, of The Nicene and Post-Nicene Fathers' — copyright=1.00 (trusted archive domain (archive.org)), relevance=0.82 (relevant — 7 keyword matches: church fathers, nicene, post-nicene, augustine, early christian, patristic) — URL: https://archive.org/details/TheAnti-pelagianWritingsVolume6FirstSeriesOfTheNiceneAnd",
+    "title": "The Anti-Pelagian Writings, volume 6, first series, of The Nicene and Post-Nicene Fathers",
+    "url": "https://archive.org/details/TheAnti-pelagianWritingsVolume6FirstSeriesOfTheNiceneAnd",
+    "copyright_score": 1.0,
+    "copyright_reason": "trusted archive domain (archive.org",
+    "relevance_score": 0.82,
+    "relevance_reason": "relevant — 7 keyword matches: church fathers, nicene, post-nicene, augustine, early christian, patristic",
+    "error": ""
+  },
+  "group": "gutenberg_lds",
+  "cache_file": "lds_pipeline/cache/gutenberg_lds/the_anti_pelagian_writings_volume_6_first_series_of_the_nicene_and_post_nicene_fathers.txt",
+  "review_task_id": "T-0122"
+}
