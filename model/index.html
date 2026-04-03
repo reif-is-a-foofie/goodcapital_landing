@@ -84,6 +84,13 @@ svg{display:block;}
 .chart-frame{position:relative;flex:1 1 auto;min-height:180px;}
 .chart-tip{position:absolute;display:none;pointer-events:none;top:10px;left:10px;max-width:220px;padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border2);color:var(--ink);font-size:10px;line-height:1.6;box-shadow:0 8px 20px rgba(38,34,29,0.08);}
 .chart-tip b{font-weight:600;}
+.chart-tip .tip-k{color:var(--muted);}
+.chart-tip .tip-v{color:var(--ink);}
+.chart-tip .tip-focus{display:block;margin:2px 0 4px;font-size:12px;font-weight:600;}
+.chart-tip .tip-focus.nav{color:var(--gold2);}
+.chart-tip .tip-focus.cash{color:var(--green2);}
+.chart-tip .tip-focus.cash.neg{color:var(--red2);}
+.chart-tip .tip-section{display:block;margin-bottom:2px;color:var(--muted);}
 .legend{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;flex:0 0 auto;}
 .leg{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted);}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
@@ -657,11 +664,23 @@ function recalc() {
     const innerW = rect.width - padLeft - padRight;
     const x = evt.clientX - rect.left - padLeft;
     if (x < 0 || x > innerW) return '';
+    const height = rect.height;
+    const pad = { t:16, r:20, b:32, l:76 };
+    const iH = height - pad.t - pad.b;
+    const gap = 28;
+    const navH = Math.round(iH * 0.58);
+    const cashTop = pad.t + navH + gap;
+    const y = evt.clientY - rect.top;
+    const hoveredPanel = y < cashTop ? 'nav' : 'cash';
     const month = Math.max(0, Math.min(VIEW, Math.round((x / innerW) * VIEW)));
     const intIn = intArr[month];
     const debtCost = debtArr[month];
     const net = cashDeltaArr[month];
-    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b><br>Interest in: ${month === 0 ? '-' : '+' + fmt(intIn)}<br>Debt cost: ${month === 0 ? '-' : '-' + fmt(debtCost)}<br>Net cash: ${month === 0 ? '-' : fmt(net, true)}<br>Cash balance: ${fmt(cashArr[month], true)}<br>NAV: ${fmt(navArr[month], true)}<br>NAV / share: ${fmtP(priceArr[month])}<br>Target NAV: ${fmt(targetNavArr[month], true)}${S.mc ? `<br>MC 10%: ${fmt(mcLow[month], true)}<br>MC 50%: ${fmt(mcMid[month], true)}<br>MC 90%: ${fmt(mcHigh[month], true)}` : ''}`;
+    const focus = hoveredPanel === 'nav'
+      ? `<span class="tip-section">NAV panel</span><span class="tip-focus nav">NAV ${fmt(navArr[month], true)}</span>`
+      : `<span class="tip-section">Cash panel</span><span class="tip-focus cash${cashArr[month] < 0 ? ' neg' : ''}">Cash ${fmt(cashArr[month], true)}</span>`;
+    const mcBlock = S.mc ? `<br><span class="tip-k">MC 10%</span>: <span class="tip-v">${fmt(mcLow[month], true)}</span><br><span class="tip-k">MC 50%</span>: <span class="tip-v">${fmt(mcMid[month], true)}</span><br><span class="tip-k">MC 90%</span>: <span class="tip-v">${fmt(mcHigh[month], true)}</span>` : '';
+    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b>${focus}<span class="tip-k">Interest in</span>: <span class="tip-v">${month === 0 ? '-' : '+' + fmt(intIn)}</span><br><span class="tip-k">Debt cost</span>: <span class="tip-v">${month === 0 ? '-' : '-' + fmt(debtCost)}</span><br><span class="tip-k">Net cash</span>: <span class="tip-v">${month === 0 ? '-' : fmt(net, true)}</span><br><span class="tip-k">Cash balance</span>: <span class="tip-v">${fmt(cashArr[month], true)}</span><br><span class="tip-k">NAV</span>: <span class="tip-v">${fmt(navArr[month], true)}</span><br><span class="tip-k">NAV / share</span>: <span class="tip-v">${fmtP(priceArr[month])}</span><br><span class="tip-k">Target NAV</span>: <span class="tip-v">${fmt(targetNavArr[month], true)}</span>${mcBlock}`;
   });
 }
 
