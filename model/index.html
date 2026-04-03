@@ -55,7 +55,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .kpi-v.blue{color:var(--blue2);}
 .kpi-s{font-size:10px;color:var(--muted);margin-top:2px;}
 
-.body{display:grid;grid-template-columns:1fr 400px;}
+.body{display:grid;grid-template-columns:minmax(0,1fr) minmax(560px,42vw);}
 .chart-area{padding:22px 28px 16px;border-right:1px solid var(--border);}
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 svg{display:block;}
@@ -65,8 +65,8 @@ svg{display:block;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
-.tbl-wrap{overflow-y:auto;max-height:calc(100vh - 292px);}
-table{width:100%;border-collapse:collapse;}
+.tbl-wrap{overflow:auto;max-height:calc(100vh - 292px);}
+table{width:100%;min-width:880px;border-collapse:collapse;}
 thead th{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:10px 7px 7px;border-bottom:1px solid var(--border2);text-align:right;font-weight:400;position:sticky;top:0;background:var(--s1);z-index:1;}
 thead th:first-child{text-align:left;}
 tbody td{padding:4px 7px;border-bottom:1px solid var(--border);text-align:right;color:var(--muted2);font-variant-numeric:tabular-nums;font-size:11px;}
@@ -115,7 +115,7 @@ tfoot td:first-child{text-align:left;}
 <div class="hdr">
   <div>
     <div class="hdr-title">TGP <span>/</span> Fund One - NAV Model</div>
-    <div class="hdr-sub"><span id="hdr-fund">1.0B Fund</span> · $1,000 Par · Cash Basis · 36-Month View</div>
+    <div class="hdr-sub"><span id="hdr-fund">1.0B Fund</span> · $1,000 Par · Cash Basis · 7-Year View</div>
   </div>
   <div class="hdr-tag">
     <div>Interest prepaid: <b>Year 1 at settlement · Balance at Month 12</b></div>
@@ -216,7 +216,7 @@ tfoot td:first-child{text-align:left;}
     <div class="kpi-s">annualized from modeled NAV</div>
   </div>
   <div class="kpi">
-    <div class="kpi-l">NAV / Share · Mo 36</div>
+    <div class="kpi-l">NAV / Share · Year 7</div>
     <div class="kpi-v gold" id="kpi-navshare">-</div>
     <div class="kpi-s">vs $1,000 par</div>
   </div>
@@ -243,10 +243,10 @@ tfoot td:first-child{text-align:left;}
     <table>
       <thead>
         <tr>
-          <th>Mo</th>
-          <th>Int In</th>
-          <th>Debt Cost</th>
-          <th>Net Cash</th>
+          <th>Point</th>
+          <th>Quarter Int</th>
+          <th>Quarter Debt</th>
+          <th>Period Cash</th>
           <th>Cash Bal</th>
           <th>NAV</th>
           <th>$/Share</th>
@@ -273,12 +273,12 @@ tfoot td:first-child{text-align:left;}
 <script>
 const PAR = 1_000;
 const YIELD = 0.17;
-const VIEW = 36;
+const VIEW = 84;
 
 const S = { fund:1.0, size:25, dpm:1, term:18, lev:1.0, cod:8, irr:15.0 };
 
 const limits = {
-  fund:[0.1,10,0.1], size:[2.5,200,2.5], dpm:[0.5,20,0.5], term:[6,36,6], lev:[1.0,3.0,0.25], cod:[3,20,0.5], irr:[0,40,1]
+  fund:[0.1,10,0.1], size:[2.5,200,2.5], dpm:[0.5,20,0.5], term:[6,84,6], lev:[1.0,3.0,0.25], cod:[3,20,0.5], irr:[0,40,1]
 };
 
 function fmtControl(k, v) {
@@ -335,7 +335,7 @@ function recalc() {
   const monthlyOriginationVolume = loan * S.dpm;
   const monthlyEquityDeployment = monthlyOriginationVolume / lev;
 
-  for (let o = 0; o <= VIEW; o++) {
+  for (let o = 1; o <= VIEW; o++) {
     intArr[o] += monthlyOriginationVolume * YIELD * (mo1 / 12);
     if (mo2 > 0 && o + 12 <= VIEW) intArr[o + 12] += monthlyOriginationVolume * YIELD * (mo2 / 12);
     const mat = o + S.term;
@@ -358,7 +358,12 @@ function recalc() {
   let cashBal = fundSize;
   let totInt = 0, totDebt = 0, totNet = 0;
 
-  for (let m = 0; m <= VIEW; m++) {
+  navArr[0] = initNAV;
+  targetNavArr[0] = fundSize;
+  priceArr[0] = initNAV / shares;
+  cashArr[0] = fundSize;
+
+  for (let m = 1; m <= VIEW; m++) {
     const equityPrincipalReturned = priArr[m] / lev;
     const navNet = intArr[m] - debtArr[m];
     const net = navNet + equityPrincipalReturned - monthlyEquityDeployment;
@@ -385,17 +390,28 @@ function recalc() {
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
 
+  const milestoneMonths = [0];
+  for (let m = 3; m <= VIEW; m += 3) milestoneMonths.push(m);
   let rows = '';
-  for (let m = 0; m <= VIEW; m++) {
-    const hasInt = intArr[m] > 0.01;
-    const hasDebt = debtArr[m] > 0.01;
-    const ev = hasInt || priArr[m] > 0;
-    const net = cashDeltaArr[m];
+  for (const m of milestoneMonths) {
+    const periodStart = Math.max(1, m - 2);
+    let periodInt = 0;
+    let periodDebt = 0;
+    let periodNet = 0;
+    for (let i = periodStart; i <= m; i++) {
+      periodInt += intArr[i];
+      periodDebt += debtArr[i];
+      periodNet += cashDeltaArr[i];
+    }
+    const ev = periodInt > 0.01 || periodDebt > 0.01 || m === 0;
+    const quarter = Math.ceil(m / 3);
+    const year = Math.ceil(quarter / 4);
+    const quarterInYear = ((quarter - 1) % 4) + 1;
     rows += `<tr${ev ? ' class="ev"' : ''}>
-      <td>M${String(m).padStart(2,'0')}</td>
-      <td class="${hasInt ? 'pos' : ''}">${hasInt ? '+' + fmt(intArr[m]) : '-'}</td>
-      <td class="${hasDebt ? 'neg' : ''}">${hasDebt ? '-' + fmt(debtArr[m]) : '-'}</td>
-      <td class="${net > 0 ? 'pos' : net < 0 ? 'neg' : ''}">${net !== 0 ? fmt(net) : '-'}</td>
+      <td>${m === 0 ? 'Start' : `Y${year} Q${quarterInYear}`}</td>
+      <td class="${periodInt > 0 ? 'pos' : ''}">${periodInt > 0 ? '+' + fmt(periodInt) : '-'}</td>
+      <td class="${periodDebt > 0 ? 'neg' : ''}">${periodDebt > 0 ? '-' + fmt(periodDebt) : '-'}</td>
+      <td class="${periodNet > 0 ? 'pos' : periodNet < 0 ? 'neg' : ''}">${m === 0 ? '-' : fmt(periodNet)}</td>
       <td class="cash">${fmt(cashArr[m], true)}</td>
       <td class="nav">${fmt(navArr[m], true)}</td>
       <td class="price">${fmtP(priceArr[m])}</td>
@@ -426,7 +442,7 @@ function recalc() {
       `Increase leverage ratio above 1.0x to deploy more capital per LP dollar - watch the debt cost vs. your 17% yield.`;
   }
   lNote.innerHTML += ` Cash balance assumes the fund starts with <b>${fmt(fundSize, true)}</b>, funds only the equity slice of each new loan, and gets that equity principal back when loans repay.`;
-  lNote.innerHTML += ` At the current settings, the modeled NAV implies an annualized IRR of <b>${(projectedIrr * 100).toFixed(1)}%</b> over ${VIEW} months.`;
+  lNote.innerHTML += ` At the current settings, the modeled NAV implies an annualized IRR of <b>${(projectedIrr * 100).toFixed(1)}%</b> over ${Math.round(VIEW / 12)} years.`;
 
   if (lpEquity > fundSize) {
     lNote.className = 'lev-note warn';
@@ -468,8 +484,8 @@ function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
     const cashV = maxCash - (i / 4) * cashRange;
     o += `<text x="${pad.l + iW + 8}" y="${y + 4}" font-family="DM Mono" font-size="10" fill="#3f6d47">${fmt(cashV, true)}</text>`;
   }
-  for (let m = 0; m <= VIEW; m += 6) {
-    o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">M${m}</text>`;
+  for (let m = 0; m <= VIEW; m += 12) {
+    o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">${m === 0 ? 'Start' : `Y${m / 12}`}</text>`;
   }
 
   const bW = Math.max(2, iW / VIEW * 0.5);
