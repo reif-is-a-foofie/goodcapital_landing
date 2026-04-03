@@ -61,7 +61,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .summary-note b{color:var(--ink);font-weight:500;}
 .summary-note.warn{border-left:2px solid var(--red2);padding-left:26px;}
 
-.body{display:grid;grid-template-columns:minmax(0,2fr) minmax(360px,1fr);border-bottom:1px solid var(--border);}
+.body{display:grid;grid-template-columns:minmax(0,58fr) minmax(420px,42fr);border-bottom:1px solid var(--border);}
 .chart-area{padding:22px 28px 16px;border-left:1px solid var(--border);background:var(--s1);}
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 svg{display:block;}
@@ -74,7 +74,7 @@ svg{display:block;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
-.tbl-wrap{overflow-x:auto;overflow-y:auto;max-width:100%;max-height:calc(100vh - 290px);background:var(--s1);}
+.tbl-wrap{overflow-x:auto;overflow-y:auto;max-width:100%;max-height:calc(100vh - 260px);background:var(--s1);}
 table{width:100%;min-width:880px;border-collapse:collapse;}
 thead th{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:10px 7px 7px;border-bottom:1px solid var(--border2);text-align:right;font-weight:400;position:sticky;top:0;background:var(--s1);z-index:1;}
 thead th:first-child{text-align:left;}
@@ -293,7 +293,7 @@ tfoot td:first-child{text-align:left;}
   </div>
 
   <div class="chart-area">
-    <div class="sec-label">NAV, Target Path, and Cash Balance</div>
+    <div class="sec-label">NAV and Cash Balance</div>
     <div class="chart-frame" id="nav-frame">
       <svg id="main-chart" height="560"></svg>
       <div class="chart-tip" id="nav-tip"></div>
@@ -625,7 +625,7 @@ function recalc() {
     const svg = document.getElementById('main-chart');
     const rect = svg.getBoundingClientRect();
     const padLeft = 76;
-    const padRight = 76;
+    const padRight = 20;
     const innerW = rect.width - padLeft - padRight;
     const x = evt.clientX - rect.left - padLeft;
     if (x < 0 || x > innerW) return '';
@@ -641,9 +641,14 @@ function drawNavChart(navArr, targetNavArr, cashArr, mcLow, mcMid, mcHigh, share
   const H = 560;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 
-  const pad = {t:16,r:76,b:32,l:76};
+  const pad = {t:16,r:20,b:32,l:76};
   const iW = W - pad.l - pad.r;
   const iH = H - pad.t - pad.b;
+  const gap = 28;
+  const navH = Math.round(iH * 0.58);
+  const cashH = iH - navH - gap;
+  const navTop = pad.t;
+  const cashTop = pad.t + navH + gap;
 
   const maxNAV = Math.max(...navArr, ...targetNavArr, ...(showMonteCarlo ? mcHigh : []));
   const minNAV = Math.min(...navArr, ...targetNavArr, ...(showMonteCarlo ? mcLow : []));
@@ -655,22 +660,25 @@ function drawNavChart(navArr, targetNavArr, cashArr, mcLow, mcMid, mcHigh, share
   const cashRange = cashHigh - cashLow || 1;
 
   const xS = m => pad.l + (m / VIEW) * iW;
-  const yNAV = v => pad.t + iH - ((v - minNAV) / navRange) * iH;
-  const yCash = v => pad.t + iH - ((v - cashLow) / cashRange) * iH;
+  const yNAV = v => navTop + navH - ((v - minNAV) / navRange) * navH;
+  const yCash = v => cashTop + cashH - ((v - cashLow) / cashRange) * cashH;
 
   let o = '';
 
   for (let i = 0; i <= 4; i++) {
-    const y = pad.t + (i / 4) * iH;
+    const y = navTop + (i / 4) * navH;
     const v = maxNAV - (i / 4) * navRange;
     o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
     o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="#776b5d">${fmt(v, true)}</text>`;
-    const cashV = cashHigh - (i / 4) * cashRange;
-    o += `<text x="${pad.l + iW + 8}" y="${y + 4}" font-family="DM Mono" font-size="10" fill="${cashV < 0 ? '#9c4f40' : '#3f6d47'}">${fmt(cashV, true)}</text>`;
   }
-  for (let m = 0; m <= VIEW; m += 12) {
-    o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">${m === 0 ? 'Start' : `Y${m / 12}`}</text>`;
+  for (let i = 0; i <= 4; i++) {
+    const y = cashTop + (i / 4) * cashH;
+    const v = cashHigh - (i / 4) * cashRange;
+    o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
+    o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="${v < 0 ? '#9c4f40' : '#3f6d47'}">${fmt(v, true)}</text>`;
   }
+  o += `<text x="${pad.l}" y="${navTop - 4}" font-family="DM Mono" font-size="9" fill="#776b5d" letter-spacing="1.4">NAV</text>`;
+  o += `<text x="${pad.l}" y="${cashTop - 8}" font-family="DM Mono" font-size="9" fill="#776b5d" letter-spacing="1.4">CASH</text>`;
 
   if (cashLow < 0 && cashHigh > 0) {
     const yZero = yCash(0);
@@ -712,7 +720,11 @@ function drawNavChart(navArr, targetNavArr, cashArr, mcLow, mcMid, mcHigh, share
   if (parNAV >= minNAV && parNAV <= maxNAV) {
     const yPar = yNAV(parNAV);
     o += `<line x1="${pad.l}" y1="${yPar}" x2="${pad.l + iW}" y2="${yPar}" stroke="rgba(111,135,163,0.7)" stroke-width="1" stroke-dasharray="4 3"/>`;
-    o += `<text x="${pad.l + iW + 4}" y="${yPar + 4}" font-family="DM Mono" font-size="9" fill="#506a88">PAR</text>`;
+    o += `<text x="${pad.l + iW - 22}" y="${yPar - 6}" font-family="DM Mono" font-size="9" fill="#506a88">PAR</text>`;
+  }
+
+  for (let m = 0; m <= VIEW; m += 12) {
+    o += `<text x="${xS(m)}" y="${cashTop + cashH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">${m === 0 ? 'Start' : `Y${m / 12}`}</text>`;
   }
 
   svg.innerHTML = o;
