@@ -54,6 +54,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .btn.red:hover{background:var(--red-dim);color:var(--red2);}
 
 .panel-label{padding:10px 28px 8px;background:var(--s1);border-bottom:1px solid var(--border);font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;}
+.intro-note{padding:14px 20px 12px;background:var(--s1);border-bottom:1px solid var(--border);font-size:11px;line-height:1.75;color:var(--muted2);}
+.intro-note b{color:var(--ink);font-weight:500;}
 
 .kpis{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);}
 .kpi{padding:12px 16px;border-right:1px solid var(--border);background:var(--s1);}
@@ -64,6 +66,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .chart-rail .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:none;gap:12px;}
 .chart-rail .kpi{padding:14px 14px 16px;border:1px solid var(--border);background:var(--bg);min-height:122px;display:flex;flex-direction:column;justify-content:space-between;}
 .chart-rail .kpi:last-child{border-bottom:1px solid var(--border);}
+.chart-rail .settings-wrap{margin-top:18px;border-top:1px solid var(--border);border-bottom:none;background:none;}
+.chart-rail .settings-toggle{padding:14px 0 0;}
+.chart-rail .settings-body{border-top:none;padding-top:10px;}
 .kpi-l{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
 .kpi-v{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1;}
 .kpi-v.gold{color:var(--gold2);}
@@ -98,6 +103,8 @@ svg{display:block;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .chart-main{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden;}
+.contact-link{position:fixed;right:14px;bottom:10px;font-size:10px;color:var(--muted);text-decoration:none;background:rgba(253,250,245,0.92);border:1px solid var(--border);padding:6px 8px;z-index:20;}
+.contact-link:hover{color:var(--ink);border-color:var(--border2);}
 
 .lev-note{margin:0 28px 0;padding:10px 14px;background:var(--s2);border-left:2px solid var(--gold);font-size:11px;color:var(--muted2);line-height:1.8;}
 .lev-note b{color:var(--gold2);font-weight:400;}
@@ -159,6 +166,8 @@ svg{display:block;}
     <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below.">TGP <span>/</span> Fund One Model</div>
   </div>
 </div>
+
+<div class="intro-note"><b>How this model works:</b> the fund makes developer loans, collects retained yield, and reinvests both principal and profits back into new loans. <b>Cash</b> shows liquidity on hand, <b>Loans Outstanding</b> shows the active loan book, and <b>NAV</b> shows total fund value after retained income and debt cost. Change the assumptions below to see how quickly the book grows, how much capital gets called, and what return that produces.</div>
 
 <div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
 <div class="controls">
@@ -245,31 +254,6 @@ svg{display:block;}
     </div>
   </div>
 </div>
-<details class="settings-wrap">
-  <summary class="settings-toggle" title="Secondary model controls, including simulation settings.">Settings</summary>
-  <div class="settings-body">
-    <div class="ctrl-row">
-      <div class="ctrl">
-        <div class="ctrl-label" title="Turns on randomized scenario runs to show a range of outcomes instead of just one base case.">Monte Carlo</div>
-        <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
-        <div class="ctrl-btns">
-          <div class="btn red" onclick="setMonteCarlo(false)">Off</div>
-          <div class="btn plus" onclick="setMonteCarlo(true)">On</div>
-        </div>
-      </div>
-      <div class="ctrl" id="var-ctrl">
-        <div class="ctrl-label" title="Controls how much the randomized Monte Carlo runs can move around the base assumptions.">Variance</div>
-        <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
-        <div class="ctrl-btns">
-          <div class="btn red" onclick="adj('var',-1)">- 1%</div>
-          <div class="btn plus" onclick="adj('var',1)">+ 1%</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</details>
-
-<div class="summary-note assump-note"><b>Interest prepaid:</b> Year 1 at settlement, then the remaining balance at Month 12. <b>NAV formula:</b> opening fund equity + accumulated interest - leverage cost. Share price stays anchored to $1,000 par.</div>
 <div class="summary-note" id="summary-note"></div>
 
 <div class="body">
@@ -295,40 +279,65 @@ svg{display:block;}
         <div class="panel-label" title="These tiles summarize the most important outputs from the current scenario.">Current Scenario Analysis</div>
         <div class="kpis">
           <div class="kpi" title="The annualized return implied by the modeled NAV path.">
-          <div class="kpi-l">Projected IRR</div>
+            <div class="kpi-l">Projected Return</div>
           <div class="kpi-v blue" id="kpi-irr">-</div>
             <div class="kpi-s">annualized from LP cash flows</div>
           </div>
-          <div class="kpi" title="How far the modeled IRR is above or below the target IRR.">
-            <div class="kpi-l">Target Gap</div>
+          <div class="kpi" title="The highest amount of LP capital the model calls in any single month.">
+            <div class="kpi-l">Peak LP Call / Mo</div>
             <div class="kpi-v plain" id="kpi-gap">-</div>
-            <div class="kpi-s">projected vs target IRR</div>
+            <div class="kpi-s">fastest equity draw month</div>
           </div>
           <div class="kpi" title="The modeled value per share at the end of the 7-year view.">
-            <div class="kpi-l">NAV / Share · Year 7</div>
+            <div class="kpi-l">Year 7 NAV / Share</div>
             <div class="kpi-v gold" id="kpi-navshare">-</div>
             <div class="kpi-s">vs $1,000 par</div>
           </div>
           <div class="kpi" title="The lowest cash balance reached at any point in the model.">
-            <div class="kpi-l">Min Cash Balance</div>
+            <div class="kpi-l">Lowest Cash</div>
             <div class="kpi-v plain" id="kpi-mincash">-</div>
             <div class="kpi-s">lowest liquidity point</div>
           </div>
           <div class="kpi" title="The highest amount of equity capital that is tied up in loans at one time.">
-            <div class="kpi-l">Peak Equity Deployed</div>
+            <div class="kpi-l">Peak LP Capital Out</div>
             <div class="kpi-v gold" id="kpi-equity">-</div>
             <div class="kpi-s">max LP capital at work</div>
           </div>
-          <div class="kpi" title="The peak amount of borrowing the model uses at one time.">
-            <div class="kpi-l">Debt Facility</div>
+          <div class="kpi" title="The highest number of loans the model originates in a single month.">
+            <div class="kpi-l">Peak Loans / Mo</div>
             <div class="kpi-v blue" id="kpi-debt">-</div>
-            <div class="kpi-s">peak borrowed capital</div>
+            <div class="kpi-s">loans in busiest month</div>
           </div>
         </div>
+        <details class="settings-wrap">
+          <summary class="settings-toggle" title="Secondary model controls, including simulation settings.">Settings</summary>
+          <div class="settings-body">
+            <div class="ctrl-row">
+              <div class="ctrl">
+                <div class="ctrl-label" title="Turns on randomized scenario runs to show a range of outcomes instead of just one base case.">Monte Carlo</div>
+                <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
+                <div class="ctrl-btns">
+                  <div class="btn red" onclick="setMonteCarlo(false)">Off</div>
+                  <div class="btn plus" onclick="setMonteCarlo(true)">On</div>
+                </div>
+              </div>
+              <div class="ctrl" id="var-ctrl">
+                <div class="ctrl-label" title="Controls how much the randomized Monte Carlo runs can move around the base assumptions.">Variance</div>
+                <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
+                <div class="ctrl-btns">
+                  <div class="btn red" onclick="adj('var',-1)">- 1%</div>
+                  <div class="btn plus" onclick="adj('var',1)">+ 1%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
       </div>
     </div>
   </div>
 </div>
+
+<a class="contact-link" href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>
 
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <script>
@@ -340,7 +349,7 @@ let mainChart = null;
 const S = { fund:1.0, call:1, size:20, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
 
 const limits = {
-  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,4,0.25], term:[6,84,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[1.0,3.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
+  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,84,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[1.0,3.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
 };
 
 function fmtControl(k, v) {
@@ -484,6 +493,7 @@ function buildScenario(opts = {}) {
   const activeEquityBal = new Array(VIEW + 1).fill(0);
   const loanOutstandingArr = new Array(VIEW + 1).fill(0);
   const originationArr = new Array(VIEW + 1).fill(0);
+  const dealsArr = new Array(VIEW + 1).fill(0);
 
   let totInt = 0;
   let totDebt = 0;
@@ -526,6 +536,7 @@ function buildScenario(opts = {}) {
     const lpCall = justInTimeCalls ? Math.max(0, actualEquityDeployment - cashBal) : 0;
     const actualOriginationVolume = actualEquityDeployment * lev;
     const actualDebtDeployment = actualOriginationVolume - actualEquityDeployment;
+    const actualDeals = loanSize > 0 ? actualOriginationVolume / loanSize : 0;
 
     if (lpCall > 0) {
       cumulativeLpCalled += lpCall;
@@ -538,6 +549,7 @@ function buildScenario(opts = {}) {
 
     lpCallArr[m] = lpCall;
     originationArr[m] = actualOriginationVolume;
+    dealsArr[m] = actualDeals;
     cashBal -= actualEquityDeployment;
 
     const immediateInterest = actualOriginationVolume * fundTake * (mo1 / 12);
@@ -574,6 +586,9 @@ function buildScenario(opts = {}) {
   }
   const peakEquity = Math.max(...activeEquityBal);
   const peakDebt = Math.max(...activeDebtBal);
+  const peakMonthlyCall = Math.max(...lpCallArr);
+  const peakMonthlyOrigination = Math.max(...originationArr);
+  const peakMonthlyDeals = Math.max(...dealsArr);
 
   const lpFlows = lpCallArr.map(v => -v);
   lpFlows[VIEW] += navArr[VIEW];
@@ -582,11 +597,14 @@ function buildScenario(opts = {}) {
 
   return {
     fundSize, shares, targetIrr,
-    navArr, targetNavArr, cashArr, cashDeltaArr, priceArr, loanOutstandingArr, lpCallArr, originationArr,
+    navArr, targetNavArr, cashArr, cashDeltaArr, priceArr, loanOutstandingArr, lpCallArr, originationArr, dealsArr,
     intArr, debtArr, priArr,
     projectedIrr,
     minCash: Math.min(...cashArr),
     cumulativeLpCalled,
+    peakMonthlyCall,
+    peakMonthlyOrigination,
+    peakMonthlyDeals,
     peakEquity, peakDebt,
     totInt, totDebt, totNet
   };
@@ -617,35 +635,36 @@ function smartTooltipNarrative(seriesName, month, navArr, targetNavArr, cashArr,
   const loanDelta = loanOutstandingArr[month] - loanOutstandingArr[prev];
   const hasNewLoans = originationArr[month] > 0.5;
   const hasReturns = month > 0 && cashDeltaArr[month] > 0.5;
+  const phase = month < 12 ? 'ramp-up' : (month < 36 ? 'scaling' : 'recycling');
 
   if (seriesName === 'Loans Outstanding') {
-    if (hasNewLoans && loanDelta > 0.5) return `Loan book is ${trendWord(loanDelta)} because new originations are outpacing maturities.`;
-    if (hasNewLoans && Math.abs(loanDelta) < 0.5) return `Loan book is flat because new originations are mostly replacing repaid loans.`;
-    if (loanDelta < -0.5) return `Loan book is falling because repayments are coming back faster than new loans are being added.`;
-    return `Loan book is steady this month; pipeline pace is scaling with available capital, but repayments and new originations are near balance here.`;
+    if (hasNewLoans && loanDelta > 0.5) return `The loan book is still growing in the ${phase} phase. New originations this month are larger than principal coming back, so more capital remains out in active loans.`;
+    if (hasNewLoans && Math.abs(loanDelta) < 0.5) return `The loan book is flattening. New loans are still being made, but principal repayments are now arriving at roughly the same pace, so the portfolio is recycling rather than expanding.`;
+    if (loanDelta < -0.5) return `The loan book is shrinking because repayments and maturities are exceeding new originations at this point in the cycle.`;
+    return `The loan book is broadly steady here. Capital is still being recycled, but the portfolio is close to a mature run-rate rather than a fresh growth phase.`;
   }
   if (seriesName === 'Cash') {
-    if (cashArr[month] < -0.5) return `Cash is below zero here, which means deployment is outrunning available liquidity.`;
-    if (hasNewLoans && cashDelta < -0.5) return `Cash is falling because equity is being deployed into new loans this month as pipeline pace expands with available capital.`;
-    if (hasReturns && cashDelta > 0.5) return `Cash is rebuilding because principal and retained interest are coming back in.`;
-    return `Cash is roughly stable here; inflows and new deployment are close to balanced.`;
+    if (cashArr[month] < -0.5) return `Cash has gone negative here, which means the model is trying to deploy faster than liquidity is available. In practice, this would require slower originations, more capital, or more leverage.`;
+    if (hasNewLoans && cashDelta < -0.5) return `Cash is being consumed because equity is moving out of the fund and into new loans. That is normal during build-out, as long as later repayments refill liquidity.`;
+    if (hasReturns && cashDelta > 0.5) return `Cash is rebuilding because principal and retained yield are returning faster than the fund is deploying new capital this month.`;
+    return `Cash is roughly balanced here. The fund is close to a steady operating state where inflows and new deployment are offsetting each other.`;
   }
   if (seriesName === 'Target NAV') {
-    return `This is the NAV path required to hit the selected target IRR over time.`;
+    return `This is the benchmark path required to hit the selected target return. If projected NAV stays below this line, the current assumptions are not yet getting to the target IRR.`;
   }
   if (seriesName === 'MC Median' || seriesName === 'MC Low' || seriesName === 'MC Band') {
-    return `This Monte Carlo view shows the simulated NAV range under randomized monthly assumptions.`;
+    return `This Monte Carlo view shows how the NAV path changes when origination pace, loan size, yield, and cost assumptions are randomized around the base case.`;
   }
   if (hasNewLoans && Math.abs(navDelta) < Math.max(0.5, intArr[month] * 0.2)) {
-    return `NAV is mostly flat at origination because cash is being turned into loan assets, not lost.`;
+    return `NAV is mostly flat even though new loans are being made because cash is turning into loan assets, not disappearing. Origination changes the mix of assets; retained income is what grows NAV over time.`;
   }
   if (navDelta > 0.5) {
-    return `NAV is rising from retained interest net of debt cost.`;
+    return `NAV is rising because retained yield is compounding inside the fund faster than debt cost is dragging on returns. This is the core economic engine of the model.`;
   }
   if (navDelta < -0.5) {
-    return `NAV is falling here, which should only happen if debt cost or losses outweigh retained income.`;
+    return `NAV is falling here, which means financing cost or another drag is temporarily outweighing retained income. That is a warning state rather than the expected base outcome.`;
   }
-    return `NAV is stable this month; asset mix may change, but total fund value is holding while origination pace scales with available capital.`;
+  return `NAV is stable this month. The portfolio may still be rotating between cash and loans, but total fund value is not changing much at this point in the cycle.`;
 }
 
 function endLabel(text, color) {
@@ -685,6 +704,9 @@ function recalc() {
     const minCashSamples = [];
     const peakEquitySamples = [];
     const peakDebtSamples = [];
+    const peakCallSamples = [];
+    const peakOriginationSamples = [];
+    const peakDealsSamples = [];
     const totIntSamples = [];
     const totDebtSamples = [];
     const totNetSamples = [];
@@ -695,6 +717,9 @@ function recalc() {
       minCashSamples.push(sim.minCash);
       peakEquitySamples.push(sim.peakEquity);
       peakDebtSamples.push(sim.peakDebt);
+      peakCallSamples.push(sim.peakMonthlyCall);
+      peakOriginationSamples.push(sim.peakMonthlyOrigination);
+      peakDealsSamples.push(sim.peakMonthlyDeals);
       totIntSamples.push(sim.totInt);
       totDebtSamples.push(sim.totDebt);
       totNetSamples.push(sim.totNet);
@@ -738,6 +763,9 @@ function recalc() {
       originationArr: originationMedian,
       projectedIrr: percentile(irrSamples.slice().sort((a, b) => a - b), 0.50),
       minCash: percentile(minCashSamples.slice().sort((a, b) => a - b), 0.50),
+      peakMonthlyCall: percentile(peakCallSamples.slice().sort((a, b) => a - b), 0.50),
+      peakMonthlyOrigination: percentile(peakOriginationSamples.slice().sort((a, b) => a - b), 0.50),
+      peakMonthlyDeals: percentile(peakDealsSamples.slice().sort((a, b) => a - b), 0.50),
       peakEquity: percentile(peakEquitySamples.slice().sort((a, b) => a - b), 0.50),
       peakDebt: percentile(peakDebtSamples.slice().sort((a, b) => a - b), 0.50),
       totInt: percentile(totIntSamples.slice().sort((a, b) => a - b), 0.50),
@@ -746,18 +774,17 @@ function recalc() {
     };
   }
 
-  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, loanOutstandingArr, originationArr, projectedIrr, minCash, peakEquity, peakDebt, totInt, totDebt, totNet } = display;
+  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, loanOutstandingArr, originationArr, projectedIrr, minCash, peakEquity, peakDebt, peakMonthlyCall, peakMonthlyOrigination, peakMonthlyDeals, totInt, totDebt, totNet } = display;
   const irrGap = projectedIrr - targetIrr;
-  const debtLabel = fmtMoneyOrNone(peakDebt);
   const grossApy = S.apy / 100;
   const fundTake = S.take / 100;
   const mcEndLow = mcLow[VIEW];
   const mcEndHigh = mcHigh[VIEW];
 
   document.getElementById('kpi-equity').textContent = fmt(peakEquity);
-  document.getElementById('kpi-debt').textContent = debtLabel;
+  document.getElementById('kpi-debt').textContent = peakMonthlyDeals.toFixed(1);
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
-  document.getElementById('kpi-gap').textContent = `${irrGap >= 0 ? '+' : ''}${(irrGap * 100).toFixed(1)}%`;
+  document.getElementById('kpi-gap').textContent = fmt(peakMonthlyCall, true);
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
   document.getElementById('kpi-mincash').textContent = fmt(minCash, true);
   document.getElementById('v-call').textContent = S.call ? 'On' : 'Off';
@@ -768,7 +795,7 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `At current assumptions, average loan APY is <b>${(grossApy * 100).toFixed(1)}%</b> and fund take is <b>${(fundTake * 100).toFixed(1)}%</b>. LP capital is <b>${S.call ? 'called as new loans are originated' : 'fully funded on day one'}</b>, with total LP calls capped at <b>${fmt(fundSize, true)}</b>. Actual monthly lending is the lesser of <b>base pipeline capacity</b> and <b>deployable capital</b>. The fund peaks at <b>${fmt(peakEquity)}</b> of equity deployed${Math.abs(peakDebt) < 0.5 ? '' : ` and <b>${fmt(peakDebt)}</b> of debt outstanding`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo randomizes monthly deal flow, deal size, loan APY, fund take, and debt cost; the chart tooltip and KPIs show the median simulated path, and the year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
+  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, earns about <b>${(grossApy * 100).toFixed(1)}%</b> from borrowers, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund. LP capital is <b>${S.call ? 'called only when new loans need funding' : 'fully funded upfront'}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. On this path, the fastest month calls about <b>${fmt(peakMonthlyCall, true)}</b> of LP capital and originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume. The loan book peaks around <b>${fmt(peakEquity)}</b> of LP capital out${Math.abs(peakDebt) < 0.5 ? '' : ` with <b>${fmt(peakDebt)}</b> of debt at peak`}, cash gets as low as <b>${fmt(minCash, true)}</b>, and the model ends near <b>${fmtP(priceArr[VIEW])}</b> NAV/share, which works out to about <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
   if (peakEquity > fundSize || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'summary-note warn';
     const warnings = [];
@@ -825,22 +852,24 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
         const month = typeof first?.dataIndex === 'number' ? first.dataIndex : 0;
         const progressPct = ((month / VIEW) * 100).toFixed(0);
         const periodLabel = month === 0 ? 'Start of Fund' : `Month ${month} of ${VIEW} · Year ${(month / 12).toFixed(1)} · ${progressPct}% complete`;
-        const story = smartTooltipNarrative('NAV', month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr);
+        const loanMix = navArr[month] > 0 ? ((loanOutstandingArr[month] / navArr[month]) * 100) : 0;
+        const storyNav = smartTooltipNarrative('NAV', month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr);
+        const storyLoans = smartTooltipNarrative('Loans Outstanding', month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr);
+        const storyCash = smartTooltipNarrative('Cash', month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr);
         const mcBlock = showMonteCarlo
           ? `<br><span style="color:#776b5d">MC 10%</span>: ${fmt(mcLow[month], true)}<br><span style="color:#776b5d">MC 50%</span>: ${fmt(mcMid[month], true)}<br><span style="color:#776b5d">MC 90%</span>: ${fmt(mcHigh[month], true)}`
           : '';
         return `<div style="font-weight:600;margin-bottom:2px">${periodLabel}</div>
         <div style="margin-bottom:4px;color:#b38b57;font-weight:700">NAV: ${fmt(navArr[month], true)} <span style="color:#776b5d;font-weight:400">(${fmtSigned(navArr[month] - navArr[0])} since start)</span></div>
-        <div style="margin-bottom:6px;color:#5f5447">${story}</div>
+        <div style="margin-bottom:8px;color:#5f5447">${storyNav}</div>
+        <div style="margin-bottom:8px;padding-top:6px;border-top:1px solid rgba(156,122,77,0.16)"><span style="color:#7b4bb3;font-weight:600">Loan book</span>: ${fmt(loanOutstandingArr[month], true)} <span style="color:#776b5d">(${loanMix.toFixed(0)}% of NAV)</span><br><span style="color:#5f5447">${storyLoans}</span></div>
+        <div style="margin-bottom:8px"><span style="color:#1c7c54;font-weight:600">Cash</span>: ${fmt(cashArr[month], true)} <span style="color:#776b5d">(${fmtSigned(cashArr[month] - cashArr[0])} since start)</span><br><span style="color:#5f5447">${storyCash}</span></div>
         <div><span style="color:#776b5d">New loans this month</span>: ${fmt(originationArr[month], true)}</div>
-        <div><span style="color:#776b5d">Total loans outstanding</span>: ${fmt(loanOutstandingArr[month], true)}</div>
-        <div><span style="color:#776b5d">Cash balance</span>: ${fmt(cashArr[month], true)}</div>
         <div><span style="color:#776b5d">Interest in</span>: ${month === 0 ? '-' : '+' + fmt(intArr[month])}</div>
         <div><span style="color:#776b5d">Debt cost</span>: ${month === 0 ? '-' : '-' + fmt(debtArr[month])}</div>
         <div><span style="color:#776b5d">Net cash</span>: ${month === 0 ? '-' : fmt(cashDeltaArr[month], true)}</div>
         <div><span style="color:#776b5d">NAV / share</span>: ${fmtP(priceArr[month])}</div>
         <div><span style="color:#776b5d">Target NAV</span>: ${fmt(targetNavArr[month], true)}</div>
-        <div><span style="color:#776b5d">Cash progress</span>: ${fmtSigned(cashArr[month] - cashArr[0])}</div>
         <div><span style="color:#776b5d">Loan book progress</span>: ${fmtSigned(loanOutstandingArr[month] - loanOutstandingArr[0])}</div>${mcBlock}`;
       }
     },
