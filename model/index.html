@@ -64,8 +64,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .chart-area{padding:22px 28px 16px;border-bottom:1px solid var(--border);}
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 svg{display:block;}
-#main-chart{width:100%;}
-.chart-stack{display:grid;gap:22px;}
+#main-chart,#cash-chart{width:100%;height:auto;}
+.chart-stack{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start;}
+.chart-panel{min-width:0;}
 .chart-frame{position:relative;}
 .chart-tip{position:absolute;display:none;pointer-events:none;top:10px;left:10px;max-width:220px;padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border2);color:var(--ink);font-size:10px;line-height:1.6;box-shadow:0 8px 20px rgba(38,34,29,0.08);}
 .chart-tip b{font-weight:600;}
@@ -74,7 +75,7 @@ svg{display:block;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
-.tbl-wrap{overflow-x:auto;overflow-y:auto;max-width:100%;}
+.tbl-wrap{overflow-x:auto;overflow-y:auto;max-width:100%;max-height:calc(100vh - 640px);background:var(--s1);}
 table{width:100%;min-width:880px;border-collapse:collapse;}
 thead th{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:10px 7px 7px;border-bottom:1px solid var(--border2);text-align:right;font-weight:400;position:sticky;top:0;background:var(--s1);z-index:1;}
 thead th:first-child{text-align:left;}
@@ -99,6 +100,7 @@ tfoot td:first-child{text-align:left;}
   .kpis{grid-template-columns:repeat(3,1fr);}
   .body{grid-template-columns:1fr;}
   .chart-area{border-bottom:1px solid var(--border);}
+  .chart-stack{grid-template-columns:1fr;}
   .tbl-wrap{max-height:none;}
 }
 
@@ -249,7 +251,7 @@ tfoot td:first-child{text-align:left;}
 <div class="body">
   <div class="chart-area">
     <div class="chart-stack">
-      <div>
+      <div class="chart-panel">
         <div class="sec-label">Projected NAV vs Target IRR Path</div>
         <div class="chart-frame" id="nav-frame">
           <svg id="main-chart" height="320"></svg>
@@ -262,7 +264,7 @@ tfoot td:first-child{text-align:left;}
           <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
         </div>
       </div>
-      <div>
+      <div class="chart-panel">
         <div class="sec-label">Cash Balance</div>
         <div class="chart-frame" id="cash-frame">
           <svg id="cash-chart" height="220"></svg>
