@@ -378,7 +378,7 @@ svg{display:block;}
               <div class="ctrl-btns"><div class="btn red" onclick="adj('switch',-5)">- 5%</div><div class="btn plus" onclick="adj('switch',5)">+ 5%</div></div>
             </div>
             <div class="ctrl">
-              <div class="ctrl-label" title="The maximum share of LP value the fund is assumed to pay out from cash in a single liquidity window. Anything above that is deferred or canceled.">Cash Payout Cap</div>
+              <div class="ctrl-label" title="The maximum share of LP value the fund is assumed to pay out from cash in a single liquidity window. Anything above that remains unmet unless a buyer takes the units.">Cash Payout Cap</div>
               <div class="ctrl-display"><div class="ctrl-val" id="v-redcap">5.0</div><div class="ctrl-unit">% paid from fund</div></div>
               <div class="ctrl-btns"><div class="btn red" onclick="adj('redcap',-1)">- 1%</div><div class="btn plus" onclick="adj('redcap',1)">+ 1%</div></div>
             </div>
@@ -528,7 +528,7 @@ svg{display:block;}
                 <div class="event-v gold" id="evt-paid">$0</div>
               </div>
               <div class="event-item">
-                <div class="event-k">Canceled / Deferred</div>
+                <div class="event-k">Unmet / Waiting</div>
                 <div class="event-v red" id="evt-canceled">$0</div>
               </div>
               <div class="event-note" id="evt-note">Hover the chart to see each liquidity window, how much LPs could ask for, how much is switched, and how much cash the fund could actually pay.</div>
@@ -550,18 +550,18 @@ svg{display:block;}
           </div>
         </div>
         <div class="kpis">
-          <div class="kpi" title="This is the annualized IRR implied by the modeled LP cash flows and ending NAV. It is the model's projected return under the current assumptions.">
-            <div class="kpi-l">Projected Return</div>
+          <div class="kpi" title="This is the annualized IRR implied by LP cash calls, cash returned from the fund, and ending LP residual value.">
+            <div class="kpi-l">LP Net IRR</div>
           <div class="kpi-v blue" id="kpi-irr">-</div>
-            <div class="kpi-s">annualized from LP cash flows</div>
+            <div class="kpi-s">from calls, payouts, and residual</div>
           </div>
           <div class="kpi" title="This is the total number of loans the model originates over the full 10-year period. It helps show how active the strategy becomes over time.">
             <div class="kpi-l">Total Loans</div>
             <div class="kpi-v plain" id="kpi-gap">-</div>
             <div class="kpi-s">originated over 10 years</div>
           </div>
-          <div class="kpi" title="This is the modeled value per share at the end of year 7. It shows what one share in the fund would be worth if the current path plays out.">
-            <div class="kpi-l">Year 10 NAV / Share</div>
+          <div class="kpi" title="This is the modeled value per share at year 10 after the current path plays out. It is the residual share value still inside the fund.">
+            <div class="kpi-l">Year 10 Residual / Share</div>
             <div class="kpi-v gold" id="kpi-navshare">-</div>
             <div class="kpi-s">vs $1,000 par</div>
           </div>
@@ -573,7 +573,7 @@ svg{display:block;}
           <div class="kpi" title="This is the largest amount of LP equity that is tied up in active loans at one time. It shows the peak amount of investor capital at work.">
             <div class="kpi-l">Peak LP Capital Out</div>
             <div class="kpi-v gold" id="kpi-equity">-</div>
-            <div class="kpi-s">max LP capital at work</div>
+            <div class="kpi-s">LP equity deployed in loans</div>
           </div>
           <div class="kpi" title="This is the busiest origination month in the model, measured by number of loans closed. It helps show how much the pace of lending accelerates at peak.">
             <div class="kpi-l">Peak Loans / Mo</div>
@@ -1150,7 +1150,7 @@ function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingA
   document.getElementById('evt-note').textContent = !S.redeem
     ? 'Redemptions are turned off, so no liquidity windows are modeled. LP capital stays in the fund unless the assumptions are changed.'
     : eventOn
-    ? `At this liquidity event, LPs ask for ${fmt(requested, true)}. ${fmt(switched, true)} is delivered through switches and does not hit NAV. ${fmt(paid, true)} is paid from fund cash, which reduces NAV and slows future compounding. ${fmt(canceled, true)} is deferred or canceled. Total investor liquidity delivered is ${fmt(delivered, true)}.`
+    ? `At this liquidity event, LPs ask for ${fmt(requested, true)}. ${fmt(switched, true)} is delivered through switches and does not hit NAV. ${fmt(paid, true)} is paid from fund cash, which reduces NAV and slows future compounding. ${fmt(canceled, true)} remains unmet unless a buyer steps in, so those units are not canceled by the model. Total investor liquidity delivered is ${fmt(delivered, true)}.`
     : 'No liquidity window is open at this point. Lockup and event cadence determine when LPs can ask for liquidity.';
 }
 
