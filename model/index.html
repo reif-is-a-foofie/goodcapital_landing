@@ -19,11 +19,13 @@
 html,body{height:100%;}
 body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-size:12px;font-weight:300;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
 
-.hdr{padding:10px 24px 8px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end;}
-.hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.05;}
+.hdr{padding:12px 24px 12px;border-bottom:1px solid var(--border);background:var(--s1);}
+.hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.05;margin-bottom:8px;}
 .hdr-title span{color:var(--gold);}
-.hdr-tag{font-size:10px;color:var(--muted);text-align:right;line-height:2;}
-.hdr-tag b{color:var(--gold2);font-weight:400;}
+.hdr-copy{font-size:10px;line-height:1.75;color:var(--muted2);}
+.hdr-copy b{color:var(--ink);font-weight:500;}
+.hdr-copy a{color:var(--muted2);text-decoration:none;}
+.hdr-copy a:hover{color:var(--ink);}
 
 .controls{background:var(--s1);border-bottom:1px solid var(--border);flex:0 1 auto;max-height:22vh;overflow:auto;}
 .settings-wrap{background:var(--s1);border-bottom:1px solid var(--border);}
@@ -54,8 +56,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .btn.red:hover{background:var(--red-dim);color:var(--red2);}
 
 .panel-label{padding:10px 28px 8px;background:var(--s1);border-bottom:1px solid var(--border);font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;}
-.intro-note{padding:14px 20px 12px;background:var(--s1);border-bottom:1px solid var(--border);font-size:11px;line-height:1.75;color:var(--muted2);}
-.intro-note b{color:var(--ink);font-weight:500;}
 
 .kpis{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);}
 .kpi{padding:12px 16px;border-right:1px solid var(--border);background:var(--s1);}
@@ -85,10 +85,23 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 
 .body{border-bottom:1px solid var(--border);flex:1 1 auto;min-height:0;}
 .chart-area{padding:12px 16px 10px;background:var(--s1);height:100%;overflow:hidden;}
-.sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
+.chart-head{display:block;margin-bottom:12px;}
+.sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px;}
+.hover-panel{width:100%;padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,0.06);}
+.hover-period{font-size:10px;color:var(--ink);font-weight:500;margin-bottom:6px;}
+.hover-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px 12px;}
+.hover-item{min-width:0;display:flex;align-items:baseline;gap:6px;white-space:nowrap;overflow:hidden;}
+.hover-k{flex:0 0 auto;font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.hover-v{font-size:11px;color:var(--ink);line-height:1.25;overflow:hidden;text-overflow:ellipsis;}
+.hover-v.nav{color:var(--gold2);font-weight:600;}
+.hover-v.loans{color:#7b4bb3;font-weight:600;}
+.hover-v.cash{color:#1c7c54;font-weight:600;}
+.hover-v.target{color:#2f6db0;font-weight:600;}
+.hover-story{grid-column:1 / -1;font-size:9px;color:var(--muted2);line-height:1.5;padding-top:1px;}
 svg{display:block;}
 #main-chart{width:100%;height:100%;min-height:220px;}
 .chart-frame{position:relative;flex:1 1 auto;min-height:140px;}
+#hover-line{position:absolute;top:22px;bottom:38px;width:1px;background:rgba(47,109,176,0.32);border-left:1px dashed rgba(47,109,176,0.75);pointer-events:none;display:none;z-index:5;}
 .chart-tip{position:absolute;display:none;pointer-events:none;top:10px;left:10px;max-width:220px;padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border2);color:var(--ink);font-size:10px;line-height:1.6;box-shadow:0 8px 20px rgba(38,34,29,0.08);}
 .chart-tip b{font-weight:600;}
 .chart-tip .tip-k{color:var(--muted);}
@@ -105,6 +118,8 @@ svg{display:block;}
 .chart-main{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden;}
 .contact-link{position:fixed;right:14px;bottom:10px;font-size:10px;color:var(--muted);text-decoration:none;background:rgba(253,250,245,0.92);border:1px solid var(--border);padding:6px 8px;z-index:20;}
 .contact-link:hover{color:var(--ink);border-color:var(--border2);}
+.help-tip{position:fixed;display:none;max-width:320px;padding:10px 12px;background:rgba(253,250,245,0.98);border:1px solid var(--border2);box-shadow:0 8px 20px rgba(38,34,29,0.10);color:var(--ink);font-size:10px;line-height:1.6;z-index:50;pointer-events:none;}
+[data-help]{cursor:help;}
 
 .lev-note{margin:0 28px 0;padding:10px 14px;background:var(--s2);border-left:2px solid var(--gold);font-size:11px;color:var(--muted2);line-height:1.8;}
 .lev-note b{color:var(--gold2);font-weight:400;}
@@ -125,8 +140,7 @@ svg{display:block;}
 }
 
 @media (max-width: 900px) {
-  .hdr{padding:10px 16px 8px;display:block;}
-  .hdr-tag{margin-top:10px;text-align:left;}
+  .hdr{padding:10px 16px 10px;}
   .ctrl-row{display:grid;grid-template-columns:1fr 1fr;}
   .ctrl{border-right:none;border-bottom:1px solid var(--border);}
   .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:none;}
@@ -134,6 +148,8 @@ svg{display:block;}
   .controls{max-height:28vh;}
   .chart-tip{max-width:200px;}
   .summary-note{max-height:16vh;}
+  .hover-panel{min-width:0;max-width:none;margin-top:10px;}
+  .hover-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 
 @media (max-width: 760px) {
@@ -156,24 +172,22 @@ svg{display:block;}
   .controls{max-height:36vh;}
   .summary-note{max-height:18vh;}
   .chart-rail{max-height:40vh;}
+  .hover-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div>
-    <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below.">TGP <span>/</span> Fund One Model</div>
-  </div>
+  <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below.">TGP <span>/</span> Fund One Model</div>
+  <div class="hdr-copy">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>. <b>How this model works:</b> the fund makes developer loans, pays its origination teams a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans. <b>Borrower Rate</b> is what the developer pays, while <b>Fund Take</b> is the portion that stays inside the fund after origination economics are paid out. <b>Cash</b> shows liquidity on hand, <b>Loans Outstanding</b> shows the active loan book, and <b>NAV</b> shows total fund value after retained income and debt cost. Change the assumptions below to see how quickly the book grows, how much capital gets called, and what return that produces.</div>
 </div>
-
-<div class="intro-note"><b>How this model works:</b> the fund makes developer loans, collects retained yield, and reinvests both principal and profits back into new loans. <b>Cash</b> shows liquidity on hand, <b>Loans Outstanding</b> shows the active loan book, and <b>NAV</b> shows total fund value after retained income and debt cost. Change the assumptions below to see how quickly the book grows, how much capital gets called, and what return that produces.</div>
 
 <div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
 <div class="controls">
   <div class="ctrl-row">
     <div class="ctrl">
-      <div class="ctrl-label" title="The maximum LP capital the fund is allowed to call over its life.">Max Fund Size</div>
+      <div class="ctrl-label" title="This is the total LP capital the model is allowed to call over the life of the fund. It is a hard ceiling on total equity raised, not the amount sitting in cash on day one.">Max Fund Size</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B max called</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div>
@@ -181,7 +195,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="If on, LP capital is called only when new loans need equity. If off, the full fund is funded on day one.">Capital Calls</div>
+      <div class="ctrl-label" title="If this is on, LP capital is called only when the fund needs equity for new loans. If it is off, the model assumes all LP capital is funded upfront at the start.">Capital Calls</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-call">Off</div><div class="ctrl-unit">just in time</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="setCapitalCall(false)">Off</div>
@@ -189,7 +203,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The average size of each loan the fund originates.">Loan Size</div>
+      <div class="ctrl-label" title="This is the average size of each new loan the fund makes. Larger loans put more capital to work with each origination.">Loan Size</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-size">20.0</div><div class="ctrl-unit">$M each</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('size',-1)">- $1M</div>
@@ -197,7 +211,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="Base monthly deal pace. Pipeline capacity scales up with available deployable capital from this starting point.">Deal Pace</div>
+      <div class="ctrl-label" title="This is the starting monthly origination pace. The model can scale above this if enough capital is available, so think of this as the base pipeline rather than a hard cap.">Deal Pace</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">deals / month</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div>
@@ -205,7 +219,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="How long each loan stays outstanding before principal comes back.">Term</div>
+      <div class="ctrl-label" title="This is how long each loan stays out before principal comes back to the fund. Longer terms keep capital tied up for longer before it can be recycled.">Term</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-term">18</div><div class="ctrl-unit">months</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('term',-6)">- 6mo</div>
@@ -213,7 +227,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="How much total lending the fund supports for each dollar of equity.">Leverage</div>
+      <div class="ctrl-label" title="This is how much lending the fund supports for each dollar of LP equity. Higher leverage lets the fund put out a larger loan book, but also increases financing cost and risk.">Leverage</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-lev">1.0</div><div class="ctrl-unit">x equity</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('lev',-0.25)">- 0.25x</div>
@@ -221,7 +235,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The gross annual rate charged to borrowers on the loans.">Borrower Rate</div>
+      <div class="ctrl-label" title="This is the annualized rate charged to borrowers. It is the gross loan yield before origination teams are paid and before any debt cost is applied.">Borrower Rate</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% APY</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div>
@@ -229,7 +243,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The annual rate the fund keeps after the loan economics are allocated.">Fund Yield</div>
+      <div class="ctrl-label" title="This is the annualized portion of the borrower rate that the fund keeps after paying origination teams and other loan economics. This retained spread is what grows NAV over time.">Fund Take</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-take">18.0</div><div class="ctrl-unit">% kept</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div>
@@ -237,7 +251,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The annual cost of any borrowing used by the fund.">Cost of Debt</div>
+      <div class="ctrl-label" title="This is the annual cost of any borrowing the fund uses. Higher debt cost reduces the spread the fund keeps and slows NAV growth.">Cost of Debt</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-cod">8</div><div class="ctrl-unit">% APY</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('cod',-0.25)">- 0.25%</div>
@@ -245,7 +259,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The annual return target you want the modeled fund to hit.">Target Return</div>
+      <div class="ctrl-label" title="This is the annual IRR target you want the fund to achieve. The target line on the chart shows the NAV path required to hit this return.">Target Return</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% IRR</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div>
@@ -260,16 +274,61 @@ svg{display:block;}
   <div class="chart-area">
     <div class="chart-shell">
       <div class="chart-main">
-        <div class="sec-label" title="This chart shows how fund NAV and cash balance move over time under the current assumptions.">NAV and Cash Balance</div>
+        <div class="chart-head">
+          <div class="sec-label" title="This chart shows how total fund value, the active loan book, and cash evolve over time under the current assumptions.">Fund Value, Loans, and Cash Over Time</div>
+          <div class="hover-panel" id="hover-panel">
+            <div class="hover-period" id="hover-period">Start of Fund</div>
+            <div class="hover-grid">
+              <div class="hover-item">
+                <div class="hover-k">NAV</div>
+                <div class="hover-v nav" id="hover-nav">$0</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">Loans Outstanding</div>
+                <div class="hover-v loans" id="hover-loans">$0</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">Cash</div>
+                <div class="hover-v cash" id="hover-cash">$0</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">Target NAV</div>
+                <div class="hover-v target" id="hover-target">$0</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">New Loans This Month</div>
+                <div class="hover-v" id="hover-newloans">0.0 loans</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">New Loan Volume</div>
+                <div class="hover-v" id="hover-volume">$0</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">Interest In</div>
+                <div class="hover-v" id="hover-interest">-</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">Debt Cost</div>
+                <div class="hover-v" id="hover-debt">-</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">NAV / Share</div>
+                <div class="hover-v" id="hover-price">$0.00</div>
+              </div>
+              <div class="hover-story" id="hover-story">Hover the chart to see what is happening at that point in the fund’s build, reinvestment, and recycling cycle.</div>
+            </div>
+          </div>
+        </div>
         <div class="chart-frame" id="nav-frame">
+          <div id="hover-line"></div>
           <div id="main-chart"></div>
         </div>
         <div class="legend">
           <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
           <div class="leg"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV @ IRR</div>
           <div class="leg"><div class="leg-line" style="background:#7b4bb3"></div>Loans outstanding</div>
-          <div class="leg"><div class="leg-line" style="background:#8c7961;height:6px;width:2px"></div>Loan origination ticks</div>
           <div class="leg"><div class="leg-line" style="background:#1c7c54"></div>Cash balance</div>
+          <div class="leg"><div class="leg-line" style="background:rgba(140,121,97,0.55);height:8px"></div>Loans originated / month</div>
           <div class="leg"><div class="leg-line" style="background:#c0533e"></div>Negative cash</div>
           <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
           <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
@@ -278,43 +337,43 @@ svg{display:block;}
       <div class="chart-rail">
         <div class="panel-label" title="These tiles summarize the most important outputs from the current scenario.">Current Scenario Analysis</div>
         <div class="kpis">
-          <div class="kpi" title="The annualized return implied by the modeled NAV path.">
+          <div class="kpi" title="This is the annualized IRR implied by the modeled LP cash flows and ending NAV. It is the model's projected return under the current assumptions.">
             <div class="kpi-l">Projected Return</div>
           <div class="kpi-v blue" id="kpi-irr">-</div>
             <div class="kpi-s">annualized from LP cash flows</div>
           </div>
-          <div class="kpi" title="The highest amount of LP capital the model calls in any single month.">
-            <div class="kpi-l">Peak LP Call / Mo</div>
+          <div class="kpi" title="This is the total number of loans the model originates over the full 10-year period. It helps show how active the strategy becomes over time.">
+            <div class="kpi-l">Total Loans</div>
             <div class="kpi-v plain" id="kpi-gap">-</div>
-            <div class="kpi-s">fastest equity draw month</div>
+            <div class="kpi-s">originated over 10 years</div>
           </div>
-          <div class="kpi" title="The modeled value per share at the end of the 7-year view.">
-            <div class="kpi-l">Year 7 NAV / Share</div>
+          <div class="kpi" title="This is the modeled value per share at the end of year 7. It shows what one share in the fund would be worth if the current path plays out.">
+            <div class="kpi-l">Year 10 NAV / Share</div>
             <div class="kpi-v gold" id="kpi-navshare">-</div>
             <div class="kpi-s">vs $1,000 par</div>
           </div>
-          <div class="kpi" title="The lowest cash balance reached at any point in the model.">
+          <div class="kpi" title="This is the lowest cash balance the fund reaches at any point in the model. It shows the deepest liquidity drawdown on the path.">
             <div class="kpi-l">Lowest Cash</div>
             <div class="kpi-v plain" id="kpi-mincash">-</div>
             <div class="kpi-s">lowest liquidity point</div>
           </div>
-          <div class="kpi" title="The highest amount of equity capital that is tied up in loans at one time.">
+          <div class="kpi" title="This is the largest amount of LP equity that is tied up in active loans at one time. It shows the peak amount of investor capital at work.">
             <div class="kpi-l">Peak LP Capital Out</div>
             <div class="kpi-v gold" id="kpi-equity">-</div>
             <div class="kpi-s">max LP capital at work</div>
           </div>
-          <div class="kpi" title="The highest number of loans the model originates in a single month.">
+          <div class="kpi" title="This is the busiest origination month in the model, measured by number of loans closed. It helps show how much the pace of lending accelerates at peak.">
             <div class="kpi-l">Peak Loans / Mo</div>
             <div class="kpi-v blue" id="kpi-debt">-</div>
             <div class="kpi-s">loans in busiest month</div>
           </div>
         </div>
         <details class="settings-wrap">
-          <summary class="settings-toggle" title="Secondary model controls, including simulation settings.">Settings</summary>
+          <summary class="settings-toggle" title="These are secondary controls for simulation and variance. Most users can ignore them unless they want to test a range of possible outcomes.">Settings</summary>
           <div class="settings-body">
             <div class="ctrl-row">
               <div class="ctrl">
-                <div class="ctrl-label" title="Turns on randomized scenario runs to show a range of outcomes instead of just one base case.">Monte Carlo</div>
+                <div class="ctrl-label" title="Turns on randomized scenario runs instead of a single fixed case. Use this to see a range of possible outcomes rather than one straight-line projection.">Monte Carlo</div>
                 <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
                 <div class="ctrl-btns">
                   <div class="btn red" onclick="setMonteCarlo(false)">Off</div>
@@ -322,7 +381,7 @@ svg{display:block;}
                 </div>
               </div>
               <div class="ctrl" id="var-ctrl">
-                <div class="ctrl-label" title="Controls how much the randomized Monte Carlo runs can move around the base assumptions.">Variance</div>
+                <div class="ctrl-label" title="Controls how widely the randomized Monte Carlo runs are allowed to move around the base assumptions. Higher variance means a wider spread of possible outcomes.">Variance</div>
                 <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
                 <div class="ctrl-btns">
                   <div class="btn red" onclick="adj('var',-1)">- 1%</div>
@@ -337,19 +396,21 @@ svg{display:block;}
   </div>
 </div>
 
-<a class="contact-link" href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>
+<a class="contact-link" href="mailto:reif@thegoodproject.net">Contact Reif Tauati: 4176197004 · reif@thegoodproject.net</a>
+<div class="help-tip" id="help-tip"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <script>
 const PAR = 1_000;
-const VIEW = 84;
+const VIEW = 120;
 const MC_RUNS = 250;
 let mainChart = null;
+let chartHoverBound = false;
 
 const S = { fund:1.0, call:1, size:20, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
 
 const limits = {
-  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,84,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[1.0,3.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
+  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,120,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[1.0,3.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
 };
 
 function fmtControl(k, v) {
@@ -403,6 +464,43 @@ function percentile(sorted, p) {
   if (lo === hi) return sorted[lo];
   const weight = idx - lo;
   return sorted[lo] * (1 - weight) + sorted[hi] * weight;
+}
+function initHelpTooltips() {
+  const tip = document.getElementById('help-tip');
+  if (!tip) return;
+  document.querySelectorAll('[title]').forEach(el => {
+    const text = el.getAttribute('title');
+    if (!text) return;
+    el.setAttribute('data-help', text);
+    el.removeAttribute('title');
+  });
+  const place = (x, y) => {
+    const left = Math.max(12, Math.min(window.innerWidth - 340, x + 14));
+    const top = Math.max(12, Math.min(window.innerHeight - 120, y + 14));
+    tip.style.left = `${left}px`;
+    tip.style.top = `${top}px`;
+  };
+  document.addEventListener('mouseover', evt => {
+    const el = evt.target.closest('[data-help]');
+    if (!el) return;
+    tip.textContent = el.getAttribute('data-help') || '';
+    tip.style.display = tip.textContent ? 'block' : 'none';
+    place(evt.clientX, evt.clientY);
+  });
+  document.addEventListener('mousemove', evt => {
+    if (tip.style.display !== 'block') return;
+    const el = evt.target.closest('[data-help]');
+    if (!el) {
+      tip.style.display = 'none';
+      return;
+    }
+    place(evt.clientX, evt.clientY);
+  });
+  document.addEventListener('mouseout', evt => {
+    if (!evt.target.closest('[data-help]')) return;
+    const next = evt.relatedTarget && evt.relatedTarget.closest ? evt.relatedTarget.closest('[data-help]') : null;
+    if (!next) tip.style.display = 'none';
+  });
 }
 function bindTooltip(frameId, tipId, formatter) {
   const frame = document.getElementById(frameId);
@@ -589,6 +687,7 @@ function buildScenario(opts = {}) {
   const peakMonthlyCall = Math.max(...lpCallArr);
   const peakMonthlyOrigination = Math.max(...originationArr);
   const peakMonthlyDeals = Math.max(...dealsArr);
+  const totalLoansOriginated = dealsArr.reduce((sum, deals) => sum + deals, 0);
 
   const lpFlows = lpCallArr.map(v => -v);
   lpFlows[VIEW] += navArr[VIEW];
@@ -605,6 +704,7 @@ function buildScenario(opts = {}) {
     peakMonthlyCall,
     peakMonthlyOrigination,
     peakMonthlyDeals,
+    totalLoansOriginated,
     peakEquity, peakDebt,
     totInt, totDebt, totNet
   };
@@ -667,18 +767,52 @@ function smartTooltipNarrative(seriesName, month, navArr, targetNavArr, cashArr,
   return `NAV is stable this month. The portfolio may still be rotating between cash and loans, but total fund value is not changing much at this point in the cycle.`;
 }
 
+function overallStateNarrative(month, navArr, cashArr, loanOutstandingArr, originationArr, cashDeltaArr) {
+  const prev = Math.max(0, month - 1);
+  const navDelta = navArr[month] - navArr[prev];
+  const cashDelta = cashArr[month] - cashArr[prev];
+  const loanDelta = loanOutstandingArr[month] - loanOutstandingArr[prev];
+  const newLoans = originationArr[month];
+  if (month === 0) return 'Start of fund: capital is available, but the portfolio has not been built yet.';
+  if (cashArr[month] < -0.5) return 'Liquidity is short here: deployment is outrunning available cash.';
+  if (newLoans > 0.5 && loanDelta > 0.5 && cashDelta < -0.5) return 'Build phase: new loans are outpacing repayments, so the loan book is growing and cash is being deployed.';
+  if (newLoans > 0.5 && Math.abs(loanDelta) < 0.5) return 'Recycling phase: new originations are roughly matching repayments, so the book is holding a steady run-rate.';
+  if (loanDelta < -0.5 && cashDelta > 0.5) return 'Harvest phase: repayments are coming back faster than new lending, so loans are shrinking and cash is rebuilding.';
+  if (navDelta > 0.5 && Math.abs(loanDelta) < 0.5) return 'Earnings phase: NAV is still compounding even though the portfolio size is relatively stable.';
+  return 'Steady state: cash, loans, and NAV are moving gradually without a major change in portfolio posture.';
+}
+
 function endLabel(text, color) {
   return {
     show: true,
     formatter: text,
     color,
     fontFamily: 'DM Mono',
-    fontSize: 11,
-    fontWeight: 600,
-    backgroundColor: 'rgba(253,250,245,0.9)',
+    fontSize: 10,
+    fontWeight: 500,
+    backgroundColor: 'rgba(253,250,245,0.82)',
     borderRadius: 3,
-    padding: [3, 5, 3, 6]
+    padding: [2, 4, 2, 5]
   };
+}
+
+function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr) {
+  const progressPct = ((month / VIEW) * 100).toFixed(0);
+  const periodLabel = month === 0 ? 'Start of Fund' : `Month ${month} of ${VIEW} · Year ${(month / 12).toFixed(1)} · ${progressPct}% complete`;
+  const loanMix = navArr[month] > 0 ? ((loanOutstandingArr[month] / navArr[month]) * 100) : 0;
+  const stateStory = overallStateNarrative(month, navArr, cashArr, loanOutstandingArr, originationArr, cashDeltaArr);
+
+  document.getElementById('hover-period').textContent = periodLabel;
+  document.getElementById('hover-nav').textContent = `${fmt(navArr[month], true)} · ${fmtSigned(navArr[month] - navArr[0])}`;
+  document.getElementById('hover-loans').textContent = `${fmt(loanOutstandingArr[month], true)} · ${loanMix.toFixed(0)}% NAV`;
+  document.getElementById('hover-cash').textContent = `${fmt(cashArr[month], true)} · ${fmtSigned(cashArr[month] - cashArr[0])}`;
+  document.getElementById('hover-target').textContent = fmt(targetNavArr[month], true);
+  document.getElementById('hover-newloans').textContent = `${dealsArr[month].toFixed(1)} loans`;
+  document.getElementById('hover-volume').textContent = fmt(originationArr[month], true);
+  document.getElementById('hover-interest').textContent = month === 0 ? '-' : '+' + fmt(intArr[month]);
+  document.getElementById('hover-debt').textContent = month === 0 ? '-' : '-' + fmt(debtArr[month]);
+  document.getElementById('hover-price').textContent = fmtP(priceArr[month]);
+  document.getElementById('hover-story').textContent = stateStory;
 }
 
 function recalc() {
@@ -700,6 +834,7 @@ function recalc() {
     const priceSamples = Array.from({ length: VIEW + 1 }, () => []);
     const outSamples = Array.from({ length: VIEW + 1 }, () => []);
     const originationSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const dealsSamples = Array.from({ length: VIEW + 1 }, () => []);
     const irrSamples = [];
     const minCashSamples = [];
     const peakEquitySamples = [];
@@ -707,6 +842,7 @@ function recalc() {
     const peakCallSamples = [];
     const peakOriginationSamples = [];
     const peakDealsSamples = [];
+    const totalLoansSamples = [];
     const totIntSamples = [];
     const totDebtSamples = [];
     const totNetSamples = [];
@@ -720,6 +856,7 @@ function recalc() {
       peakCallSamples.push(sim.peakMonthlyCall);
       peakOriginationSamples.push(sim.peakMonthlyOrigination);
       peakDealsSamples.push(sim.peakMonthlyDeals);
+      totalLoansSamples.push(sim.totalLoansOriginated);
       totIntSamples.push(sim.totInt);
       totDebtSamples.push(sim.totDebt);
       totNetSamples.push(sim.totNet);
@@ -732,6 +869,7 @@ function recalc() {
         priceSamples[m].push(sim.priceArr[m]);
         outSamples[m].push(sim.loanOutstandingArr[m]);
         originationSamples[m].push(sim.originationArr[m]);
+        dealsSamples[m].push(sim.dealsArr[m]);
       }
     }
 
@@ -743,6 +881,7 @@ function recalc() {
     const priceMedian = medianSeries(priceSamples);
     const outMedian = medianSeries(outSamples);
     const originationMedian = medianSeries(originationSamples);
+    const dealsMedian = medianSeries(dealsSamples);
 
     for (let m = 0; m <= VIEW; m++) {
       const samples = navSamples[m].slice().sort((a, b) => a - b);
@@ -761,11 +900,13 @@ function recalc() {
       priceArr: priceMedian,
       loanOutstandingArr: outMedian,
       originationArr: originationMedian,
+      dealsArr: dealsMedian,
       projectedIrr: percentile(irrSamples.slice().sort((a, b) => a - b), 0.50),
       minCash: percentile(minCashSamples.slice().sort((a, b) => a - b), 0.50),
       peakMonthlyCall: percentile(peakCallSamples.slice().sort((a, b) => a - b), 0.50),
       peakMonthlyOrigination: percentile(peakOriginationSamples.slice().sort((a, b) => a - b), 0.50),
       peakMonthlyDeals: percentile(peakDealsSamples.slice().sort((a, b) => a - b), 0.50),
+      totalLoansOriginated: percentile(totalLoansSamples.slice().sort((a, b) => a - b), 0.50),
       peakEquity: percentile(peakEquitySamples.slice().sort((a, b) => a - b), 0.50),
       peakDebt: percentile(peakDebtSamples.slice().sort((a, b) => a - b), 0.50),
       totInt: percentile(totIntSamples.slice().sort((a, b) => a - b), 0.50),
@@ -774,7 +915,7 @@ function recalc() {
     };
   }
 
-  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, loanOutstandingArr, originationArr, projectedIrr, minCash, peakEquity, peakDebt, peakMonthlyCall, peakMonthlyOrigination, peakMonthlyDeals, totInt, totDebt, totNet } = display;
+  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, loanOutstandingArr, originationArr, dealsArr, projectedIrr, minCash, peakEquity, peakDebt, peakMonthlyCall, peakMonthlyOrigination, peakMonthlyDeals, totalLoansOriginated, cumulativeLpCalled, totInt, totDebt, totNet } = display;
   const irrGap = projectedIrr - targetIrr;
   const grossApy = S.apy / 100;
   const fundTake = S.take / 100;
@@ -784,7 +925,7 @@ function recalc() {
   document.getElementById('kpi-equity').textContent = fmt(peakEquity);
   document.getElementById('kpi-debt').textContent = peakMonthlyDeals.toFixed(1);
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
-  document.getElementById('kpi-gap').textContent = fmt(peakMonthlyCall, true);
+  document.getElementById('kpi-gap').textContent = totalLoansOriginated.toFixed(0);
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
   document.getElementById('kpi-mincash').textContent = fmt(minCash, true);
   document.getElementById('v-call').textContent = S.call ? 'On' : 'Off';
@@ -795,22 +936,24 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, earns about <b>${(grossApy * 100).toFixed(1)}%</b> from borrowers, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund. LP capital is <b>${S.call ? 'called only when new loans need funding' : 'fully funded upfront'}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. On this path, the fastest month calls about <b>${fmt(peakMonthlyCall, true)}</b> of LP capital and originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume. The loan book peaks around <b>${fmt(peakEquity)}</b> of LP capital out${Math.abs(peakDebt) < 0.5 ? '' : ` with <b>${fmt(peakDebt)}</b> of debt at peak`}, cash gets as low as <b>${fmt(minCash, true)}</b>, and the model ends near <b>${fmtP(priceArr[VIEW])}</b> NAV/share, which works out to about <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
-  if (peakEquity > fundSize || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
+  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination teams their share of the borrower rate. LP capital is <b>${S.call ? 'called only when new loans need funding' : 'fully funded upfront'}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans. In the busiest month it calls about <b>${fmt(peakMonthlyCall, true)}</b> of LP capital and originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume. The loan book peaks around <b>${fmt(peakEquity)}</b> of LP capital out${Math.abs(peakDebt) < 0.5 ? '' : ` with <b>${fmt(peakDebt)}</b> of debt at peak`}, cash gets as low as <b>${fmt(minCash, true)}</b>, and the model ends near <b>${fmtP(priceArr[VIEW])}</b> NAV/share, which works out to about <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
+  if (cumulativeLpCalled > fundSize + 0.5 || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'summary-note warn';
     const warnings = [];
-    if (peakEquity > fundSize) warnings.push(`required LP equity exceeds starting fund size`);
+    if (cumulativeLpCalled > fundSize + 0.5) warnings.push(`total LP calls exceed max fund size`);
     if (minCash < 0) warnings.push(`cash balance turns negative`);
     if (irrGap < 0) warnings.push(`projected IRR trails the target by ${Math.abs(irrGap * 100).toFixed(1)}%`);
     if (fundTake > grossApy) warnings.push(`fund take exceeds average loan APY`);
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
-  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr);
+  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr);
+  updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr);
 }
 
-function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr) {
+function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr) {
   const el = document.getElementById('main-chart');
+  const hoverLine = document.getElementById('hover-line');
   if (!window.echarts) return;
   if (!mainChart) mainChart = echarts.init(el, null, { renderer: 'canvas' });
 
@@ -821,15 +964,42 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
   const maxCash = Math.max(...cashArr);
   const minCash = Math.min(...cashArr);
   const bandSpan = showMonteCarlo ? mcHigh.map((v, i) => Math.max(0, v - mcLow[i])) : [];
-  const navTicks = originationArr
-    .map((v, i) => (v > 0 ? [i, navArr[i], v] : null))
-    .filter(Boolean);
-  const loanTicks = originationArr
-    .map((v, i) => (v > 0 ? [i, loanOutstandingArr[i], v] : null))
-    .filter(Boolean);
-  const cashTicks = originationArr
-    .map((v, i) => (v > 0 ? [i, cashArr[i], v] : null))
-    .filter(Boolean);
+  const monthDealCount = dealsArr || originationArr.map((v, i) => (S.size > 0 ? v / (S.size * 1e6) : 0));
+  const maxDeals = Math.max(1, ...monthDealCount);
+  const labelMonths = [];
+  const minLabelGap = 14;
+  for (let i = 1; i < monthDealCount.length - 1; i++) {
+    const val = monthDealCount[i];
+    if (val < 0.75) continue;
+    const prev = monthDealCount[i - 1];
+    const next = monthDealCount[i + 1];
+    const isPeak = val >= prev && val >= next;
+    const isTurn = (val > prev && val > next) || (val < prev && val < next);
+    const farEnough = !labelMonths.length || i - labelMonths[labelMonths.length - 1] >= minLabelGap;
+    if ((isPeak || isTurn) && farEnough) labelMonths.push(i);
+  }
+  if (!labelMonths.includes(VIEW) && monthDealCount[VIEW] >= 0.75) labelMonths.push(VIEW);
+  const originationLabelData = labelMonths.map(i => {
+    const cashMin = Math.min(0, minCash);
+    const cashMax = Math.max(0, maxCash);
+    const span = Math.max(1, cashMax - cashMin);
+    const barFloor = cashMin + span * 0.08;
+    const barRange = span * 0.34;
+    return {
+      value: [i, barFloor + (monthDealCount[i] / maxDeals) * barRange],
+      label: {
+        show: true,
+        formatter: `${monthDealCount[i].toFixed(1)}x`,
+        position: 'top',
+        distance: 3,
+        color: '#8c7961',
+        fontFamily: 'DM Mono',
+        fontSize: 8,
+        backgroundColor: 'rgba(253,250,245,0.7)',
+        padding: [1, 2]
+      }
+    };
+  });
 
   mainChart.setOption({
     animation: false,
@@ -840,39 +1010,7 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
     axisPointer: {
       link: [{ xAxisIndex: [0, 1] }]
     },
-    tooltip: {
-      trigger: 'axis',
-      confine: true,
-      axisPointer: { type: 'line', snap: true, label: { show: false } },
-      backgroundColor: 'rgba(253,250,245,0.98)',
-      borderColor: 'rgba(156,122,77,0.28)',
-      textStyle: { color: '#26221d', fontFamily: 'DM Mono', fontSize: 10, lineHeight: 16 },
-      formatter: params => {
-        const first = Array.isArray(params) && params.length ? params[0] : null;
-        const month = typeof first?.dataIndex === 'number' ? first.dataIndex : 0;
-        const progressPct = ((month / VIEW) * 100).toFixed(0);
-        const periodLabel = month === 0 ? 'Start of Fund' : `Month ${month} of ${VIEW} · Year ${(month / 12).toFixed(1)} · ${progressPct}% complete`;
-        const loanMix = navArr[month] > 0 ? ((loanOutstandingArr[month] / navArr[month]) * 100) : 0;
-        const storyNav = smartTooltipNarrative('NAV', month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr);
-        const storyLoans = smartTooltipNarrative('Loans Outstanding', month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr);
-        const storyCash = smartTooltipNarrative('Cash', month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr);
-        const mcBlock = showMonteCarlo
-          ? `<br><span style="color:#776b5d">MC 10%</span>: ${fmt(mcLow[month], true)}<br><span style="color:#776b5d">MC 50%</span>: ${fmt(mcMid[month], true)}<br><span style="color:#776b5d">MC 90%</span>: ${fmt(mcHigh[month], true)}`
-          : '';
-        return `<div style="font-weight:600;margin-bottom:2px">${periodLabel}</div>
-        <div style="margin-bottom:4px;color:#b38b57;font-weight:700">NAV: ${fmt(navArr[month], true)} <span style="color:#776b5d;font-weight:400">(${fmtSigned(navArr[month] - navArr[0])} since start)</span></div>
-        <div style="margin-bottom:8px;color:#5f5447">${storyNav}</div>
-        <div style="margin-bottom:8px;padding-top:6px;border-top:1px solid rgba(156,122,77,0.16)"><span style="color:#7b4bb3;font-weight:600">Loan book</span>: ${fmt(loanOutstandingArr[month], true)} <span style="color:#776b5d">(${loanMix.toFixed(0)}% of NAV)</span><br><span style="color:#5f5447">${storyLoans}</span></div>
-        <div style="margin-bottom:8px"><span style="color:#1c7c54;font-weight:600">Cash</span>: ${fmt(cashArr[month], true)} <span style="color:#776b5d">(${fmtSigned(cashArr[month] - cashArr[0])} since start)</span><br><span style="color:#5f5447">${storyCash}</span></div>
-        <div><span style="color:#776b5d">New loans this month</span>: ${fmt(originationArr[month], true)}</div>
-        <div><span style="color:#776b5d">Interest in</span>: ${month === 0 ? '-' : '+' + fmt(intArr[month])}</div>
-        <div><span style="color:#776b5d">Debt cost</span>: ${month === 0 ? '-' : '-' + fmt(debtArr[month])}</div>
-        <div><span style="color:#776b5d">Net cash</span>: ${month === 0 ? '-' : fmt(cashDeltaArr[month], true)}</div>
-        <div><span style="color:#776b5d">NAV / share</span>: ${fmtP(priceArr[month])}</div>
-        <div><span style="color:#776b5d">Target NAV</span>: ${fmt(targetNavArr[month], true)}</div>
-        <div><span style="color:#776b5d">Loan book progress</span>: ${fmtSigned(loanOutstandingArr[month] - loanOutstandingArr[0])}</div>${mcBlock}`;
-      }
-    },
+    tooltip: { show: false, trigger: 'axis', axisPointer: { type: 'line', snap: true, label: { show: false } } },
     xAxis: [
       {
         type: 'category',
@@ -913,6 +1051,16 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
         max: Math.max(0, maxCash),
         axisLabel: { color: '#567b5b', fontFamily: 'DM Mono', formatter: value => fmtAxisMoney(value) },
         splitLine: { lineStyle: { color: 'rgba(156,122,77,0.12)' } }
+      },
+      {
+        type: 'value',
+        gridIndex: 0,
+        min: 0,
+        max: maxDeals * 1.35,
+        axisLabel: { show: false },
+        axisTick: { show: false },
+        axisLine: { show: false },
+        splitLine: { show: false }
       }
     ],
     series: [
@@ -922,16 +1070,50 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
         { name: 'MC Median', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: mcMid, symbol: 'none', lineStyle: { color: '#2f6db0', width: 1.5, opacity: 0.45 } }
       ] : []),
       { name: 'NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: navArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('NAV', '#b38b57'), lineStyle: { color: '#b38b57', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } },
-      { name: 'NAV Originations', type: 'scatter', xAxisIndex: 0, yAxisIndex: 0, data: navTicks, symbol: 'rect', symbolSize: [2, 10], silent: true, tooltip: { show: false }, itemStyle: { color: '#b38b57', opacity: 0.9 } },
       { name: 'Loans Outstanding', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: loanOutstandingArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Loans', '#7b4bb3'), lineStyle: { color: '#7b4bb3', width: 2.5 }, emphasis: { focus: 'series', lineStyle: { width: 3.75 } } },
-      { name: 'Loan Ticks', type: 'scatter', xAxisIndex: 0, yAxisIndex: 0, data: loanTicks, symbol: 'rect', symbolSize: [2, 10], silent: true, tooltip: { show: false }, itemStyle: { color: '#7b4bb3', opacity: 0.9 } },
-      { name: 'Target NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: targetNavArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Target', '#2f6db0'), lineStyle: { color: '#2f6db0', width: 2.5, type: 'dashed' }, emphasis: { focus: 'series', lineStyle: { width: 3.75 } }, markLine: { silent: true, symbol: 'none', lineStyle: { color: 'rgba(47,109,176,0.55)', type: 'dashed' }, data: [{ yAxis: shares * 1000, label: { formatter: 'PAR', color: '#2f6db0', fontFamily: 'DM Mono' } }] } },
-      { name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Cash', '#1c7c54'), lineStyle: { color: '#1c7c54', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } },
-      { name: 'Cash Ticks', type: 'scatter', xAxisIndex: 1, yAxisIndex: 1, data: cashTicks, symbol: 'rect', symbolSize: [2, 10], silent: true, tooltip: { show: false }, itemStyle: { color: '#1c7c54', opacity: 0.9 } }
+      { name: 'Target NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: targetNavArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Target', '#2f6db0'), lineStyle: { color: '#2f6db0', width: 2.25, type: 'dashed', opacity: 0.9 }, emphasis: { focus: 'series', lineStyle: { width: 3.25 } }, markLine: { silent: true, symbol: 'none', lineStyle: { color: 'rgba(47,109,176,0.55)', type: 'dashed' }, data: [{ yAxis: shares * 1000, label: { formatter: 'PAR', color: '#2f6db0', fontFamily: 'DM Mono' } }] } },
+      { name: 'Loans Originated / Month', type: 'bar', xAxisIndex: 1, yAxisIndex: 1, data: monthDealCount.map((v, i) => {
+        const cashMin = Math.min(0, minCash);
+        const cashMax = Math.max(0, maxCash);
+        const span = Math.max(1, cashMax - cashMin);
+        const barFloor = cashMin + span * 0.08;
+        const barRange = span * 0.34;
+        return barFloor + (v / maxDeals) * barRange;
+      }), barWidth: '34%', silent: true, z: 1, itemStyle: { color: 'rgba(140,121,97,0.20)', borderColor: 'rgba(140,121,97,0.55)', borderWidth: 1, borderRadius: [2, 2, 0, 0] }, emphasis: { disabled: true }, tooltip: { show: false } },
+      { name: 'Origination Labels', type: 'scatter', xAxisIndex: 1, yAxisIndex: 1, data: originationLabelData, symbolSize: 1, silent: true, tooltip: { show: false }, itemStyle: { color: 'rgba(0,0,0,0)' } },
+      { name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Cash', '#1c7c54'), lineStyle: { color: '#1c7c54', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } }
     ]
   }, true);
+  const syncHover = month => {
+    updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr);
+    mainChart.dispatchAction({ type: 'updateAxisPointer', xAxisIndex: 0, value: month });
+    mainChart.dispatchAction({ type: 'updateAxisPointer', xAxisIndex: 1, value: month });
+  };
+  el.onmousemove = evt => {
+    const rect = el.getBoundingClientRect();
+    const x = evt.clientX - rect.left;
+    const leftPad = 68;
+    const rightPad = 96;
+    const plotWidth = rect.width - leftPad - rightPad;
+    if (plotWidth <= 0 || x < leftPad || x > rect.width - rightPad) {
+      if (hoverLine) hoverLine.style.display = 'none';
+      return;
+    }
+    const rawMonth = ((x - leftPad) / plotWidth) * VIEW;
+    const month = Math.max(0, Math.min(VIEW, Math.round(rawMonth)));
+    if (hoverLine) {
+      hoverLine.style.display = 'block';
+      hoverLine.style.left = `${leftPad + (month / VIEW) * plotWidth}px`;
+    }
+    syncHover(month);
+  };
+  el.onmouseleave = () => {
+    if (hoverLine) hoverLine.style.display = 'none';
+    updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr);
+  };
 }
 recalc();
+initHelpTooltips();
 window.addEventListener('resize', () => {
   if (mainChart) mainChart.resize();
   recalc();
