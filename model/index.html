@@ -61,8 +61,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .summary-note b{color:var(--ink);font-weight:500;}
 .summary-note.warn{border-left:2px solid var(--red2);padding-left:26px;}
 
-.body{display:grid;grid-template-columns:minmax(0,58fr) minmax(420px,42fr);border-bottom:1px solid var(--border);}
-.chart-area{padding:22px 28px 16px;border-left:1px solid var(--border);background:var(--s1);}
+.body{border-bottom:1px solid var(--border);}
+.chart-area{padding:22px 28px 16px;background:var(--s1);}
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 svg{display:block;}
 #main-chart{width:100%;height:auto;}
@@ -74,22 +74,6 @@ svg{display:block;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
-.tbl-wrap{overflow-x:auto;overflow-y:auto;max-width:100%;max-height:calc(100vh - 260px);background:var(--s1);}
-table{width:100%;min-width:880px;border-collapse:collapse;}
-thead th{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:10px 7px 7px;border-bottom:1px solid var(--border2);text-align:right;font-weight:400;position:sticky;top:0;background:var(--s1);z-index:1;}
-thead th:first-child{text-align:left;}
-tbody td{padding:4px 7px;border-bottom:1px solid var(--border);text-align:right;color:var(--muted2);font-variant-numeric:tabular-nums;font-size:11px;}
-tbody td:first-child{text-align:left;color:var(--muted);}
-tbody tr.ev td{background:var(--s2);}
-tbody tr.ev td:first-child{color:var(--ink);}
-td.pos{color:var(--green2);}
-td.neg{color:var(--red2);}
-td.nav{color:var(--gold2);font-weight:500;}
-td.price{color:var(--blue2);}
-td.cash{color:var(--ink);font-weight:500;}
-tfoot td{padding:7px;border-top:1px solid var(--border2);font-weight:500;color:var(--ink);text-align:right;font-size:11px;position:sticky;bottom:0;background:var(--s1);}
-tfoot td:first-child{text-align:left;}
-
 .lev-note{margin:0 28px 0;padding:10px 14px;background:var(--s2);border-left:2px solid var(--gold);font-size:11px;color:var(--muted2);line-height:1.8;}
 .lev-note b{color:var(--gold2);font-weight:400;}
 .lev-note.warn{border-left-color:var(--red2);}
@@ -97,9 +81,6 @@ tfoot td:first-child{text-align:left;}
 
 @media (max-width: 1100px) {
   .kpis{grid-template-columns:repeat(3,1fr);}
-  .body{grid-template-columns:1fr;}
-  .chart-area{border-left:none;border-top:1px solid var(--border);}
-  .tbl-wrap{max-height:none;}
 }
 
 @media (max-width: 760px) {
@@ -264,34 +245,6 @@ tfoot td:first-child{text-align:left;}
 </div>
 
 <div class="body">
-  <div class="tbl-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Month</th>
-          <th>Int In</th>
-          <th>Debt Cost</th>
-          <th>Net Cash</th>
-          <th>Cash Bal</th>
-          <th>NAV</th>
-          <th>$/Share</th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-      <tfoot>
-        <tr>
-          <td>Total</td>
-          <td id="tf-int" style="color:var(--green2)">-</td>
-          <td id="tf-debt" style="color:var(--red2)">-</td>
-          <td id="tf-net" style="color:var(--gold2)">-</td>
-          <td id="tf-cash">-</td>
-          <td id="tf-nav">-</td>
-          <td id="tf-price" style="color:var(--blue2)">-</td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
   <div class="chart-area">
     <div class="sec-label">NAV and Cash Balance</div>
     <div class="chart-frame" id="nav-frame">
@@ -582,34 +535,10 @@ function recalc() {
   document.getElementById('leg-mc-band').style.display = S.mc ? 'flex' : 'none';
   document.getElementById('leg-mc-mid').style.display = S.mc ? 'flex' : 'none';
 
-  let rows = '';
-  for (let m = 0; m <= VIEW; m++) {
-    const periodInt = intArr[m];
-    const periodDebt = debtArr[m];
-    const periodNet = cashDeltaArr[m];
-    const ev = periodInt > 0.01 || periodDebt > 0.01 || m === 0;
-    rows += `<tr${ev ? ' class="ev"' : ''}>
-      <td>${m === 0 ? 'Start' : `M${String(m).padStart(2, '0')}`}</td>
-      <td class="${periodInt > 0 ? 'pos' : ''}">${periodInt > 0 ? '+' + fmt(periodInt) : '-'}</td>
-      <td class="${periodDebt > 0 ? 'neg' : ''}">${periodDebt > 0 ? '-' + fmt(periodDebt) : '-'}</td>
-      <td class="${periodNet > 0 ? 'pos' : periodNet < 0 ? 'neg' : ''}">${m === 0 ? '-' : fmt(periodNet)}</td>
-      <td class="cash">${fmt(cashArr[m], true)}</td>
-      <td class="nav">${fmt(navArr[m], true)}</td>
-      <td class="price">${fmtP(priceArr[m])}</td>
-    </tr>`;
-  }
-  document.getElementById('tbody').innerHTML = rows;
-  document.getElementById('tf-int').textContent = '+' + fmt(totInt);
-  document.getElementById('tf-debt').textContent = '-' + fmt(totDebt);
-  document.getElementById('tf-net').textContent = fmt(totNet);
-  document.getElementById('tf-cash').textContent = fmt(cashArr[VIEW], true);
-  document.getElementById('tf-nav').textContent = fmt(navArr[VIEW], true);
-  document.getElementById('tf-price').textContent = fmtP(priceArr[VIEW]);
-
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `At current assumptions, average loan APY is <b>${(grossApy * 100).toFixed(1)}%</b> and fund take is <b>${(fundTake * 100).toFixed(1)}%</b>. The fund peaks at <b>${fmt(peakEquity)}</b> of equity deployed${Math.abs(peakDebt) < 0.5 ? '' : ` and <b>${fmt(peakDebt)}</b> of debt outstanding`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo randomizes monthly deal flow, deal size, loan APY, fund take, and debt cost; the table and KPIs show the median simulated path, and the year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
+  summary.innerHTML = `At current assumptions, average loan APY is <b>${(grossApy * 100).toFixed(1)}%</b> and fund take is <b>${(fundTake * 100).toFixed(1)}%</b>. The fund peaks at <b>${fmt(peakEquity)}</b> of equity deployed${Math.abs(peakDebt) < 0.5 ? '' : ` and <b>${fmt(peakDebt)}</b> of debt outstanding`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo randomizes monthly deal flow, deal size, loan APY, fund take, and debt cost; the chart tooltip and KPIs show the median simulated path, and the year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
   if (peakEquity > fundSize || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'summary-note warn';
     const warnings = [];
@@ -630,8 +559,10 @@ function recalc() {
     const x = evt.clientX - rect.left - padLeft;
     if (x < 0 || x > innerW) return '';
     const month = Math.max(0, Math.min(VIEW, Math.round((x / innerW) * VIEW)));
+    const intIn = intArr[month];
+    const debtCost = debtArr[month];
     const net = cashDeltaArr[month];
-    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b><br>NAV: ${fmt(navArr[month], true)}<br>Target: ${fmt(targetNavArr[month], true)}<br>Cash: ${fmt(cashArr[month], true)}<br>Net cash: ${month === 0 ? '-' : fmt(net, true)}${S.mc ? `<br>MC 10%: ${fmt(mcLow[month], true)}<br>MC 50%: ${fmt(mcMid[month], true)}<br>MC 90%: ${fmt(mcHigh[month], true)}` : ''}`;
+    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b><br>Interest in: ${month === 0 ? '-' : '+' + fmt(intIn)}<br>Debt cost: ${month === 0 ? '-' : '-' + fmt(debtCost)}<br>Net cash: ${month === 0 ? '-' : fmt(net, true)}<br>Cash balance: ${fmt(cashArr[month], true)}<br>NAV: ${fmt(navArr[month], true)}<br>NAV / share: ${fmtP(priceArr[month])}<br>Target NAV: ${fmt(targetNavArr[month], true)}${S.mc ? `<br>MC 10%: ${fmt(mcLow[month], true)}<br>MC 50%: ${fmt(mcMid[month], true)}<br>MC 90%: ${fmt(mcHigh[month], true)}` : ''}`;
   });
 }
 
