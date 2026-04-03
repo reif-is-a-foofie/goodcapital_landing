@@ -267,6 +267,21 @@ def build_inputs_sheet() -> Sheet:
     for idx, note in enumerate(notes, start=6):
         s.inline(idx, 3, note, style=10)
 
+    s.inline(11, 3, "Web model settings reference", style=2)
+    web_rows = [
+        ("Redemptions On", "1"),
+        ("Lockup (months)", "24"),
+        ("Liquidity Event (months)", "3"),
+        ("Liquidity Request", "5.0%"),
+        ("Switch Rate", "25.0%"),
+        ("Cash Payout Cap", "5.0%"),
+        ("GP Hurdle", "8.0%"),
+        ("GP Carry", "15.0%"),
+    ]
+    for idx, (label, value) in enumerate(web_rows, start=12):
+        s.inline(idx, 3, label, style=3)
+        s.inline(idx, 4, value, style=10)
+
     s.inline(18, 1, "Derived", style=2)
     s.inline(19, 1, "Just-in-Time Calls Active", style=3)
     s.formula_cell(19, 2, 'IF(B7=1,0,B6)', style=5)
@@ -315,6 +330,7 @@ def build_summary_sheet() -> Sheet:
         "Green cells are modeled outputs.",
         "Monthly_Model contains the full 10-year monthly build with formulas.",
         "Hardcore Mode redeploys all available cash immediately and disables just-in-time capital calling.",
+        "The live /model page also includes redemption toggles, liquidity windows, GP carry units, and investor liquidity readouts.",
     ]
     for idx, text in enumerate(help_rows, start=6):
         s.inline(idx, 3, text, style=10)
@@ -464,6 +480,8 @@ def build_notes_sheet() -> Sheet:
         ("Capital calls", "If Capital Calls On = 1 and Hardcore Mode = 0, LP capital is called only when needed. If Hardcore Mode = 1, the workbook assumes the full fund is funded upfront and redeployed immediately as cash returns."),
         ("Borrower Rate vs Fund Take", "Borrower Rate is what the developer pays. Fund Take is the retained APY inside the fund after origination partners are paid."),
         ("Debt / Equity", "A value of 0.25 means each $1.00 of LP equity supports $1.25 of loans through $0.25 of debt."),
+        ("Redemptions", "The live web model can toggle redemptions on or off and layer lockup, liquidity windows, switch rates, and cash payout caps on top of the core origination model."),
+        ("GP units", "The live web model also mints GP units above the hurdle and tracks GP ownership dilution over time."),
         ("How origination scales", "Desired origination volume is driven by pipeline capacity and deployable capital. In normal mode the model ramps scaling over 12 months. Hardcore Mode removes that gentler ramp and pushes available cash out immediately."),
         ("IRR", "Projected IRR is solved from LP cash calls and terminal NAV. The Monthly_Model sheet also includes an IRR To Date column."),
     ]

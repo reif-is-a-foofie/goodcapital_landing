@@ -333,6 +333,11 @@ svg{display:block;}
         <div class="controls">
           <div class="ctrl-row">
             <div class="ctrl">
+              <div class="ctrl-label" title="Turns LP redemption windows on or off entirely. If this is off, the model assumes no liquidity requests are processed from the fund during the run.">Redemptions</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-redeem">On</div><div class="ctrl-unit">liquidity active</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="setRedemptions(false)">Off</div><div class="btn plus" onclick="setRedemptions(true)">On</div></div>
+            </div>
+            <div class="ctrl">
               <div class="ctrl-label" title="How long LP capital stays locked before the fund opens a liquidity window. Before this point, liquidity events are informationally off.">Lockup</div>
               <div class="ctrl-display"><div class="ctrl-val" id="v-lock">24</div><div class="ctrl-unit">months</div></div>
               <div class="ctrl-btns"><div class="btn red" onclick="adj('lock',-3)">- 3mo</div><div class="btn plus" onclick="adj('lock',3)">+ 3mo</div></div>
@@ -586,7 +591,7 @@ let mainChart = null;
 let chartHoverBound = false;
 const seriesState = { nav: true, target: true, loans: true, cash: true, volume: true };
 
-const S = { fund:1.0, call:1, size:25, dpm:3, term:18, apy:25.0, take:18.0, hurdle:8.0, carry:15.0, lev:0.0, cod:8, irr:15.0, lock:24, liq:3, req:5.0, switch:25.0, redcap:5.0, var:10.0, mc:0, hc:0 };
+const S = { fund:1.0, call:1, size:25, dpm:3, term:18, apy:25.0, take:18.0, hurdle:8.0, carry:15.0, lev:0.0, cod:8, irr:15.0, redeem:1, lock:24, liq:3, req:5.0, switch:25.0, redcap:5.0, var:10.0, mc:0, hc:0 };
 
 const limits = {
   fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,120,6], apy:[5,40,0.5], take:[1,30,0.5], hurdle:[0,20,0.5], carry:[0,30,1], lev:[0.0,2.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], lock:[0,60,3], liq:[1,12,1], req:[0,25,1], switch:[0,100,5], redcap:[0,25,1], var:[0,30,1]
@@ -614,6 +619,11 @@ function setCapitalCall(enabled) {
 function setMonteCarlo(enabled) {
   S.mc = enabled ? 1 : 0;
   document.getElementById('v-mc').textContent = enabled ? 'On' : 'Off';
+  recalc();
+}
+function setRedemptions(enabled) {
+  S.redeem = enabled ? 1 : 0;
+  document.getElementById('v-redeem').textContent = enabled ? 'On' : 'Off';
   recalc();
 }
 function updateHardcoreButtons() {
@@ -774,6 +784,7 @@ function buildScenario(opts = {}) {
   const carryPct = state.carry / 100;
   const baseCod = state.cod / 100;
   const targetIrr = state.irr / 100;
+  const redemptionsOn = !!state.redeem;
   const lockMonths = Math.max(0, Math.round(state.lock));
   const liquidityEvery = Math.max(1, Math.round(state.liq));
   const requestPct = state.req / 100;
@@ -910,7 +921,7 @@ function buildScenario(opts = {}) {
     loanOutstandingArr[m] = activeEquityBal[m] + activeDebtBal[m];
     let navPerUnit = totalUnits > 0 ? runNAV / totalUnits : PAR;
     let currentLpValue = lpUnits * navPerUnit;
-    const liquidityEvent = m >= lockMonths && ((m - lockMonths) % liquidityEvery === 0);
+    const liquidityEvent = redemptionsOn && m >= lockMonths && ((m - lockMonths) % liquidityEvery === 0);
     const liquidityRequested = liquidityEvent ? currentLpValue * requestPct : 0;
     const liquiditySwitched = liquidityRequested * switchPct;
     const liquidityCashCap = liquidityEvent ? Math.min(Math.max(cashBal, 0), currentLpValue * redCapPct) : 0;
@@ -1103,13 +1114,15 @@ function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingA
   document.getElementById('hover-irr').textContent = `${((irrArr?.[month] || 0) * 100).toFixed(1)}%`;
   document.getElementById('hover-gpown').textContent = `${(((gpOwnershipArr?.[month]) || 0) * 100).toFixed(1)}%`;
   document.getElementById('hover-story').textContent = stateStory;
-  document.getElementById('evt-status').textContent = eventOn ? 'Window Open' : 'No window';
+  document.getElementById('evt-status').textContent = S.redeem ? (eventOn ? 'Window Open' : 'No window') : 'Disabled';
   document.getElementById('evt-lpvalue').textContent = fmt(lpValueArr?.[month] || 0, true);
   document.getElementById('evt-request').textContent = fmt(requested, true);
   document.getElementById('evt-switched').textContent = `${fmt(switched, true)}${requested > 0 ? ` · ${((switched / requested) * 100).toFixed(0)}%` : ''}`;
   document.getElementById('evt-paid').textContent = `${fmt(paid, true)}${requested > 0 ? ` · ${((paid / requested) * 100).toFixed(0)}%` : ''}`;
   document.getElementById('evt-canceled').textContent = `${fmt(canceled, true)}${requested > 0 ? ` · ${((canceled / requested) * 100).toFixed(0)}%` : ''}`;
-  document.getElementById('evt-note').textContent = eventOn
+  document.getElementById('evt-note').textContent = !S.redeem
+    ? 'Redemptions are turned off, so no liquidity windows are modeled. LP capital stays in the fund unless the assumptions are changed.'
+    : eventOn
     ? `At this liquidity event, LPs ask for ${fmt(requested, true)}. ${fmt(switched, true)} is delivered through switches and does not hit NAV. ${fmt(paid, true)} is paid from fund cash, which reduces NAV and slows future compounding. ${fmt(canceled, true)} is deferred or canceled. Total investor liquidity delivered is ${fmt(delivered, true)}.`
     : 'No liquidity window is open at this point. Lockup and event cadence determine when LPs can ask for liquidity.';
 }
@@ -1234,6 +1247,7 @@ function recalc() {
   document.getElementById('kpi-gpunits').textContent = totalGpUnitsMinted.toFixed(0);
   document.getElementById('kpi-gpown').textContent = `${(endingGpOwnership * 100).toFixed(1)}%`;
   document.getElementById('v-call').textContent = S.call ? 'On' : 'Off';
+  document.getElementById('v-redeem').textContent = S.redeem ? 'On' : 'Off';
   document.getElementById('v-mc').textContent = S.mc ? 'On' : 'Off';
   updateHardcoreButtons();
   updateDebtEqDisplay();
@@ -1247,7 +1261,7 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'results-copy';
-  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. GP carry is set at <b>${S.carry.toFixed(1)}%</b> over an <b>${S.hurdle.toFixed(1)}%</b> hurdle and is paid in new units rather than cash. LP capital is <b>${S.hc ? 'funded upfront and redeployed immediately as cash returns' : (S.call ? 'called only when new loans need funding' : 'fully funded upfront')}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Liquidity windows open after <b>${S.lock.toFixed(0)} months</b> and then every <b>${S.liq.toFixed(0)} months</b>, with <b>${S.req.toFixed(1)}%</b> of LP value assumed to request liquidity, <b>${S.switch.toFixed(1)}%</b> switched, and <b>${S.redcap.toFixed(1)}%</b> of LP value available to pay from fund cash. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans, mints about <b>${totalGpUnitsMinted.toFixed(0)}</b> GP units, and ends with GP owning about <b>${(endingGpOwnership * 100).toFixed(1)}%</b> of units. The busiest month originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume.${S.hc ? ` Hardcore Mode is on, so idle cash is immediately redeployed instead of waiting for a gentler ramp.` : ''}${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
+  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. GP carry is set at <b>${S.carry.toFixed(1)}%</b> over an <b>${S.hurdle.toFixed(1)}%</b> hurdle and is paid in new units rather than cash. LP capital is <b>${S.hc ? 'funded upfront and redeployed immediately as cash returns' : (S.call ? 'called only when new loans need funding' : 'fully funded upfront')}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. ${S.redeem ? `Liquidity windows open after <b>${S.lock.toFixed(0)} months</b> and then every <b>${S.liq.toFixed(0)} months</b>, with <b>${S.req.toFixed(1)}%</b> of LP value assumed to request liquidity, <b>${S.switch.toFixed(1)}%</b> switched, and <b>${S.redcap.toFixed(1)}%</b> of LP value available to pay from fund cash.` : `Redemptions are <b>turned off</b>, so LP liquidity is not modeled during the run and fund cash stays available for compounding and reinvestment.`} Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans, mints about <b>${totalGpUnitsMinted.toFixed(0)}</b> GP units, and ends with GP owning about <b>${(endingGpOwnership * 100).toFixed(1)}%</b> of units. The busiest month originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume.${S.hc ? ` Hardcore Mode is on, so idle cash is immediately redeployed instead of waiting for a gentler ramp.` : ''}${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
   if (cumulativeLpCalled > fundSize + 0.5 || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'results-copy warn';
     const warnings = [];
