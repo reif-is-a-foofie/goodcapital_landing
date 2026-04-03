@@ -224,6 +224,7 @@ tfoot td:first-child{text-align:left;}
     <div class="legend">
       <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
       <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
+      <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Cash balance</div>
       <div class="leg"><div class="leg-dot" style="background:var(--gold);opacity:.6"></div>Interest cash event</div>
       <div class="leg"><div class="leg-dot" style="background:var(--red2);opacity:.6"></div>Debt interest paid</div>
     </div>
@@ -417,26 +418,29 @@ function recalc() {
     lNote.innerHTML += ` Current deployment requires <b>${fmt(lpEquity)}</b> of equity against a starting fund size of <b>${fmt(fundSize, true)}</b>.`;
   }
 
-  drawChart(intArr, debtArr, navArr, targetNavArr, shares);
+  drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares);
   drawAUM(lpEquity, debtFacil);
 }
 
-function drawChart(intArr, debtArr, navArr, targetNavArr, shares) {
+function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
   const svg = document.getElementById('main-chart');
   const W = svg.parentElement.clientWidth - 48;
   const H = 340;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 
-  const pad = {t:16,r:16,b:32,l:76};
+  const pad = {t:16,r:76,b:32,l:76};
   const iW = W - pad.l - pad.r;
   const iH = H - pad.t - pad.b;
 
   const maxNAV = Math.max(...navArr, ...targetNavArr);
   const minNAV = Math.min(...navArr, ...targetNavArr);
   const navRange = maxNAV - minNAV || 1;
+  const maxCash = Math.max(...cashArr, 0);
+  const cashRange = maxCash || 1;
 
   const xS = m => pad.l + (m / VIEW) * iW;
   const yNAV = v => pad.t + iH - ((v - minNAV) / navRange) * iH;
+  const yCash = v => pad.t + iH - (v / cashRange) * iH;
 
   let o = '';
 
@@ -445,6 +449,8 @@ function drawChart(intArr, debtArr, navArr, targetNavArr, shares) {
     const v = maxNAV - (i / 4) * navRange;
     o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
     o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="#776b5d">${fmt(v, true)}</text>`;
+    const cashV = maxCash - (i / 4) * cashRange;
+    o += `<text x="${pad.l + iW + 8}" y="${y + 4}" font-family="DM Mono" font-size="10" fill="#3f6d47">${fmt(cashV, true)}</text>`;
   }
   for (let m = 0; m <= VIEW; m += 6) {
     o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">M${m}</text>`;
@@ -474,6 +480,10 @@ function drawChart(intArr, debtArr, navArr, targetNavArr, shares) {
   let targetPath = `M ${xS(0)} ${yNAV(targetNavArr[0])}`;
   for (let m = 1; m <= VIEW; m++) targetPath += ` L ${xS(m)} ${yNAV(targetNavArr[m])}`;
   o += `<path d="${targetPath}" fill="none" stroke="#506a88" stroke-width="2" stroke-dasharray="7 5"/>`;
+
+  let cashPath = `M ${xS(0)} ${yCash(cashArr[0])}`;
+  for (let m = 1; m <= VIEW; m++) cashPath += ` L ${xS(m)} ${yCash(cashArr[m])}`;
+  o += `<path d="${cashPath}" fill="none" stroke="#3f6d47" stroke-width="2"/>`;
 
   for (let m = 0; m <= VIEW; m++) {
     if (intArr[m] > 0) o += `<circle cx="${xS(m)}" cy="${yNAV(navArr[m])}" r="3" fill="#b38b57" stroke="#fdfaf5" stroke-width="1.5"/>`;
