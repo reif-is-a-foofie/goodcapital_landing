@@ -94,6 +94,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .faq-q{font-size:9px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;margin-bottom:6px;}
 .faq-a{font-size:10px;line-height:1.65;color:var(--muted2);}
 .faq-a b{color:var(--ink);font-weight:500;}
+.mode-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 0;border-top:1px solid var(--border);}
+.mode-label{font-size:9px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;}
+.mode-state{font-size:10px;color:var(--red2);font-weight:500;}
+.mode-row .ctrl-btns{margin-top:0;}
 .assump-note{font-size:10px;line-height:1.7;color:var(--muted);max-height:none;}
 .assump-note b{color:var(--gold2);font-weight:500;}
 
@@ -264,8 +268,8 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="This is how much lending the fund supports for each dollar of LP equity. Higher leverage lets the fund put out a larger loan book, but also increases financing cost and risk.">Leverage</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-lev">1.0</div><div class="ctrl-unit">x equity</div></div>
+      <div class="ctrl-label" title="This is the amount of debt used for each dollar of LP equity. A value of 0.25x means $0.25 of debt for every $1.00 of equity, which increases loan capacity but also adds financing cost and risk.">Debt / Equity</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-lev">0.00</div><div class="ctrl-unit" id="u-lev">0% debt vs equity</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('lev',-0.25)">- 0.25x</div>
         <div class="btn plus" onclick="adj('lev',0.25)">+ 0.25x</div>
@@ -448,6 +452,16 @@ svg{display:block;}
                 <div class="faq-q">What Drives The Chart?</div>
                 <div class="faq-a"><b>NAV</b> shows total fund value, <b>Loans Outstanding</b> shows active principal still out in the field, <b>Cash</b> shows liquidity on hand, and the brown bars show <b>new loan volume per month</b> so you can judge whether the market would need to absorb more lending as the strategy scales.</div>
               </div>
+              <div class="mode-row">
+                <div class="mode-label">Hardcore Mode</div>
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div class="mode-state" id="v-hc">OFF</div>
+                  <div class="ctrl-btns">
+                    <div class="btn red" onclick="setHardcore(false)">Off</div>
+                    <div class="btn plus" onclick="setHardcore(true)">On</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </details>
@@ -468,10 +482,10 @@ let mainChart = null;
 let chartHoverBound = false;
 const seriesState = { nav: true, target: true, loans: true, cash: true, volume: true };
 
-const S = { fund:1.0, call:1, size:25, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
+const S = { fund:1.0, call:1, size:25, dpm:3, term:18, apy:25.0, take:18.0, lev:0.0, cod:8, irr:15.0, var:10.0, mc:0, hc:0 };
 
 const limits = {
-  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,120,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[1.0,3.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
+  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,120,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[0.0,2.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
 };
 
 function fmtControl(k, v) {
@@ -497,9 +511,19 @@ function setMonteCarlo(enabled) {
   document.getElementById('v-mc').textContent = enabled ? 'On' : 'Off';
   recalc();
 }
+function setHardcore(enabled) {
+  S.hc = enabled ? 1 : 0;
+  document.getElementById('v-hc').textContent = enabled ? 'ON' : 'OFF';
+  document.getElementById('v-hc').style.color = enabled ? 'var(--green2)' : 'var(--red2)';
+  recalc();
+}
 function toggleSeries(key) {
   seriesState[key] = !seriesState[key];
   recalc();
+}
+function updateDebtEqDisplay() {
+  const debtPct = Math.round(S.lev * 100);
+  document.getElementById('u-lev').textContent = `${debtPct}% debt vs equity`;
 }
 
 function fmt(n, force) {
@@ -630,10 +654,12 @@ function buildScenario(opts = {}) {
   const stochastic = !!opts.stochastic;
   const state = { ...S, ...(opts.overrides || {}) };
   const fundSize = state.fund * 1e9;
-  const justInTimeCalls = !!state.call;
+  const hardcoreMode = !!state.hc;
+  const justInTimeCalls = hardcoreMode ? false : !!state.call;
   const shares = fundSize / PAR;
   const baseLoan = state.size * 1e6;
-  const lev = state.lev;
+  const debtEq = state.lev;
+  const totalMultiple = 1 + debtEq;
   const baseApy = state.apy / 100;
   const baseTake = state.take / 100;
   const baseCod = state.cod / 100;
@@ -690,14 +716,17 @@ function buildScenario(opts = {}) {
     const debtCost = stochastic ? sampleAround(baseCod, monthlyStd, 0) : baseCod;
     const remainingCallable = justInTimeCalls ? Math.max(0, fundSize - cumulativeLpCalled) : 0;
     const deployableEquityCapacity = Math.max(0, cashBal + remainingCallable);
-    const baseEquityPace = Math.max(loanSize * Math.max(baseDeals, 0.01) / lev, 1);
+    const baseEquityPace = Math.max(loanSize * Math.max(baseDeals, 0.01) / totalMultiple, 1);
     const pipelineScale = Math.max(1, Math.sqrt(deployableEquityCapacity / baseEquityPace));
-    const scaledDeals = baseDeals * pipelineScale;
-    const desiredOriginationVolume = loanSize * scaledDeals;
-    const desiredEquityDeployment = desiredOriginationVolume / lev;
-    const actualEquityDeployment = Math.min(desiredEquityDeployment, deployableEquityCapacity);
+    const rampFactor = Math.min(1, m / 12);
+    const scaledDeals = hardcoreMode
+      ? Math.max(baseDeals, deployableEquityCapacity * totalMultiple / Math.max(loanSize, 1))
+      : baseDeals + (baseDeals * pipelineScale - baseDeals) * rampFactor;
+    const desiredOriginationVolume = hardcoreMode ? deployableEquityCapacity * totalMultiple : loanSize * scaledDeals;
+    const desiredEquityDeployment = desiredOriginationVolume / totalMultiple;
+    const actualEquityDeployment = hardcoreMode ? deployableEquityCapacity : Math.min(desiredEquityDeployment, deployableEquityCapacity);
     const lpCall = justInTimeCalls ? Math.max(0, actualEquityDeployment - cashBal) : 0;
-    const actualOriginationVolume = actualEquityDeployment * lev;
+    const actualOriginationVolume = actualEquityDeployment * totalMultiple;
     const actualDebtDeployment = actualOriginationVolume - actualEquityDeployment;
     const actualDeals = loanSize > 0 ? actualOriginationVolume / loanSize : 0;
 
@@ -1007,6 +1036,9 @@ function recalc() {
   document.getElementById('kpi-mincash').textContent = fmt(minCash, true);
   document.getElementById('v-call').textContent = S.call ? 'On' : 'Off';
   document.getElementById('v-mc').textContent = S.mc ? 'On' : 'Off';
+  document.getElementById('v-hc').textContent = S.hc ? 'ON' : 'OFF';
+  document.getElementById('v-hc').style.color = S.hc ? 'var(--green2)' : 'var(--red2)';
+  updateDebtEqDisplay();
   document.getElementById('leg-mc-band').style.display = S.mc ? 'flex' : 'none';
   document.getElementById('leg-mc-mid').style.display = S.mc ? 'flex' : 'none';
   document.querySelectorAll('.leg-toggle[data-series]').forEach(el => {
@@ -1017,7 +1049,7 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. LP capital is <b>${S.call ? 'called only when new loans need funding' : 'fully funded upfront'}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans. In the busiest month it calls about <b>${fmt(peakMonthlyCall, true)}</b> of LP capital and originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume. The loan book peaks around <b>${fmt(peakEquity)}</b> of LP capital out${Math.abs(peakDebt) < 0.5 ? '' : ` with <b>${fmt(peakDebt)}</b> of debt at peak`}, cash gets as low as <b>${fmt(minCash, true)}</b>, and the model ends near <b>${fmtP(priceArr[VIEW])}</b> NAV/share, which works out to about <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
+  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. LP capital is <b>${S.hc ? 'funded upfront and redeployed immediately as cash returns' : (S.call ? 'called only when new loans need funding' : 'fully funded upfront')}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans. In the busiest month it calls about <b>${fmt(peakMonthlyCall, true)}</b> of LP capital and originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume. The loan book peaks around <b>${fmt(peakEquity)}</b> of LP capital out${Math.abs(peakDebt) < 0.5 ? '' : ` with <b>${fmt(peakDebt)}</b> of debt at peak`}, cash gets as low as <b>${fmt(minCash, true)}</b>, and the model ends near <b>${fmtP(priceArr[VIEW])}</b> NAV/share, which works out to about <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.hc ? ` Hardcore Mode is on, so idle cash is immediately redeployed instead of waiting for a gentler ramp.` : ''}${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
   if (cumulativeLpCalled > fundSize + 0.5 || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'summary-note warn';
     const warnings = [];
