@@ -30,6 +30,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .ctrl-row:last-child{border-bottom:none;}
 .ctrl{flex:1;padding:14px 22px;border-right:1px solid var(--border);}
 .ctrl:last-child{border-right:none;}
+.ctrl.hidden{display:none;}
 .ctrl-label{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
 .ctrl-display{display:flex;align-items:baseline;gap:6px;margin-bottom:8px;}
 .ctrl-val{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--gold2);line-height:1;}
@@ -193,7 +194,7 @@ tfoot td:first-child{text-align:left;}
         <div class="btn plus" onclick="adj('irr',1)">+ 1%</div>
       </div>
     </div>
-    <div class="ctrl">
+    <div class="ctrl" id="var-ctrl">
       <div class="ctrl-label">Variance</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
       <div class="ctrl-btns">
@@ -383,108 +384,188 @@ function bindTooltip(frameId, tipId, formatter) {
   frame.onmouseleave = () => { tip.style.display = 'none'; };
 }
 
-function recalc() {
+function sampleAround(base, monthlyStd, floor = 0) {
+  return Math.max(floor, base * (1 + normalSample() * monthlyStd));
+}
+
+function medianSeries(samplesByMonth) {
+  return samplesByMonth.map(samples => {
+    const sorted = samples.slice().sort((a, b) => a - b);
+    return percentile(sorted, 0.50);
+  });
+}
+
+function buildScenario(opts = {}) {
+  const stochastic = !!opts.stochastic;
   const fundSize = S.fund * 1e9;
   const shares = fundSize / PAR;
-  const loan = S.size * 1e6;
+  const baseLoan = S.size * 1e6;
   const lev = S.lev;
-  const cod = S.cod / 100;
-  const irr = S.irr / 100;
+  const baseCod = S.cod / 100;
+  const targetIrr = S.irr / 100;
   const annualVariance = S.var / 100;
+  const monthlyStd = annualVariance / Math.sqrt(12);
   const mo1 = Math.min(12, S.term);
   const mo2 = Math.max(0, S.term - 12);
-
-  const loansOut = S.dpm * S.term;
-  const totalAUM = loansOut * loan;
-  const lpEquity = totalAUM / lev;
-  const debtFacil = totalAUM - lpEquity;
-  const annualIncome = totalAUM * YIELD;
-  const annualDebtCost = debtFacil * cod;
-
-  const int1 = loan * YIELD * (mo1 / 12);
-  const int2 = mo2 > 0 ? loan * YIELD * (mo2 / 12) : 0;
 
   const intArr = new Array(VIEW + 1).fill(0);
   const priArr = new Array(VIEW + 1).fill(0);
   const debtArr = new Array(VIEW + 1).fill(0);
   const cashArr = new Array(VIEW + 1).fill(0);
   const cashDeltaArr = new Array(VIEW + 1).fill(0);
-  const activePrincipal = new Array(VIEW + 1).fill(0);
-  const monthlyOriginationVolume = loan * S.dpm;
-  const monthlyEquityDeployment = monthlyOriginationVolume / lev;
-
-  for (let o = 1; o <= VIEW; o++) {
-    intArr[o] += monthlyOriginationVolume * YIELD * (mo1 / 12);
-    if (mo2 > 0 && o + 12 <= VIEW) intArr[o + 12] += monthlyOriginationVolume * YIELD * (mo2 / 12);
-    const mat = o + S.term;
-    if (mat <= VIEW) priArr[mat] += monthlyOriginationVolume;
-    for (let m = o; m < Math.min(o + S.term, VIEW + 1); m++) {
-      activePrincipal[m] += monthlyOriginationVolume;
-    }
-  }
-
-  for (let m = 0; m <= VIEW; m++) {
-    debtArr[m] = activePrincipal[m] * ((lev - 1) / lev) * cod / 12;
-  }
-
-  const initNAV = fundSize;
-
   const navArr = new Array(VIEW + 1).fill(0);
   const targetNavArr = new Array(VIEW + 1).fill(0);
   const priceArr = new Array(VIEW + 1).fill(0);
-  let runNAV = initNAV;
-  let cashBal = fundSize;
-  let totInt = 0, totDebt = 0, totNet = 0;
+  const activeDebtBal = new Array(VIEW + 1).fill(0);
+  const activeEquityBal = new Array(VIEW + 1).fill(0);
 
-  navArr[0] = initNAV;
+  let totInt = 0;
+  let totDebt = 0;
+  let totNet = 0;
+
+  navArr[0] = fundSize;
   targetNavArr[0] = fundSize;
-  priceArr[0] = initNAV / shares;
+  priceArr[0] = fundSize / shares;
   cashArr[0] = fundSize;
 
+  for (let o = 1; o <= VIEW; o++) {
+    const loanSize = stochastic ? sampleAround(baseLoan, monthlyStd, baseLoan * 0.2) : baseLoan;
+    const deals = stochastic ? sampleAround(S.dpm, monthlyStd, 0) : S.dpm;
+    const grossYield = stochastic ? sampleAround(YIELD, monthlyStd, 0) : YIELD;
+    const debtCost = stochastic ? sampleAround(baseCod, monthlyStd, 0) : baseCod;
+    const originationVolume = loanSize * deals;
+    const equityDeployment = originationVolume / lev;
+    const debtDeployment = originationVolume - equityDeployment;
+
+    intArr[o] += originationVolume * grossYield * (mo1 / 12);
+    if (mo2 > 0 && o + 12 <= VIEW) intArr[o + 12] += originationVolume * grossYield * (mo2 / 12);
+
+    const mat = o + S.term;
+    if (mat <= VIEW) priArr[mat] += equityDeployment;
+
+    for (let m = o; m < Math.min(o + S.term, VIEW + 1); m++) {
+      activeDebtBal[m] += debtDeployment;
+      activeEquityBal[m] += equityDeployment;
+      debtArr[m] += debtDeployment * debtCost / 12;
+    }
+  }
+  const peakEquity = Math.max(...activeEquityBal);
+  const peakDebt = Math.max(...activeDebtBal);
+
+  let runNAV = fundSize;
+  let cashBal = fundSize;
   for (let m = 1; m <= VIEW; m++) {
-    const equityPrincipalReturned = priArr[m] / lev;
+    const monthEquityDeployment = activeEquityBal[m] - activeEquityBal[m - 1] + priArr[m];
+    const equityPrincipalReturned = priArr[m];
     const navNet = intArr[m] - debtArr[m];
-    const net = navNet + equityPrincipalReturned - monthlyEquityDeployment;
-    cashDeltaArr[m] = net;
+    const net = navNet + equityPrincipalReturned - monthEquityDeployment;
     cashBal += net;
     runNAV += navNet;
+    cashDeltaArr[m] = net;
     cashArr[m] = cashBal;
     navArr[m] = runNAV;
-    targetNavArr[m] = fundSize * Math.pow(1 + irr, m / 12);
+    targetNavArr[m] = fundSize * Math.pow(1 + targetIrr, m / 12);
     priceArr[m] = runNAV / shares;
     totInt += intArr[m];
     totDebt += debtArr[m];
     totNet += net;
   }
 
-  const projectedIrr = Math.pow(navArr[VIEW] / fundSize, 12 / VIEW) - 1;
-  const minCash = Math.min(...cashArr);
-  const irrGap = projectedIrr - irr;
-  const debtLabel = fmtMoneyOrNone(debtFacil);
-  const mcMonthlyStd = annualVariance / Math.sqrt(12);
+  return {
+    fundSize, shares, targetIrr,
+    navArr, targetNavArr, cashArr, cashDeltaArr, priceArr,
+    intArr, debtArr, priArr,
+    projectedIrr: Math.pow(navArr[VIEW] / fundSize, 12 / VIEW) - 1,
+    minCash: Math.min(...cashArr),
+    peakEquity, peakDebt,
+    totInt, totDebt, totNet
+  };
+}
+
+function recalc() {
+  const base = buildScenario();
+  const { fundSize, shares, targetIrr, targetNavArr } = base;
   const mcLow = new Array(VIEW + 1).fill(0);
   const mcMid = new Array(VIEW + 1).fill(0);
   const mcHigh = new Array(VIEW + 1).fill(0);
-  for (let m = 0; m <= VIEW; m++) {
-    const samples = [];
+  const varCtrl = document.getElementById('var-ctrl');
+  varCtrl.classList.toggle('hidden', !S.mc);
+
+  let display = base;
+  if (S.mc) {
+    const navSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const cashSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const netSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const intSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const debtSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const priceSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const irrSamples = [];
+    const minCashSamples = [];
+    const peakEquitySamples = [];
+    const peakDebtSamples = [];
+    const totIntSamples = [];
+    const totDebtSamples = [];
+    const totNetSamples = [];
+
     for (let r = 0; r < MC_RUNS; r++) {
-      let simNav = fundSize;
-      for (let i = 1; i <= m; i++) {
-        const shock = Math.max(0, 1 + normalSample() * mcMonthlyStd);
-        simNav += intArr[i] * shock - debtArr[i];
+      const sim = buildScenario({ stochastic: true });
+      irrSamples.push(sim.projectedIrr);
+      minCashSamples.push(sim.minCash);
+      peakEquitySamples.push(sim.peakEquity);
+      peakDebtSamples.push(sim.peakDebt);
+      totIntSamples.push(sim.totInt);
+      totDebtSamples.push(sim.totDebt);
+      totNetSamples.push(sim.totNet);
+      for (let m = 0; m <= VIEW; m++) {
+        navSamples[m].push(sim.navArr[m]);
+        cashSamples[m].push(sim.cashArr[m]);
+        netSamples[m].push(sim.cashDeltaArr[m]);
+        intSamples[m].push(sim.intArr[m]);
+        debtSamples[m].push(sim.debtArr[m]);
+        priceSamples[m].push(sim.priceArr[m]);
       }
-      samples.push(simNav);
     }
-    samples.sort((a, b) => a - b);
-    mcLow[m] = percentile(samples, 0.10);
-    mcMid[m] = percentile(samples, 0.50);
-    mcHigh[m] = percentile(samples, 0.90);
+
+    const navMedian = medianSeries(navSamples);
+    const cashMedian = medianSeries(cashSamples);
+    const netMedian = medianSeries(netSamples);
+    const intMedian = medianSeries(intSamples);
+    const debtMedian = medianSeries(debtSamples);
+    const priceMedian = medianSeries(priceSamples);
+
+    for (let m = 0; m <= VIEW; m++) {
+      const samples = navSamples[m].slice().sort((a, b) => a - b);
+      mcLow[m] = percentile(samples, 0.10);
+      mcMid[m] = navMedian[m];
+      mcHigh[m] = percentile(samples, 0.90);
+    }
+
+    display = {
+      ...base,
+      navArr: navMedian,
+      cashArr: cashMedian,
+      cashDeltaArr: netMedian,
+      intArr: intMedian,
+      debtArr: debtMedian,
+      priceArr: priceMedian,
+      projectedIrr: percentile(irrSamples.slice().sort((a, b) => a - b), 0.50),
+      minCash: percentile(minCashSamples.slice().sort((a, b) => a - b), 0.50),
+      peakEquity: percentile(peakEquitySamples.slice().sort((a, b) => a - b), 0.50),
+      peakDebt: percentile(peakDebtSamples.slice().sort((a, b) => a - b), 0.50),
+      totInt: percentile(totIntSamples.slice().sort((a, b) => a - b), 0.50),
+      totDebt: percentile(totDebtSamples.slice().sort((a, b) => a - b), 0.50),
+      totNet: percentile(totNetSamples.slice().sort((a, b) => a - b), 0.50)
+    };
   }
+
+  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, projectedIrr, minCash, peakEquity, peakDebt, totInt, totDebt, totNet } = display;
+  const irrGap = projectedIrr - targetIrr;
+  const debtLabel = fmtMoneyOrNone(peakDebt);
   const mcEndLow = mcLow[VIEW];
   const mcEndHigh = mcHigh[VIEW];
 
   document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
-  document.getElementById('kpi-equity').textContent = fmt(lpEquity);
+  document.getElementById('kpi-equity').textContent = fmt(peakEquity);
   document.getElementById('kpi-debt').textContent = debtLabel;
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
   document.getElementById('kpi-gap').textContent = `${irrGap >= 0 ? '+' : ''}${(irrGap * 100).toFixed(1)}%`;
@@ -521,11 +602,11 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `At current assumptions, the fund deploys <b>${fmt(lpEquity)}</b> of LP equity${Math.abs(debtFacil) < 0.5 ? '' : ` and <b>${fmt(debtFacil)}</b> of debt`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` The Monte Carlo year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
-  if (lpEquity > fundSize || minCash < 0 || irrGap < 0) {
+  summary.innerHTML = `At current assumptions, the fund peaks at <b>${fmt(peakEquity)}</b> of equity deployed${Math.abs(peakDebt) < 0.5 ? '' : ` and <b>${fmt(peakDebt)}</b> of debt outstanding`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo randomizes monthly deal flow, deal size, yield, and debt cost; the table and KPIs show the median simulated path, and the year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
+  if (peakEquity > fundSize || minCash < 0 || irrGap < 0) {
     summary.className = 'summary-note warn';
     const warnings = [];
-    if (lpEquity > fundSize) warnings.push(`required LP equity exceeds starting fund size`);
+    if (peakEquity > fundSize) warnings.push(`required LP equity exceeds starting fund size`);
     if (minCash < 0) warnings.push(`cash balance turns negative`);
     if (irrGap < 0) warnings.push(`projected IRR trails the target by ${Math.abs(irrGap * 100).toFixed(1)}%`);
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
