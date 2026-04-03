@@ -128,6 +128,7 @@ tfoot td:first-child{text-align:left;}
   </div>
   <div class="hdr-tag">
     <div>Interest prepaid: <b>Year 1 at settlement · Balance at Month 12</b></div>
+    <div>Average loan APY: <b><span id="hdr-apy">25.0%</span></b> · Fund take: <b><span id="hdr-take">18.0%</span></b></div>
     <div>NAV = opening fund equity + accumulated interest - leverage cost · Share price stays anchored to $1,000 par</div>
   </div>
 </div>
@@ -173,6 +174,22 @@ tfoot td:first-child{text-align:left;}
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('lev',-0.25)">- 0.25x</div>
         <div class="btn plus" onclick="adj('lev',0.25)">+ 0.25x</div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-label">Average Loan APY</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% borrower rate</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="adj('apy',-1)">- 1%</div>
+        <div class="btn plus" onclick="adj('apy',1)">+ 1%</div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-label">Fund Take</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-take">18.0</div><div class="ctrl-unit">% retained APY</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="adj('take',-1)">- 1%</div>
+        <div class="btn plus" onclick="adj('take',1)">+ 1%</div>
       </div>
     </div>
     <div class="ctrl">
@@ -294,19 +311,18 @@ tfoot td:first-child{text-align:left;}
 
 <script>
 const PAR = 1_000;
-const YIELD = 0.17;
 const VIEW = 84;
 const MC_RUNS = 250;
 
-const S = { fund:1.0, size:25, dpm:1, term:18, lev:1.0, cod:8, irr:15.0, var:10.0, mc:1 };
+const S = { fund:1.0, size:25, dpm:1, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:1 };
 
 const limits = {
-  fund:[0.1,10,0.1], size:[2.5,200,2.5], dpm:[0.5,20,0.5], term:[6,84,6], lev:[1.0,3.0,0.25], cod:[3,20,0.5], irr:[0,40,1], var:[0,30,2]
+  fund:[0.1,10,0.1], size:[2.5,200,2.5], dpm:[0.5,20,0.5], term:[6,84,6], apy:[5,40,1], take:[1,30,1], lev:[1.0,3.0,0.25], cod:[3,20,0.5], irr:[0,40,1], var:[0,30,2]
 };
 
 function fmtControl(k, v) {
   if (k === 'lev') return v.toFixed(2);
-  if (k === 'fund' || k === 'cod' || k === 'dpm' || k === 'size' || k === 'irr' || k === 'var') return v.toFixed(1);
+  if (k === 'fund' || k === 'cod' || k === 'dpm' || k === 'size' || k === 'irr' || k === 'var' || k === 'apy' || k === 'take') return v.toFixed(1);
   return String(v);
 }
 
@@ -385,6 +401,8 @@ function buildScenario(opts = {}) {
   const shares = fundSize / PAR;
   const baseLoan = S.size * 1e6;
   const lev = S.lev;
+  const baseApy = S.apy / 100;
+  const baseTake = S.take / 100;
   const baseCod = S.cod / 100;
   const targetIrr = S.irr / 100;
   const annualVariance = S.var / 100;
@@ -415,14 +433,15 @@ function buildScenario(opts = {}) {
   for (let o = 1; o <= VIEW; o++) {
     const loanSize = stochastic ? sampleAround(baseLoan, monthlyStd, baseLoan * 0.2) : baseLoan;
     const deals = stochastic ? sampleAround(S.dpm, monthlyStd, 0) : S.dpm;
-    const grossYield = stochastic ? sampleAround(YIELD, monthlyStd, 0) : YIELD;
+    const grossYield = stochastic ? sampleAround(baseApy, monthlyStd, 0) : baseApy;
+    const fundTake = Math.min(grossYield, stochastic ? sampleAround(baseTake, monthlyStd, 0) : baseTake);
     const debtCost = stochastic ? sampleAround(baseCod, monthlyStd, 0) : baseCod;
     const originationVolume = loanSize * deals;
     const equityDeployment = originationVolume / lev;
     const debtDeployment = originationVolume - equityDeployment;
 
-    intArr[o] += originationVolume * grossYield * (mo1 / 12);
-    if (mo2 > 0 && o + 12 <= VIEW) intArr[o + 12] += originationVolume * grossYield * (mo2 / 12);
+    intArr[o] += originationVolume * fundTake * (mo1 / 12);
+    if (mo2 > 0 && o + 12 <= VIEW) intArr[o + 12] += originationVolume * fundTake * (mo2 / 12);
 
     const mat = o + S.term;
     if (mat <= VIEW) priArr[mat] += equityDeployment;
@@ -545,10 +564,14 @@ function recalc() {
   const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, projectedIrr, minCash, peakEquity, peakDebt, totInt, totDebt, totNet } = display;
   const irrGap = projectedIrr - targetIrr;
   const debtLabel = fmtMoneyOrNone(peakDebt);
+  const grossApy = S.apy / 100;
+  const fundTake = S.take / 100;
   const mcEndLow = mcLow[VIEW];
   const mcEndHigh = mcHigh[VIEW];
 
   document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
+  document.getElementById('hdr-apy').textContent = `${S.apy.toFixed(1)}%`;
+  document.getElementById('hdr-take').textContent = `${S.take.toFixed(1)}%`;
   document.getElementById('kpi-equity').textContent = fmt(peakEquity);
   document.getElementById('kpi-debt').textContent = debtLabel;
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
@@ -586,13 +609,14 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `At current assumptions, the fund peaks at <b>${fmt(peakEquity)}</b> of equity deployed${Math.abs(peakDebt) < 0.5 ? '' : ` and <b>${fmt(peakDebt)}</b> of debt outstanding`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo randomizes monthly deal flow, deal size, yield, and debt cost; the table and KPIs show the median simulated path, and the year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
-  if (peakEquity > fundSize || minCash < 0 || irrGap < 0) {
+  summary.innerHTML = `At current assumptions, average loan APY is <b>${(grossApy * 100).toFixed(1)}%</b> and fund take is <b>${(fundTake * 100).toFixed(1)}%</b>. The fund peaks at <b>${fmt(peakEquity)}</b> of equity deployed${Math.abs(peakDebt) < 0.5 ? '' : ` and <b>${fmt(peakDebt)}</b> of debt outstanding`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo randomizes monthly deal flow, deal size, loan APY, fund take, and debt cost; the table and KPIs show the median simulated path, and the year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
+  if (peakEquity > fundSize || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'summary-note warn';
     const warnings = [];
     if (peakEquity > fundSize) warnings.push(`required LP equity exceeds starting fund size`);
     if (minCash < 0) warnings.push(`cash balance turns negative`);
     if (irrGap < 0) warnings.push(`projected IRR trails the target by ${Math.abs(irrGap * 100).toFixed(1)}%`);
+    if (fundTake > grossApy) warnings.push(`fund take exceeds average loan APY`);
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
