@@ -44,6 +44,15 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .settings-body{border-top:1px solid var(--border);}
 .ctrl-row{display:flex;border-bottom:1px solid var(--border);}
 .ctrl-row:last-child{border-bottom:none;}
+.assumptions-pane{background:var(--s1);border-right:1px solid var(--border);min-height:0;overflow:auto;display:flex;flex-direction:column;}
+.assumptions-pane .panel-label{padding:10px 16px 8px;}
+.assumptions-pane .controls{max-height:none;overflow:visible;border-bottom:none;flex:1 1 auto;}
+.assumptions-pane .ctrl-row{display:block;border-bottom:none;}
+.assumptions-pane .ctrl{border-right:none;border-bottom:1px solid var(--border);padding:12px 14px 10px;align-items:flex-start;text-align:left;}
+.assumptions-pane .ctrl:last-child{border-bottom:none;}
+.assumptions-pane .ctrl-label{min-height:auto;justify-content:flex-start;text-align:left;margin-bottom:6px;}
+.assumptions-pane .ctrl-display{justify-content:flex-start;min-height:auto;margin-bottom:8px;}
+.assumptions-pane .ctrl-btns{justify-content:flex-start;}
 .ctrl{flex:1;padding:10px 10px 8px;border-right:1px solid var(--border);min-width:0;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;}
 .ctrl:last-child{border-right:none;}
 .ctrl.hidden{display:none;}
@@ -111,8 +120,13 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .event-v.green{color:var(--green2);font-weight:600;}
 .event-v.red{color:var(--red2);font-weight:600;}
 .event-note{grid-column:1 / -1;font-size:10px;color:var(--muted2);line-height:1.55;padding-top:2px;}
+.chart-info{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,0.9fr);gap:12px;align-items:start;}
+.event-outline{padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,0.06);}
+.event-outline .panel-label{padding:0 0 8px;background:none;border-bottom:none;}
+.stake-toggle{display:flex;gap:6px;align-items:center;margin-bottom:10px;}
+.stake-label{font-size:8px;color:var(--muted);letter-spacing:1.3px;text-transform:uppercase;}
 
-.body{border-bottom:1px solid var(--border);flex:1 1 auto;min-height:0;}
+.body{border-bottom:1px solid var(--border);flex:1 1 auto;min-height:0;display:grid;grid-template-columns:280px minmax(0,1fr);}
 .chart-area{padding:12px 16px 10px;background:var(--s1);height:100%;overflow:hidden;}
 .chart-head{display:block;margin-bottom:12px;}
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px;}
@@ -157,13 +171,15 @@ svg{display:block;}
 .lev-note.warn b{color:var(--red2);}
 
 @media (max-width: 1360px) {
-  .ctrl-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));}
-  .ctrl{border-right:none;border-bottom:1px solid var(--border);}
-  .ctrl-row .ctrl:nth-last-child(-n+3){border-bottom:none;}
+  .controls .ctrl-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));}
+  .controls .ctrl{border-right:none;border-bottom:1px solid var(--border);}
+  .controls .ctrl-row .ctrl:nth-last-child(-n+3){border-bottom:none;}
   .controls{max-height:26vh;}
 }
 
 @media (max-width: 1100px) {
+  .body{grid-template-columns:1fr;}
+  .assumptions-pane{border-right:none;border-bottom:1px solid var(--border);max-height:34vh;}
   .kpis{grid-template-columns:repeat(3,1fr);}
   .chart-shell{grid-template-columns:1fr;}
   .chart-rail{border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:12px;max-height:32vh;}
@@ -176,13 +192,14 @@ svg{display:block;}
   .sitebar-title{font-size:15px;}
   .sitebar-action{padding:6px 10px;font-size:9px;}
   .hdr-copy{padding:10px 16px;}
-  .ctrl-row{display:grid;grid-template-columns:1fr 1fr;}
-  .ctrl{border-right:none;border-bottom:1px solid var(--border);}
-  .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:none;}
+  .controls .ctrl-row{display:grid;grid-template-columns:1fr 1fr;}
+  .controls .ctrl{border-right:none;border-bottom:1px solid var(--border);}
+  .controls .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:none;}
   .ctrl-val{font-size:24px;}
   .controls{max-height:28vh;}
   .chart-tip{max-width:200px;}
   .summary-note{max-height:16vh;}
+  .chart-info{grid-template-columns:1fr;}
   .hover-panel{min-width:0;max-width:none;margin-top:10px;}
   .hover-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
@@ -203,11 +220,11 @@ svg{display:block;}
   .sitebar-title{white-space:normal;margin-bottom:0;}
   .sitebar-action{display:inline-flex;margin-top:8px;}
   .hdr-copy{padding:10px 12px;}
-  .ctrl-row{grid-template-columns:1fr;}
+  .controls .ctrl-row{grid-template-columns:1fr;}
   .kpis{grid-template-columns:1fr;}
   .chart-rail .kpis{grid-template-columns:1fr;}
-  .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:1px solid var(--border);}
-  .ctrl-row .ctrl:last-child{border-bottom:none;}
+  .controls .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:1px solid var(--border);}
+  .controls .ctrl-row .ctrl:last-child{border-bottom:none;}
   .btn{font-size:9px;padding:3px 8px;}
   .summary-note{padding:12px 18px;}
   .chart-tip{max-width:180px;font-size:9px;line-height:1.5;}
@@ -229,9 +246,13 @@ svg{display:block;}
 </div>
 <div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>How this model works:</b> the fund makes developer loans, pays origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans.</div>
 
-<div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
-<div class="controls">
-  <div class="ctrl-row">
+<div class="summary-note" id="summary-note"></div>
+
+<div class="body">
+  <div class="assumptions-pane">
+    <div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
+    <div class="controls">
+      <div class="ctrl-row">
     <div class="ctrl">
       <div class="ctrl-label" title="This is the total LP capital the model is allowed to call over the life of the fund. It is a hard ceiling on total equity raised, not the amount sitting in cash on day one.">Max Fund Size</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B max called</div></div>
@@ -327,12 +348,9 @@ svg{display:block;}
         <div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div>
         <div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div>
       </div>
+      </div>
     </div>
   </div>
-</div>
-<div class="summary-note" id="summary-note"></div>
-
-<div class="body">
   <div class="chart-area">
     <div class="chart-shell">
       <div class="chart-main">
