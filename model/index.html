@@ -19,9 +19,17 @@
 html,body{height:100%;}
 body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-size:12px;font-weight:300;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
 
+.sitebar{display:flex;justify-content:space-between;align-items:center;padding:0 20px 0 10px;height:72px;border-bottom:1px solid var(--border);background:#f2f2f2;box-shadow:0 2px 20px rgba(0,0,0,0.04);flex:0 0 auto;}
+.sitebar .logo-link{display:flex;align-items:center;height:100%;flex-shrink:0;}
+.sitebar .logo{display:block;height:100%;width:auto;object-fit:contain;object-position:left center;}
+.sitebar .nav-links{display:flex;align-items:center;gap:18px;padding-left:18px;}
+.sitebar .nav-links a{text-decoration:none;color:var(--ink);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;}
+.sitebar .nav-links a:hover{opacity:0.6;}
 .hdr{padding:12px 24px 12px;border-bottom:1px solid var(--border);background:var(--s1);}
 .hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.05;margin-bottom:8px;}
 .hdr-title span{color:var(--gold);}
+.hdr-title a{color:inherit;text-decoration:none;}
+.hdr-title a:hover{opacity:0.72;}
 .hdr-copy{font-size:10px;line-height:1.75;color:var(--muted2);}
 .hdr-copy b{color:var(--ink);font-weight:500;}
 .hdr-copy a{color:var(--muted2);text-decoration:none;}
@@ -140,6 +148,9 @@ svg{display:block;}
 }
 
 @media (max-width: 900px) {
+  .sitebar{height:62px;padding:0 14px 0 8px;}
+  .sitebar .nav-links{gap:12px;padding-left:12px;}
+  .sitebar .nav-links a{font-size:12px;}
   .hdr{padding:10px 16px 10px;}
   .ctrl-row{display:grid;grid-template-columns:1fr 1fr;}
   .ctrl{border-right:none;border-bottom:1px solid var(--border);}
@@ -161,6 +172,9 @@ svg{display:block;}
 }
 
 @media (max-width: 580px) {
+  .sitebar{display:block;height:auto;padding:10px 12px;}
+  .sitebar .logo-link{height:42px;margin-bottom:8px;}
+  .sitebar .nav-links{padding-left:0;gap:12px;flex-wrap:wrap;}
   .ctrl-row{grid-template-columns:1fr;}
   .kpis{grid-template-columns:1fr;}
   .chart-rail .kpis{grid-template-columns:1fr;}
@@ -178,9 +192,18 @@ svg{display:block;}
 </head>
 <body>
 
+<div class="sitebar">
+  <a href="/" class="logo-link"><img src="../logo.png" alt="The Good Project" class="logo"></a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/library/">Library</a>
+    <a href="/model/">Model</a>
+  </div>
+</div>
+
 <div class="hdr">
-  <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below.">TGP <span>/</span> Fund One Model</div>
-  <div class="hdr-copy">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>. <b>How this model works:</b> the fund makes developer loans, pays its origination teams a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans. <b>Borrower Rate</b> is what the developer pays, while <b>Fund Take</b> is the portion that stays inside the fund after origination economics are paid out. <b>Cash</b> shows liquidity on hand, <b>Loans Outstanding</b> shows the active loan book, and <b>NAV</b> shows total fund value after retained income and debt cost. Change the assumptions below to see how quickly the book grows, how much capital gets called, and what return that produces.</div>
+  <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below."><a href="/">TGP <span>/</span> Fund One Model</a></div>
+  <div class="hdr-copy">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>. <b>How this model works:</b> the fund makes developer loans, pays its origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans. <b>Borrower Rate</b> is what the developer pays, while <b>Fund Take</b> is the portion that stays inside the fund after origination economics are paid out. <b>Cash</b> shows liquidity on hand, <b>Loans Outstanding</b> shows the active loan book, and <b>NAV</b> shows total fund value after retained income and debt cost. Change the assumptions below to see how quickly the book grows, how much capital gets called, and what return that produces.</div>
 </div>
 
 <div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
@@ -235,7 +258,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="This is the annualized rate charged to borrowers. It is the gross loan yield before origination teams are paid and before any debt cost is applied.">Borrower Rate</div>
+      <div class="ctrl-label" title="This is the annualized rate charged to borrowers. It is the gross loan yield before origination partners are paid and before any debt cost is applied.">Borrower Rate</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% APY</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div>
@@ -243,7 +266,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="This is the annualized portion of the borrower rate that the fund keeps after paying origination teams and other loan economics. This retained spread is what grows NAV over time.">Fund Take</div>
+      <div class="ctrl-label" title="This is the annualized portion of the borrower rate that the fund keeps after paying origination partners and other loan economics. This retained spread is what grows NAV over time.">Fund Take</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-take">18.0</div><div class="ctrl-unit">% kept</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div>
@@ -936,7 +959,7 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination teams their share of the borrower rate. LP capital is <b>${S.call ? 'called only when new loans need funding' : 'fully funded upfront'}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans. In the busiest month it calls about <b>${fmt(peakMonthlyCall, true)}</b> of LP capital and originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume. The loan book peaks around <b>${fmt(peakEquity)}</b> of LP capital out${Math.abs(peakDebt) < 0.5 ? '' : ` with <b>${fmt(peakDebt)}</b> of debt at peak`}, cash gets as low as <b>${fmt(minCash, true)}</b>, and the model ends near <b>${fmtP(priceArr[VIEW])}</b> NAV/share, which works out to about <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
+  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. LP capital is <b>${S.call ? 'called only when new loans need funding' : 'fully funded upfront'}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans. In the busiest month it calls about <b>${fmt(peakMonthlyCall, true)}</b> of LP capital and originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume. The loan book peaks around <b>${fmt(peakEquity)}</b> of LP capital out${Math.abs(peakDebt) < 0.5 ? '' : ` with <b>${fmt(peakDebt)}</b> of debt at peak`}, cash gets as low as <b>${fmt(minCash, true)}</b>, and the model ends near <b>${fmtP(priceArr[VIEW])}</b> NAV/share, which works out to about <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
   if (cumulativeLpCalled > fundSize + 0.5 || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'summary-note warn';
     const warnings = [];
