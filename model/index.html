@@ -102,6 +102,15 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .btn.plus.active{background:var(--green-dim);border-color:var(--green-dim);color:var(--green2);}
 .assump-note{font-size:10px;line-height:1.7;color:var(--muted);max-height:none;}
 .assump-note b{color:var(--gold2);font-weight:500;}
+.event-outline{margin-top:18px;border-top:1px solid var(--border);padding-top:12px;}
+.event-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;}
+.event-item{min-width:0;}
+.event-k{font-size:8px;color:var(--muted);letter-spacing:1.3px;text-transform:uppercase;margin-bottom:3px;}
+.event-v{font-size:11px;color:var(--ink);line-height:1.4;}
+.event-v.gold{color:var(--gold2);font-weight:600;}
+.event-v.green{color:var(--green2);font-weight:600;}
+.event-v.red{color:var(--red2);font-weight:600;}
+.event-note{grid-column:1 / -1;font-size:10px;color:var(--muted2);line-height:1.55;padding-top:2px;}
 
 .body{border-bottom:1px solid var(--border);flex:1 1 auto;min-height:0;}
 .chart-area{padding:12px 16px 10px;background:var(--s1);height:100%;overflow:hidden;}
@@ -288,6 +297,22 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
+      <div class="ctrl-label" title="This is the minimum annual profit rate LPs earn before the GP receives carry units. Profits below this hurdle all stay with LPs.">GP Hurdle</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% annual</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div>
+        <div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-label" title="This is the percentage of profits above the hurdle that gets paid to the GP in new units. Those units dilute LP ownership but do not take cash out of the fund.">GP Carry</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% of excess profit</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="adj('carry',-1)">- 1%</div>
+        <div class="btn plus" onclick="adj('carry',1)">+ 1%</div>
+      </div>
+    </div>
+    <div class="ctrl">
       <div class="ctrl-label" title="This is the annual cost of any borrowing the fund uses. Higher debt cost reduces the spread the fund keeps and slows NAV growth.">Cost of Debt</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-cod">8</div><div class="ctrl-unit">% APY</div></div>
       <div class="ctrl-btns">
@@ -345,8 +370,16 @@ svg{display:block;}
                 <div class="hover-v" id="hover-interest">-</div>
               </div>
               <div class="hover-item">
+                <div class="hover-k">Net Spread</div>
+                <div class="hover-v" id="hover-spread">-</div>
+              </div>
+              <div class="hover-item">
                 <div class="hover-k">Debt Cost</div>
                 <div class="hover-v" id="hover-debt">-</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">GP Units Minted</div>
+                <div class="hover-v" id="hover-gpunits">0</div>
               </div>
               <div class="hover-item">
                 <div class="hover-k">NAV / Share</div>
@@ -355,6 +388,10 @@ svg{display:block;}
               <div class="hover-item">
                 <div class="hover-k">IRR To Date</div>
                 <div class="hover-v" id="hover-irr">0.0%</div>
+              </div>
+              <div class="hover-item">
+                <div class="hover-k">GP Ownership</div>
+                <div class="hover-v" id="hover-gpown">0.0%</div>
               </div>
               <div class="hover-story" id="hover-story">Hover the chart to see what is happening at that point in the fund’s build, reinvestment, and recycling cycle.</div>
             </div>
@@ -370,6 +407,7 @@ svg{display:block;}
           <div class="leg leg-toggle" data-series="loans" onclick="toggleSeries('loans')"><div class="leg-line" style="background:#7b4bb3"></div>Loans outstanding</div>
           <div class="leg leg-toggle" data-series="cash" onclick="toggleSeries('cash')"><div class="leg-line" style="background:#1c7c54"></div>Cash balance</div>
           <div class="leg leg-toggle" data-series="volume" onclick="toggleSeries('volume')"><div class="leg-line" style="background:rgba(140,121,97,0.55);height:8px"></div>New loan volume / month</div>
+          <div class="leg"><div class="leg-dot" style="background:#b38b57"></div>Liquidity windows</div>
           <div class="leg"><div class="leg-line" style="background:#c0533e"></div>Negative cash</div>
           <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
           <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
@@ -408,11 +446,63 @@ svg{display:block;}
             <div class="kpi-v blue" id="kpi-debt">-</div>
             <div class="kpi-s">loans in busiest month</div>
           </div>
+          <div class="kpi" title="This is the total amount of GP carry that has been minted into units over the modeled life of the fund. It shows how much economics have accrued to the GP without taking cash out of NAV.">
+            <div class="kpi-l">GP Units Earned</div>
+            <div class="kpi-v plain" id="kpi-gpunits">-</div>
+            <div class="kpi-s">carry paid in units</div>
+          </div>
+          <div class="kpi" title="This is the GP ownership share of the fund by the end of the model after unit minting from carry. It shows how much of the fund economics have shifted to GP units over time.">
+            <div class="kpi-l">GP Ownership</div>
+            <div class="kpi-v gold" id="kpi-gpown">-</div>
+            <div class="kpi-s">of total diluted units</div>
+          </div>
         </div>
         <details class="settings-wrap">
           <summary class="settings-toggle" title="These are secondary controls for simulation and variance. Most users can ignore them unless they want to test a range of possible outcomes.">Settings</summary>
           <div class="settings-body">
             <div class="ctrl-row">
+              <div class="ctrl">
+                <div class="ctrl-label" title="How long LP capital stays locked before the fund opens a liquidity window. Before this point, liquidity events are informationally off.">Lockup</div>
+                <div class="ctrl-display"><div class="ctrl-val" id="v-lock">24</div><div class="ctrl-unit">months</div></div>
+                <div class="ctrl-btns">
+                  <div class="btn red" onclick="adj('lock',-3)">- 3mo</div>
+                  <div class="btn plus" onclick="adj('lock',3)">+ 3mo</div>
+                </div>
+              </div>
+              <div class="ctrl">
+                <div class="ctrl-label" title="How often the fund opens a liquidity window after lockup. For example, 3 means quarterly windows and 6 means semiannual windows.">Liquidity Event</div>
+                <div class="ctrl-display"><div class="ctrl-val" id="v-liq">3</div><div class="ctrl-unit">months apart</div></div>
+                <div class="ctrl-btns">
+                  <div class="btn red" onclick="adj('liq',-1)">- 1mo</div>
+                  <div class="btn plus" onclick="adj('liq',1)">+ 1mo</div>
+                </div>
+              </div>
+              <div class="ctrl">
+                <div class="ctrl-label" title="The share of LP value assumed to ask for liquidity at each event. This is a request assumption, not guaranteed payout.">Liquidity Request</div>
+                <div class="ctrl-display"><div class="ctrl-val" id="v-req">5.0</div><div class="ctrl-unit">% of LP value</div></div>
+                <div class="ctrl-btns">
+                  <div class="btn red" onclick="adj('req',-1)">- 1%</div>
+                  <div class="btn plus" onclick="adj('req',1)">+ 1%</div>
+                </div>
+              </div>
+            </div>
+            <div class="ctrl-row">
+              <div class="ctrl">
+                <div class="ctrl-label" title="The share of each liquidity request assumed to be matched by switches or secondary demand rather than paid from fund cash.">Switch Rate</div>
+                <div class="ctrl-display"><div class="ctrl-val" id="v-switch">25.0</div><div class="ctrl-unit">% matched</div></div>
+                <div class="ctrl-btns">
+                  <div class="btn red" onclick="adj('switch',-5)">- 5%</div>
+                  <div class="btn plus" onclick="adj('switch',5)">+ 5%</div>
+                </div>
+              </div>
+              <div class="ctrl">
+                <div class="ctrl-label" title="The maximum share of LP value the fund is assumed to pay out from cash in a single liquidity window. Anything above that is deferred or canceled.">Cash Payout Cap</div>
+                <div class="ctrl-display"><div class="ctrl-val" id="v-redcap">5.0</div><div class="ctrl-unit">% paid from fund</div></div>
+                <div class="ctrl-btns">
+                  <div class="btn red" onclick="adj('redcap',-1)">- 1%</div>
+                  <div class="btn plus" onclick="adj('redcap',1)">+ 1%</div>
+                </div>
+              </div>
               <div class="ctrl">
                 <div class="ctrl-label" title="Turns on randomized scenario runs instead of a single fixed case. Use this to see a range of possible outcomes rather than one straight-line projection.">Monte Carlo</div>
                 <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
@@ -445,6 +535,10 @@ svg{display:block;}
                 <div class="faq-a"><b>Borrower Rate</b> is the gross rate the developer pays on the loan. <b>Fund Take</b> is the portion the fund retains after paying origination partners and other loan economics. That retained spread is what drives NAV growth.</div>
               </div>
               <div class="faq-card">
+                <div class="faq-q">How Do GP Units Work?</div>
+                <div class="faq-a"><b>GP units</b> are minted from profits above the selected hurdle. The fund does not pay that carry out in cash here. Instead, the GP receives new units, which dilute LP ownership but leave cash inside the fund for reinvestment.</div>
+              </div>
+              <div class="faq-card">
                 <div class="faq-q">What Drives The Chart?</div>
                 <div class="faq-a"><b>NAV</b> shows total fund value, <b>Loans Outstanding</b> shows active principal still out in the field, <b>Cash</b> shows liquidity on hand, and the brown bars show <b>new loan volume per month</b> so you can judge whether the market would need to absorb more lending as the strategy scales.</div>
               </div>
@@ -456,6 +550,36 @@ svg{display:block;}
           <div class="ctrl-btns">
             <div class="btn red active" id="hc-off" onclick="setHardcore(false)">Off</div>
             <div class="btn plus" id="hc-on" onclick="setHardcore(true)">On</div>
+          </div>
+        </div>
+        <div class="event-outline">
+          <div class="panel-label" title="This box explains the current liquidity window under the hovered point in time. It shows what LPs ask for, what gets switched, what cash can pay, and what is deferred.">Liquidity Event Outline</div>
+          <div class="event-grid">
+            <div class="event-item">
+              <div class="event-k">Event Status</div>
+              <div class="event-v gold" id="evt-status">No window</div>
+            </div>
+            <div class="event-item">
+              <div class="event-k">LP Value</div>
+              <div class="event-v" id="evt-lpvalue">$0</div>
+            </div>
+            <div class="event-item">
+              <div class="event-k">Requested</div>
+              <div class="event-v" id="evt-request">$0</div>
+            </div>
+            <div class="event-item">
+              <div class="event-k">Switched</div>
+              <div class="event-v green" id="evt-switched">$0</div>
+            </div>
+            <div class="event-item">
+              <div class="event-k">Paid from Fund</div>
+              <div class="event-v gold" id="evt-paid">$0</div>
+            </div>
+            <div class="event-item">
+              <div class="event-k">Canceled / Deferred</div>
+              <div class="event-v red" id="evt-canceled">$0</div>
+            </div>
+            <div class="event-note" id="evt-note">Hover the chart to see each liquidity window, how much LPs could ask for, how much is switched, and how much cash the fund could actually pay.</div>
           </div>
         </div>
       </div>
@@ -473,15 +597,16 @@ let mainChart = null;
 let chartHoverBound = false;
 const seriesState = { nav: true, target: true, loans: true, cash: true, volume: true };
 
-const S = { fund:1.0, call:1, size:25, dpm:3, term:18, apy:25.0, take:18.0, lev:0.0, cod:8, irr:15.0, var:10.0, mc:0, hc:0 };
+const S = { fund:1.0, call:1, size:25, dpm:3, term:18, apy:25.0, take:18.0, hurdle:8.0, carry:15.0, lev:0.0, cod:8, irr:15.0, lock:24, liq:3, req:5.0, switch:25.0, redcap:5.0, var:10.0, mc:0, hc:0 };
 
 const limits = {
-  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,120,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[0.0,2.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
+  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,120,6], apy:[5,40,0.5], take:[1,30,0.5], hurdle:[0,20,0.5], carry:[0,30,1], lev:[0.0,2.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], lock:[0,60,3], liq:[1,12,1], req:[0,25,1], switch:[0,100,5], redcap:[0,25,1], var:[0,30,1]
 };
 
 function fmtControl(k, v) {
   if (k === 'lev') return v.toFixed(2);
-  if (k === 'fund' || k === 'cod' || k === 'dpm' || k === 'size' || k === 'irr' || k === 'var' || k === 'apy' || k === 'take') return v.toFixed(1);
+  if (k === 'liq' || k === 'lock') return v.toFixed(0);
+  if (k === 'fund' || k === 'cod' || k === 'dpm' || k === 'size' || k === 'irr' || k === 'var' || k === 'apy' || k === 'take' || k === 'hurdle' || k === 'carry' || k === 'req' || k === 'switch' || k === 'redcap') return v.toFixed(1);
   return String(v);
 }
 
@@ -656,8 +781,15 @@ function buildScenario(opts = {}) {
   const totalMultiple = 1 + debtEq;
   const baseApy = state.apy / 100;
   const baseTake = state.take / 100;
+  const hurdleRate = state.hurdle / 100;
+  const carryPct = state.carry / 100;
   const baseCod = state.cod / 100;
   const targetIrr = state.irr / 100;
+  const lockMonths = Math.max(0, Math.round(state.lock));
+  const liquidityEvery = Math.max(1, Math.round(state.liq));
+  const requestPct = state.req / 100;
+  const switchPct = state.switch / 100;
+  const redCapPct = state.redcap / 100;
   const annualVariance = state.var / 100;
   const monthlyStd = annualVariance / Math.sqrt(12);
   const mo1 = Math.min(12, state.term);
@@ -677,6 +809,18 @@ function buildScenario(opts = {}) {
   const loanOutstandingArr = new Array(VIEW + 1).fill(0);
   const originationArr = new Array(VIEW + 1).fill(0);
   const dealsArr = new Array(VIEW + 1).fill(0);
+  const netSpreadArr = new Array(VIEW + 1).fill(0);
+  const gpUnitsMintedArr = new Array(VIEW + 1).fill(0);
+  const gpUnitsArr = new Array(VIEW + 1).fill(0);
+  const totalUnitsArr = new Array(VIEW + 1).fill(0);
+  const gpOwnershipArr = new Array(VIEW + 1).fill(0);
+  const lpValueArr = new Array(VIEW + 1).fill(0);
+  const eventCodeArr = new Array(VIEW + 1).fill(0);
+  const liquidityEventArr = new Array(VIEW + 1).fill(0);
+  const liquidityRequestedArr = new Array(VIEW + 1).fill(0);
+  const liquiditySwitchedArr = new Array(VIEW + 1).fill(0);
+  const liquidityPaidArr = new Array(VIEW + 1).fill(0);
+  const liquidityCanceledArr = new Array(VIEW + 1).fill(0);
 
   let totInt = 0;
   let totDebt = 0;
@@ -684,12 +828,19 @@ function buildScenario(opts = {}) {
   let cumulativeLpCalled = 0;
 
   const initialLpCall = justInTimeCalls ? 0 : fundSize;
+  let gpUnits = 0;
+  let lpUnits = initialLpCall / PAR;
+  let totalUnits = lpUnits;
   cumulativeLpCalled = initialLpCall;
   lpCallArr[0] = initialLpCall;
   navArr[0] = initialLpCall;
   targetNavArr[0] = initialLpCall;
-  priceArr[0] = initialLpCall / shares;
+  priceArr[0] = totalUnits > 0 ? initialLpCall / totalUnits : PAR;
   cashArr[0] = initialLpCall;
+  totalUnitsArr[0] = totalUnits;
+  gpUnitsArr[0] = gpUnits;
+  gpOwnershipArr[0] = 0;
+  lpValueArr[0] = initialLpCall;
 
   let runNAV = initialLpCall;
   let cashBal = initialLpCall;
@@ -728,6 +879,8 @@ function buildScenario(opts = {}) {
       cumulativeLpCalled += lpCall;
       cashBal += lpCall;
       runNAV += lpCall;
+      lpUnits += lpCall / PAR;
+      totalUnits += lpCall / PAR;
       targetNav = targetNav * (1 + targetIrr / 12) + lpCall;
     } else {
       targetNav = targetNav * (1 + targetIrr / 12);
@@ -744,6 +897,15 @@ function buildScenario(opts = {}) {
     debtArr[m] += immediateDebtCost;
     cashBal += immediateInterest - immediateDebtCost;
     runNAV += immediateInterest - immediateDebtCost;
+    const periodProfit = carryInterest + immediateInterest - carryDebtCost - immediateDebtCost;
+    const periodHurdle = Math.max(0, (navArr[m - 1] || 0) * hurdleRate / 12);
+    const carryValue = Math.max(0, periodProfit - periodHurdle) * carryPct;
+    const navPerUnitBeforeGpMint = totalUnits > 0 ? runNAV / totalUnits : PAR;
+    const gpUnitsMinted = navPerUnitBeforeGpMint > 0 ? carryValue / navPerUnitBeforeGpMint : 0;
+    gpUnits += gpUnitsMinted;
+    totalUnits += gpUnitsMinted;
+    netSpreadArr[m] = periodProfit;
+    gpUnitsMintedArr[m] = gpUnitsMinted;
 
     const mat = m + state.term;
     if (mat <= VIEW) priArr[mat] += actualEquityDeployment;
@@ -761,7 +923,23 @@ function buildScenario(opts = {}) {
     cashArr[m] = cashBal;
     navArr[m] = runNAV;
     targetNavArr[m] = targetNav;
-    priceArr[m] = runNAV / shares;
+    priceArr[m] = totalUnits > 0 ? runNAV / totalUnits : PAR;
+    totalUnitsArr[m] = totalUnits;
+    gpUnitsArr[m] = gpUnits;
+    gpOwnershipArr[m] = totalUnits > 0 ? gpUnits / totalUnits : 0;
+    lpValueArr[m] = runNAV - (gpUnits * priceArr[m]);
+    const liquidityEvent = m >= lockMonths && ((m - lockMonths) % liquidityEvery === 0);
+    const liquidityRequested = liquidityEvent ? lpValueArr[m] * requestPct : 0;
+    const liquiditySwitched = liquidityRequested * switchPct;
+    const liquidityCashCap = liquidityEvent ? Math.min(Math.max(cashBal, 0), lpValueArr[m] * redCapPct) : 0;
+    const liquidityPaid = Math.min(Math.max(0, liquidityRequested - liquiditySwitched), liquidityCashCap);
+    const liquidityCanceled = Math.max(0, liquidityRequested - liquiditySwitched - liquidityPaid);
+    liquidityEventArr[m] = liquidityEvent ? 1 : 0;
+    liquidityRequestedArr[m] = liquidityRequested;
+    liquiditySwitchedArr[m] = liquiditySwitched;
+    liquidityPaidArr[m] = liquidityPaid;
+    liquidityCanceledArr[m] = liquidityCanceled;
+    eventCodeArr[m] = (lpCall > 0 ? 1 : 0) + (carryInterest + immediateInterest > 0.5 ? 2 : 0) + (carryPrincipal > 0.5 ? 4 : 0) + (gpUnitsMinted > 0.0001 ? 8 : 0) + (liquidityEvent ? 16 : 0);
     totInt += carryInterest + immediateInterest;
     totDebt += carryDebtCost + immediateDebtCost;
     totNet += net;
@@ -776,15 +954,17 @@ function buildScenario(opts = {}) {
   const peakMonthlyOrigination = Math.max(...originationArr);
   const peakMonthlyDeals = Math.max(...dealsArr);
   const totalLoansOriginated = dealsArr.reduce((sum, deals) => sum + deals, 0);
+  const totalGpUnitsMinted = gpUnits;
+  const endingGpOwnership = gpOwnershipArr[VIEW];
   const irrArr = new Array(VIEW + 1).fill(0);
 
   const lpFlows = lpCallArr.map(v => -v);
-  lpFlows[VIEW] += navArr[VIEW];
+  lpFlows[VIEW] += lpValueArr[VIEW];
   const monthlyIrr = solveMonthlyIrr(lpFlows);
   const projectedIrr = Math.pow(1 + monthlyIrr, 12) - 1;
   for (let m = 0; m <= VIEW; m++) {
     const partialFlows = lpCallArr.slice(0, m + 1).map(v => -v);
-    partialFlows[m] += navArr[m];
+    partialFlows[m] += lpValueArr[m];
     const partialMonthlyIrr = solveMonthlyIrr(partialFlows);
     irrArr[m] = Math.pow(1 + partialMonthlyIrr, 12) - 1;
   }
@@ -792,7 +972,8 @@ function buildScenario(opts = {}) {
   return {
     fundSize, shares, targetIrr,
     navArr, targetNavArr, cashArr, cashDeltaArr, priceArr, loanOutstandingArr, lpCallArr, originationArr, dealsArr,
-    intArr, debtArr, priArr, irrArr,
+    intArr, debtArr, priArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpUnitsArr, gpOwnershipArr, lpValueArr, eventCodeArr,
+    liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr,
     projectedIrr,
     minCash: Math.min(...cashArr),
     cumulativeLpCalled,
@@ -800,6 +981,8 @@ function buildScenario(opts = {}) {
     peakMonthlyOrigination,
     peakMonthlyDeals,
     totalLoansOriginated,
+    totalGpUnitsMinted,
+    endingGpOwnership,
     peakEquity, peakDebt,
     totInt, totDebt, totNet
   };
@@ -891,11 +1074,16 @@ function endLabel(text, color) {
   };
 }
 
-function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr) {
+function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr) {
   const progressPct = ((month / VIEW) * 100).toFixed(0);
   const periodLabel = month === 0 ? 'Start of Fund' : `Month ${month} of ${VIEW} · Year ${(month / 12).toFixed(1)} · ${progressPct}% complete`;
   const loanMix = navArr[month] > 0 ? ((loanOutstandingArr[month] / navArr[month]) * 100) : 0;
   const stateStory = overallStateNarrative(month, navArr, cashArr, loanOutstandingArr, originationArr, cashDeltaArr);
+  const requested = liquidityRequestedArr?.[month] || 0;
+  const switched = liquiditySwitchedArr?.[month] || 0;
+  const paid = liquidityPaidArr?.[month] || 0;
+  const canceled = liquidityCanceledArr?.[month] || 0;
+  const eventOn = !!(liquidityEventArr?.[month]);
 
   document.getElementById('hover-period').textContent = periodLabel;
   document.getElementById('hover-nav').textContent = `${fmt(navArr[month], true)} · ${fmtSigned(navArr[month] - navArr[0])}`;
@@ -905,10 +1093,22 @@ function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingA
   document.getElementById('hover-newloans').textContent = `${dealsArr[month].toFixed(1)} loans`;
   document.getElementById('hover-volume').textContent = fmt(originationArr[month], true);
   document.getElementById('hover-interest').textContent = month === 0 ? '-' : '+' + fmt(intArr[month]);
+  document.getElementById('hover-spread').textContent = month === 0 ? '-' : fmtSigned(netSpreadArr?.[month] || 0);
   document.getElementById('hover-debt').textContent = month === 0 ? '-' : '-' + fmt(debtArr[month]);
+  document.getElementById('hover-gpunits').textContent = (gpUnitsMintedArr?.[month] || 0).toFixed(1);
   document.getElementById('hover-price').textContent = fmtP(priceArr[month]);
   document.getElementById('hover-irr').textContent = `${((irrArr?.[month] || 0) * 100).toFixed(1)}%`;
+  document.getElementById('hover-gpown').textContent = `${(((gpOwnershipArr?.[month]) || 0) * 100).toFixed(1)}%`;
   document.getElementById('hover-story').textContent = stateStory;
+  document.getElementById('evt-status').textContent = eventOn ? 'Window Open' : 'No window';
+  document.getElementById('evt-lpvalue').textContent = fmt(lpValueArr?.[month] || 0, true);
+  document.getElementById('evt-request').textContent = fmt(requested, true);
+  document.getElementById('evt-switched').textContent = `${fmt(switched, true)}${requested > 0 ? ` · ${((switched / requested) * 100).toFixed(0)}%` : ''}`;
+  document.getElementById('evt-paid').textContent = `${fmt(paid, true)}${requested > 0 ? ` · ${((paid / requested) * 100).toFixed(0)}%` : ''}`;
+  document.getElementById('evt-canceled').textContent = `${fmt(canceled, true)}${requested > 0 ? ` · ${((canceled / requested) * 100).toFixed(0)}%` : ''}`;
+  document.getElementById('evt-note').textContent = eventOn
+    ? `At this liquidity event, LPs ask for ${fmt(requested, true)}. ${fmt(switched, true)} is matched by switches, ${fmt(paid, true)} could be paid from fund cash under the cap, and ${fmt(canceled, true)} would be deferred or canceled.`
+    : 'No liquidity window is open at this point. Lockup and event cadence determine when LPs can ask for liquidity.';
 }
 
 function recalc() {
@@ -1015,7 +1215,7 @@ function recalc() {
     };
   }
 
-  const { navArr, cashArr, cashDeltaArr, priceArr, irrArr, intArr, debtArr, loanOutstandingArr, originationArr, dealsArr, projectedIrr, minCash, peakEquity, peakDebt, peakMonthlyCall, peakMonthlyOrigination, peakMonthlyDeals, totalLoansOriginated, cumulativeLpCalled, totInt, totDebt, totNet } = display;
+  const { navArr, cashArr, cashDeltaArr, priceArr, irrArr, intArr, debtArr, loanOutstandingArr, originationArr, dealsArr, projectedIrr, minCash, peakEquity, peakDebt, peakMonthlyCall, peakMonthlyOrigination, peakMonthlyDeals, totalLoansOriginated, cumulativeLpCalled, totInt, totDebt, totNet, netSpreadArr, gpUnitsMintedArr, gpUnitsArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, totalGpUnitsMinted, endingGpOwnership } = display;
   const irrGap = projectedIrr - targetIrr;
   const grossApy = S.apy / 100;
   const fundTake = S.take / 100;
@@ -1028,6 +1228,8 @@ function recalc() {
   document.getElementById('kpi-gap').textContent = totalLoansOriginated.toFixed(0);
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
   document.getElementById('kpi-mincash').textContent = fmt(minCash, true);
+  document.getElementById('kpi-gpunits').textContent = totalGpUnitsMinted.toFixed(0);
+  document.getElementById('kpi-gpown').textContent = `${(endingGpOwnership * 100).toFixed(1)}%`;
   document.getElementById('v-call').textContent = S.call ? 'On' : 'Off';
   document.getElementById('v-mc').textContent = S.mc ? 'On' : 'Off';
   updateHardcoreButtons();
@@ -1042,7 +1244,7 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. LP capital is <b>${S.hc ? 'funded upfront and redeployed immediately as cash returns' : (S.call ? 'called only when new loans need funding' : 'fully funded upfront')}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans. In the busiest month it calls about <b>${fmt(peakMonthlyCall, true)}</b> of LP capital and originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume. The loan book peaks around <b>${fmt(peakEquity)}</b> of LP capital out${Math.abs(peakDebt) < 0.5 ? '' : ` with <b>${fmt(peakDebt)}</b> of debt at peak`}, cash gets as low as <b>${fmt(minCash, true)}</b>, and the model ends near <b>${fmtP(priceArr[VIEW])}</b> NAV/share, which works out to about <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.hc ? ` Hardcore Mode is on, so idle cash is immediately redeployed instead of waiting for a gentler ramp.` : ''}${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
+  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. GP carry is set at <b>${S.carry.toFixed(1)}%</b> over an <b>${S.hurdle.toFixed(1)}%</b> hurdle and is paid in new units rather than cash. LP capital is <b>${S.hc ? 'funded upfront and redeployed immediately as cash returns' : (S.call ? 'called only when new loans need funding' : 'fully funded upfront')}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Liquidity windows open after <b>${S.lock.toFixed(0)} months</b> and then every <b>${S.liq.toFixed(0)} months</b>, with <b>${S.req.toFixed(1)}%</b> of LP value assumed to request liquidity, <b>${S.switch.toFixed(1)}%</b> switched, and <b>${S.redcap.toFixed(1)}%</b> of LP value available to pay from fund cash. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans, mints about <b>${totalGpUnitsMinted.toFixed(0)}</b> GP units, and ends with GP owning about <b>${(endingGpOwnership * 100).toFixed(1)}%</b> of units. The busiest month originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume.${S.hc ? ` Hardcore Mode is on, so idle cash is immediately redeployed instead of waiting for a gentler ramp.` : ''}${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
   if (cumulativeLpCalled > fundSize + 0.5 || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'summary-note warn';
     const warnings = [];
@@ -1053,11 +1255,11 @@ function recalc() {
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
-  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr, irrArr);
-  updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr);
+  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr);
+  updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr);
 }
 
-function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr, irrArr) {
+function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr) {
   const el = document.getElementById('main-chart');
   const hoverLine = document.getElementById('hover-line');
   if (!window.echarts) return;
@@ -1072,6 +1274,7 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
   const bandSpan = showMonteCarlo ? mcHigh.map((v, i) => Math.max(0, v - mcLow[i])) : [];
   const monthOriginationVolume = originationArr.slice();
   const maxOriginationVolume = Math.max(1, ...monthOriginationVolume);
+  const liquidityDotData = categories.filter(m => liquidityEventArr?.[m]).map(m => [m, cashArr[m]]);
   const labelMonths = [];
   const minLabelGap = 14;
   for (let i = 1; i < monthOriginationVolume.length - 1; i++) {
@@ -1187,11 +1390,12 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
         return barFloor + (v / maxOriginationVolume) * barRange;
       }), barWidth: '34%', silent: true, z: 1, itemStyle: { color: 'rgba(140,121,97,0.20)', borderColor: 'rgba(140,121,97,0.55)', borderWidth: 1, borderRadius: [2, 2, 0, 0] }, emphasis: { disabled: true }, tooltip: { show: false } },
       { name: 'Origination Labels', type: 'scatter', xAxisIndex: 1, yAxisIndex: 1, data: originationLabelData, symbolSize: 1, silent: true, tooltip: { show: false }, itemStyle: { color: 'rgba(0,0,0,0)' } }] : []),
+      { name: 'Liquidity Events', type: 'scatter', xAxisIndex: 1, yAxisIndex: 1, data: liquidityDotData, symbol: 'circle', symbolSize: 6, silent: true, z: 5, itemStyle: { color: '#b38b57', borderColor: '#fdfaf5', borderWidth: 1.5 }, tooltip: { show: false } },
       ...(seriesState.cash ? [{ name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Cash', '#1c7c54'), lineStyle: { color: '#1c7c54', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } }] : [])
     ]
   }, true);
   const syncHover = month => {
-    updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr);
+    updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr);
     mainChart.dispatchAction({ type: 'updateAxisPointer', xAxisIndex: 0, value: month });
     mainChart.dispatchAction({ type: 'updateAxisPointer', xAxisIndex: 1, value: month });
   };
@@ -1215,7 +1419,7 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
   };
   el.onmouseleave = () => {
     if (hoverLine) hoverLine.style.display = 'none';
-    updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr);
+    updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr);
   };
 }
 recalc();
