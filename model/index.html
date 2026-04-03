@@ -154,7 +154,7 @@ svg{display:block;}
 
 <div class="hdr">
   <div>
-    <div class="hdr-title">TGP <span>/</span> Fund One - NAV Model</div>
+    <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below.">TGP <span>/</span> Fund One - NAV Model</div>
     <div class="hdr-sub"><span id="hdr-fund">1.0B Fund</span> · $1,000 Par · Cash Basis · 7-Year View</div>
   </div>
   <div class="hdr-tag">
@@ -164,11 +164,11 @@ svg{display:block;}
   </div>
 </div>
 
-<div class="panel-label">Assumptions</div>
+<div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
 <div class="controls">
   <div class="ctrl-row">
     <div class="ctrl">
-      <div class="ctrl-label">Fund Size</div>
+      <div class="ctrl-label" title="The starting amount of equity capital in the fund.">Fund Size</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B equity</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div>
@@ -176,7 +176,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Deal Size</div>
+      <div class="ctrl-label" title="The average size of each loan the fund originates.">Deal Size</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-size">20.0</div><div class="ctrl-unit">$M / loan</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('size',-2.5)">- $2.5M</div>
@@ -184,7 +184,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Deals / Month</div>
+      <div class="ctrl-label" title="How many new loans the fund closes each month.">Deals / Month</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">originations monthly, max 4.0</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('dpm',-0.5)">- 0.5</div>
@@ -192,7 +192,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Loan Term</div>
+      <div class="ctrl-label" title="How long each loan stays outstanding before principal comes back.">Loan Term</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-term">18</div><div class="ctrl-unit">months</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('term',-6)">- 6mo</div>
@@ -200,7 +200,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Leverage Ratio</div>
+      <div class="ctrl-label" title="How much total lending the fund supports for each dollar of equity.">Leverage Ratio</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-lev">1.0</div><div class="ctrl-unit">x equity</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('lev',-0.25)">- 0.25x</div>
@@ -208,7 +208,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Average Loan APY</div>
+      <div class="ctrl-label" title="The gross annual rate charged to borrowers on the loans.">Average Loan APY</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% borrower rate</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('apy',-1)">- 1%</div>
@@ -216,7 +216,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Fund Take</div>
+      <div class="ctrl-label" title="The annual rate the fund keeps after the loan economics are allocated.">Fund Take</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-take">18.0</div><div class="ctrl-unit">% retained APY</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('take',-1)">- 1%</div>
@@ -224,7 +224,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Cost of Debt</div>
+      <div class="ctrl-label" title="The annual cost of any borrowing used by the fund.">Cost of Debt</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-cod">8</div><div class="ctrl-unit">% APY</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('cod',-0.5)">- 0.5%</div>
@@ -232,7 +232,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Target IRR</div>
+      <div class="ctrl-label" title="The annual return target you want the modeled fund to hit.">Target IRR</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('irr',-1)">- 1%</div>
@@ -240,7 +240,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label">Monte Carlo</div>
+      <div class="ctrl-label" title="Turns on randomized scenario runs to show a range of outcomes instead of just one base case.">Monte Carlo</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="setMonteCarlo(false)">Off</div>
@@ -248,7 +248,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl" id="var-ctrl">
-      <div class="ctrl-label">Variance</div>
+      <div class="ctrl-label" title="Controls how much the randomized Monte Carlo runs can move around the base assumptions.">Variance</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('var',-2)">- 2%</div>
@@ -264,7 +264,7 @@ svg{display:block;}
   <div class="chart-area">
     <div class="chart-shell">
       <div class="chart-main">
-        <div class="sec-label">NAV and Cash Balance</div>
+        <div class="sec-label" title="This chart shows how fund NAV and cash balance move over time under the current assumptions.">NAV and Cash Balance</div>
         <div class="chart-frame" id="nav-frame">
           <svg id="main-chart" height="560"></svg>
           <div class="chart-tip" id="nav-tip"></div>
@@ -279,44 +279,44 @@ svg{display:block;}
         </div>
       </div>
       <div class="chart-rail">
-        <div class="panel-label">Current Scenario Analysis</div>
+        <div class="panel-label" title="These tiles summarize the most important outputs from the current scenario.">Current Scenario Analysis</div>
         <div class="kpis">
-          <div class="kpi">
+          <div class="kpi" title="The annualized return implied by the modeled NAV path.">
             <div class="kpi-l">Projected IRR</div>
             <div class="kpi-v blue" id="kpi-irr">-</div>
             <div class="kpi-s">annualized from modeled NAV</div>
           </div>
-          <div class="kpi">
+          <div class="kpi" title="How far the modeled IRR is above or below the target IRR.">
             <div class="kpi-l">Target Gap</div>
             <div class="kpi-v plain" id="kpi-gap">-</div>
             <div class="kpi-s">projected vs target IRR</div>
           </div>
-          <div class="kpi">
+          <div class="kpi" title="The modeled value per share at the end of the 7-year view.">
             <div class="kpi-l">NAV / Share · Year 7</div>
             <div class="kpi-v gold" id="kpi-navshare">-</div>
             <div class="kpi-s">vs $1,000 par</div>
           </div>
-          <div class="kpi">
+          <div class="kpi" title="The lowest cash balance reached at any point in the model.">
             <div class="kpi-l">Min Cash Balance</div>
             <div class="kpi-v plain" id="kpi-mincash">-</div>
             <div class="kpi-s">lowest liquidity point</div>
           </div>
-          <div class="kpi">
+          <div class="kpi" title="The highest amount of equity capital that is tied up in loans at one time.">
             <div class="kpi-l">Peak Equity Deployed</div>
             <div class="kpi-v gold" id="kpi-equity">-</div>
             <div class="kpi-s">max LP capital at work</div>
           </div>
-          <div class="kpi">
+          <div class="kpi" title="The peak amount of borrowing the model uses at one time.">
             <div class="kpi-l">Debt Facility</div>
             <div class="kpi-v blue" id="kpi-debt">-</div>
             <div class="kpi-s">peak borrowed capital</div>
           </div>
         </div>
         <div class="solver-box">
-          <div class="panel-label">Solver</div>
+          <div class="panel-label" title="The solver searches for settings that maximize IRR while keeping a minimum cash buffer.">Solver</div>
           <div class="solver-copy" id="solver-copy">-</div>
           <div class="solver-actions">
-            <div class="btn plus" onclick="applySolver()">Apply Solver</div>
+            <div class="btn plus" onclick="applySolver()" title="Apply the solver's suggested deal size and deals per month to the model.">Apply Solver</div>
           </div>
         </div>
       </div>
