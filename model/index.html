@@ -27,6 +27,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .sitebar-title span{color:var(--gold);}
 .sitebar-title a{color:inherit;text-decoration:none;}
 .sitebar-title a:hover{opacity:0.72;}
+.sitebar-action{display:inline-flex;align-items:center;justify-content:center;padding:7px 12px;border:1px solid var(--border2);background:var(--s1);color:var(--ink);text-decoration:none;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+.sitebar-action:hover{background:var(--s2);border-color:var(--gold2);color:var(--gold2);}
 .hdr-copy{padding:10px 24px 10px;border-bottom:1px solid var(--border);background:var(--s1);font-size:10px;line-height:1.6;color:var(--muted2);}
 .hdr-copy b{color:var(--ink);font-weight:500;}
 .hdr-copy a{color:var(--muted2);text-decoration:none;}
@@ -163,6 +165,7 @@ svg{display:block;}
   .sitebar .logo{height:30px;}
   .sitebar-main{gap:10px;}
   .sitebar-title{font-size:15px;}
+  .sitebar-action{padding:6px 10px;font-size:9px;}
   .hdr-copy{padding:10px 16px;}
   .ctrl-row{display:grid;grid-template-columns:1fr 1fr;}
   .ctrl{border-right:none;border-bottom:1px solid var(--border);}
@@ -189,6 +192,7 @@ svg{display:block;}
   .sitebar .logo{height:28px;}
   .sitebar-main{display:block;margin-top:6px;}
   .sitebar-title{white-space:normal;margin-bottom:0;}
+  .sitebar-action{display:inline-flex;margin-top:8px;}
   .hdr-copy{padding:10px 12px;}
   .ctrl-row{grid-template-columns:1fr;}
   .kpis{grid-template-columns:1fr;}
@@ -212,6 +216,7 @@ svg{display:block;}
   <div class="sitebar-main">
     <div class="sitebar-title" title="This page models how the fund's cash and NAV change over time under the assumptions below."><a href="/">The Good Project <span>/</span> Fund One Model</a></div>
   </div>
+  <a class="sitebar-action" href="/model/TGP_Fund_One_Model.xlsx" download>Download Excel</a>
 </div>
 <div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>How this model works:</b> the fund makes developer loans, pays origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans.</div>
 
