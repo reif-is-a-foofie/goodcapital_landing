@@ -30,10 +30,13 @@
 * { box-sizing: border-box; }
 
 :root {
-    --bg: #F7F6F3;
-    --text: #111111;
-    --muted: #555555;
-    --divider: #E4E2DD;
+    --bg: #F5F2EC;
+    --bg2: #FDFAF5;
+    --bg3: #F1EBE1;
+    --text: #26221D;
+    --muted: #776B5D;
+    --divider: rgba(156, 122, 77, 0.16);
+    --divider-strong: rgba(156, 122, 77, 0.28);
     --accent: #087074;
     --accent-hover: #065A5D;
 }
@@ -66,8 +69,8 @@ nav {
     left: 0;
     right: 0;
     z-index: 9999;
-    background: #F2F2F2;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+    background: var(--bg2);
+    box-shadow: 0 2px 20px rgba(38,34,29,0.04);
     overflow: visible;
 }
 
@@ -112,6 +115,7 @@ nav .nav-links a:hover {
 
 .hero {
     padding: calc(120px + 64px) 24px 98px;
+    background: var(--bg2);
 }
 
 .hero .mission {
@@ -148,6 +152,7 @@ nav .nav-links a:hover {
 
 .section {
     border-top: 1px solid var(--divider);
+    background: var(--bg);
 }
 
 #work,
@@ -242,6 +247,7 @@ nav .nav-links a:hover {
 .cta {
     text-align: center;
     padding: 120px 24px;
+    background: var(--bg2);
 }
 
 .cta h2 {
@@ -274,6 +280,7 @@ footer {
     color: var(--muted);
     text-align: center;
     overflow: visible;
+    background: var(--bg3);
 }
 
 footer .footer-quote {
