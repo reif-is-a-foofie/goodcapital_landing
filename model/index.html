@@ -88,6 +88,12 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .summary-note{padding:10px 20px;border-bottom:1px solid var(--border);background:var(--s1);font-size:10px;line-height:1.6;color:var(--muted2);flex:0 1 auto;max-height:13vh;overflow:auto;}
 .summary-note b{color:var(--ink);font-weight:500;}
 .summary-note.warn{border-left:2px solid var(--red2);padding-left:26px;}
+.faq-list{display:grid;gap:10px;}
+.faq-card{padding:10px 0;border-top:1px solid var(--border);}
+.faq-card:first-child{border-top:none;padding-top:0;}
+.faq-q{font-size:9px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;margin-bottom:6px;}
+.faq-a{font-size:10px;line-height:1.65;color:var(--muted2);}
+.faq-a b{color:var(--ink);font-weight:500;}
 .assump-note{font-size:10px;line-height:1.7;color:var(--muted);max-height:none;}
 .assump-note b{color:var(--gold2);font-weight:500;}
 
@@ -202,7 +208,7 @@ svg{display:block;}
 </div>
 
 <div class="hdr">
-  <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below."><a href="/">TGP <span>/</span> Fund One Model</a></div>
+  <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below."><a href="/">The Good Project <span>/</span> Fund One Model</a></div>
   <div class="hdr-copy">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>. <b>How this model works:</b> the fund makes developer loans, pays its origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans. <b>Borrower Rate</b> is what the developer pays, while <b>Fund Take</b> is the portion that stays inside the fund after origination economics are paid out. <b>Cash</b> shows liquidity on hand, <b>Loans Outstanding</b> shows the active loan book, and <b>NAV</b> shows total fund value after retained income and debt cost. Change the assumptions below to see how quickly the book grows, how much capital gets called, and what return that produces.</div>
 </div>
 
@@ -227,7 +233,7 @@ svg{display:block;}
     </div>
     <div class="ctrl">
       <div class="ctrl-label" title="This is the average size of each new loan the fund makes. Larger loans put more capital to work with each origination.">Loan Size</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-size">20.0</div><div class="ctrl-unit">$M each</div></div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M each</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('size',-1)">- $1M</div>
         <div class="btn plus" onclick="adj('size',1)">+ $1M</div>
@@ -414,6 +420,25 @@ svg{display:block;}
             </div>
           </div>
         </details>
+        <details class="settings-wrap">
+          <summary class="settings-toggle" title="Short answers to the core modeling questions investors usually ask first.">FAQ</summary>
+          <div class="settings-body">
+            <div class="faq-list">
+              <div class="faq-card">
+                <div class="faq-q">How Is Loan Volume Modeled?</div>
+                <div class="faq-a"><b>Monthly origination volume</b> is modeled as the lesser of <b>pipeline capacity</b> and <b>deployable capital</b>. In plain English: the fund can only make as many loans as the market can absorb and as its available equity, leverage, repayments, retained profits, and remaining capital calls can support.</div>
+              </div>
+              <div class="faq-card">
+                <div class="faq-q">Borrower Rate Vs. Fund Take</div>
+                <div class="faq-a"><b>Borrower Rate</b> is the gross rate the developer pays on the loan. <b>Fund Take</b> is the portion the fund retains after paying origination partners and other loan economics. That retained spread is what drives NAV growth.</div>
+              </div>
+              <div class="faq-card">
+                <div class="faq-q">What Drives The Chart?</div>
+                <div class="faq-a"><b>NAV</b> shows total fund value, <b>Loans Outstanding</b> shows active principal still out in the field, <b>Cash</b> shows liquidity on hand, and the brown bars show <b>new loan volume per month</b> so you can judge whether the market would need to absorb more lending as the strategy scales.</div>
+              </div>
+            </div>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -430,7 +455,7 @@ const MC_RUNS = 250;
 let mainChart = null;
 let chartHoverBound = false;
 
-const S = { fund:1.0, call:1, size:20, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
+const S = { fund:1.0, call:1, size:25, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
 
 const limits = {
   fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,20,0.25], term:[6,120,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[1.0,3.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
