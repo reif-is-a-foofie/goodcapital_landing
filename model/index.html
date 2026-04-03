@@ -19,21 +19,21 @@
 html,body{height:100%;}
 body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-size:12px;font-weight:300;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
 
-.sitebar{display:flex;justify-content:space-between;align-items:center;padding:0 18px 0 10px;height:44px;border-bottom:1px solid var(--border);background:#f2f2f2;box-shadow:0 1px 10px rgba(0,0,0,0.03);flex:0 0 auto;}
+.sitebar{display:flex;justify-content:space-between;align-items:center;padding:0 18px 0 10px;height:56px;border-bottom:1px solid var(--border);background:#f2f2f2;box-shadow:0 1px 10px rgba(0,0,0,0.03);flex:0 0 auto;gap:18px;}
 .sitebar .logo-link{display:flex;align-items:center;height:100%;flex-shrink:0;}
 .sitebar .logo{display:block;height:28px;width:auto;object-fit:contain;object-position:left center;}
-.sitebar .nav-links{display:flex;align-items:center;gap:16px;padding-left:14px;}
+.sitebar-main{display:flex;align-items:center;gap:16px;min-width:0;flex:1 1 auto;}
+.sitebar-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.05;white-space:nowrap;}
+.sitebar-title span{color:var(--gold);}
+.sitebar-title a{color:inherit;text-decoration:none;}
+.sitebar-title a:hover{opacity:0.72;}
+.sitebar-copy{font-size:10px;line-height:1.45;color:var(--muted2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1 1 auto;}
+.sitebar-copy b{color:var(--ink);font-weight:500;}
+.sitebar-copy a{color:var(--muted2);text-decoration:none;}
+.sitebar-copy a:hover{color:var(--ink);}
+.sitebar .nav-links{display:flex;align-items:center;gap:16px;padding-left:8px;flex-shrink:0;}
 .sitebar .nav-links a{text-decoration:none;color:var(--ink);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;}
 .sitebar .nav-links a:hover{opacity:0.6;}
-.hdr{padding:10px 24px 10px;border-bottom:1px solid var(--border);background:var(--s1);}
-.hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.05;margin-bottom:8px;}
-.hdr-title span{color:var(--gold);}
-.hdr-title a{color:inherit;text-decoration:none;}
-.hdr-title a:hover{opacity:0.72;}
-.hdr-copy{font-size:10px;line-height:1.75;color:var(--muted2);}
-.hdr-copy b{color:var(--ink);font-weight:500;}
-.hdr-copy a{color:var(--muted2);text-decoration:none;}
-.hdr-copy a:hover{color:var(--ink);}
 
 .controls{background:var(--s1);border-bottom:1px solid var(--border);flex:0 1 auto;max-height:22vh;overflow:auto;}
 .settings-wrap{background:var(--s1);border-bottom:1px solid var(--border);}
@@ -154,11 +154,13 @@ svg{display:block;}
 }
 
 @media (max-width: 900px) {
-  .sitebar{height:40px;padding:0 12px 0 8px;}
+  .sitebar{height:52px;padding:0 12px 0 8px;gap:12px;}
   .sitebar .nav-links{gap:12px;padding-left:12px;}
   .sitebar .nav-links a{font-size:12px;}
   .sitebar .logo{height:24px;}
-  .hdr{padding:10px 16px 10px;}
+  .sitebar-main{gap:10px;}
+  .sitebar-title{font-size:15px;}
+  .sitebar-copy{font-size:9px;}
   .ctrl-row{display:grid;grid-template-columns:1fr 1fr;}
   .ctrl{border-right:none;border-bottom:1px solid var(--border);}
   .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:none;}
@@ -179,10 +181,13 @@ svg{display:block;}
 }
 
 @media (max-width: 580px) {
-  .sitebar{display:flex;height:38px;padding:0 10px 0 8px;}
+  .sitebar{display:block;height:auto;padding:8px 10px;}
   .sitebar .logo-link{height:100%;margin-bottom:0;}
   .sitebar .logo{height:22px;}
-  .sitebar .nav-links{padding-left:0;gap:12px;flex-wrap:wrap;}
+  .sitebar-main{display:block;margin-top:6px;}
+  .sitebar-title{white-space:normal;margin-bottom:6px;}
+  .sitebar-copy{white-space:normal;overflow:visible;text-overflow:clip;}
+  .sitebar .nav-links{padding-left:0;gap:12px;flex-wrap:wrap;margin-top:8px;}
   .ctrl-row{grid-template-columns:1fr;}
   .kpis{grid-template-columns:1fr;}
   .chart-rail .kpis{grid-template-columns:1fr;}
@@ -202,16 +207,15 @@ svg{display:block;}
 
 <div class="sitebar">
   <a href="/" class="logo-link"><img src="../logo.png" alt="The Good Project" class="logo"></a>
+  <div class="sitebar-main">
+    <div class="sitebar-title" title="This page models how the fund's cash and NAV change over time under the assumptions below."><a href="/">The Good Project <span>/</span> Fund One Model</a></div>
+    <div class="sitebar-copy">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>. <b>How this model works:</b> the fund makes developer loans, pays origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans.</div>
+  </div>
   <div class="nav-links">
     <a href="/">Home</a>
     <a href="/library/">Library</a>
     <a href="/model/">Model</a>
   </div>
-</div>
-
-<div class="hdr">
-  <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below."><a href="/">The Good Project <span>/</span> Fund One Model</a></div>
-  <div class="hdr-copy">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>. <b>How this model works:</b> the fund makes developer loans, pays its origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans. <b>Borrower Rate</b> is what the developer pays, while <b>Fund Take</b> is the portion that stays inside the fund after origination economics are paid out. <b>Cash</b> shows liquidity on hand, <b>Loans Outstanding</b> shows the active loan book, and <b>NAV</b> shows total fund value after retained income and debt cost. Change the assumptions below to see how quickly the book grows, how much capital gets called, and what return that produces.</div>
 </div>
 
 <div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
