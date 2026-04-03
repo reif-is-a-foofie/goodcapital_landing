@@ -159,7 +159,6 @@ svg{display:block;}
   </div>
   <div class="hdr-tag">
     <div>Interest prepaid: <b>Year 1 at settlement · Balance at Month 12</b></div>
-    <div>Average loan APY: <b><span id="hdr-apy">25.0%</span></b> · Fund take: <b><span id="hdr-take">18.0%</span></b></div>
     <div>NAV = opening fund equity + accumulated interest - leverage cost · Share price stays anchored to $1,000 par</div>
   </div>
 </div>
@@ -621,8 +620,6 @@ function recalc() {
   const mcEndHigh = mcHigh[VIEW];
 
   document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
-  document.getElementById('hdr-apy').textContent = `${S.apy.toFixed(1)}%`;
-  document.getElementById('hdr-take').textContent = `${S.take.toFixed(1)}%`;
   document.getElementById('kpi-equity').textContent = fmt(peakEquity);
   document.getElementById('kpi-debt').textContent = debtLabel;
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
