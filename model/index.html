@@ -27,13 +27,11 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .sitebar-title span{color:var(--gold);}
 .sitebar-title a{color:inherit;text-decoration:none;}
 .sitebar-title a:hover{opacity:0.72;}
-.sitebar .nav-links{display:flex;align-items:center;gap:16px;padding-left:8px;flex-shrink:0;}
-.sitebar .nav-links a{text-decoration:none;color:var(--ink);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;}
-.sitebar .nav-links a:hover{opacity:0.6;}
 .hdr-copy{padding:10px 24px 10px;border-bottom:1px solid var(--border);background:var(--s1);font-size:10px;line-height:1.6;color:var(--muted2);}
 .hdr-copy b{color:var(--ink);font-weight:500;}
 .hdr-copy a{color:var(--muted2);text-decoration:none;}
 .hdr-copy a:hover{color:var(--ink);}
+.hdr-contact{display:block;margin-bottom:4px;}
 
 .controls{background:var(--s1);border-bottom:1px solid var(--border);flex:0 1 auto;max-height:22vh;overflow:auto;}
 .settings-wrap{background:var(--s1);border-bottom:1px solid var(--border);}
@@ -96,8 +94,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .faq-a b{color:var(--ink);font-weight:500;}
 .mode-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 0;border-top:1px solid var(--border);}
 .mode-label{font-size:9px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;}
-.mode-state{font-size:10px;color:var(--red2);font-weight:500;}
 .mode-row .ctrl-btns{margin-top:0;}
+.btn.active{background:var(--s3);border-color:var(--border2);color:var(--ink);}
+.btn.red.active{background:var(--red-dim);border-color:var(--red-dim);color:var(--red2);}
+.btn.plus.active{background:var(--green-dim);border-color:var(--green-dim);color:var(--green2);}
 .assump-note{font-size:10px;line-height:1.7;color:var(--muted);max-height:none;}
 .assump-note b{color:var(--gold2);font-weight:500;}
 
@@ -137,8 +137,6 @@ svg{display:block;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .chart-main{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden;}
-.contact-link{position:fixed;right:14px;bottom:10px;font-size:10px;color:var(--muted);text-decoration:none;background:rgba(253,250,245,0.92);border:1px solid var(--border);padding:6px 8px;z-index:20;}
-.contact-link:hover{color:var(--ink);border-color:var(--border2);}
 .help-tip{position:fixed;display:none;max-width:320px;padding:10px 12px;background:rgba(253,250,245,0.98);border:1px solid var(--border2);box-shadow:0 8px 20px rgba(38,34,29,0.10);color:var(--ink);font-size:10px;line-height:1.6;z-index:50;pointer-events:none;}
 [data-help]{cursor:help;}
 
@@ -162,8 +160,6 @@ svg{display:block;}
 
 @media (max-width: 900px) {
   .sitebar{height:52px;padding:0 12px 0 8px;gap:12px;}
-  .sitebar .nav-links{gap:12px;padding-left:12px;}
-  .sitebar .nav-links a{font-size:12px;}
   .sitebar .logo{height:30px;}
   .sitebar-main{gap:10px;}
   .sitebar-title{font-size:15px;}
@@ -193,7 +189,6 @@ svg{display:block;}
   .sitebar .logo{height:28px;}
   .sitebar-main{display:block;margin-top:6px;}
   .sitebar-title{white-space:normal;margin-bottom:0;}
-  .sitebar .nav-links{padding-left:0;gap:12px;flex-wrap:wrap;margin-top:8px;}
   .hdr-copy{padding:10px 12px;}
   .ctrl-row{grid-template-columns:1fr;}
   .kpis{grid-template-columns:1fr;}
@@ -217,12 +212,8 @@ svg{display:block;}
   <div class="sitebar-main">
     <div class="sitebar-title" title="This page models how the fund's cash and NAV change over time under the assumptions below."><a href="/">The Good Project <span>/</span> Fund One Model</a></div>
   </div>
-  <div class="nav-links">
-    <a href="/">Home</a>
-    <a href="/model/">Model</a>
-  </div>
 </div>
-<div class="hdr-copy">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>. <b>How this model works:</b> the fund makes developer loans, pays origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans.</div>
+<div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>How this model works:</b> the fund makes developer loans, pays origination partners a share of the borrower rate, keeps the remaining <b>fund take</b>, and reinvests both principal and retained profits back into new loans.</div>
 
 <div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
 <div class="controls">
@@ -457,20 +448,15 @@ svg{display:block;}
         </details>
         <div class="mode-row">
           <div class="mode-label">Hardcore Mode</div>
-          <div style="display:flex;align-items:center;gap:12px">
-            <div class="mode-state" id="v-hc">OFF</div>
-            <div class="ctrl-btns">
-              <div class="btn red" onclick="setHardcore(false)">Off</div>
-              <div class="btn plus" onclick="setHardcore(true)">On</div>
-            </div>
+          <div class="ctrl-btns">
+            <div class="btn red active" id="hc-off" onclick="setHardcore(false)">Off</div>
+            <div class="btn plus" id="hc-on" onclick="setHardcore(true)">On</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<a class="contact-link" href="mailto:reif@thegoodproject.net">Contact Reif Tauati: 4176197004 · reif@thegoodproject.net</a>
 <div class="help-tip" id="help-tip"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
@@ -511,10 +497,13 @@ function setMonteCarlo(enabled) {
   document.getElementById('v-mc').textContent = enabled ? 'On' : 'Off';
   recalc();
 }
+function updateHardcoreButtons() {
+  document.getElementById('hc-off').classList.toggle('active', !S.hc);
+  document.getElementById('hc-on').classList.toggle('active', !!S.hc);
+}
 function setHardcore(enabled) {
   S.hc = enabled ? 1 : 0;
-  document.getElementById('v-hc').textContent = enabled ? 'ON' : 'OFF';
-  document.getElementById('v-hc').style.color = enabled ? 'var(--green2)' : 'var(--red2)';
+  updateHardcoreButtons();
   recalc();
 }
 function toggleSeries(key) {
@@ -1036,8 +1025,7 @@ function recalc() {
   document.getElementById('kpi-mincash').textContent = fmt(minCash, true);
   document.getElementById('v-call').textContent = S.call ? 'On' : 'Off';
   document.getElementById('v-mc').textContent = S.mc ? 'On' : 'Off';
-  document.getElementById('v-hc').textContent = S.hc ? 'ON' : 'OFF';
-  document.getElementById('v-hc').style.color = S.hc ? 'var(--green2)' : 'var(--red2)';
+  updateHardcoreButtons();
   updateDebtEqDisplay();
   document.getElementById('leg-mc-band').style.display = S.mc ? 'flex' : 'none';
   document.getElementById('leg-mc-mid').style.display = S.mc ? 'flex' : 'none';
