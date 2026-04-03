@@ -65,6 +65,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 svg{display:block;}
 #main-chart{width:100%;}
+.chart-stack{display:grid;gap:22px;}
+.chart-frame{position:relative;}
+.chart-tip{position:absolute;display:none;pointer-events:none;top:10px;left:10px;max-width:220px;padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border2);color:var(--ink);font-size:10px;line-height:1.6;box-shadow:0 8px 20px rgba(38,34,29,0.08);}
+.chart-tip b{font-weight:600;}
 .legend{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap;}
 .leg{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
@@ -187,6 +191,22 @@ tfoot td:first-child{text-align:left;}
         <div class="btn plus" onclick="adj('irr',1)">+ 1%</div>
       </div>
     </div>
+    <div class="ctrl">
+      <div class="ctrl-label">Variance</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="adj('var',-2)">- 2%</div>
+        <div class="btn plus" onclick="adj('var',2)">+ 2%</div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-label">Monte Carlo</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-mc">On</div><div class="ctrl-unit">simulation</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="setMonteCarlo(false)">Off</div>
+        <div class="btn plus" onclick="setMonteCarlo(true)">On</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -228,12 +248,31 @@ tfoot td:first-child{text-align:left;}
 
 <div class="body">
   <div class="chart-area">
-    <div class="sec-label">Projected NAV vs Target IRR Path</div>
-    <svg id="main-chart" height="340"></svg>
-    <div class="legend">
-      <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
-      <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
-      <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Cash balance</div>
+    <div class="chart-stack">
+      <div>
+        <div class="sec-label">Projected NAV vs Target IRR Path</div>
+        <div class="chart-frame" id="nav-frame">
+          <svg id="main-chart" height="320"></svg>
+          <div class="chart-tip" id="nav-tip"></div>
+        </div>
+        <div class="legend">
+          <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
+          <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
+          <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
+          <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-label">Cash Balance</div>
+        <div class="chart-frame" id="cash-frame">
+          <svg id="cash-chart" height="220"></svg>
+          <div class="chart-tip" id="cash-tip"></div>
+        </div>
+        <div class="legend">
+          <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Positive cash</div>
+          <div class="leg"><div class="leg-line" style="background:var(--red2)"></div>Negative cash</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -241,10 +280,10 @@ tfoot td:first-child{text-align:left;}
     <table>
       <thead>
         <tr>
-          <th>Point</th>
-          <th>Quarter Int</th>
-          <th>Quarter Debt</th>
-          <th>Period Cash</th>
+          <th>Month</th>
+          <th>Int In</th>
+          <th>Debt Cost</th>
+          <th>Net Cash</th>
           <th>Cash Bal</th>
           <th>NAV</th>
           <th>$/Share</th>
@@ -270,16 +309,17 @@ tfoot td:first-child{text-align:left;}
 const PAR = 1_000;
 const YIELD = 0.17;
 const VIEW = 84;
+const MC_RUNS = 250;
 
-const S = { fund:1.0, size:25, dpm:1, term:18, lev:1.0, cod:8, irr:15.0 };
+const S = { fund:1.0, size:25, dpm:1, term:18, lev:1.0, cod:8, irr:15.0, var:10.0, mc:1 };
 
 const limits = {
-  fund:[0.1,10,0.1], size:[2.5,200,2.5], dpm:[0.5,20,0.5], term:[6,84,6], lev:[1.0,3.0,0.25], cod:[3,20,0.5], irr:[0,40,1]
+  fund:[0.1,10,0.1], size:[2.5,200,2.5], dpm:[0.5,20,0.5], term:[6,84,6], lev:[1.0,3.0,0.25], cod:[3,20,0.5], irr:[0,40,1], var:[0,30,2]
 };
 
 function fmtControl(k, v) {
   if (k === 'lev') return v.toFixed(2);
-  if (k === 'fund' || k === 'cod' || k === 'dpm' || k === 'size' || k === 'irr') return v.toFixed(1);
+  if (k === 'fund' || k === 'cod' || k === 'dpm' || k === 'size' || k === 'irr' || k === 'var') return v.toFixed(1);
   return String(v);
 }
 
@@ -288,6 +328,11 @@ function adj(k, d) {
   S[k] = Math.round((S[k] + d) * 100) / 100;
   S[k] = Math.max(mn, Math.min(mx, S[k]));
   document.getElementById('v-' + k).textContent = fmtControl(k, S[k]);
+  recalc();
+}
+function setMonteCarlo(enabled) {
+  S.mc = enabled ? 1 : 0;
+  document.getElementById('v-mc').textContent = enabled ? 'On' : 'Off';
   recalc();
 }
 
@@ -304,6 +349,37 @@ function fmtP(n) { return '$' + n.toFixed(2); }
 function fmtMoneyOrNone(n) {
   return Math.abs(n) < 0.5 ? 'No debt' : fmt(n, true);
 }
+function normalSample() {
+  let u = 0, v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+function percentile(sorted, p) {
+  if (!sorted.length) return 0;
+  const idx = (sorted.length - 1) * p;
+  const lo = Math.floor(idx);
+  const hi = Math.ceil(idx);
+  if (lo === hi) return sorted[lo];
+  const weight = idx - lo;
+  return sorted[lo] * (1 - weight) + sorted[hi] * weight;
+}
+function bindTooltip(frameId, tipId, formatter) {
+  const frame = document.getElementById(frameId);
+  const tip = document.getElementById(tipId);
+  frame.onmousemove = evt => {
+    const html = formatter(evt, frame);
+    if (!html) {
+      tip.style.display = 'none';
+      return;
+    }
+    tip.innerHTML = html;
+    tip.style.display = 'block';
+    tip.style.left = `${Math.min(evt.offsetX + 14, frame.clientWidth - 230)}px`;
+    tip.style.top = `${Math.max(8, evt.offsetY - 10)}px`;
+  };
+  frame.onmouseleave = () => { tip.style.display = 'none'; };
+}
 
 function recalc() {
   const fundSize = S.fund * 1e9;
@@ -312,6 +388,7 @@ function recalc() {
   const lev = S.lev;
   const cod = S.cod / 100;
   const irr = S.irr / 100;
+  const annualVariance = S.var / 100;
   const mo1 = Math.min(12, S.term);
   const mo2 = Math.max(0, S.term - 12);
 
@@ -382,6 +459,27 @@ function recalc() {
   const minCash = Math.min(...cashArr);
   const irrGap = projectedIrr - irr;
   const debtLabel = fmtMoneyOrNone(debtFacil);
+  const mcMonthlyStd = annualVariance / Math.sqrt(12);
+  const mcLow = new Array(VIEW + 1).fill(0);
+  const mcMid = new Array(VIEW + 1).fill(0);
+  const mcHigh = new Array(VIEW + 1).fill(0);
+  for (let m = 0; m <= VIEW; m++) {
+    const samples = [];
+    for (let r = 0; r < MC_RUNS; r++) {
+      let simNav = fundSize;
+      for (let i = 1; i <= m; i++) {
+        const shock = Math.max(0, 1 + normalSample() * mcMonthlyStd);
+        simNav += intArr[i] * shock - debtArr[i];
+      }
+      samples.push(simNav);
+    }
+    samples.sort((a, b) => a - b);
+    mcLow[m] = percentile(samples, 0.10);
+    mcMid[m] = percentile(samples, 0.50);
+    mcHigh[m] = percentile(samples, 0.90);
+  }
+  const mcEndLow = mcLow[VIEW];
+  const mcEndHigh = mcHigh[VIEW];
 
   document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
   document.getElementById('kpi-equity').textContent = fmt(lpEquity);
@@ -390,26 +488,18 @@ function recalc() {
   document.getElementById('kpi-gap').textContent = `${irrGap >= 0 ? '+' : ''}${(irrGap * 100).toFixed(1)}%`;
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
   document.getElementById('kpi-mincash').textContent = fmt(minCash, true);
+  document.getElementById('v-mc').textContent = S.mc ? 'On' : 'Off';
+  document.getElementById('leg-mc-band').style.display = S.mc ? 'flex' : 'none';
+  document.getElementById('leg-mc-mid').style.display = S.mc ? 'flex' : 'none';
 
-  const milestoneMonths = [0];
-  for (let m = 3; m <= VIEW; m += 3) milestoneMonths.push(m);
   let rows = '';
-  for (const m of milestoneMonths) {
-    const periodStart = Math.max(1, m - 2);
-    let periodInt = 0;
-    let periodDebt = 0;
-    let periodNet = 0;
-    for (let i = periodStart; i <= m; i++) {
-      periodInt += intArr[i];
-      periodDebt += debtArr[i];
-      periodNet += cashDeltaArr[i];
-    }
+  for (let m = 0; m <= VIEW; m++) {
+    const periodInt = intArr[m];
+    const periodDebt = debtArr[m];
+    const periodNet = cashDeltaArr[m];
     const ev = periodInt > 0.01 || periodDebt > 0.01 || m === 0;
-    const quarter = Math.ceil(m / 3);
-    const year = Math.ceil(quarter / 4);
-    const quarterInYear = ((quarter - 1) % 4) + 1;
     rows += `<tr${ev ? ' class="ev"' : ''}>
-      <td>${m === 0 ? 'Start' : `Y${year} Q${quarterInYear}`}</td>
+      <td>${m === 0 ? 'Start' : `M${String(m).padStart(2, '0')}`}</td>
       <td class="${periodInt > 0 ? 'pos' : ''}">${periodInt > 0 ? '+' + fmt(periodInt) : '-'}</td>
       <td class="${periodDebt > 0 ? 'neg' : ''}">${periodDebt > 0 ? '-' + fmt(periodDebt) : '-'}</td>
       <td class="${periodNet > 0 ? 'pos' : periodNet < 0 ? 'neg' : ''}">${m === 0 ? '-' : fmt(periodNet)}</td>
@@ -429,7 +519,7 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `At current assumptions, the fund deploys <b>${fmt(lpEquity)}</b> of LP equity${Math.abs(debtFacil) < 0.5 ? '' : ` and <b>${fmt(debtFacil)}</b> of debt`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.`;
+  summary.innerHTML = `At current assumptions, the fund deploys <b>${fmt(lpEquity)}</b> of LP equity${Math.abs(debtFacil) < 0.5 ? '' : ` and <b>${fmt(debtFacil)}</b> of debt`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` The Monte Carlo year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
   if (lpEquity > fundSize || minCash < 0 || irrGap < 0) {
     summary.className = 'summary-note warn';
     const warnings = [];
@@ -439,29 +529,49 @@ function recalc() {
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
-  drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares);
+  drawNavChart(navArr, targetNavArr, mcLow, mcMid, mcHigh, shares, S.mc);
+  drawCashChart(cashArr);
+  bindTooltip('nav-frame', 'nav-tip', evt => {
+    const svg = document.getElementById('main-chart');
+    const rect = svg.getBoundingClientRect();
+    const padLeft = 76;
+    const padRight = 16;
+    const innerW = rect.width - padLeft - padRight;
+    const x = evt.clientX - rect.left - padLeft;
+    if (x < 0 || x > innerW) return '';
+    const month = Math.max(0, Math.min(VIEW, Math.round((x / innerW) * VIEW)));
+    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b><br>NAV: ${fmt(navArr[month], true)}<br>Target: ${fmt(targetNavArr[month], true)}${S.mc ? `<br>MC 10%: ${fmt(mcLow[month], true)}<br>MC 50%: ${fmt(mcMid[month], true)}<br>MC 90%: ${fmt(mcHigh[month], true)}` : ''}`;
+  });
+  bindTooltip('cash-frame', 'cash-tip', evt => {
+    const svg = document.getElementById('cash-chart');
+    const rect = svg.getBoundingClientRect();
+    const padLeft = 76;
+    const padRight = 16;
+    const innerW = rect.width - padLeft - padRight;
+    const x = evt.clientX - rect.left - padLeft;
+    if (x < 0 || x > innerW) return '';
+    const month = Math.max(0, Math.min(VIEW, Math.round((x / innerW) * VIEW)));
+    const net = cashDeltaArr[month];
+    return `<b>${month === 0 ? 'Start' : `Month ${month}`}</b><br>Cash balance: ${fmt(cashArr[month], true)}<br>Net cash: ${month === 0 ? '-' : fmt(net, true)}`;
+  });
 }
 
-function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
+function drawNavChart(navArr, targetNavArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo) {
   const svg = document.getElementById('main-chart');
-  const W = svg.parentElement.clientWidth - 48;
-  const H = 340;
+  const W = svg.parentElement.clientWidth - 32;
+  const H = 320;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 
-  const pad = {t:16,r:76,b:32,l:76};
+  const pad = {t:16,r:16,b:32,l:76};
   const iW = W - pad.l - pad.r;
   const iH = H - pad.t - pad.b;
 
-  const maxNAV = Math.max(...navArr, ...targetNavArr);
-  const minNAV = Math.min(...navArr, ...targetNavArr);
+  const maxNAV = Math.max(...navArr, ...targetNavArr, ...(showMonteCarlo ? mcHigh : []));
+  const minNAV = Math.min(...navArr, ...targetNavArr, ...(showMonteCarlo ? mcLow : []));
   const navRange = maxNAV - minNAV || 1;
-  const maxCash = Math.max(...cashArr);
-  const minCash = Math.min(...cashArr);
-  const cashRange = maxCash - minCash || 1;
 
   const xS = m => pad.l + (m / VIEW) * iW;
   const yNAV = v => pad.t + iH - ((v - minNAV) / navRange) * iH;
-  const yCash = v => pad.t + iH - ((v - minCash) / cashRange) * iH;
 
   let o = '';
 
@@ -470,29 +580,18 @@ function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
     const v = maxNAV - (i / 4) * navRange;
     o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
     o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="#776b5d">${fmt(v, true)}</text>`;
-    const cashV = maxCash - (i / 4) * cashRange;
-    o += `<text x="${pad.l + iW + 8}" y="${y + 4}" font-family="DM Mono" font-size="10" fill="#3f6d47">${fmt(cashV, true)}</text>`;
   }
   for (let m = 0; m <= VIEW; m += 12) {
     o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">${m === 0 ? 'Start' : `Y${m / 12}`}</text>`;
   }
 
-  const bW = Math.max(2, iW / VIEW * 0.5);
-  for (let m = 0; m <= VIEW; m++) {
-    if (intArr[m] > 0) {
-      const bH = (intArr[m] / (maxNAV - minNAV || 1)) * iH * 0.4;
-      o += `<rect x="${xS(m) - bW / 2}" y="${pad.t + iH - bH}" width="${bW}" height="${bH}" fill="#b38b57" opacity="0.35"/>`;
-    }
-    if (debtArr[m] > 1) {
-      const bH = (debtArr[m] / (maxNAV - minNAV || 1)) * iH * 0.4;
-      o += `<rect x="${xS(m) - bW / 2}" y="${pad.t + iH - bH}" width="${bW}" height="${bH}" fill="#b15d4d" opacity="0.25"/>`;
-    }
+  if (showMonteCarlo) {
+    let band = `M ${xS(0)} ${yNAV(mcHigh[0])}`;
+    for (let m = 1; m <= VIEW; m++) band += ` L ${xS(m)} ${yNAV(mcHigh[m])}`;
+    for (let m = VIEW; m >= 0; m--) band += ` L ${xS(m)} ${yNAV(mcLow[m])}`;
+    band += ' Z';
+    o += `<path d="${band}" fill="rgba(111,135,163,0.18)" stroke="none"/>`;
   }
-
-  let area = `M ${xS(0)} ${yNAV(navArr[0])}`;
-  for (let m = 1; m <= VIEW; m++) area += ` L ${xS(m)} ${yNAV(navArr[m])}`;
-  area += ` L ${xS(VIEW)} ${pad.t + iH} L ${xS(0)} ${pad.t + iH} Z`;
-  o += `<path d="${area}" fill="#b38b57" opacity="0.10"/>`;
 
   let navPath = `M ${xS(0)} ${yNAV(navArr[0])}`;
   for (let m = 1; m <= VIEW; m++) navPath += ` L ${xS(m)} ${yNAV(navArr[m])}`;
@@ -502,12 +601,10 @@ function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
   for (let m = 1; m <= VIEW; m++) targetPath += ` L ${xS(m)} ${yNAV(targetNavArr[m])}`;
   o += `<path d="${targetPath}" fill="none" stroke="#506a88" stroke-width="2" stroke-dasharray="7 5"/>`;
 
-  let cashPath = `M ${xS(0)} ${yCash(cashArr[0])}`;
-  for (let m = 1; m <= VIEW; m++) cashPath += ` L ${xS(m)} ${yCash(cashArr[m])}`;
-  o += `<path d="${cashPath}" fill="none" stroke="#3f6d47" stroke-width="2"/>`;
-
-  for (let m = 0; m <= VIEW; m++) {
-    if (intArr[m] > 0) o += `<circle cx="${xS(m)}" cy="${yNAV(navArr[m])}" r="3" fill="#b38b57" stroke="#fdfaf5" stroke-width="1.5"/>`;
+  if (showMonteCarlo) {
+    let mcMidPath = `M ${xS(0)} ${yNAV(mcMid[0])}`;
+    for (let m = 1; m <= VIEW; m++) mcMidPath += ` L ${xS(m)} ${yNAV(mcMid[m])}`;
+    o += `<path d="${mcMidPath}" fill="none" stroke="#506a88" stroke-width="1.5" opacity="0.8"/>`;
   }
 
   const parNAV = shares * 1000;
@@ -517,6 +614,48 @@ function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
     o += `<text x="${pad.l + iW + 4}" y="${yPar + 4}" font-family="DM Mono" font-size="9" fill="#506a88">PAR</text>`;
   }
 
+  svg.innerHTML = o;
+}
+
+function drawCashChart(cashArr) {
+  const svg = document.getElementById('cash-chart');
+  const W = svg.parentElement.clientWidth - 32;
+  const H = 220;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+  const pad = {t:16,r:16,b:32,l:76};
+  const iW = W - pad.l - pad.r;
+  const iH = H - pad.t - pad.b;
+  const maxCash = Math.max(...cashArr);
+  const minCash = Math.min(...cashArr);
+  const low = Math.min(minCash, 0);
+  const high = Math.max(maxCash, 0);
+  const range = high - low || 1;
+  const xS = m => pad.l + (m / VIEW) * iW;
+  const yS = v => pad.t + iH - ((v - low) / range) * iH;
+
+  let o = '';
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (i / 4) * iH;
+    const v = high - (i / 4) * range;
+    o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
+    o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="${v < 0 ? '#9c4f40' : '#3f6d47'}">${fmt(v, true)}</text>`;
+  }
+  if (low < 0 && high > 0) {
+    const yZero = yS(0);
+    o += `<line x1="${pad.l}" y1="${yZero}" x2="${pad.l + iW}" y2="${yZero}" stroke="#9c4f40" stroke-width="1" stroke-dasharray="4 3"/>`;
+  }
+  for (let m = 0; m <= VIEW; m += 12) {
+    o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">${m === 0 ? 'Start' : `Y${m / 12}`}</text>`;
+  }
+  for (let m = 1; m <= VIEW; m++) {
+    const x1 = xS(m - 1);
+    const y1 = yS(cashArr[m - 1]);
+    const x2 = xS(m);
+    const y2 = yS(cashArr[m]);
+    const stroke = ((cashArr[m - 1] + cashArr[m]) / 2) < 0 ? '#9c4f40' : '#3f6d47';
+    o += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="2"/>`;
+  }
   svg.innerHTML = o;
 }
 recalc();
