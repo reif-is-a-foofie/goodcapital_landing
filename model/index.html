@@ -43,6 +43,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .btn.red{color:var(--red2);border-color:var(--red-dim);}
 .btn.red:hover{background:var(--red-dim);color:var(--red2);}
 
+.panel-label{padding:10px 28px 8px;background:var(--s1);border-bottom:1px solid var(--border);font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;}
+
 .kpis{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);}
 .kpi{padding:12px 16px;border-right:1px solid var(--border);background:var(--s1);}
 .kpi:last-child{border-right:none;}
@@ -54,6 +56,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .kpi-v.plain{color:var(--ink);}
 .kpi-v.blue{color:var(--blue2);}
 .kpi-s{font-size:10px;color:var(--muted);margin-top:2px;}
+.summary-note{padding:12px 28px;border-bottom:1px solid var(--border);background:var(--s1);font-size:11px;line-height:1.7;color:var(--muted2);}
+.summary-note b{color:var(--ink);font-weight:500;}
+.summary-note.warn{border-left:2px solid var(--red2);padding-left:26px;}
 
 .body{display:grid;grid-template-columns:minmax(0,1fr) minmax(560px,42vw);}
 .chart-area{padding:22px 28px 16px;border-right:1px solid var(--border);}
@@ -123,6 +128,7 @@ tfoot td:first-child{text-align:left;}
   </div>
 </div>
 
+<div class="panel-label">Assumptions</div>
 <div class="controls">
   <div class="ctrl-row">
     <div class="ctrl">
@@ -184,41 +190,39 @@ tfoot td:first-child{text-align:left;}
   </div>
 </div>
 
+<div class="summary-note" id="summary-note"></div>
+
+<div class="panel-label">Current Scenario Analysis</div>
 <div class="kpis">
-  <div class="kpi">
-    <div class="kpi-l">LP Equity Required</div>
-    <div class="kpi-v gold" id="kpi-equity">-</div>
-    <div class="kpi-s">from LPs</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">Total AUM</div>
-    <div class="kpi-v plain" id="kpi-aum">-</div>
-    <div class="kpi-s">equity + debt deployed</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">Debt Facility</div>
-    <div class="kpi-v blue" id="kpi-debt">-</div>
-    <div class="kpi-s">borrowed capital</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">Annual Interest Income</div>
-    <div class="kpi-v green" id="kpi-income">-</div>
-    <div class="kpi-s">gross, on full AUM</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">Annual Debt Cost</div>
-    <div class="kpi-v red" id="kpi-debtcost">-</div>
-    <div class="kpi-s">on borrowed capital</div>
-  </div>
   <div class="kpi">
     <div class="kpi-l">Projected IRR</div>
     <div class="kpi-v blue" id="kpi-irr">-</div>
     <div class="kpi-s">annualized from modeled NAV</div>
   </div>
   <div class="kpi">
+    <div class="kpi-l">Target Gap</div>
+    <div class="kpi-v plain" id="kpi-gap">-</div>
+    <div class="kpi-s">projected vs target IRR</div>
+  </div>
+  <div class="kpi">
     <div class="kpi-l">NAV / Share · Year 7</div>
     <div class="kpi-v gold" id="kpi-navshare">-</div>
     <div class="kpi-s">vs $1,000 par</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-l">Min Cash Balance</div>
+    <div class="kpi-v plain" id="kpi-mincash">-</div>
+    <div class="kpi-s">lowest liquidity point</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-l">Peak Equity Deployed</div>
+    <div class="kpi-v gold" id="kpi-equity">-</div>
+    <div class="kpi-s">max LP capital at work</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-l">Debt Facility</div>
+    <div class="kpi-v blue" id="kpi-debt">-</div>
+    <div class="kpi-s">peak borrowed capital</div>
   </div>
 </div>
 
@@ -230,12 +234,6 @@ tfoot td:first-child{text-align:left;}
       <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
       <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
       <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Cash balance</div>
-      <div class="leg"><div class="leg-dot" style="background:var(--gold);opacity:.6"></div>Interest cash event</div>
-      <div class="leg"><div class="leg-dot" style="background:var(--red2);opacity:.6"></div>Debt interest paid</div>
-    </div>
-    <div style="margin-top:16px;">
-      <div class="sec-label">AUM Breakdown</div>
-      <svg id="aum-chart" height="80"></svg>
     </div>
   </div>
 
@@ -267,8 +265,6 @@ tfoot td:first-child{text-align:left;}
     </table>
   </div>
 </div>
-
-<div class="lev-note" id="lev-note" style="margin-top:12px;"></div>
 
 <script>
 const PAR = 1_000;
@@ -380,15 +376,16 @@ function recalc() {
   }
 
   const projectedIrr = Math.pow(navArr[VIEW] / fundSize, 12 / VIEW) - 1;
+  const minCash = Math.min(...cashArr);
+  const irrGap = projectedIrr - irr;
 
   document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
   document.getElementById('kpi-equity').textContent = fmt(lpEquity);
-  document.getElementById('kpi-aum').textContent = fmt(totalAUM);
   document.getElementById('kpi-debt').textContent = fmt(debtFacil);
-  document.getElementById('kpi-income').textContent = fmt(annualIncome);
-  document.getElementById('kpi-debtcost').textContent = fmt(annualDebtCost);
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
+  document.getElementById('kpi-gap').textContent = `${irrGap >= 0 ? '+' : ''}${(irrGap * 100).toFixed(1)}%`;
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
+  document.getElementById('kpi-mincash').textContent = fmt(minCash, true);
 
   const milestoneMonths = [0];
   for (let m = 3; m <= VIEW; m += 3) milestoneMonths.push(m);
@@ -425,32 +422,20 @@ function recalc() {
   document.getElementById('tf-nav').textContent = fmt(navArr[VIEW], true);
   document.getElementById('tf-price').textContent = fmtP(priceArr[VIEW]);
 
-  const spread = YIELD - cod;
-  const leverageReturn = spread * (lev - 1) / lev;
-  const lNote = document.getElementById('lev-note');
-  if (lev > 1) {
-    const positive = spread > 0;
-    lNote.className = 'lev-note' + (positive ? '' : ' warn');
-    lNote.innerHTML = `<b>Leverage:</b> ${lev.toFixed(2)}x means for every $1 of LP equity, <b>$${(lev - 1).toFixed(2)} borrowed</b> at ${S.cod}% APY. ` +
-      `Your gross yield is ${(YIELD * 100).toFixed(1)}% - spread over debt cost: <b>${(spread * 100).toFixed(1)}%</b>. ` +
-      `${positive
-        ? `Leverage <b>amplifies returns</b>: effective yield on LP equity ≈ <b>${((YIELD + leverageReturn) * 100).toFixed(1)}%</b> gross before debt service.`
-        : `<b>Warning:</b> cost of debt exceeds yield spread - leverage is <b>destroying NAV</b>.`}`;
-  } else {
-    lNote.className = 'lev-note';
-    lNote.innerHTML = `<b>No leverage.</b> Fund is 100% equity funded. AUM = LP equity = <b>${fmt(totalAUM)}</b>. ` +
-      `Increase leverage ratio above 1.0x to deploy more capital per LP dollar - watch the debt cost vs. your 17% yield.`;
-  }
-  lNote.innerHTML += ` Cash balance assumes the fund starts with <b>${fmt(fundSize, true)}</b>, funds only the equity slice of each new loan, and gets that equity principal back when loans repay.`;
-  lNote.innerHTML += ` At the current settings, the modeled NAV implies an annualized IRR of <b>${(projectedIrr * 100).toFixed(1)}%</b> over ${Math.round(VIEW / 12)} years.`;
-
-  if (lpEquity > fundSize) {
-    lNote.className = 'lev-note warn';
-    lNote.innerHTML += ` Current deployment requires <b>${fmt(lpEquity)}</b> of equity against a starting fund size of <b>${fmt(fundSize, true)}</b>.`;
+  const summary = document.getElementById('summary-note');
+  const years = Math.round(VIEW / 12);
+  summary.className = 'summary-note';
+  summary.innerHTML = `At current assumptions, the fund deploys <b>${fmt(lpEquity)}</b> of LP equity and <b>${fmt(debtFacil)}</b> of debt, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.`;
+  if (lpEquity > fundSize || minCash < 0 || irrGap < 0) {
+    summary.className = 'summary-note warn';
+    const warnings = [];
+    if (lpEquity > fundSize) warnings.push(`required LP equity exceeds starting fund size`);
+    if (minCash < 0) warnings.push(`cash balance turns negative`);
+    if (irrGap < 0) warnings.push(`projected IRR trails the target by ${Math.abs(irrGap * 100).toFixed(1)}%`);
+    summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
   drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares);
-  drawAUM(lpEquity, debtFacil);
 }
 
 function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
@@ -530,30 +515,6 @@ function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
 
   svg.innerHTML = o;
 }
-
-function drawAUM(equity, debt) {
-  const svg = document.getElementById('aum-chart');
-  const W = svg.parentElement.clientWidth - 48;
-  const H = 80;
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  const total = equity + debt;
-  if (!total) return;
-  const eW = equity / total * (W - 160);
-  const dW = debt / total * (W - 160);
-  let o = '';
-  o += `<rect x="0" y="20" width="${eW}" height="28" fill="#38a06a" opacity="0.7"/>`;
-  o += `<text x="${eW / 2}" y="38" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#fdfaf5">LP Equity</text>`;
-  if (dW > 4) {
-    o += `<rect x="${eW + 2}" y="20" width="${dW}" height="28" fill="#4878c8" opacity="0.7"/>`;
-    if (dW > 40) o += `<text x="${eW + 2 + dW / 2}" y="38" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#fdfaf5">Debt</text>`;
-  }
-  const tx = eW + dW + 10;
-  o += `<text x="${tx}" y="30" font-family="DM Mono" font-size="10" fill="#776b5d">Equity: ${fmt(equity)}</text>`;
-  o += `<text x="${tx}" y="46" font-family="DM Mono" font-size="10" fill="#776b5d">Debt:   ${fmt(debt)}</text>`;
-  o += `<text x="${tx}" y="62" font-family="DM Mono" font-size="10" fill="#9c7a4d">AUM:  ${fmt(total)}</text>`;
-  svg.innerHTML = o;
-}
-
 recalc();
 window.addEventListener('resize', recalc);
 </script>
