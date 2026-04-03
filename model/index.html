@@ -49,6 +49,12 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .kpis{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);}
 .kpi{padding:12px 16px;border-right:1px solid var(--border);background:var(--s1);}
 .kpi:last-child{border-right:none;}
+.chart-shell{display:grid;grid-template-columns:minmax(0,1fr) 248px;gap:20px;align-items:start;}
+.chart-rail{border-left:1px solid var(--border);padding-left:20px;}
+.chart-rail .panel-label{padding:0 0 10px;background:none;border-bottom:none;}
+.chart-rail .kpis{display:grid;grid-template-columns:1fr;border-bottom:none;gap:10px;}
+.chart-rail .kpi{padding:10px 0 12px;border-right:none;border-bottom:1px solid var(--border);background:none;}
+.chart-rail .kpi:last-child{border-bottom:none;}
 .kpi-l{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
 .kpi-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;line-height:1;}
 .kpi-v.gold{color:var(--gold2);}
@@ -81,6 +87,8 @@ svg{display:block;}
 
 @media (max-width: 1100px) {
   .kpis{grid-template-columns:repeat(3,1fr);}
+  .chart-shell{grid-template-columns:1fr;}
+  .chart-rail{border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:16px;}
 }
 
 @media (max-width: 760px) {
@@ -210,54 +218,59 @@ svg{display:block;}
 
 <div class="summary-note" id="summary-note"></div>
 
-<div class="panel-label">Current Scenario Analysis</div>
-<div class="kpis">
-  <div class="kpi">
-    <div class="kpi-l">Projected IRR</div>
-    <div class="kpi-v blue" id="kpi-irr">-</div>
-    <div class="kpi-s">annualized from modeled NAV</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">Target Gap</div>
-    <div class="kpi-v plain" id="kpi-gap">-</div>
-    <div class="kpi-s">projected vs target IRR</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">NAV / Share · Year 7</div>
-    <div class="kpi-v gold" id="kpi-navshare">-</div>
-    <div class="kpi-s">vs $1,000 par</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">Min Cash Balance</div>
-    <div class="kpi-v plain" id="kpi-mincash">-</div>
-    <div class="kpi-s">lowest liquidity point</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">Peak Equity Deployed</div>
-    <div class="kpi-v gold" id="kpi-equity">-</div>
-    <div class="kpi-s">max LP capital at work</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-l">Debt Facility</div>
-    <div class="kpi-v blue" id="kpi-debt">-</div>
-    <div class="kpi-s">peak borrowed capital</div>
-  </div>
-</div>
-
 <div class="body">
   <div class="chart-area">
-    <div class="sec-label">NAV and Cash Balance</div>
-    <div class="chart-frame" id="nav-frame">
-      <svg id="main-chart" height="560"></svg>
-      <div class="chart-tip" id="nav-tip"></div>
-    </div>
-    <div class="legend">
-      <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
-      <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
-      <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Cash balance</div>
-      <div class="leg"><div class="leg-line" style="background:var(--red2)"></div>Negative cash</div>
-      <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
-      <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
+    <div class="chart-shell">
+      <div>
+        <div class="sec-label">NAV and Cash Balance</div>
+        <div class="chart-frame" id="nav-frame">
+          <svg id="main-chart" height="560"></svg>
+          <div class="chart-tip" id="nav-tip"></div>
+        </div>
+        <div class="legend">
+          <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
+          <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
+          <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Cash balance</div>
+          <div class="leg"><div class="leg-line" style="background:var(--red2)"></div>Negative cash</div>
+          <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
+          <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
+        </div>
+      </div>
+      <div class="chart-rail">
+        <div class="panel-label">Current Scenario Analysis</div>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpi-l">Projected IRR</div>
+            <div class="kpi-v blue" id="kpi-irr">-</div>
+            <div class="kpi-s">annualized from modeled NAV</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-l">Target Gap</div>
+            <div class="kpi-v plain" id="kpi-gap">-</div>
+            <div class="kpi-s">projected vs target IRR</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-l">NAV / Share · Year 7</div>
+            <div class="kpi-v gold" id="kpi-navshare">-</div>
+            <div class="kpi-s">vs $1,000 par</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-l">Min Cash Balance</div>
+            <div class="kpi-v plain" id="kpi-mincash">-</div>
+            <div class="kpi-s">lowest liquidity point</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-l">Peak Equity Deployed</div>
+            <div class="kpi-v gold" id="kpi-equity">-</div>
+            <div class="kpi-s">max LP capital at work</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-l">Debt Facility</div>
+            <div class="kpi-v blue" id="kpi-debt">-</div>
+            <div class="kpi-s">peak borrowed capital</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
