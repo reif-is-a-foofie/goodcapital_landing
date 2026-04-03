@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TGP Fund One - NAV Model</title>
+<title>TGP Fund One Model</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Mono:wght@300;400;500&display=swap');
 :root{
@@ -19,28 +19,33 @@
 html,body{height:100%;}
 body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-size:12px;font-weight:300;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
 
-.hdr{padding:18px 36px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end;}
-.hdr-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--ink);}
+.hdr{padding:10px 24px 8px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end;}
+.hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.05;}
 .hdr-title span{color:var(--gold);}
-.hdr-sub{font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-top:3px;}
 .hdr-tag{font-size:10px;color:var(--muted);text-align:right;line-height:2;}
 .hdr-tag b{color:var(--gold2);font-weight:400;}
 
-.controls{background:var(--s1);border-bottom:1px solid var(--border);flex:0 1 auto;max-height:24vh;overflow:auto;}
+.controls{background:var(--s1);border-bottom:1px solid var(--border);flex:0 1 auto;max-height:22vh;overflow:auto;}
+.settings-wrap{background:var(--s1);border-bottom:1px solid var(--border);}
+.settings-toggle{padding:8px 28px;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;cursor:pointer;list-style:none;user-select:none;}
+.settings-toggle::-webkit-details-marker{display:none;}
+.settings-toggle::after{content:'Show';margin-left:8px;color:var(--gold2);}
+.settings-wrap[open] .settings-toggle::after{content:'Hide';}
+.settings-body{border-top:1px solid var(--border);}
 .ctrl-row{display:flex;border-bottom:1px solid var(--border);}
 .ctrl-row:last-child{border-bottom:none;}
-.ctrl{flex:1;padding:12px 14px;border-right:1px solid var(--border);}
+.ctrl{flex:1;padding:10px 10px 8px;border-right:1px solid var(--border);min-width:0;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;}
 .ctrl:last-child{border-right:none;}
 .ctrl.hidden{display:none;}
 .ctrl.disabled{opacity:0.42;}
 .ctrl.disabled .ctrl-val,.ctrl.disabled .ctrl-unit,.ctrl.disabled .ctrl-label{color:var(--muted);}
 .ctrl.disabled .btn{pointer-events:none;opacity:0.5;}
-.ctrl-label{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
-.ctrl-display{display:flex;align-items:baseline;gap:6px;margin-bottom:8px;}
-.ctrl-val{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--gold2);line-height:1;}
-.ctrl-unit{font-size:10px;color:var(--muted);}
-.ctrl-btns{display:flex;gap:5px;flex-wrap:wrap;}
-.btn{background:var(--s2);border:1px solid var(--border2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:3px 8px;cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap;}
+.ctrl-label{font-size:8px;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase;margin-bottom:5px;min-height:28px;display:flex;align-items:flex-start;justify-content:center;text-align:center;}
+.ctrl-display{display:flex;align-items:baseline;justify-content:center;gap:5px;margin-bottom:6px;min-height:40px;}
+.ctrl-val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--gold2);line-height:0.95;}
+.ctrl-unit{font-size:9px;color:var(--muted);line-height:1.25;display:block;}
+.ctrl-btns{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:auto;}
+.btn{background:var(--s2);border:1px solid var(--border2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap;}
 .btn:hover{background:var(--s3);color:var(--ink);border-color:var(--border2);}
 .btn:active{background:var(--gold-dim);color:var(--gold2);}
 .btn.plus{color:var(--green);border-color:var(--green-dim);}
@@ -53,25 +58,20 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .kpis{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);}
 .kpi{padding:12px 16px;border-right:1px solid var(--border);background:var(--s1);}
 .kpi:last-child{border-right:none;}
-.chart-shell{display:grid;grid-template-columns:minmax(0,1fr) 224px;gap:18px;align-items:start;height:100%;min-height:0;}
-.chart-rail{border-left:1px solid var(--border);padding-left:20px;min-height:0;max-height:100%;overflow:auto;}
+.chart-shell{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start;height:100%;min-height:0;}
+.chart-rail{border-left:1px solid var(--border);padding-left:22px;min-height:0;max-height:100%;overflow:auto;}
 .chart-rail .panel-label{padding:0 0 10px;background:none;border-bottom:none;}
-.chart-rail .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:none;gap:10px;}
-.chart-rail .kpi{padding:10px 8px 12px;border:1px solid var(--border);background:var(--bg);}
+.chart-rail .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:none;gap:12px;}
+.chart-rail .kpi{padding:14px 14px 16px;border:1px solid var(--border);background:var(--bg);min-height:122px;display:flex;flex-direction:column;justify-content:space-between;}
 .chart-rail .kpi:last-child{border-bottom:1px solid var(--border);}
-.solver-box{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
-.solver-copy{font-size:11px;line-height:1.7;color:var(--muted2);}
-.solver-copy b{color:var(--ink);font-weight:500;}
-.solver-copy .warn{color:var(--red2);}
-.solver-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 .kpi-l{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
-.kpi-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;line-height:1;}
+.kpi-v{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1;}
 .kpi-v.gold{color:var(--gold2);}
 .kpi-v.green{color:var(--green2);}
 .kpi-v.red{color:var(--red2);}
 .kpi-v.plain{color:var(--ink);}
 .kpi-v.blue{color:var(--blue2);}
-.kpi-s{font-size:10px;color:var(--muted);margin-top:2px;}
+.kpi-s{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45;}
 .summary-note{padding:10px 20px;border-bottom:1px solid var(--border);background:var(--s1);font-size:10px;line-height:1.6;color:var(--muted2);flex:0 1 auto;max-height:13vh;overflow:auto;}
 .summary-note b{color:var(--ink);font-weight:500;}
 .summary-note.warn{border-left:2px solid var(--red2);padding-left:26px;}
@@ -108,7 +108,7 @@ svg{display:block;}
   .ctrl-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));}
   .ctrl{border-right:none;border-bottom:1px solid var(--border);}
   .ctrl-row .ctrl:nth-last-child(-n+3){border-bottom:none;}
-  .controls{max-height:28vh;}
+  .controls{max-height:26vh;}
 }
 
 @media (max-width: 1100px) {
@@ -118,13 +118,13 @@ svg{display:block;}
 }
 
 @media (max-width: 900px) {
-  .hdr{padding:18px 18px 14px;display:block;}
+  .hdr{padding:10px 16px 8px;display:block;}
   .hdr-tag{margin-top:10px;text-align:left;}
   .ctrl-row{display:grid;grid-template-columns:1fr 1fr;}
   .ctrl{border-right:none;border-bottom:1px solid var(--border);}
   .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:none;}
-  .ctrl-val{font-size:26px;}
-  .controls{max-height:30vh;}
+  .ctrl-val{font-size:24px;}
+  .controls{max-height:28vh;}
   .chart-tip{max-width:200px;}
   .summary-note{max-height:16vh;}
 }
@@ -133,7 +133,7 @@ svg{display:block;}
   .kpis{grid-template-columns:repeat(2,1fr);}
   .chart-area{padding:18px;}
   .lev-note{margin:0 18px 18px;}
-  .controls{max-height:34vh;}
+  .controls{max-height:32vh;}
   .chart-rail{max-height:36vh;}
 }
 
@@ -143,10 +143,10 @@ svg{display:block;}
   .chart-rail .kpis{grid-template-columns:1fr;}
   .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:1px solid var(--border);}
   .ctrl-row .ctrl:last-child{border-bottom:none;}
-  .btn{font-size:10px;padding:4px 10px;}
+  .btn{font-size:9px;padding:3px 8px;}
   .summary-note{padding:12px 18px;}
   .chart-tip{max-width:180px;font-size:9px;line-height:1.5;}
-  .controls{max-height:38vh;}
+  .controls{max-height:36vh;}
   .summary-note{max-height:18vh;}
   .chart-rail{max-height:40vh;}
 }
@@ -156,8 +156,7 @@ svg{display:block;}
 
 <div class="hdr">
   <div>
-    <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below.">TGP <span>/</span> Fund One - NAV Model</div>
-    <div class="hdr-sub"><span id="hdr-fund">1.0B Fund</span> · $1,000 Par · Cash Basis · 7-Year View</div>
+    <div class="hdr-title" title="This page models how the fund's cash and NAV change over time under the assumptions below.">TGP <span>/</span> Fund One Model</div>
   </div>
 </div>
 
@@ -165,31 +164,39 @@ svg{display:block;}
 <div class="controls">
   <div class="ctrl-row">
     <div class="ctrl">
-      <div class="ctrl-label" title="The starting amount of equity capital in the fund.">Fund Size</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B equity</div></div>
+      <div class="ctrl-label" title="The maximum LP capital the fund is allowed to call over its life.">Max Fund Size</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B max called</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div>
         <div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div>
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The average size of each loan the fund originates.">Deal Size</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-size">20.0</div><div class="ctrl-unit">$M / loan</div></div>
+      <div class="ctrl-label" title="If on, LP capital is called only when new loans need equity. If off, the full fund is funded on day one.">Capital Calls</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-call">Off</div><div class="ctrl-unit">just in time</div></div>
       <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('size',-2.5)">- $2.5M</div>
-        <div class="btn plus" onclick="adj('size',2.5)">+ $2.5M</div>
+        <div class="btn red" onclick="setCapitalCall(false)">Off</div>
+        <div class="btn plus" onclick="setCapitalCall(true)">On</div>
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="How many new loans the fund closes each month.">Deals / Month</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">originations monthly, max 4.0</div></div>
+      <div class="ctrl-label" title="The average size of each loan the fund originates.">Loan Size</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-size">20.0</div><div class="ctrl-unit">$M each</div></div>
       <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('dpm',-0.5)">- 0.5</div>
-        <div class="btn plus" onclick="adj('dpm',0.5)">+ 0.5</div>
+        <div class="btn red" onclick="adj('size',-1)">- $1M</div>
+        <div class="btn plus" onclick="adj('size',1)">+ $1M</div>
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="How long each loan stays outstanding before principal comes back.">Loan Term</div>
+      <div class="ctrl-label" title="Base monthly deal pace. Pipeline capacity scales up with available deployable capital from this starting point.">Deal Pace</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">deals / month</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div>
+        <div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-label" title="How long each loan stays outstanding before principal comes back.">Term</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-term">18</div><div class="ctrl-unit">months</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('term',-6)">- 6mo</div>
@@ -197,7 +204,7 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="How much total lending the fund supports for each dollar of equity.">Leverage Ratio</div>
+      <div class="ctrl-label" title="How much total lending the fund supports for each dollar of equity.">Leverage</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-lev">1.0</div><div class="ctrl-unit">x equity</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('lev',-0.25)">- 0.25x</div>
@@ -205,55 +212,62 @@ svg{display:block;}
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The gross annual rate charged to borrowers on the loans.">Average Loan APY</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% borrower rate</div></div>
+      <div class="ctrl-label" title="The gross annual rate charged to borrowers on the loans.">Borrower Rate</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% APY</div></div>
       <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('apy',-1)">- 1%</div>
-        <div class="btn plus" onclick="adj('apy',1)">+ 1%</div>
+        <div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div>
+        <div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div>
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The annual rate the fund keeps after the loan economics are allocated.">Fund Take</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-take">18.0</div><div class="ctrl-unit">% retained APY</div></div>
+      <div class="ctrl-label" title="The annual rate the fund keeps after the loan economics are allocated.">Fund Yield</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-take">18.0</div><div class="ctrl-unit">% kept</div></div>
       <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('take',-1)">- 1%</div>
-        <div class="btn plus" onclick="adj('take',1)">+ 1%</div>
+        <div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div>
+        <div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div>
       </div>
     </div>
     <div class="ctrl">
       <div class="ctrl-label" title="The annual cost of any borrowing used by the fund.">Cost of Debt</div>
       <div class="ctrl-display"><div class="ctrl-val" id="v-cod">8</div><div class="ctrl-unit">% APY</div></div>
       <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('cod',-0.5)">- 0.5%</div>
-        <div class="btn plus" onclick="adj('cod',0.5)">+ 0.5%</div>
+        <div class="btn red" onclick="adj('cod',-0.25)">- 0.25%</div>
+        <div class="btn plus" onclick="adj('cod',0.25)">+ 0.25%</div>
       </div>
     </div>
     <div class="ctrl">
-      <div class="ctrl-label" title="The annual return target you want the modeled fund to hit.">Target IRR</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div>
+      <div class="ctrl-label" title="The annual return target you want the modeled fund to hit.">Target Return</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% IRR</div></div>
       <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('irr',-1)">- 1%</div>
-        <div class="btn plus" onclick="adj('irr',1)">+ 1%</div>
-      </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="Turns on randomized scenario runs to show a range of outcomes instead of just one base case.">Monte Carlo</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="setMonteCarlo(false)">Off</div>
-        <div class="btn plus" onclick="setMonteCarlo(true)">On</div>
-      </div>
-    </div>
-    <div class="ctrl" id="var-ctrl">
-      <div class="ctrl-label" title="Controls how much the randomized Monte Carlo runs can move around the base assumptions.">Variance</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('var',-2)">- 2%</div>
-        <div class="btn plus" onclick="adj('var',2)">+ 2%</div>
+        <div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div>
+        <div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div>
       </div>
     </div>
   </div>
 </div>
+<details class="settings-wrap">
+  <summary class="settings-toggle" title="Secondary model controls, including simulation settings.">Settings</summary>
+  <div class="settings-body">
+    <div class="ctrl-row">
+      <div class="ctrl">
+        <div class="ctrl-label" title="Turns on randomized scenario runs to show a range of outcomes instead of just one base case.">Monte Carlo</div>
+        <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
+        <div class="ctrl-btns">
+          <div class="btn red" onclick="setMonteCarlo(false)">Off</div>
+          <div class="btn plus" onclick="setMonteCarlo(true)">On</div>
+        </div>
+      </div>
+      <div class="ctrl" id="var-ctrl">
+        <div class="ctrl-label" title="Controls how much the randomized Monte Carlo runs can move around the base assumptions.">Variance</div>
+        <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
+        <div class="ctrl-btns">
+          <div class="btn red" onclick="adj('var',-1)">- 1%</div>
+          <div class="btn plus" onclick="adj('var',1)">+ 1%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</details>
 
 <div class="summary-note assump-note"><b>Interest prepaid:</b> Year 1 at settlement, then the remaining balance at Month 12. <b>NAV formula:</b> opening fund equity + accumulated interest - leverage cost. Share price stays anchored to $1,000 par.</div>
 <div class="summary-note" id="summary-note"></div>
@@ -268,10 +282,11 @@ svg{display:block;}
         </div>
         <div class="legend">
           <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
-          <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
-          <div class="leg"><div class="leg-line" style="background:#8a6642"></div>Loans outstanding</div>
-          <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Cash balance</div>
-          <div class="leg"><div class="leg-line" style="background:var(--red2)"></div>Negative cash</div>
+          <div class="leg"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV @ IRR</div>
+          <div class="leg"><div class="leg-line" style="background:#7b4bb3"></div>Loans outstanding</div>
+          <div class="leg"><div class="leg-line" style="background:#8c7961;height:6px;width:2px"></div>Loan origination ticks</div>
+          <div class="leg"><div class="leg-line" style="background:#1c7c54"></div>Cash balance</div>
+          <div class="leg"><div class="leg-line" style="background:#c0533e"></div>Negative cash</div>
           <div class="leg" id="leg-mc-band"><div class="leg-line" style="background:rgba(111,135,163,0.35);height:8px"></div>Monte Carlo 10-90%</div>
           <div class="leg" id="leg-mc-mid"><div class="leg-line" style="background:var(--blue2)"></div>Monte Carlo median</div>
         </div>
@@ -280,9 +295,9 @@ svg{display:block;}
         <div class="panel-label" title="These tiles summarize the most important outputs from the current scenario.">Current Scenario Analysis</div>
         <div class="kpis">
           <div class="kpi" title="The annualized return implied by the modeled NAV path.">
-            <div class="kpi-l">Projected IRR</div>
-            <div class="kpi-v blue" id="kpi-irr">-</div>
-            <div class="kpi-s">annualized from modeled NAV</div>
+          <div class="kpi-l">Projected IRR</div>
+          <div class="kpi-v blue" id="kpi-irr">-</div>
+            <div class="kpi-s">annualized from LP cash flows</div>
           </div>
           <div class="kpi" title="How far the modeled IRR is above or below the target IRR.">
             <div class="kpi-l">Target Gap</div>
@@ -310,13 +325,6 @@ svg{display:block;}
             <div class="kpi-s">peak borrowed capital</div>
           </div>
         </div>
-        <div class="solver-box">
-          <div class="panel-label" title="The solver searches for settings that maximize IRR while keeping a minimum cash buffer.">Solver</div>
-          <div class="solver-copy" id="solver-copy">-</div>
-          <div class="solver-actions">
-            <div class="btn plus" onclick="applySolver()" title="Apply the solver's suggested deal size and deals per month to the model.">Apply Solver</div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -329,10 +337,10 @@ const VIEW = 84;
 const MC_RUNS = 250;
 let mainChart = null;
 
-const S = { fund:1.0, size:20, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
+const S = { fund:1.0, call:1, size:20, dpm:3, term:18, apy:25.0, take:18.0, lev:1.0, cod:8, irr:15.0, var:10.0, mc:0 };
 
 const limits = {
-  fund:[0.1,10,0.1], size:[2.5,200,2.5], dpm:[0.5,4,0.5], term:[6,84,6], apy:[5,40,1], take:[1,30,1], lev:[1.0,3.0,0.25], cod:[3,20,0.5], irr:[0,40,1], var:[0,30,2]
+  fund:[0.1,10,0.1], size:[2.5,200,1], dpm:[0.5,4,0.25], term:[6,84,6], apy:[5,40,0.5], take:[1,30,0.5], lev:[1.0,3.0,0.25], cod:[3,20,0.25], irr:[0,40,0.5], var:[0,30,1]
 };
 
 function fmtControl(k, v) {
@@ -348,13 +356,16 @@ function adj(k, d) {
   document.getElementById('v-' + k).textContent = fmtControl(k, S[k]);
   recalc();
 }
+function setCapitalCall(enabled) {
+  S.call = enabled ? 1 : 0;
+  document.getElementById('v-call').textContent = enabled ? 'On' : 'Off';
+  recalc();
+}
 function setMonteCarlo(enabled) {
   S.mc = enabled ? 1 : 0;
   document.getElementById('v-mc').textContent = enabled ? 'On' : 'Off';
   recalc();
 }
-
-let solverState = null;
 
 function fmt(n, force) {
   if (n === undefined || n === null) return '-';
@@ -412,10 +423,42 @@ function medianSeries(samplesByMonth) {
   });
 }
 
+function solveMonthlyIrr(cashFlows) {
+  const hasNeg = cashFlows.some(v => v < 0);
+  const hasPos = cashFlows.some(v => v > 0);
+  if (!hasNeg || !hasPos) return 0;
+  const npv = rate => cashFlows.reduce((sum, cf, i) => sum + cf / Math.pow(1 + rate, i), 0);
+  let lo = -0.95;
+  let hi = 1.0;
+  let npvLo = npv(lo);
+  let npvHi = npv(hi);
+  let tries = 0;
+  while (npvLo * npvHi > 0 && tries < 40) {
+    hi *= 1.5;
+    npvHi = npv(hi);
+    tries++;
+  }
+  if (npvLo * npvHi > 0) return 0;
+  for (let i = 0; i < 100; i++) {
+    const mid = (lo + hi) / 2;
+    const npvMid = npv(mid);
+    if (Math.abs(npvMid) < 1e-7) return mid;
+    if (npvLo * npvMid <= 0) {
+      hi = mid;
+      npvHi = npvMid;
+    } else {
+      lo = mid;
+      npvLo = npvMid;
+    }
+  }
+  return (lo + hi) / 2;
+}
+
 function buildScenario(opts = {}) {
   const stochastic = !!opts.stochastic;
   const state = { ...S, ...(opts.overrides || {}) };
   const fundSize = state.fund * 1e9;
+  const justInTimeCalls = !!state.call;
   const shares = fundSize / PAR;
   const baseLoan = state.size * 1e6;
   const lev = state.lev;
@@ -433,73 +476,117 @@ function buildScenario(opts = {}) {
   const debtArr = new Array(VIEW + 1).fill(0);
   const cashArr = new Array(VIEW + 1).fill(0);
   const cashDeltaArr = new Array(VIEW + 1).fill(0);
+  const lpCallArr = new Array(VIEW + 1).fill(0);
   const navArr = new Array(VIEW + 1).fill(0);
   const targetNavArr = new Array(VIEW + 1).fill(0);
   const priceArr = new Array(VIEW + 1).fill(0);
   const activeDebtBal = new Array(VIEW + 1).fill(0);
   const activeEquityBal = new Array(VIEW + 1).fill(0);
   const loanOutstandingArr = new Array(VIEW + 1).fill(0);
+  const originationArr = new Array(VIEW + 1).fill(0);
 
   let totInt = 0;
   let totDebt = 0;
   let totNet = 0;
+  let cumulativeLpCalled = 0;
 
-  navArr[0] = fundSize;
-  targetNavArr[0] = fundSize;
-  priceArr[0] = fundSize / shares;
-  cashArr[0] = fundSize;
+  const initialLpCall = justInTimeCalls ? 0 : fundSize;
+  cumulativeLpCalled = initialLpCall;
+  lpCallArr[0] = initialLpCall;
+  navArr[0] = initialLpCall;
+  targetNavArr[0] = initialLpCall;
+  priceArr[0] = initialLpCall / shares;
+  cashArr[0] = initialLpCall;
 
-  for (let o = 1; o <= VIEW; o++) {
+  let runNAV = initialLpCall;
+  let cashBal = initialLpCall;
+  let targetNav = initialLpCall;
+  for (let m = 1; m <= VIEW; m++) {
+    const carryInterest = intArr[m];
+    const carryPrincipal = priArr[m];
+    const carryDebtCost = debtArr[m];
+    const navNetBeforeOrigination = carryInterest - carryDebtCost;
+
+    cashBal += carryInterest + carryPrincipal - carryDebtCost;
+    runNAV += navNetBeforeOrigination;
+
     const loanSize = stochastic ? sampleAround(baseLoan, monthlyStd, baseLoan * 0.2) : baseLoan;
-    const deals = stochastic ? sampleAround(state.dpm, monthlyStd, 0) : state.dpm;
+    const baseDeals = stochastic ? sampleAround(state.dpm, monthlyStd, 0) : state.dpm;
     const grossYield = stochastic ? sampleAround(baseApy, monthlyStd, 0) : baseApy;
     const fundTake = Math.min(grossYield, stochastic ? sampleAround(baseTake, monthlyStd, 0) : baseTake);
     const debtCost = stochastic ? sampleAround(baseCod, monthlyStd, 0) : baseCod;
-    const originationVolume = loanSize * deals;
-    const equityDeployment = originationVolume / lev;
-    const debtDeployment = originationVolume - equityDeployment;
+    const remainingCallable = justInTimeCalls ? Math.max(0, fundSize - cumulativeLpCalled) : 0;
+    const deployableEquityCapacity = Math.max(0, cashBal + remainingCallable);
+    const baseEquityPace = Math.max(loanSize * Math.max(baseDeals, 0.01) / lev, 1);
+    const pipelineScale = Math.max(1, Math.sqrt(deployableEquityCapacity / baseEquityPace));
+    const scaledDeals = baseDeals * pipelineScale;
+    const desiredOriginationVolume = loanSize * scaledDeals;
+    const desiredEquityDeployment = desiredOriginationVolume / lev;
+    const actualEquityDeployment = Math.min(desiredEquityDeployment, deployableEquityCapacity);
+    const lpCall = justInTimeCalls ? Math.max(0, actualEquityDeployment - cashBal) : 0;
+    const actualOriginationVolume = actualEquityDeployment * lev;
+    const actualDebtDeployment = actualOriginationVolume - actualEquityDeployment;
 
-    intArr[o] += originationVolume * fundTake * (mo1 / 12);
-    if (mo2 > 0 && o + 12 <= VIEW) intArr[o + 12] += originationVolume * fundTake * (mo2 / 12);
-
-    const mat = o + state.term;
-    if (mat <= VIEW) priArr[mat] += equityDeployment;
-
-    for (let m = o; m < Math.min(o + state.term, VIEW + 1); m++) {
-      activeDebtBal[m] += debtDeployment;
-      activeEquityBal[m] += equityDeployment;
-      debtArr[m] += debtDeployment * debtCost / 12;
+    if (lpCall > 0) {
+      cumulativeLpCalled += lpCall;
+      cashBal += lpCall;
+      runNAV += lpCall;
+      targetNav = targetNav * (1 + targetIrr / 12) + lpCall;
+    } else {
+      targetNav = targetNav * (1 + targetIrr / 12);
     }
-  }
-  const peakEquity = Math.max(...activeEquityBal);
-  const peakDebt = Math.max(...activeDebtBal);
-  for (let m = 0; m <= VIEW; m++) loanOutstandingArr[m] = activeEquityBal[m] + activeDebtBal[m];
 
-  let runNAV = fundSize;
-  let cashBal = fundSize;
-  for (let m = 1; m <= VIEW; m++) {
-    const monthEquityDeployment = activeEquityBal[m] - activeEquityBal[m - 1] + priArr[m];
-    const equityPrincipalReturned = priArr[m];
-    const navNet = intArr[m] - debtArr[m];
-    const net = navNet + equityPrincipalReturned - monthEquityDeployment;
-    cashBal += net;
-    runNAV += navNet;
+    lpCallArr[m] = lpCall;
+    originationArr[m] = actualOriginationVolume;
+    cashBal -= actualEquityDeployment;
+
+    const immediateInterest = actualOriginationVolume * fundTake * (mo1 / 12);
+    const immediateDebtCost = actualDebtDeployment * debtCost / 12;
+    intArr[m] += immediateInterest;
+    debtArr[m] += immediateDebtCost;
+    cashBal += immediateInterest - immediateDebtCost;
+    runNAV += immediateInterest - immediateDebtCost;
+
+    const mat = m + state.term;
+    if (mat <= VIEW) priArr[mat] += actualEquityDeployment;
+    if (mo2 > 0 && m + 12 <= VIEW) intArr[m + 12] += actualOriginationVolume * fundTake * (mo2 / 12);
+
+    for (let t = m; t < Math.min(m + state.term, VIEW + 1); t++) {
+      activeEquityBal[t] += actualEquityDeployment;
+      activeDebtBal[t] += actualDebtDeployment;
+      if (t > m) debtArr[t] += actualDebtDeployment * debtCost / 12;
+    }
+
+    loanOutstandingArr[m] = activeEquityBal[m] + activeDebtBal[m];
+    const net = carryInterest + carryPrincipal + lpCall + immediateInterest - carryDebtCost - immediateDebtCost - actualEquityDeployment;
     cashDeltaArr[m] = net;
     cashArr[m] = cashBal;
     navArr[m] = runNAV;
-    targetNavArr[m] = fundSize * Math.pow(1 + targetIrr, m / 12);
+    targetNavArr[m] = targetNav;
     priceArr[m] = runNAV / shares;
-    totInt += intArr[m];
-    totDebt += debtArr[m];
+    totInt += carryInterest + immediateInterest;
+    totDebt += carryDebtCost + immediateDebtCost;
     totNet += net;
   }
 
+  for (let m = 1; m <= VIEW; m++) {
+    if (!loanOutstandingArr[m]) loanOutstandingArr[m] = activeEquityBal[m] + activeDebtBal[m];
+  }
+  const peakEquity = Math.max(...activeEquityBal);
+  const peakDebt = Math.max(...activeDebtBal);
+
+  const lpFlows = lpCallArr.map(v => -v);
+  lpFlows[VIEW] += navArr[VIEW];
+  const monthlyIrr = solveMonthlyIrr(lpFlows);
+  const projectedIrr = Math.pow(1 + monthlyIrr, 12) - 1;
+
   return {
     fundSize, shares, targetIrr,
-    navArr, targetNavArr, cashArr, cashDeltaArr, priceArr, loanOutstandingArr,
+    navArr, targetNavArr, cashArr, cashDeltaArr, priceArr, loanOutstandingArr, lpCallArr, originationArr,
     intArr, debtArr, priArr,
-    projectedIrr: Math.pow(navArr[VIEW] / fundSize, 12 / VIEW) - 1,
+    projectedIrr,
     minCash: Math.min(...cashArr),
+    cumulativeLpCalled,
     peakEquity, peakDebt,
     totInt, totDebt, totNet
   };
@@ -513,37 +600,66 @@ function fmtAxisMoney(n) {
   return `$${n.toFixed(0)}`;
 }
 
-function findSolverRecommendation() {
-  const bufferTarget = S.fund * 1e9 * 0.10;
-  const [sizeMin, sizeMax, sizeStep] = limits.size;
-  const [dpmMin, dpmMax, dpmStep] = limits.dpm;
-  let best = null;
-
-  for (let size = sizeMin; size <= sizeMax + 1e-9; size += sizeStep) {
-    for (let dpm = dpmMin; dpm <= dpmMax + 1e-9; dpm += dpmStep) {
-      const scenario = buildScenario({ overrides: { size: Math.round(size * 100) / 100, dpm: Math.round(dpm * 100) / 100 } });
-      if (scenario.minCash < bufferTarget) continue;
-      if (!best || scenario.projectedIrr > best.projectedIrr) {
-        best = {
-          size: Math.round(size * 100) / 100,
-          dpm: Math.round(dpm * 100) / 100,
-          projectedIrr: scenario.projectedIrr,
-          minCash: scenario.minCash,
-          navShare: scenario.priceArr[VIEW]
-        };
-      }
-    }
-  }
-  return { best, bufferTarget };
+function fmtSigned(n) {
+  const rounded = Math.abs(n) < 0.5 ? 0 : n;
+  return `${rounded >= 0 ? '+' : '-'}${fmt(Math.abs(rounded), true)}`;
 }
 
-function applySolver() {
-  if (!solverState || !solverState.best) return;
-  S.size = solverState.best.size;
-  S.dpm = solverState.best.dpm;
-  document.getElementById('v-size').textContent = fmtControl('size', S.size);
-  document.getElementById('v-dpm').textContent = fmtControl('dpm', S.dpm);
-  recalc();
+function trendWord(delta) {
+  if (Math.abs(delta) < 0.5) return 'flat';
+  return delta > 0 ? 'rising' : 'falling';
+}
+
+function smartTooltipNarrative(seriesName, month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr) {
+  const prev = Math.max(0, month - 1);
+  const navDelta = navArr[month] - navArr[prev];
+  const cashDelta = cashArr[month] - cashArr[prev];
+  const loanDelta = loanOutstandingArr[month] - loanOutstandingArr[prev];
+  const hasNewLoans = originationArr[month] > 0.5;
+  const hasReturns = month > 0 && cashDeltaArr[month] > 0.5;
+
+  if (seriesName === 'Loans Outstanding') {
+    if (hasNewLoans && loanDelta > 0.5) return `Loan book is ${trendWord(loanDelta)} because new originations are outpacing maturities.`;
+    if (hasNewLoans && Math.abs(loanDelta) < 0.5) return `Loan book is flat because new originations are mostly replacing repaid loans.`;
+    if (loanDelta < -0.5) return `Loan book is falling because repayments are coming back faster than new loans are being added.`;
+    return `Loan book is steady this month; pipeline pace is scaling with available capital, but repayments and new originations are near balance here.`;
+  }
+  if (seriesName === 'Cash') {
+    if (cashArr[month] < -0.5) return `Cash is below zero here, which means deployment is outrunning available liquidity.`;
+    if (hasNewLoans && cashDelta < -0.5) return `Cash is falling because equity is being deployed into new loans this month as pipeline pace expands with available capital.`;
+    if (hasReturns && cashDelta > 0.5) return `Cash is rebuilding because principal and retained interest are coming back in.`;
+    return `Cash is roughly stable here; inflows and new deployment are close to balanced.`;
+  }
+  if (seriesName === 'Target NAV') {
+    return `This is the NAV path required to hit the selected target IRR over time.`;
+  }
+  if (seriesName === 'MC Median' || seriesName === 'MC Low' || seriesName === 'MC Band') {
+    return `This Monte Carlo view shows the simulated NAV range under randomized monthly assumptions.`;
+  }
+  if (hasNewLoans && Math.abs(navDelta) < Math.max(0.5, intArr[month] * 0.2)) {
+    return `NAV is mostly flat at origination because cash is being turned into loan assets, not lost.`;
+  }
+  if (navDelta > 0.5) {
+    return `NAV is rising from retained interest net of debt cost.`;
+  }
+  if (navDelta < -0.5) {
+    return `NAV is falling here, which should only happen if debt cost or losses outweigh retained income.`;
+  }
+    return `NAV is stable this month; asset mix may change, but total fund value is holding while origination pace scales with available capital.`;
+}
+
+function endLabel(text, color) {
+  return {
+    show: true,
+    formatter: text,
+    color,
+    fontFamily: 'DM Mono',
+    fontSize: 11,
+    fontWeight: 600,
+    backgroundColor: 'rgba(253,250,245,0.9)',
+    borderRadius: 3,
+    padding: [3, 5, 3, 6]
+  };
 }
 
 function recalc() {
@@ -564,6 +680,7 @@ function recalc() {
     const debtSamples = Array.from({ length: VIEW + 1 }, () => []);
     const priceSamples = Array.from({ length: VIEW + 1 }, () => []);
     const outSamples = Array.from({ length: VIEW + 1 }, () => []);
+    const originationSamples = Array.from({ length: VIEW + 1 }, () => []);
     const irrSamples = [];
     const minCashSamples = [];
     const peakEquitySamples = [];
@@ -589,6 +706,7 @@ function recalc() {
         debtSamples[m].push(sim.debtArr[m]);
         priceSamples[m].push(sim.priceArr[m]);
         outSamples[m].push(sim.loanOutstandingArr[m]);
+        originationSamples[m].push(sim.originationArr[m]);
       }
     }
 
@@ -599,6 +717,7 @@ function recalc() {
     const debtMedian = medianSeries(debtSamples);
     const priceMedian = medianSeries(priceSamples);
     const outMedian = medianSeries(outSamples);
+    const originationMedian = medianSeries(originationSamples);
 
     for (let m = 0; m <= VIEW; m++) {
       const samples = navSamples[m].slice().sort((a, b) => a - b);
@@ -616,6 +735,7 @@ function recalc() {
       debtArr: debtMedian,
       priceArr: priceMedian,
       loanOutstandingArr: outMedian,
+      originationArr: originationMedian,
       projectedIrr: percentile(irrSamples.slice().sort((a, b) => a - b), 0.50),
       minCash: percentile(minCashSamples.slice().sort((a, b) => a - b), 0.50),
       peakEquity: percentile(peakEquitySamples.slice().sort((a, b) => a - b), 0.50),
@@ -626,7 +746,7 @@ function recalc() {
     };
   }
 
-  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, loanOutstandingArr, projectedIrr, minCash, peakEquity, peakDebt, totInt, totDebt, totNet } = display;
+  const { navArr, cashArr, cashDeltaArr, priceArr, intArr, debtArr, loanOutstandingArr, originationArr, projectedIrr, minCash, peakEquity, peakDebt, totInt, totDebt, totNet } = display;
   const irrGap = projectedIrr - targetIrr;
   const debtLabel = fmtMoneyOrNone(peakDebt);
   const grossApy = S.apy / 100;
@@ -634,29 +754,21 @@ function recalc() {
   const mcEndLow = mcLow[VIEW];
   const mcEndHigh = mcHigh[VIEW];
 
-  document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
   document.getElementById('kpi-equity').textContent = fmt(peakEquity);
   document.getElementById('kpi-debt').textContent = debtLabel;
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
   document.getElementById('kpi-gap').textContent = `${irrGap >= 0 ? '+' : ''}${(irrGap * 100).toFixed(1)}%`;
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
   document.getElementById('kpi-mincash').textContent = fmt(minCash, true);
+  document.getElementById('v-call').textContent = S.call ? 'On' : 'Off';
   document.getElementById('v-mc').textContent = S.mc ? 'On' : 'Off';
   document.getElementById('leg-mc-band').style.display = S.mc ? 'flex' : 'none';
   document.getElementById('leg-mc-mid').style.display = S.mc ? 'flex' : 'none';
 
-  solverState = findSolverRecommendation();
-  const solverCopy = document.getElementById('solver-copy');
-  if (solverState.best) {
-    solverCopy.innerHTML = `Max IRR with a <b>${fmt(solverState.bufferTarget, true)}</b> minimum cash buffer suggests <b>${solverState.best.size.toFixed(1)}M</b> deal size and <b>${solverState.best.dpm.toFixed(1)}</b> deals/month. That yields about <b>${(solverState.best.projectedIrr * 100).toFixed(1)}%</b> IRR, <b>${fmt(solverState.best.minCash, true)}</b> minimum cash, and <b>${fmtP(solverState.best.navShare)}</b> year-7 NAV/share.`;
-  } else {
-    solverCopy.innerHTML = `<span class="warn">No feasible deal size / deals-month combination keeps at least ${fmt(solverState.bufferTarget, true)} of cash on hand under the current assumptions.</span>`;
-  }
-
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `At current assumptions, average loan APY is <b>${(grossApy * 100).toFixed(1)}%</b> and fund take is <b>${(fundTake * 100).toFixed(1)}%</b>. The fund peaks at <b>${fmt(peakEquity)}</b> of equity deployed${Math.abs(peakDebt) < 0.5 ? '' : ` and <b>${fmt(peakDebt)}</b> of debt outstanding`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo randomizes monthly deal flow, deal size, loan APY, fund take, and debt cost; the chart tooltip and KPIs show the median simulated path, and the year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
+  summary.innerHTML = `At current assumptions, average loan APY is <b>${(grossApy * 100).toFixed(1)}%</b> and fund take is <b>${(fundTake * 100).toFixed(1)}%</b>. LP capital is <b>${S.call ? 'called as new loans are originated' : 'fully funded on day one'}</b>, with total LP calls capped at <b>${fmt(fundSize, true)}</b>. Actual monthly lending is the lesser of <b>base pipeline capacity</b> and <b>deployable capital</b>. The fund peaks at <b>${fmt(peakEquity)}</b> of equity deployed${Math.abs(peakDebt) < 0.5 ? '' : ` and <b>${fmt(peakDebt)}</b> of debt outstanding`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.${S.mc ? ` Monte Carlo randomizes monthly deal flow, deal size, loan APY, fund take, and debt cost; the chart tooltip and KPIs show the median simulated path, and the year-7 NAV band is <b>${fmt(mcEndLow, true)}</b> to <b>${fmt(mcEndHigh, true)}</b>.` : ''}`;
   if (peakEquity > fundSize || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'summary-note warn';
     const warnings = [];
@@ -667,10 +779,10 @@ function recalc() {
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
-  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr);
+  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr);
 }
 
-function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr) {
+function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr) {
   const el = document.getElementById('main-chart');
   if (!window.echarts) return;
   if (!mainChart) mainChart = echarts.init(el, null, { renderer: 'canvas' });
@@ -682,12 +794,21 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, mcLow, m
   const maxCash = Math.max(...cashArr);
   const minCash = Math.min(...cashArr);
   const bandSpan = showMonteCarlo ? mcHigh.map((v, i) => Math.max(0, v - mcLow[i])) : [];
+  const navTicks = originationArr
+    .map((v, i) => (v > 0 ? [i, navArr[i], v] : null))
+    .filter(Boolean);
+  const loanTicks = originationArr
+    .map((v, i) => (v > 0 ? [i, loanOutstandingArr[i], v] : null))
+    .filter(Boolean);
+  const cashTicks = originationArr
+    .map((v, i) => (v > 0 ? [i, cashArr[i], v] : null))
+    .filter(Boolean);
 
   mainChart.setOption({
     animation: false,
     grid: [
-      { left: 68, right: 18, top: 22, height: '50%' },
-      { left: 68, right: 18, bottom: 38, height: '32%' }
+      { left: 68, right: 96, top: 22, height: '50%' },
+      { left: 68, right: 96, bottom: 38, height: '32%' }
     ],
     axisPointer: {
       link: [{ xAxisIndex: [0, 1] }]
@@ -695,23 +816,32 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, mcLow, m
     tooltip: {
       trigger: 'axis',
       confine: true,
+      axisPointer: { type: 'line', snap: true, label: { show: false } },
       backgroundColor: 'rgba(253,250,245,0.98)',
       borderColor: 'rgba(156,122,77,0.28)',
       textStyle: { color: '#26221d', fontFamily: 'DM Mono', fontSize: 10, lineHeight: 16 },
       formatter: params => {
-        const month = Array.isArray(params) && params.length ? params[0].dataIndex : 0;
+        const first = Array.isArray(params) && params.length ? params[0] : null;
+        const month = typeof first?.dataIndex === 'number' ? first.dataIndex : 0;
+        const progressPct = ((month / VIEW) * 100).toFixed(0);
+        const periodLabel = month === 0 ? 'Start of Fund' : `Month ${month} of ${VIEW} · Year ${(month / 12).toFixed(1)} · ${progressPct}% complete`;
+        const story = smartTooltipNarrative('NAV', month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, intArr, debtArr, cashDeltaArr);
         const mcBlock = showMonteCarlo
           ? `<br><span style="color:#776b5d">MC 10%</span>: ${fmt(mcLow[month], true)}<br><span style="color:#776b5d">MC 50%</span>: ${fmt(mcMid[month], true)}<br><span style="color:#776b5d">MC 90%</span>: ${fmt(mcHigh[month], true)}`
           : '';
-        return `<div style="font-weight:600;margin-bottom:4px">${month === 0 ? 'Start' : `Month ${month}`}</div>
-        <div style="margin-bottom:4px;color:#b38b57;font-weight:600">NAV ${fmt(navArr[month], true)}</div>
-        <div><span style="color:#776b5d">Loans outstanding</span>: ${fmt(loanOutstandingArr[month], true)}</div>
+        return `<div style="font-weight:600;margin-bottom:2px">${periodLabel}</div>
+        <div style="margin-bottom:4px;color:#b38b57;font-weight:700">NAV: ${fmt(navArr[month], true)} <span style="color:#776b5d;font-weight:400">(${fmtSigned(navArr[month] - navArr[0])} since start)</span></div>
+        <div style="margin-bottom:6px;color:#5f5447">${story}</div>
+        <div><span style="color:#776b5d">New loans this month</span>: ${fmt(originationArr[month], true)}</div>
+        <div><span style="color:#776b5d">Total loans outstanding</span>: ${fmt(loanOutstandingArr[month], true)}</div>
         <div><span style="color:#776b5d">Cash balance</span>: ${fmt(cashArr[month], true)}</div>
         <div><span style="color:#776b5d">Interest in</span>: ${month === 0 ? '-' : '+' + fmt(intArr[month])}</div>
         <div><span style="color:#776b5d">Debt cost</span>: ${month === 0 ? '-' : '-' + fmt(debtArr[month])}</div>
         <div><span style="color:#776b5d">Net cash</span>: ${month === 0 ? '-' : fmt(cashDeltaArr[month], true)}</div>
         <div><span style="color:#776b5d">NAV / share</span>: ${fmtP(priceArr[month])}</div>
-        <div><span style="color:#776b5d">Target NAV</span>: ${fmt(targetNavArr[month], true)}</div>${mcBlock}`;
+        <div><span style="color:#776b5d">Target NAV</span>: ${fmt(targetNavArr[month], true)}</div>
+        <div><span style="color:#776b5d">Cash progress</span>: ${fmtSigned(cashArr[month] - cashArr[0])}</div>
+        <div><span style="color:#776b5d">Loan book progress</span>: ${fmtSigned(loanOutstandingArr[month] - loanOutstandingArr[0])}</div>${mcBlock}`;
       }
     },
     xAxis: [
@@ -759,13 +889,16 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, mcLow, m
     series: [
       ...(showMonteCarlo ? [
         { name: 'MC Low', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: mcLow, symbol: 'none', lineStyle: { opacity: 0 }, stack: 'mc', areaStyle: { opacity: 0 } },
-        { name: 'MC Band', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: bandSpan, symbol: 'none', lineStyle: { opacity: 0 }, stack: 'mc', areaStyle: { color: 'rgba(111,135,163,0.18)' } },
-        { name: 'MC Median', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: mcMid, symbol: 'none', lineStyle: { color: '#506a88', width: 1.5, opacity: 0.8 } }
+        { name: 'MC Band', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: bandSpan, symbol: 'none', lineStyle: { opacity: 0 }, stack: 'mc', areaStyle: { color: 'rgba(47,109,176,0.14)' } },
+        { name: 'MC Median', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: mcMid, symbol: 'none', lineStyle: { color: '#2f6db0', width: 1.5, opacity: 0.45 } }
       ] : []),
-      { name: 'NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: navArr, symbol: 'none', lineStyle: { color: '#b38b57', width: 2 } },
-      { name: 'Loans Outstanding', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: loanOutstandingArr, symbol: 'none', lineStyle: { color: '#8a6642', width: 1.75 } },
-      { name: 'Target NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: targetNavArr, symbol: 'none', lineStyle: { color: '#506a88', width: 2, type: 'dashed' }, markLine: { silent: true, symbol: 'none', lineStyle: { color: 'rgba(111,135,163,0.7)', type: 'dashed' }, data: [{ yAxis: shares * 1000, label: { formatter: 'PAR', color: '#506a88', fontFamily: 'DM Mono' } }] } },
-      { name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'none', lineStyle: { color: '#3f6d47', width: 2 } }
+      { name: 'NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: navArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('NAV', '#b38b57'), lineStyle: { color: '#b38b57', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } },
+      { name: 'NAV Originations', type: 'scatter', xAxisIndex: 0, yAxisIndex: 0, data: navTicks, symbol: 'rect', symbolSize: [2, 10], silent: true, tooltip: { show: false }, itemStyle: { color: '#b38b57', opacity: 0.9 } },
+      { name: 'Loans Outstanding', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: loanOutstandingArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Loans', '#7b4bb3'), lineStyle: { color: '#7b4bb3', width: 2.5 }, emphasis: { focus: 'series', lineStyle: { width: 3.75 } } },
+      { name: 'Loan Ticks', type: 'scatter', xAxisIndex: 0, yAxisIndex: 0, data: loanTicks, symbol: 'rect', symbolSize: [2, 10], silent: true, tooltip: { show: false }, itemStyle: { color: '#7b4bb3', opacity: 0.9 } },
+      { name: 'Target NAV', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: targetNavArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Target', '#2f6db0'), lineStyle: { color: '#2f6db0', width: 2.5, type: 'dashed' }, emphasis: { focus: 'series', lineStyle: { width: 3.75 } }, markLine: { silent: true, symbol: 'none', lineStyle: { color: 'rgba(47,109,176,0.55)', type: 'dashed' }, data: [{ yAxis: shares * 1000, label: { formatter: 'PAR', color: '#2f6db0', fontFamily: 'DM Mono' } }] } },
+      { name: 'Cash', type: 'line', xAxisIndex: 1, yAxisIndex: 1, data: cashArr, symbol: 'circle', showSymbol: false, symbolSize: 7, endLabel: endLabel('Cash', '#1c7c54'), lineStyle: { color: '#1c7c54', width: 2.75 }, emphasis: { focus: 'series', lineStyle: { width: 4 } } },
+      { name: 'Cash Ticks', type: 'scatter', xAxisIndex: 1, yAxisIndex: 1, data: cashTicks, symbol: 'rect', symbolSize: [2, 10], silent: true, tooltip: { show: false }, itemStyle: { color: '#1c7c54', opacity: 0.9 } }
     ]
   }, true);
 }
