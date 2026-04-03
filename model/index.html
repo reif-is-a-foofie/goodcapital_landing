@@ -406,7 +406,7 @@ svg{display:block;}
           </div>
           <div class="faq-card">
             <div class="faq-q">How Do GP Units Work?</div>
-            <div class="faq-a"><b>GP units</b> are minted from profits above the selected hurdle. The fund does not pay that carry out in cash here. Instead, the GP receives new units, which dilute LP ownership but leave cash inside the fund for reinvestment.</div>
+            <div class="faq-a"><b>GP units</b> are minted only when carry crystallizes. In this model, carry is tested against the LP hurdle over time and crystallizes annually instead of month by month, so the GP does not take a large ownership jump at fund launch.</div>
           </div>
           <div class="faq-card">
             <div class="faq-q">What Drives The Chart?</div>
@@ -827,6 +827,9 @@ function buildScenario(opts = {}) {
   let totDebt = 0;
   let totNet = 0;
   let cumulativeLpCalled = 0;
+  let cumulativeCarryProfit = 0;
+  let cumulativeCarryHurdle = 0;
+  let crystallizedCarryBase = 0;
 
   const initialLpCall = justInTimeCalls ? 0 : fundSize;
   let gpUnits = 0;
@@ -899,8 +902,15 @@ function buildScenario(opts = {}) {
     cashBal += immediateInterest - immediateDebtCost;
     runNAV += immediateInterest - immediateDebtCost;
     const periodProfit = carryInterest + immediateInterest - carryDebtCost - immediateDebtCost;
-    const periodHurdle = Math.max(0, (navArr[m - 1] || 0) * hurdleRate / 12);
-    const carryValue = Math.max(0, periodProfit - periodHurdle) * carryPct;
+    const hurdleBase = Math.max(0, (lpValueArr[m - 1] || navArr[m - 1] || 0) + lpCall);
+    const periodHurdle = hurdleBase * hurdleRate / 12;
+    cumulativeCarryProfit += periodProfit;
+    cumulativeCarryHurdle += periodHurdle;
+    const carryBase = Math.max(0, cumulativeCarryProfit - cumulativeCarryHurdle);
+    const crystallizeNow = (m % 12 === 0) || m === VIEW;
+    const incrementalCarryBase = crystallizeNow ? Math.max(0, carryBase - crystallizedCarryBase) : 0;
+    const carryValue = incrementalCarryBase * carryPct;
+    if (crystallizeNow) crystallizedCarryBase += incrementalCarryBase;
     const navPerUnitBeforeGpMint = totalUnits > 0 ? runNAV / totalUnits : PAR;
     const gpUnitsMinted = navPerUnitBeforeGpMint > 0 ? carryValue / navPerUnitBeforeGpMint : 0;
     gpUnits += gpUnitsMinted;
@@ -1261,7 +1271,7 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'results-copy';
-  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. GP carry is set at <b>${S.carry.toFixed(1)}%</b> over an <b>${S.hurdle.toFixed(1)}%</b> hurdle and is paid in new units rather than cash. LP capital is <b>${S.hc ? 'funded upfront and redeployed immediately as cash returns' : (S.call ? 'called only when new loans need funding' : 'fully funded upfront')}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. ${S.redeem ? `Liquidity windows open after <b>${S.lock.toFixed(0)} months</b> and then every <b>${S.liq.toFixed(0)} months</b>, with <b>${S.req.toFixed(1)}%</b> of LP value assumed to request liquidity, <b>${S.switch.toFixed(1)}%</b> switched, and <b>${S.redcap.toFixed(1)}%</b> of LP value available to pay from fund cash.` : `Redemptions are <b>turned off</b>, so LP liquidity is not modeled during the run and fund cash stays available for compounding and reinvestment.`} Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans, mints about <b>${totalGpUnitsMinted.toFixed(0)}</b> GP units, and ends with GP owning about <b>${(endingGpOwnership * 100).toFixed(1)}%</b> of units. The busiest month originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume.${S.hc ? ` Hardcore Mode is on, so idle cash is immediately redeployed instead of waiting for a gentler ramp.` : ''}${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
+  summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. GP carry is set at <b>${S.carry.toFixed(1)}%</b> over an <b>${S.hurdle.toFixed(1)}%</b> hurdle, paid in new units rather than cash, and crystallized annually so the GP does not take a large ownership jump at launch. LP capital is <b>${S.hc ? 'funded upfront and redeployed immediately as cash returns' : (S.call ? 'called only when new loans need funding' : 'fully funded upfront')}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. ${S.redeem ? `Liquidity windows open after <b>${S.lock.toFixed(0)} months</b> and then every <b>${S.liq.toFixed(0)} months</b>, with <b>${S.req.toFixed(1)}%</b> of LP value assumed to request liquidity, <b>${S.switch.toFixed(1)}%</b> switched, and <b>${S.redcap.toFixed(1)}%</b> of LP value available to pay from fund cash.` : `Redemptions are <b>turned off</b>, so LP liquidity is not modeled during the run and fund cash stays available for compounding and reinvestment.`} Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans, mints about <b>${totalGpUnitsMinted.toFixed(0)}</b> GP units, and ends with GP owning about <b>${(endingGpOwnership * 100).toFixed(1)}%</b> of units. The busiest month originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume.${S.hc ? ` Hardcore Mode is on, so idle cash is immediately redeployed instead of waiting for a gentler ramp.` : ''}${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
   if (cumulativeLpCalled > fundSize + 0.5 || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
     summary.className = 'results-copy warn';
     const warnings = [];
