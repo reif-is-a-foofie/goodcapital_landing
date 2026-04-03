@@ -117,7 +117,11 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .btn.plus.active{background:var(--green-dim);border-color:var(--green-dim);color:var(--green2);}
 .assump-note{font-size:10px;line-height:1.7;color:var(--muted);max-height:none;}
 .assump-note b{color:var(--gold2);font-weight:500;}
-.chart-meta{display:grid;grid-template-columns:minmax(280px,0.8fr) minmax(360px,1.2fr);gap:12px;align-items:start;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.chart-meta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,0.65fr);gap:12px;align-items:start;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.chart-meta .hover-panel{margin-bottom:0;}
+.nav-block .hover-panel{border:none;padding:0;}
+.nav-block .hover-grid{gap:6px 12px;}
+.liquidity-block .event-outline{margin:0;padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,0.06);}
 .event-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;}
 .event-item{min-width:0;}
 .event-k{font-size:8px;color:var(--muted);letter-spacing:1.3px;text-transform:uppercase;margin-bottom:3px;}
@@ -127,7 +131,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .event-v.red{color:var(--red2);font-weight:600;}
 .event-note{grid-column:1 / -1;font-size:10px;color:var(--muted2);line-height:1.55;padding-top:2px;}
 .chart-info{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,0.9fr);gap:12px;align-items:start;}
-.event-outline{padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,0.06);margin-top:0;}
+.event-outline{padding:0;background:transparent;border:none;box-shadow:none;margin-top:0;}
 .event-outline .panel-label{padding:0 0 8px;background:none;border-bottom:none;}
 .results-wrap{margin-top:0;border:1px solid var(--border);background:rgba(253,250,245,0.96);box-shadow:0 6px 18px rgba(38,34,29,0.06);}
 .results-wrap .settings-toggle{padding:8px 10px 7px;}
@@ -436,50 +440,129 @@ svg{display:block;}
   <div class="chart-area">
     <div class="chart-shell">
       <div class="chart-main">
-        <div class="chart-head">
-          <div class="sec-label" title="This chart shows how total fund value, the active loan book, and cash evolve over time under the current assumptions.">Fund Value, Loans, and Cash Over Time</div>
-          <div class="chart-meta">
-            <details class="settings-wrap results-wrap">
-              <summary class="settings-toggle" title="Open this to read the full plain-English explanation of what the current assumptions imply.">Scenario Readout</summary>
-              <div class="settings-body">
-                <div class="results-copy" id="summary-note"></div>
+          <div class="chart-head">
+            <div class="sec-label" title="This chart shows how total fund value, the active loan book, and cash evolve over time under the current assumptions.">Fund Value, Loans, and Cash Over Time</div>
+            <div class="chart-meta">
+              <div class="nav-block">
+                <div class="hover-panel" id="hover-panel">
+                  <div class="hover-period" id="hover-period">Start of Fund</div>
+                  <div class="hover-grid">
+                    <div class="hover-item">
+                      <div class="hover-k">NAV</div>
+                      <div class="hover-v nav" id="hover-nav">$0</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">Loans Outstanding</div>
+                      <div class="hover-v loans" id="hover-loans">$0</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">Cash</div>
+                      <div class="hover-v cash" id="hover-cash">$0</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">Target NAV</div>
+                      <div class="hover-v target" id="hover-target">$0</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">New Loans This Month</div>
+                      <div class="hover-v" id="hover-newloans">0.0 loans</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">New Loan Volume</div>
+                      <div class="hover-v" id="hover-volume">$0</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">Interest In</div>
+                      <div class="hover-v" id="hover-interest">-</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">Net Spread</div>
+                      <div class="hover-v" id="hover-spread">-</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">Debt Cost</div>
+                      <div class="hover-v" id="hover-debt">-</div>
+                    </div>
+                    <div class="hover-item gp-only">
+                      <div class="hover-k">GP Units Minted</div>
+                      <div class="hover-v gp-only" id="hover-gpunits">0</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">NAV / Share</div>
+                      <div class="hover-v" id="hover-price">$0.00</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">IRR To Date</div>
+                      <div class="hover-v" id="hover-irr">0.0%</div>
+                    </div>
+                    <div class="hover-item">
+                      <div class="hover-k">LP MOIC To Date</div>
+                      <div class="hover-v" id="hover-moic">-</div>
+                    </div>
+                    <div class="hover-item gp-only">
+                      <div class="hover-k">GP Ownership</div>
+                      <div class="hover-v gp-only" id="hover-gpown">0.0%</div>
+                    </div>
+                    <div class="hover-item gp-only">
+                      <div class="hover-k">GP Units Held</div>
+                      <div class="hover-v" id="hover-gphold">0</div>
+                    </div>
+                    <div class="hover-item gp-only">
+                      <div class="hover-k">GP Value</div>
+                      <div class="hover-v" id="hover-gpvalue">$0</div>
+                    </div>
+                    <div class="hover-item gp-only">
+                      <div class="hover-k">Mgmt Fees Paid</div>
+                      <div class="hover-v" id="hover-mgmtfees">$0</div>
+                    </div>
+                    <div class="hover-story" id="hover-story">Hover the chart to see what is happening at that point in the fund’s build, reinvestment, and recycling cycle.</div>
+                  </div>
+                </div>
               </div>
-            </details>
-            <div class="event-outline">
-              <div class="panel-label" title="This box explains the current liquidity window under the hovered point in time. It shows what LPs ask for, what gets switched, what cash can pay, and what is deferred.">Liquidity Event Outline</div>
-              <div class="event-grid">
-                <div class="event-item">
-                  <div class="event-k">Event Status</div>
-                  <div class="event-v gold" id="evt-status">No window</div>
+              <div class="liquidity-block">
+                <div class="event-outline">
+                  <div class="panel-label" title="This box explains the current liquidity window under the hovered point in time. It shows what LPs ask for, what gets switched, what cash can pay, and what is deferred.">Liquidity Event Outline</div>
+                  <div class="event-grid">
+                    <div class="event-item">
+                      <div class="event-k">Event Status</div>
+                      <div class="event-v gold" id="evt-status">No window</div>
+                    </div>
+                    <div class="event-item">
+                      <div class="event-k">LP Value</div>
+                      <div class="event-v" id="evt-lpvalue">$0</div>
+                    </div>
+                    <div class="event-item">
+                      <div class="event-k">Requested</div>
+                      <div class="event-v" id="evt-request">$0</div>
+                    </div>
+                    <div class="event-item">
+                      <div class="event-k">Switched</div>
+                      <div class="event-v green" id="evt-switched">$0</div>
+                    </div>
+                    <div class="event-item">
+                      <div class="event-k">Paid from Fund</div>
+                      <div class="event-v gold" id="evt-paid">$0</div>
+                    </div>
+                    <div class="event-item">
+                      <div class="event-k">Max Units @ NAV</div>
+                      <div class="event-v" id="evt-units">0</div>
+                    </div>
+                    <div class="event-item">
+                      <div class="event-k">Unmet / Waiting</div>
+                      <div class="event-v red" id="evt-canceled">$0</div>
+                    </div>
+                    <div class="event-note" id="evt-note">Hover the chart to see each liquidity window, how much LPs could ask for, how much is switched, and how much cash the fund could actually pay.</div>
+                  </div>
                 </div>
-                <div class="event-item">
-                  <div class="event-k">LP Value</div>
-                  <div class="event-v" id="evt-lpvalue">$0</div>
-                </div>
-                <div class="event-item">
-                  <div class="event-k">Requested</div>
-                  <div class="event-v" id="evt-request">$0</div>
-                </div>
-                <div class="event-item">
-                  <div class="event-k">Switched</div>
-                  <div class="event-v green" id="evt-switched">$0</div>
-                </div>
-                <div class="event-item">
-                  <div class="event-k">Paid from Fund</div>
-                  <div class="event-v gold" id="evt-paid">$0</div>
-                </div>
-                <div class="event-item">
-                  <div class="event-k">Max Units @ NAV</div>
-                  <div class="event-v" id="evt-units">0</div>
-                </div>
-                <div class="event-item">
-                  <div class="event-k">Unmet / Waiting</div>
-                  <div class="event-v red" id="evt-canceled">$0</div>
-                </div>
-                <div class="event-note" id="evt-note">Hover the chart to see each liquidity window, how much LPs could ask for, how much is switched, and how much cash the fund could actually pay.</div>
               </div>
             </div>
           </div>
+          <details class="settings-wrap results-wrap">
+            <summary class="settings-toggle" title="Open this to read the full plain-English explanation of what the current assumptions imply.">Scenario Readout</summary>
+            <div class="settings-body">
+              <div class="results-copy" id="summary-note"></div>
+            </div>
+          </details>
           <div class="legend">
             <div class="leg leg-toggle" data-series="nav" onclick="toggleSeries('nav')"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
             <div class="leg leg-toggle" data-series="target" onclick="toggleSeries('target')"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV @ IRR</div>
