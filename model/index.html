@@ -821,6 +821,7 @@ function buildScenario(opts = {}) {
   const liquiditySwitchedArr = new Array(VIEW + 1).fill(0);
   const liquidityPaidArr = new Array(VIEW + 1).fill(0);
   const liquidityCanceledArr = new Array(VIEW + 1).fill(0);
+  const liquidityDeliveredArr = new Array(VIEW + 1).fill(0);
 
   let totInt = 0;
   let totDebt = 0;
@@ -918,27 +919,39 @@ function buildScenario(opts = {}) {
     }
 
     loanOutstandingArr[m] = activeEquityBal[m] + activeDebtBal[m];
-    const net = carryInterest + carryPrincipal + lpCall + immediateInterest - carryDebtCost - immediateDebtCost - actualEquityDeployment;
+    let navPerUnit = totalUnits > 0 ? runNAV / totalUnits : PAR;
+    let currentLpValue = lpUnits * navPerUnit;
+    const liquidityEvent = m >= lockMonths && ((m - lockMonths) % liquidityEvery === 0);
+    const liquidityRequested = liquidityEvent ? currentLpValue * requestPct : 0;
+    const liquiditySwitched = liquidityRequested * switchPct;
+    const liquidityCashCap = liquidityEvent ? Math.min(Math.max(cashBal, 0), currentLpValue * redCapPct) : 0;
+    const liquidityPaid = Math.min(Math.max(0, liquidityRequested - liquiditySwitched), liquidityCashCap);
+    const liquidityCanceled = Math.max(0, liquidityRequested - liquiditySwitched - liquidityPaid);
+    const redeemedUnits = navPerUnit > 0 ? liquidityPaid / navPerUnit : 0;
+    if (redeemedUnits > 0) {
+      lpUnits = Math.max(0, lpUnits - redeemedUnits);
+      totalUnits = Math.max(gpUnits, totalUnits - redeemedUnits);
+      cashBal -= liquidityPaid;
+      runNAV -= liquidityPaid;
+      navPerUnit = totalUnits > 0 ? runNAV / totalUnits : PAR;
+      currentLpValue = lpUnits * navPerUnit;
+    }
+    const net = carryInterest + carryPrincipal + lpCall + immediateInterest - carryDebtCost - immediateDebtCost - actualEquityDeployment - liquidityPaid;
     cashDeltaArr[m] = net;
     cashArr[m] = cashBal;
     navArr[m] = runNAV;
     targetNavArr[m] = targetNav;
-    priceArr[m] = totalUnits > 0 ? runNAV / totalUnits : PAR;
+    priceArr[m] = navPerUnit;
     totalUnitsArr[m] = totalUnits;
     gpUnitsArr[m] = gpUnits;
     gpOwnershipArr[m] = totalUnits > 0 ? gpUnits / totalUnits : 0;
-    lpValueArr[m] = runNAV - (gpUnits * priceArr[m]);
-    const liquidityEvent = m >= lockMonths && ((m - lockMonths) % liquidityEvery === 0);
-    const liquidityRequested = liquidityEvent ? lpValueArr[m] * requestPct : 0;
-    const liquiditySwitched = liquidityRequested * switchPct;
-    const liquidityCashCap = liquidityEvent ? Math.min(Math.max(cashBal, 0), lpValueArr[m] * redCapPct) : 0;
-    const liquidityPaid = Math.min(Math.max(0, liquidityRequested - liquiditySwitched), liquidityCashCap);
-    const liquidityCanceled = Math.max(0, liquidityRequested - liquiditySwitched - liquidityPaid);
+    lpValueArr[m] = currentLpValue;
     liquidityEventArr[m] = liquidityEvent ? 1 : 0;
     liquidityRequestedArr[m] = liquidityRequested;
     liquiditySwitchedArr[m] = liquiditySwitched;
     liquidityPaidArr[m] = liquidityPaid;
     liquidityCanceledArr[m] = liquidityCanceled;
+    liquidityDeliveredArr[m] = liquidityPaid + liquiditySwitched;
     eventCodeArr[m] = (lpCall > 0 ? 1 : 0) + (carryInterest + immediateInterest > 0.5 ? 2 : 0) + (carryPrincipal > 0.5 ? 4 : 0) + (gpUnitsMinted > 0.0001 ? 8 : 0) + (liquidityEvent ? 16 : 0);
     totInt += carryInterest + immediateInterest;
     totDebt += carryDebtCost + immediateDebtCost;
@@ -958,12 +971,12 @@ function buildScenario(opts = {}) {
   const endingGpOwnership = gpOwnershipArr[VIEW];
   const irrArr = new Array(VIEW + 1).fill(0);
 
-  const lpFlows = lpCallArr.map(v => -v);
+  const lpFlows = lpCallArr.map((v, i) => -v + liquidityPaidArr[i]);
   lpFlows[VIEW] += lpValueArr[VIEW];
   const monthlyIrr = solveMonthlyIrr(lpFlows);
   const projectedIrr = Math.pow(1 + monthlyIrr, 12) - 1;
   for (let m = 0; m <= VIEW; m++) {
-    const partialFlows = lpCallArr.slice(0, m + 1).map(v => -v);
+    const partialFlows = lpCallArr.slice(0, m + 1).map((v, i) => -v + liquidityPaidArr[i]);
     partialFlows[m] += lpValueArr[m];
     const partialMonthlyIrr = solveMonthlyIrr(partialFlows);
     irrArr[m] = Math.pow(1 + partialMonthlyIrr, 12) - 1;
@@ -973,7 +986,7 @@ function buildScenario(opts = {}) {
     fundSize, shares, targetIrr,
     navArr, targetNavArr, cashArr, cashDeltaArr, priceArr, loanOutstandingArr, lpCallArr, originationArr, dealsArr,
     intArr, debtArr, priArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpUnitsArr, gpOwnershipArr, lpValueArr, eventCodeArr,
-    liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr,
+    liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, liquidityDeliveredArr,
     projectedIrr,
     minCash: Math.min(...cashArr),
     cumulativeLpCalled,
@@ -1074,7 +1087,7 @@ function endLabel(text, color) {
   };
 }
 
-function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr) {
+function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, liquidityDeliveredArr) {
   const progressPct = ((month / VIEW) * 100).toFixed(0);
   const periodLabel = month === 0 ? 'Start of Fund' : `Month ${month} of ${VIEW} · Year ${(month / 12).toFixed(1)} · ${progressPct}% complete`;
   const loanMix = navArr[month] > 0 ? ((loanOutstandingArr[month] / navArr[month]) * 100) : 0;
@@ -1083,6 +1096,7 @@ function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingA
   const switched = liquiditySwitchedArr?.[month] || 0;
   const paid = liquidityPaidArr?.[month] || 0;
   const canceled = liquidityCanceledArr?.[month] || 0;
+  const delivered = liquidityDeliveredArr?.[month] || 0;
   const eventOn = !!(liquidityEventArr?.[month]);
 
   document.getElementById('hover-period').textContent = periodLabel;
@@ -1107,7 +1121,7 @@ function updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingA
   document.getElementById('evt-paid').textContent = `${fmt(paid, true)}${requested > 0 ? ` · ${((paid / requested) * 100).toFixed(0)}%` : ''}`;
   document.getElementById('evt-canceled').textContent = `${fmt(canceled, true)}${requested > 0 ? ` · ${((canceled / requested) * 100).toFixed(0)}%` : ''}`;
   document.getElementById('evt-note').textContent = eventOn
-    ? `At this liquidity event, LPs ask for ${fmt(requested, true)}. ${fmt(switched, true)} is matched by switches, ${fmt(paid, true)} could be paid from fund cash under the cap, and ${fmt(canceled, true)} would be deferred or canceled.`
+    ? `At this liquidity event, LPs ask for ${fmt(requested, true)}. ${fmt(switched, true)} is delivered through switches and does not hit NAV. ${fmt(paid, true)} is paid from fund cash, which reduces NAV and slows future compounding. ${fmt(canceled, true)} is deferred or canceled. Total investor liquidity delivered is ${fmt(delivered, true)}.`
     : 'No liquidity window is open at this point. Lockup and event cadence determine when LPs can ask for liquidity.';
 }
 
@@ -1215,7 +1229,7 @@ function recalc() {
     };
   }
 
-  const { navArr, cashArr, cashDeltaArr, priceArr, irrArr, intArr, debtArr, loanOutstandingArr, originationArr, dealsArr, projectedIrr, minCash, peakEquity, peakDebt, peakMonthlyCall, peakMonthlyOrigination, peakMonthlyDeals, totalLoansOriginated, cumulativeLpCalled, totInt, totDebt, totNet, netSpreadArr, gpUnitsMintedArr, gpUnitsArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, totalGpUnitsMinted, endingGpOwnership } = display;
+  const { navArr, cashArr, cashDeltaArr, priceArr, irrArr, intArr, debtArr, loanOutstandingArr, originationArr, dealsArr, projectedIrr, minCash, peakEquity, peakDebt, peakMonthlyCall, peakMonthlyOrigination, peakMonthlyDeals, totalLoansOriginated, cumulativeLpCalled, totInt, totDebt, totNet, netSpreadArr, gpUnitsMintedArr, gpUnitsArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, liquidityDeliveredArr, totalGpUnitsMinted, endingGpOwnership } = display;
   const irrGap = projectedIrr - targetIrr;
   const grossApy = S.apy / 100;
   const fundTake = S.take / 100;
@@ -1255,11 +1269,11 @@ function recalc() {
     summary.innerHTML += ` Warning: <b>${warnings.join('; ')}</b>.`;
   }
 
-  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr);
-  updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr);
+  renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, S.mc, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, liquidityDeliveredArr);
+  updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, liquidityDeliveredArr);
 }
 
-function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr) {
+function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, mcLow, mcMid, mcHigh, shares, showMonteCarlo, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, liquidityDeliveredArr) {
   const el = document.getElementById('main-chart');
   const hoverLine = document.getElementById('hover-line');
   if (!window.echarts) return;
@@ -1395,7 +1409,7 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
     ]
   }, true);
   const syncHover = month => {
-    updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr);
+    updateHoverPanel(month, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, liquidityDeliveredArr);
     mainChart.dispatchAction({ type: 'updateAxisPointer', xAxisIndex: 0, value: month });
     mainChart.dispatchAction({ type: 'updateAxisPointer', xAxisIndex: 1, value: month });
   };
@@ -1419,7 +1433,7 @@ function renderChart(navArr, targetNavArr, cashArr, loanOutstandingArr, originat
   };
   el.onmouseleave = () => {
     if (hoverLine) hoverLine.style.display = 'none';
-    updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr);
+    updateHoverPanel(0, navArr, targetNavArr, cashArr, loanOutstandingArr, originationArr, dealsArr, intArr, debtArr, cashDeltaArr, priceArr, irrArr, netSpreadArr, gpUnitsMintedArr, gpOwnershipArr, lpValueArr, liquidityEventArr, liquidityRequestedArr, liquiditySwitchedArr, liquidityPaidArr, liquidityCanceledArr, liquidityDeliveredArr);
   };
 }
 recalc();
