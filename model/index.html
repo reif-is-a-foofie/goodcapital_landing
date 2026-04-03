@@ -7,13 +7,13 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Mono:wght@300;400;500&display=swap');
 :root{
-  --bg:#0c0e0f;--s1:#13161a;--s2:#1a1e24;--s3:#222830;
-  --border:#2a3040;--border2:#354050;
-  --ink:#e8e4dc;--muted:#6a7280;--muted2:#8a9090;
-  --gold:#c8982a;--gold2:#e0b84a;--gold-dim:#3a2e10;
-  --green:#38a06a;--green2:#50c880;--green-dim:#0a2818;
-  --red:#c04040;--red2:#e06060;--red-dim:#2a0a0a;
-  --blue:#4878c8;--blue2:#6898e0;
+  --bg:#f5f2ec;--s1:#fdfaf5;--s2:#f1ebe1;--s3:#e9dfd1;
+  --border:rgba(156,122,77,0.16);--border2:rgba(156,122,77,0.28);
+  --ink:#26221d;--muted:#776b5d;--muted2:#5f5447;
+  --gold:#9c7a4d;--gold2:#b38b57;--gold-dim:rgba(156,122,77,0.16);
+  --green:#567b5b;--green2:#3f6d47;--green-dim:rgba(86,123,91,0.14);
+  --red:#b15d4d;--red2:#9c4f40;--red-dim:rgba(177,93,77,0.14);
+  --blue:#6f87a3;--blue2:#506a88;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-size:12px;font-weight:300;min-height:100vh;}
@@ -36,7 +36,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .ctrl-unit{font-size:11px;color:var(--muted);}
 .ctrl-btns{display:flex;gap:5px;}
 .btn{background:var(--s2);border:1px solid var(--border2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap;}
-.btn:hover{background:var(--s3);color:var(--ink);border-color:var(--gold-dim);}
+.btn:hover{background:var(--s3);color:var(--ink);border-color:var(--border2);}
 .btn:active{background:var(--gold-dim);color:var(--gold2);}
 .btn.plus{color:var(--green);border-color:var(--green-dim);}
 .btn.plus:hover{background:var(--green-dim);color:var(--green2);}
@@ -77,6 +77,7 @@ td.pos{color:var(--green2);}
 td.neg{color:var(--red2);}
 td.nav{color:var(--gold2);font-weight:500;}
 td.price{color:var(--blue2);}
+td.cash{color:var(--ink);font-weight:500;}
 tfoot td{padding:7px;border-top:1px solid var(--border2);font-weight:500;color:var(--ink);text-align:right;font-size:11px;position:sticky;bottom:0;background:var(--s1);}
 tfoot td:first-child{text-align:left;}
 
@@ -114,30 +115,38 @@ tfoot td:first-child{text-align:left;}
 <div class="hdr">
   <div>
     <div class="hdr-title">TGP <span>/</span> Fund One - NAV Model</div>
-    <div class="hdr-sub">1,000,000 Shares · $1,000 Par · Cash Basis · 36-Month View</div>
+    <div class="hdr-sub"><span id="hdr-fund">1.0B Fund</span> · $1,000 Par · Cash Basis · 36-Month View</div>
   </div>
   <div class="hdr-tag">
     <div>Interest prepaid: <b>Year 1 at settlement · Balance at Month 12</b></div>
-    <div>NAV = LP equity + accumulated interest - leverage cost · Share price = NAV / 1,000,000</div>
+    <div>NAV = opening fund equity + accumulated interest - leverage cost · Share price stays anchored to $1,000 par</div>
   </div>
 </div>
 
 <div class="controls">
   <div class="ctrl-row">
     <div class="ctrl">
-      <div class="ctrl-label">Deal Size</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-size">25</div><div class="ctrl-unit">$M / loan</div></div>
+      <div class="ctrl-label">Fund Size</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B equity</div></div>
       <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('size',-5)">- $5M</div>
-        <div class="btn plus" onclick="adj('size',5)">+ $5M</div>
+        <div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div>
+        <div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-label">Deal Size</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M / loan</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="adj('size',-2.5)">- $2.5M</div>
+        <div class="btn plus" onclick="adj('size',2.5)">+ $2.5M</div>
       </div>
     </div>
     <div class="ctrl">
       <div class="ctrl-label">Deals / Month</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">1</div><div class="ctrl-unit">originations</div></div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">1.0</div><div class="ctrl-unit">originations</div></div>
       <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('dpm',-1)">- 1</div>
-        <div class="btn plus" onclick="adj('dpm',1)">+ 1</div>
+        <div class="btn red" onclick="adj('dpm',-0.5)">- 0.5</div>
+        <div class="btn plus" onclick="adj('dpm',0.5)">+ 0.5</div>
       </div>
     </div>
     <div class="ctrl">
@@ -162,6 +171,14 @@ tfoot td:first-child{text-align:left;}
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('cod',-0.5)">- 0.5%</div>
         <div class="btn plus" onclick="adj('cod',0.5)">+ 0.5%</div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-label">Target IRR</div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div>
+      <div class="ctrl-btns">
+        <div class="btn red" onclick="adj('irr',-1)">- 1%</div>
+        <div class="btn plus" onclick="adj('irr',1)">+ 1%</div>
       </div>
     </div>
   </div>
@@ -202,11 +219,11 @@ tfoot td:first-child{text-align:left;}
 
 <div class="body">
   <div class="chart-area">
-    <div class="sec-label">NAV & Share Price - Monthly (Cash Basis)</div>
+    <div class="sec-label">Projected NAV vs Target IRR Path</div>
     <svg id="main-chart" height="340"></svg>
     <div class="legend">
       <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV (total fund)</div>
-      <div class="leg"><div class="leg-line" style="background:var(--green2)"></div>Share price</div>
+      <div class="leg"><div class="leg-line" style="background:var(--blue2);border-top:2px dashed var(--blue2);height:0"></div>Target NAV @ IRR</div>
       <div class="leg"><div class="leg-dot" style="background:var(--gold);opacity:.6"></div>Interest cash event</div>
       <div class="leg"><div class="leg-dot" style="background:var(--red2);opacity:.6"></div>Debt interest paid</div>
     </div>
@@ -224,6 +241,7 @@ tfoot td:first-child{text-align:left;}
           <th>Int In</th>
           <th>Debt Cost</th>
           <th>Net Cash</th>
+          <th>Cash Bal</th>
           <th>NAV</th>
           <th>$/Share</th>
         </tr>
@@ -235,6 +253,7 @@ tfoot td:first-child{text-align:left;}
           <td id="tf-int" style="color:var(--green2)">-</td>
           <td id="tf-debt" style="color:var(--red2)">-</td>
           <td id="tf-net" style="color:var(--gold2)">-</td>
+          <td id="tf-cash">-</td>
           <td id="tf-nav">-</td>
           <td id="tf-price" style="color:var(--blue2)">-</td>
         </tr>
@@ -246,23 +265,27 @@ tfoot td:first-child{text-align:left;}
 <div class="lev-note" id="lev-note" style="margin-top:12px;"></div>
 
 <script>
-const SHARES = 1_000_000;
 const PAR = 1_000;
 const YIELD = 0.17;
 const VIEW = 36;
 
-const S = { size:25, dpm:1, term:18, lev:1.0, cod:8 };
+const S = { fund:1.0, size:25, dpm:1, term:18, lev:1.0, cod:8, irr:15.0 };
 
 const limits = {
-  size:[5,200,5], dpm:[1,20,1], term:[6,36,6], lev:[1.0,3.0,0.25], cod:[3,20,0.5]
+  fund:[0.1,10,0.1], size:[2.5,200,2.5], dpm:[0.5,20,0.5], term:[6,36,6], lev:[1.0,3.0,0.25], cod:[3,20,0.5], irr:[0,40,1]
 };
+
+function fmtControl(k, v) {
+  if (k === 'lev') return v.toFixed(2);
+  if (k === 'fund' || k === 'cod' || k === 'dpm' || k === 'size' || k === 'irr') return v.toFixed(1);
+  return String(v);
+}
 
 function adj(k, d) {
   const [mn, mx] = limits[k];
   S[k] = Math.round((S[k] + d) * 100) / 100;
   S[k] = Math.max(mn, Math.min(mx, S[k]));
-  const disp = k === 'lev' ? S[k].toFixed(2) : k === 'cod' ? S[k].toFixed(1) : S[k];
-  document.getElementById('v-' + k).textContent = disp;
+  document.getElementById('v-' + k).textContent = fmtControl(k, S[k]);
   recalc();
 }
 
@@ -278,9 +301,12 @@ function fmt(n, force) {
 function fmtP(n) { return '$' + n.toFixed(2); }
 
 function recalc() {
+  const fundSize = S.fund * 1e9;
+  const shares = fundSize / PAR;
   const loan = S.size * 1e6;
   const lev = S.lev;
   const cod = S.cod / 100;
+  const irr = S.irr / 100;
   const mo1 = Math.min(12, S.term);
   const mo2 = Math.max(0, S.term - 12);
 
@@ -297,61 +323,47 @@ function recalc() {
   const intArr = new Array(VIEW + 1).fill(0);
   const priArr = new Array(VIEW + 1).fill(0);
   const debtArr = new Array(VIEW + 1).fill(0);
+  const cashArr = new Array(VIEW + 1).fill(0);
+  const activePrincipal = new Array(VIEW + 1).fill(0);
+  const monthlyOriginationVolume = loan * S.dpm;
 
-  const queue = [];
-  for (let m = 0; m <= VIEW; m++) {
-    for (let d = 0; d < S.dpm; d++) queue.push(m);
-  }
-
-  let qi = 0;
-  while (qi < queue.length) {
-    const o = queue[qi++];
-    if (o > VIEW) continue;
-    intArr[o] += int1;
-    if (mo2 > 0 && o + 12 <= VIEW) intArr[o + 12] += int2;
+  for (let o = 0; o <= VIEW; o++) {
+    intArr[o] += monthlyOriginationVolume * YIELD * (mo1 / 12);
+    if (mo2 > 0 && o + 12 <= VIEW) intArr[o + 12] += monthlyOriginationVolume * YIELD * (mo2 / 12);
     const mat = o + S.term;
-    if (mat <= VIEW) {
-      priArr[mat] += loan;
-      queue.push(mat);
+    if (mat <= VIEW) priArr[mat] += monthlyOriginationVolume;
+    for (let m = o; m < Math.min(o + S.term, VIEW + 1); m++) {
+      activePrincipal[m] += monthlyOriginationVolume;
     }
   }
 
-  const active = new Array(VIEW + 1).fill(0);
-  const queue2 = [];
   for (let m = 0; m <= VIEW; m++) {
-    for (let d = 0; d < S.dpm; d++) queue2.push(m);
-  }
-  let qi2 = 0;
-  while (qi2 < queue2.length) {
-    const o = queue2[qi2++];
-    if (o > VIEW) continue;
-    for (let m = o; m < Math.min(o + S.term, VIEW + 1); m++) active[m]++;
-    const mat = o + S.term;
-    if (mat <= VIEW) queue2.push(mat);
+    debtArr[m] = activePrincipal[m] * ((lev - 1) / lev) * cod / 12;
   }
 
-  const debtPerLoanPerMonth = loan * ((lev - 1) / lev) * cod / 12;
-  for (let m = 0; m <= VIEW; m++) {
-    debtArr[m] = active[m] * debtPerLoanPerMonth;
-  }
-
-  const initNAV = SHARES * PAR;
+  const initNAV = fundSize;
 
   const navArr = new Array(VIEW + 1).fill(0);
+  const targetNavArr = new Array(VIEW + 1).fill(0);
   const priceArr = new Array(VIEW + 1).fill(0);
   let runNAV = initNAV;
+  let cashBal = 0;
   let totInt = 0, totDebt = 0, totNet = 0;
 
   for (let m = 0; m <= VIEW; m++) {
     const net = intArr[m] - debtArr[m];
+    cashBal += net;
     runNAV += net;
+    cashArr[m] = cashBal;
     navArr[m] = runNAV;
-    priceArr[m] = runNAV / SHARES;
+    targetNavArr[m] = fundSize * Math.pow(1 + irr, m / 12);
+    priceArr[m] = runNAV / shares;
     totInt += intArr[m];
     totDebt += debtArr[m];
     totNet += net;
   }
 
+  document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
   document.getElementById('kpi-equity').textContent = fmt(lpEquity);
   document.getElementById('kpi-aum').textContent = fmt(totalAUM);
   document.getElementById('kpi-debt').textContent = fmt(debtFacil);
@@ -370,6 +382,7 @@ function recalc() {
       <td class="${hasInt ? 'pos' : ''}">${hasInt ? '+' + fmt(intArr[m]) : '-'}</td>
       <td class="${hasDebt ? 'neg' : ''}">${hasDebt ? '-' + fmt(debtArr[m]) : '-'}</td>
       <td class="${net > 0 ? 'pos' : net < 0 ? 'neg' : ''}">${net !== 0 ? fmt(net) : '-'}</td>
+      <td class="cash">${fmt(cashArr[m], true)}</td>
       <td class="nav">${fmt(navArr[m], true)}</td>
       <td class="price">${fmtP(priceArr[m])}</td>
     </tr>`;
@@ -378,6 +391,7 @@ function recalc() {
   document.getElementById('tf-int').textContent = '+' + fmt(totInt);
   document.getElementById('tf-debt').textContent = '-' + fmt(totDebt);
   document.getElementById('tf-net').textContent = fmt(totNet);
+  document.getElementById('tf-cash').textContent = fmt(cashArr[VIEW], true);
   document.getElementById('tf-nav').textContent = fmt(navArr[VIEW], true);
   document.getElementById('tf-price').textContent = fmtP(priceArr[VIEW]);
 
@@ -398,11 +412,16 @@ function recalc() {
       `Increase leverage ratio above 1.0x to deploy more capital per LP dollar - watch the debt cost vs. your 17% yield.`;
   }
 
-  drawChart(intArr, debtArr, navArr, priceArr);
+  if (lpEquity > fundSize) {
+    lNote.className = 'lev-note warn';
+    lNote.innerHTML += ` Current deployment requires <b>${fmt(lpEquity)}</b> of equity against a starting fund size of <b>${fmt(fundSize, true)}</b>.`;
+  }
+
+  drawChart(intArr, debtArr, navArr, targetNavArr, shares);
   drawAUM(lpEquity, debtFacil);
 }
 
-function drawChart(intArr, debtArr, navArr) {
+function drawChart(intArr, debtArr, navArr, targetNavArr, shares) {
   const svg = document.getElementById('main-chart');
   const W = svg.parentElement.clientWidth - 48;
   const H = 340;
@@ -412,8 +431,8 @@ function drawChart(intArr, debtArr, navArr) {
   const iW = W - pad.l - pad.r;
   const iH = H - pad.t - pad.b;
 
-  const maxNAV = Math.max(...navArr);
-  const minNAV = Math.min(...navArr);
+  const maxNAV = Math.max(...navArr, ...targetNavArr);
+  const minNAV = Math.min(...navArr, ...targetNavArr);
   const navRange = maxNAV - minNAV || 1;
 
   const xS = m => pad.l + (m / VIEW) * iW;
@@ -424,43 +443,47 @@ function drawChart(intArr, debtArr, navArr) {
   for (let i = 0; i <= 4; i++) {
     const y = pad.t + (i / 4) * iH;
     const v = maxNAV - (i / 4) * navRange;
-    o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="#1e2535" stroke-width="1"/>`;
-    o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="#6a7280">${fmt(v, true)}</text>`;
+    o += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + iW}" y2="${y}" stroke="rgba(156,122,77,0.12)" stroke-width="1"/>`;
+    o += `<text x="${pad.l - 8}" y="${y + 4}" text-anchor="end" font-family="DM Mono" font-size="10" fill="#776b5d">${fmt(v, true)}</text>`;
   }
   for (let m = 0; m <= VIEW; m += 6) {
-    o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#6a7280">M${m}</text>`;
+    o += `<text x="${xS(m)}" y="${pad.t + iH + 18}" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#776b5d">M${m}</text>`;
   }
 
   const bW = Math.max(2, iW / VIEW * 0.5);
   for (let m = 0; m <= VIEW; m++) {
     if (intArr[m] > 0) {
       const bH = (intArr[m] / (maxNAV - minNAV || 1)) * iH * 0.4;
-      o += `<rect x="${xS(m) - bW / 2}" y="${pad.t + iH - bH}" width="${bW}" height="${bH}" fill="#c8982a" opacity="0.45"/>`;
+      o += `<rect x="${xS(m) - bW / 2}" y="${pad.t + iH - bH}" width="${bW}" height="${bH}" fill="#b38b57" opacity="0.35"/>`;
     }
     if (debtArr[m] > 1) {
       const bH = (debtArr[m] / (maxNAV - minNAV || 1)) * iH * 0.4;
-      o += `<rect x="${xS(m) - bW / 2}" y="${pad.t + iH - bH}" width="${bW}" height="${bH}" fill="#c04040" opacity="0.3"/>`;
+      o += `<rect x="${xS(m) - bW / 2}" y="${pad.t + iH - bH}" width="${bW}" height="${bH}" fill="#b15d4d" opacity="0.25"/>`;
     }
   }
 
   let area = `M ${xS(0)} ${yNAV(navArr[0])}`;
   for (let m = 1; m <= VIEW; m++) area += ` L ${xS(m)} ${yNAV(navArr[m])}`;
   area += ` L ${xS(VIEW)} ${pad.t + iH} L ${xS(0)} ${pad.t + iH} Z`;
-  o += `<path d="${area}" fill="#e0b84a" opacity="0.07"/>`;
+  o += `<path d="${area}" fill="#b38b57" opacity="0.10"/>`;
 
   let navPath = `M ${xS(0)} ${yNAV(navArr[0])}`;
   for (let m = 1; m <= VIEW; m++) navPath += ` L ${xS(m)} ${yNAV(navArr[m])}`;
-  o += `<path d="${navPath}" fill="none" stroke="#e0b84a" stroke-width="2"/>`;
+  o += `<path d="${navPath}" fill="none" stroke="#b38b57" stroke-width="2"/>`;
+
+  let targetPath = `M ${xS(0)} ${yNAV(targetNavArr[0])}`;
+  for (let m = 1; m <= VIEW; m++) targetPath += ` L ${xS(m)} ${yNAV(targetNavArr[m])}`;
+  o += `<path d="${targetPath}" fill="none" stroke="#506a88" stroke-width="2" stroke-dasharray="7 5"/>`;
 
   for (let m = 0; m <= VIEW; m++) {
-    if (intArr[m] > 0) o += `<circle cx="${xS(m)}" cy="${yNAV(navArr[m])}" r="3" fill="#e0b84a" stroke="#0c0e0f" stroke-width="1.5"/>`;
+    if (intArr[m] > 0) o += `<circle cx="${xS(m)}" cy="${yNAV(navArr[m])}" r="3" fill="#b38b57" stroke="#fdfaf5" stroke-width="1.5"/>`;
   }
 
-  const parNAV = SHARES * 1000;
+  const parNAV = shares * 1000;
   if (parNAV >= minNAV && parNAV <= maxNAV) {
     const yPar = yNAV(parNAV);
-    o += `<line x1="${pad.l}" y1="${yPar}" x2="${pad.l + iW}" y2="${yPar}" stroke="#354050" stroke-width="1" stroke-dasharray="4 3"/>`;
-    o += `<text x="${pad.l + iW + 4}" y="${yPar + 4}" font-family="DM Mono" font-size="9" fill="#354050">PAR</text>`;
+    o += `<line x1="${pad.l}" y1="${yPar}" x2="${pad.l + iW}" y2="${yPar}" stroke="rgba(111,135,163,0.7)" stroke-width="1" stroke-dasharray="4 3"/>`;
+    o += `<text x="${pad.l + iW + 4}" y="${yPar + 4}" font-family="DM Mono" font-size="9" fill="#506a88">PAR</text>`;
   }
 
   svg.innerHTML = o;
@@ -477,15 +500,15 @@ function drawAUM(equity, debt) {
   const dW = debt / total * (W - 160);
   let o = '';
   o += `<rect x="0" y="20" width="${eW}" height="28" fill="#38a06a" opacity="0.7"/>`;
-  o += `<text x="${eW / 2}" y="38" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#e8e4dc">LP Equity</text>`;
+  o += `<text x="${eW / 2}" y="38" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#fdfaf5">LP Equity</text>`;
   if (dW > 4) {
     o += `<rect x="${eW + 2}" y="20" width="${dW}" height="28" fill="#4878c8" opacity="0.7"/>`;
-    if (dW > 40) o += `<text x="${eW + 2 + dW / 2}" y="38" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#e8e4dc">Debt</text>`;
+    if (dW > 40) o += `<text x="${eW + 2 + dW / 2}" y="38" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#fdfaf5">Debt</text>`;
   }
   const tx = eW + dW + 10;
-  o += `<text x="${tx}" y="30" font-family="DM Mono" font-size="10" fill="#6a7280">Equity: ${fmt(equity)}</text>`;
-  o += `<text x="${tx}" y="46" font-family="DM Mono" font-size="10" fill="#6a7280">Debt:   ${fmt(debt)}</text>`;
-  o += `<text x="${tx}" y="62" font-family="DM Mono" font-size="10" fill="#e0b84a">AUM:  ${fmt(total)}</text>`;
+  o += `<text x="${tx}" y="30" font-family="DM Mono" font-size="10" fill="#776b5d">Equity: ${fmt(equity)}</text>`;
+  o += `<text x="${tx}" y="46" font-family="DM Mono" font-size="10" fill="#776b5d">Debt:   ${fmt(debt)}</text>`;
+  o += `<text x="${tx}" y="62" font-family="DM Mono" font-size="10" fill="#9c7a4d">AUM:  ${fmt(total)}</text>`;
   svg.innerHTML = o;
 }
 
