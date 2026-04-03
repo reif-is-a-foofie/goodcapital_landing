@@ -60,8 +60,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .summary-note b{color:var(--ink);font-weight:500;}
 .summary-note.warn{border-left:2px solid var(--red2);padding-left:26px;}
 
-.body{display:grid;grid-template-columns:minmax(0,1fr) minmax(560px,42vw);}
-.chart-area{padding:22px 28px 16px;border-right:1px solid var(--border);}
+.body{display:grid;grid-template-columns:minmax(0,1fr);}
+.chart-area{padding:22px 28px 16px;border-bottom:1px solid var(--border);}
 .sec-label{font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;}
 svg{display:block;}
 #main-chart{width:100%;}
@@ -70,7 +70,7 @@ svg{display:block;}
 .leg-line{width:16px;height:2px;flex-shrink:0;}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
-.tbl-wrap{overflow:auto;max-height:calc(100vh - 292px);}
+.tbl-wrap{overflow-x:auto;overflow-y:auto;max-width:100%;}
 table{width:100%;min-width:880px;border-collapse:collapse;}
 thead th{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:10px 7px 7px;border-bottom:1px solid var(--border2);text-align:right;font-weight:400;position:sticky;top:0;background:var(--s1);z-index:1;}
 thead th:first-child{text-align:left;}
@@ -94,7 +94,7 @@ tfoot td:first-child{text-align:left;}
 @media (max-width: 1100px) {
   .kpis{grid-template-columns:repeat(3,1fr);}
   .body{grid-template-columns:1fr;}
-  .chart-area{border-right:none;border-bottom:1px solid var(--border);}
+  .chart-area{border-bottom:1px solid var(--border);}
   .tbl-wrap{max-height:none;}
 }
 
