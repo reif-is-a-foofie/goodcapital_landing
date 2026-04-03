@@ -56,9 +56,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .chart-shell{display:grid;grid-template-columns:minmax(0,1fr) 224px;gap:18px;align-items:start;min-height:100%;}
 .chart-rail{border-left:1px solid var(--border);padding-left:20px;min-height:0;overflow:auto;}
 .chart-rail .panel-label{padding:0 0 10px;background:none;border-bottom:none;}
-.chart-rail .kpis{display:grid;grid-template-columns:1fr;border-bottom:none;gap:10px;}
-.chart-rail .kpi{padding:10px 0 12px;border-right:none;border-bottom:1px solid var(--border);background:none;}
-.chart-rail .kpi:last-child{border-bottom:none;}
+.chart-rail .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:none;gap:10px;}
+.chart-rail .kpi{padding:10px 8px 12px;border:1px solid var(--border);background:var(--bg);}
+.chart-rail .kpi:last-child{border-bottom:1px solid var(--border);}
 .solver-box{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
 .solver-copy{font-size:11px;line-height:1.7;color:var(--muted2);}
 .solver-copy b{color:var(--ink);font-weight:500;}
@@ -131,6 +131,7 @@ svg{display:block;}
 @media (max-width: 580px) {
   .ctrl-row{grid-template-columns:1fr;}
   .kpis{grid-template-columns:1fr;}
+  .chart-rail .kpis{grid-template-columns:1fr;}
   .ctrl-row .ctrl:nth-last-child(-n+2){border-bottom:1px solid var(--border);}
   .ctrl-row .ctrl:last-child{border-bottom:none;}
   .btn{font-size:10px;padding:4px 10px;}
