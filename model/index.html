@@ -325,8 +325,10 @@ function recalc() {
   const priArr = new Array(VIEW + 1).fill(0);
   const debtArr = new Array(VIEW + 1).fill(0);
   const cashArr = new Array(VIEW + 1).fill(0);
+  const cashDeltaArr = new Array(VIEW + 1).fill(0);
   const activePrincipal = new Array(VIEW + 1).fill(0);
   const monthlyOriginationVolume = loan * S.dpm;
+  const monthlyEquityDeployment = monthlyOriginationVolume / lev;
 
   for (let o = 0; o <= VIEW; o++) {
     intArr[o] += monthlyOriginationVolume * YIELD * (mo1 / 12);
@@ -348,13 +350,16 @@ function recalc() {
   const targetNavArr = new Array(VIEW + 1).fill(0);
   const priceArr = new Array(VIEW + 1).fill(0);
   let runNAV = initNAV;
-  let cashBal = 0;
+  let cashBal = fundSize;
   let totInt = 0, totDebt = 0, totNet = 0;
 
   for (let m = 0; m <= VIEW; m++) {
-    const net = intArr[m] - debtArr[m];
+    const equityPrincipalReturned = priArr[m] / lev;
+    const navNet = intArr[m] - debtArr[m];
+    const net = navNet + equityPrincipalReturned - monthlyEquityDeployment;
+    cashDeltaArr[m] = net;
     cashBal += net;
-    runNAV += net;
+    runNAV += navNet;
     cashArr[m] = cashBal;
     navArr[m] = runNAV;
     targetNavArr[m] = fundSize * Math.pow(1 + irr, m / 12);
@@ -377,7 +382,7 @@ function recalc() {
     const hasInt = intArr[m] > 0.01;
     const hasDebt = debtArr[m] > 0.01;
     const ev = hasInt || priArr[m] > 0;
-    const net = intArr[m] - debtArr[m];
+    const net = cashDeltaArr[m];
     rows += `<tr${ev ? ' class="ev"' : ''}>
       <td>M${String(m).padStart(2,'0')}</td>
       <td class="${hasInt ? 'pos' : ''}">${hasInt ? '+' + fmt(intArr[m]) : '-'}</td>
@@ -412,6 +417,7 @@ function recalc() {
     lNote.innerHTML = `<b>No leverage.</b> Fund is 100% equity funded. AUM = LP equity = <b>${fmt(totalAUM)}</b>. ` +
       `Increase leverage ratio above 1.0x to deploy more capital per LP dollar - watch the debt cost vs. your 17% yield.`;
   }
+  lNote.innerHTML += ` Cash balance assumes the fund starts with <b>${fmt(fundSize, true)}</b>, funds only the equity slice of each new loan, and gets that equity principal back when loans repay.`;
 
   if (lpEquity > fundSize) {
     lNote.className = 'lev-note warn';
@@ -435,12 +441,13 @@ function drawChart(intArr, debtArr, navArr, targetNavArr, cashArr, shares) {
   const maxNAV = Math.max(...navArr, ...targetNavArr);
   const minNAV = Math.min(...navArr, ...targetNavArr);
   const navRange = maxNAV - minNAV || 1;
-  const maxCash = Math.max(...cashArr, 0);
-  const cashRange = maxCash || 1;
+  const maxCash = Math.max(...cashArr);
+  const minCash = Math.min(...cashArr);
+  const cashRange = maxCash - minCash || 1;
 
   const xS = m => pad.l + (m / VIEW) * iW;
   const yNAV = v => pad.t + iH - ((v - minNAV) / navRange) * iH;
-  const yCash = v => pad.t + iH - (v / cashRange) * iH;
+  const yCash = v => pad.t + iH - ((v - minCash) / cashRange) * iH;
 
   let o = '';
 
