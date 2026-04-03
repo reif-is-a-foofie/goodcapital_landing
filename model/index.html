@@ -149,7 +149,7 @@ tfoot td:first-child{text-align:left;}
     </div>
     <div class="ctrl">
       <div class="ctrl-label">Deals / Month</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">1.0</div><div class="ctrl-unit">originations</div></div>
+      <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">1.0</div><div class="ctrl-unit">originations monthly</div></div>
       <div class="ctrl-btns">
         <div class="btn red" onclick="adj('dpm',-0.5)">- 0.5</div>
         <div class="btn plus" onclick="adj('dpm',0.5)">+ 0.5</div>
@@ -301,6 +301,9 @@ function fmt(n, force) {
   return sg + '$' + a.toFixed(0);
 }
 function fmtP(n) { return '$' + n.toFixed(2); }
+function fmtMoneyOrNone(n) {
+  return Math.abs(n) < 0.5 ? 'No debt' : fmt(n, true);
+}
 
 function recalc() {
   const fundSize = S.fund * 1e9;
@@ -378,10 +381,11 @@ function recalc() {
   const projectedIrr = Math.pow(navArr[VIEW] / fundSize, 12 / VIEW) - 1;
   const minCash = Math.min(...cashArr);
   const irrGap = projectedIrr - irr;
+  const debtLabel = fmtMoneyOrNone(debtFacil);
 
   document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
   document.getElementById('kpi-equity').textContent = fmt(lpEquity);
-  document.getElementById('kpi-debt').textContent = fmt(debtFacil);
+  document.getElementById('kpi-debt').textContent = debtLabel;
   document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
   document.getElementById('kpi-gap').textContent = `${irrGap >= 0 ? '+' : ''}${(irrGap * 100).toFixed(1)}%`;
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
@@ -425,7 +429,7 @@ function recalc() {
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
   summary.className = 'summary-note';
-  summary.innerHTML = `At current assumptions, the fund deploys <b>${fmt(lpEquity)}</b> of LP equity and <b>${fmt(debtFacil)}</b> of debt, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.`;
+  summary.innerHTML = `At current assumptions, the fund deploys <b>${fmt(lpEquity)}</b> of LP equity${Math.abs(debtFacil) < 0.5 ? '' : ` and <b>${fmt(debtFacil)}</b> of debt`}, bottoms at <b>${fmt(minCash, true)}</b> cash, ends at <b>${fmtP(priceArr[VIEW])}</b> NAV/share, and implies <b>${(projectedIrr * 100).toFixed(1)}%</b> IRR over ${years} years.`;
   if (lpEquity > fundSize || minCash < 0 || irrGap < 0) {
     summary.className = 'summary-note warn';
     const warnings = [];
