@@ -211,6 +211,11 @@ tfoot td:first-child{text-align:left;}
     <div class="kpi-s">on borrowed capital</div>
   </div>
   <div class="kpi">
+    <div class="kpi-l">Projected IRR</div>
+    <div class="kpi-v blue" id="kpi-irr">-</div>
+    <div class="kpi-s">annualized from modeled NAV</div>
+  </div>
+  <div class="kpi">
     <div class="kpi-l">NAV / Share · Mo 36</div>
     <div class="kpi-v gold" id="kpi-navshare">-</div>
     <div class="kpi-s">vs $1,000 par</div>
@@ -369,12 +374,15 @@ function recalc() {
     totNet += net;
   }
 
+  const projectedIrr = Math.pow(navArr[VIEW] / fundSize, 12 / VIEW) - 1;
+
   document.getElementById('hdr-fund').textContent = `${S.fund.toFixed(1)}B Fund`;
   document.getElementById('kpi-equity').textContent = fmt(lpEquity);
   document.getElementById('kpi-aum').textContent = fmt(totalAUM);
   document.getElementById('kpi-debt').textContent = fmt(debtFacil);
   document.getElementById('kpi-income').textContent = fmt(annualIncome);
   document.getElementById('kpi-debtcost').textContent = fmt(annualDebtCost);
+  document.getElementById('kpi-irr').textContent = `${(projectedIrr * 100).toFixed(1)}%`;
   document.getElementById('kpi-navshare').textContent = fmtP(priceArr[VIEW]);
 
   let rows = '';
@@ -418,6 +426,7 @@ function recalc() {
       `Increase leverage ratio above 1.0x to deploy more capital per LP dollar - watch the debt cost vs. your 17% yield.`;
   }
   lNote.innerHTML += ` Cash balance assumes the fund starts with <b>${fmt(fundSize, true)}</b>, funds only the equity slice of each new loan, and gets that equity principal back when loans repay.`;
+  lNote.innerHTML += ` At the current settings, the modeled NAV implies an annualized IRR of <b>${(projectedIrr * 100).toFixed(1)}%</b> over ${VIEW} months.`;
 
   if (lpEquity > fundSize) {
     lNote.className = 'lev-note warn';
