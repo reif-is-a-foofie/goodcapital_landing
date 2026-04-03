@@ -127,6 +127,11 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-
 .chart-info{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,0.9fr);gap:12px;align-items:start;}
 .event-outline{padding:8px 10px;background:rgba(253,250,245,0.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,0.06);}
 .event-outline .panel-label{padding:0 0 8px;background:none;border-bottom:none;}
+.results-wrap{margin-top:18px;border-top:1px solid var(--border);border-bottom:none;background:none;}
+.results-wrap .settings-body{border-top:none;padding-top:10px;}
+.results-copy{font-size:10px;line-height:1.7;color:var(--muted2);}
+.results-copy b{color:var(--ink);font-weight:500;}
+.results-copy.warn{border-left:2px solid var(--red2);padding-left:12px;}
 .stake-toggle{display:flex;gap:6px;align-items:center;margin-bottom:10px;}
 .stake-label{font-size:8px;color:var(--muted);letter-spacing:1.3px;text-transform:uppercase;}
 
@@ -252,107 +257,159 @@ svg{display:block;}
 
 <div class="body">
   <div class="assumptions-pane">
-    <div class="panel-label" title="These are the main inputs that drive the model. Change them to see how the projected outcome moves.">Assumptions</div>
-    <div class="controls">
-      <div class="ctrl-row">
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the total LP capital the model is allowed to call over the life of the fund. It is a hard ceiling on total equity raised, not the amount sitting in cash on day one.">Max Fund Size</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B max called</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div>
-        <div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div>
+    <div class="panel-label" title="All model inputs now live here. Open the sections you want to change and keep the rest collapsed.">Model Menu</div>
+    <details class="settings-wrap" open>
+      <summary class="settings-toggle" title="These are the main assumptions that drive origination pace, fund economics, and return targets.">Core Assumptions</summary>
+      <div class="settings-body">
+        <div class="controls">
+          <div class="ctrl-row">
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the total LP capital the model is allowed to call over the life of the fund. It is a hard ceiling on total equity raised, not the amount sitting in cash on day one.">Max Fund Size</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B max called</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div><div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="If this is on, LP capital is called only when the fund needs equity for new loans. If it is off, the model assumes all LP capital is funded upfront at the start.">Capital Calls</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-call">Off</div><div class="ctrl-unit">just in time</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="setCapitalCall(false)">Off</div><div class="btn plus" onclick="setCapitalCall(true)">On</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the average size of each new loan the fund makes. Larger loans put more capital to work with each origination.">Loan Size</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M each</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('size',-1)">- $1M</div><div class="btn plus" onclick="adj('size',1)">+ $1M</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the starting monthly origination pace. The model can scale above this if enough capital is available, so think of this as the base pipeline rather than a hard cap.">Deal Pace</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">deals / month</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is how long each loan stays out before principal comes back to the fund. Longer terms keep capital tied up for longer before it can be recycled.">Term</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-term">18</div><div class="ctrl-unit">months</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('term',-6)">- 6mo</div><div class="btn plus" onclick="adj('term',6)">+ 6mo</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the amount of debt used for each dollar of LP equity. A value of 0.25x means $0.25 of debt for every $1.00 of equity, which increases loan capacity but also adds financing cost and risk.">Debt / Equity</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-lev">0.00</div><div class="ctrl-unit" id="u-lev">0% debt vs equity</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('lev',-0.25)">- 0.25x</div><div class="btn plus" onclick="adj('lev',0.25)">+ 0.25x</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the annualized rate charged to borrowers. It is the gross loan yield before origination partners are paid and before any debt cost is applied.">Borrower Rate</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% APY</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the annualized portion of the borrower rate that the fund keeps after paying origination partners and other loan economics. This retained spread is what grows NAV over time.">Fund Take</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-take">18.0</div><div class="ctrl-unit">% kept</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the minimum annual profit rate LPs earn before the GP receives carry units. Profits below this hurdle all stay with LPs.">GP Hurdle</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% annual</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the percentage of profits above the hurdle that gets paid to the GP in new units. Those units dilute LP ownership but do not take cash out of the fund.">GP Carry</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% of excess profit</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('carry',-1)">- 1%</div><div class="btn plus" onclick="adj('carry',1)">+ 1%</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the annual cost of any borrowing the fund uses. Higher debt cost reduces the spread the fund keeps and slows NAV growth.">Cost of Debt</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-cod">8</div><div class="ctrl-unit">% APY</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('cod',-0.25)">- 0.25%</div><div class="btn plus" onclick="adj('cod',0.25)">+ 0.25%</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="This is the annual IRR target you want the fund to achieve. The target line on the chart shows the NAV path required to hit this return.">Target Return</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% IRR</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="If this is on, LP capital is called only when the fund needs equity for new loans. If it is off, the model assumes all LP capital is funded upfront at the start.">Capital Calls</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-call">Off</div><div class="ctrl-unit">just in time</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="setCapitalCall(false)">Off</div>
-        <div class="btn plus" onclick="setCapitalCall(true)">On</div>
+    </details>
+    <details class="settings-wrap">
+      <summary class="settings-toggle" title="These settings control when liquidity windows happen, how much gets requested, how much is switched, and how much can be paid from fund cash.">Liquidity & Redemption</summary>
+      <div class="settings-body">
+        <div class="controls">
+          <div class="ctrl-row">
+            <div class="ctrl">
+              <div class="ctrl-label" title="How long LP capital stays locked before the fund opens a liquidity window. Before this point, liquidity events are informationally off.">Lockup</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-lock">24</div><div class="ctrl-unit">months</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('lock',-3)">- 3mo</div><div class="btn plus" onclick="adj('lock',3)">+ 3mo</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="How often the fund opens a liquidity window after lockup. For example, 3 means quarterly windows and 6 means semiannual windows.">Liquidity Event</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-liq">3</div><div class="ctrl-unit">months apart</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('liq',-1)">- 1mo</div><div class="btn plus" onclick="adj('liq',1)">+ 1mo</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="The share of LP value assumed to ask for liquidity at each event. This is a request assumption, not guaranteed payout.">Liquidity Request</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-req">5.0</div><div class="ctrl-unit">% of LP value</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('req',-1)">- 1%</div><div class="btn plus" onclick="adj('req',1)">+ 1%</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="The share of each liquidity request assumed to be matched by switches or secondary demand rather than paid from fund cash.">Switch Rate</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-switch">25.0</div><div class="ctrl-unit">% matched</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('switch',-5)">- 5%</div><div class="btn plus" onclick="adj('switch',5)">+ 5%</div></div>
+            </div>
+            <div class="ctrl">
+              <div class="ctrl-label" title="The maximum share of LP value the fund is assumed to pay out from cash in a single liquidity window. Anything above that is deferred or canceled.">Cash Payout Cap</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-redcap">5.0</div><div class="ctrl-unit">% paid from fund</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('redcap',-1)">- 1%</div><div class="btn plus" onclick="adj('redcap',1)">+ 1%</div></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the average size of each new loan the fund makes. Larger loans put more capital to work with each origination.">Loan Size</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M each</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('size',-1)">- $1M</div>
-        <div class="btn plus" onclick="adj('size',1)">+ $1M</div>
+    </details>
+    <details class="settings-wrap">
+      <summary class="settings-toggle" title="These controls are for stress testing and non-base-case behavior. Most investors can leave them closed.">Advanced</summary>
+      <div class="settings-body">
+        <div class="controls">
+          <div class="ctrl-row">
+            <div class="ctrl">
+              <div class="ctrl-label" title="Turns on randomized scenario runs instead of a single fixed case. Use this to see a range of possible outcomes rather than one straight-line projection.">Monte Carlo</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="setMonteCarlo(false)">Off</div><div class="btn plus" onclick="setMonteCarlo(true)">On</div></div>
+            </div>
+            <div class="ctrl" id="var-ctrl">
+              <div class="ctrl-label" title="Controls how widely the randomized Monte Carlo runs are allowed to move around the base assumptions. Higher variance means a wider spread of possible outcomes.">Variance</div>
+              <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
+              <div class="ctrl-btns"><div class="btn red" onclick="adj('var',-1)">- 1%</div><div class="btn plus" onclick="adj('var',1)">+ 1%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mode-row">
+          <div class="mode-label">Hardcore Mode</div>
+          <div class="ctrl-btns">
+            <div class="btn red active" id="hc-off" onclick="setHardcore(false)">Off</div>
+            <div class="btn plus" id="hc-on" onclick="setHardcore(true)">On</div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the starting monthly origination pace. The model can scale above this if enough capital is available, so think of this as the base pipeline rather than a hard cap.">Deal Pace</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">deals / month</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div>
-        <div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div>
+    </details>
+    <details class="settings-wrap">
+      <summary class="settings-toggle" title="Short answers to the core modeling questions investors usually ask first.">FAQ</summary>
+      <div class="settings-body">
+        <div class="faq-list">
+          <div class="faq-card">
+            <div class="faq-q">How Is Loan Volume Modeled?</div>
+            <div class="faq-a"><b>Monthly origination volume</b> is modeled as the lesser of <b>pipeline capacity</b> and <b>deployable capital</b>. In plain English: the fund can only make as many loans as the market can absorb and as its available equity, leverage, repayments, retained profits, and remaining capital calls can support.</div>
+          </div>
+          <div class="faq-card">
+            <div class="faq-q">Borrower Rate Vs. Fund Take</div>
+            <div class="faq-a"><b>Borrower Rate</b> is the gross rate the developer pays on the loan. <b>Fund Take</b> is the portion the fund retains after paying origination partners and other loan economics. That retained spread is what drives NAV growth.</div>
+          </div>
+          <div class="faq-card">
+            <div class="faq-q">How Do GP Units Work?</div>
+            <div class="faq-a"><b>GP units</b> are minted from profits above the selected hurdle. The fund does not pay that carry out in cash here. Instead, the GP receives new units, which dilute LP ownership but leave cash inside the fund for reinvestment.</div>
+          </div>
+          <div class="faq-card">
+            <div class="faq-q">What Drives The Chart?</div>
+            <div class="faq-a"><b>NAV</b> shows total fund value, <b>Loans Outstanding</b> shows active principal still out in the field, <b>Cash</b> shows liquidity on hand, and the brown bars show <b>new loan volume per month</b> so you can judge whether the market would need to absorb more lending as the strategy scales.</div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is how long each loan stays out before principal comes back to the fund. Longer terms keep capital tied up for longer before it can be recycled.">Term</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-term">18</div><div class="ctrl-unit">months</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('term',-6)">- 6mo</div>
-        <div class="btn plus" onclick="adj('term',6)">+ 6mo</div>
-      </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the amount of debt used for each dollar of LP equity. A value of 0.25x means $0.25 of debt for every $1.00 of equity, which increases loan capacity but also adds financing cost and risk.">Debt / Equity</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-lev">0.00</div><div class="ctrl-unit" id="u-lev">0% debt vs equity</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('lev',-0.25)">- 0.25x</div>
-        <div class="btn plus" onclick="adj('lev',0.25)">+ 0.25x</div>
-      </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the annualized rate charged to borrowers. It is the gross loan yield before origination partners are paid and before any debt cost is applied.">Borrower Rate</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% APY</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div>
-        <div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div>
-      </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the annualized portion of the borrower rate that the fund keeps after paying origination partners and other loan economics. This retained spread is what grows NAV over time.">Fund Take</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-take">18.0</div><div class="ctrl-unit">% kept</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div>
-        <div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div>
-      </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the minimum annual profit rate LPs earn before the GP receives carry units. Profits below this hurdle all stay with LPs.">GP Hurdle</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% annual</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div>
-        <div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div>
-      </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the percentage of profits above the hurdle that gets paid to the GP in new units. Those units dilute LP ownership but do not take cash out of the fund.">GP Carry</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% of excess profit</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('carry',-1)">- 1%</div>
-        <div class="btn plus" onclick="adj('carry',1)">+ 1%</div>
-      </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the annual cost of any borrowing the fund uses. Higher debt cost reduces the spread the fund keeps and slows NAV growth.">Cost of Debt</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-cod">8</div><div class="ctrl-unit">% APY</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('cod',-0.25)">- 0.25%</div>
-        <div class="btn plus" onclick="adj('cod',0.25)">+ 0.25%</div>
-      </div>
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label" title="This is the annual IRR target you want the fund to achieve. The target line on the chart shows the NAV path required to hit this return.">Target Return</div>
-      <div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% IRR</div></div>
-      <div class="ctrl-btns">
-        <div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div>
-        <div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div>
-      </div>
-      </div>
-      </div>
-    </div>
+    </details>
   </div>
   <div class="chart-area">
     <div class="chart-shell">
@@ -478,101 +535,12 @@ svg{display:block;}
             <div class="kpi-s">of total diluted units</div>
           </div>
         </div>
-        <details class="settings-wrap">
-          <summary class="settings-toggle" title="These are secondary controls for simulation and variance. Most users can ignore them unless they want to test a range of possible outcomes.">Settings</summary>
+        <details class="settings-wrap results-wrap">
+          <summary class="settings-toggle" title="Open this to read the full plain-English explanation of what the current assumptions imply.">Scenario Readout</summary>
           <div class="settings-body">
-            <div class="ctrl-row">
-              <div class="ctrl">
-                <div class="ctrl-label" title="How long LP capital stays locked before the fund opens a liquidity window. Before this point, liquidity events are informationally off.">Lockup</div>
-                <div class="ctrl-display"><div class="ctrl-val" id="v-lock">24</div><div class="ctrl-unit">months</div></div>
-                <div class="ctrl-btns">
-                  <div class="btn red" onclick="adj('lock',-3)">- 3mo</div>
-                  <div class="btn plus" onclick="adj('lock',3)">+ 3mo</div>
-                </div>
-              </div>
-              <div class="ctrl">
-                <div class="ctrl-label" title="How often the fund opens a liquidity window after lockup. For example, 3 means quarterly windows and 6 means semiannual windows.">Liquidity Event</div>
-                <div class="ctrl-display"><div class="ctrl-val" id="v-liq">3</div><div class="ctrl-unit">months apart</div></div>
-                <div class="ctrl-btns">
-                  <div class="btn red" onclick="adj('liq',-1)">- 1mo</div>
-                  <div class="btn plus" onclick="adj('liq',1)">+ 1mo</div>
-                </div>
-              </div>
-              <div class="ctrl">
-                <div class="ctrl-label" title="The share of LP value assumed to ask for liquidity at each event. This is a request assumption, not guaranteed payout.">Liquidity Request</div>
-                <div class="ctrl-display"><div class="ctrl-val" id="v-req">5.0</div><div class="ctrl-unit">% of LP value</div></div>
-                <div class="ctrl-btns">
-                  <div class="btn red" onclick="adj('req',-1)">- 1%</div>
-                  <div class="btn plus" onclick="adj('req',1)">+ 1%</div>
-                </div>
-              </div>
-            </div>
-            <div class="ctrl-row">
-              <div class="ctrl">
-                <div class="ctrl-label" title="The share of each liquidity request assumed to be matched by switches or secondary demand rather than paid from fund cash.">Switch Rate</div>
-                <div class="ctrl-display"><div class="ctrl-val" id="v-switch">25.0</div><div class="ctrl-unit">% matched</div></div>
-                <div class="ctrl-btns">
-                  <div class="btn red" onclick="adj('switch',-5)">- 5%</div>
-                  <div class="btn plus" onclick="adj('switch',5)">+ 5%</div>
-                </div>
-              </div>
-              <div class="ctrl">
-                <div class="ctrl-label" title="The maximum share of LP value the fund is assumed to pay out from cash in a single liquidity window. Anything above that is deferred or canceled.">Cash Payout Cap</div>
-                <div class="ctrl-display"><div class="ctrl-val" id="v-redcap">5.0</div><div class="ctrl-unit">% paid from fund</div></div>
-                <div class="ctrl-btns">
-                  <div class="btn red" onclick="adj('redcap',-1)">- 1%</div>
-                  <div class="btn plus" onclick="adj('redcap',1)">+ 1%</div>
-                </div>
-              </div>
-              <div class="ctrl">
-                <div class="ctrl-label" title="Turns on randomized scenario runs instead of a single fixed case. Use this to see a range of possible outcomes rather than one straight-line projection.">Monte Carlo</div>
-                <div class="ctrl-display"><div class="ctrl-val" id="v-mc">Off</div><div class="ctrl-unit">simulation</div></div>
-                <div class="ctrl-btns">
-                  <div class="btn red" onclick="setMonteCarlo(false)">Off</div>
-                  <div class="btn plus" onclick="setMonteCarlo(true)">On</div>
-                </div>
-              </div>
-              <div class="ctrl" id="var-ctrl">
-                <div class="ctrl-label" title="Controls how widely the randomized Monte Carlo runs are allowed to move around the base assumptions. Higher variance means a wider spread of possible outcomes.">Variance</div>
-                <div class="ctrl-display"><div class="ctrl-val" id="v-var">10.0</div><div class="ctrl-unit">% annual</div></div>
-                <div class="ctrl-btns">
-                  <div class="btn red" onclick="adj('var',-1)">- 1%</div>
-                  <div class="btn plus" onclick="adj('var',1)">+ 1%</div>
-                </div>
-              </div>
-            </div>
+            <div class="results-copy" id="summary-note"></div>
           </div>
         </details>
-        <details class="settings-wrap">
-          <summary class="settings-toggle" title="Short answers to the core modeling questions investors usually ask first.">FAQ</summary>
-          <div class="settings-body">
-            <div class="faq-list">
-              <div class="faq-card">
-                <div class="faq-q">How Is Loan Volume Modeled?</div>
-                <div class="faq-a"><b>Monthly origination volume</b> is modeled as the lesser of <b>pipeline capacity</b> and <b>deployable capital</b>. In plain English: the fund can only make as many loans as the market can absorb and as its available equity, leverage, repayments, retained profits, and remaining capital calls can support.</div>
-              </div>
-              <div class="faq-card">
-                <div class="faq-q">Borrower Rate Vs. Fund Take</div>
-                <div class="faq-a"><b>Borrower Rate</b> is the gross rate the developer pays on the loan. <b>Fund Take</b> is the portion the fund retains after paying origination partners and other loan economics. That retained spread is what drives NAV growth.</div>
-              </div>
-              <div class="faq-card">
-                <div class="faq-q">How Do GP Units Work?</div>
-                <div class="faq-a"><b>GP units</b> are minted from profits above the selected hurdle. The fund does not pay that carry out in cash here. Instead, the GP receives new units, which dilute LP ownership but leave cash inside the fund for reinvestment.</div>
-              </div>
-              <div class="faq-card">
-                <div class="faq-q">What Drives The Chart?</div>
-                <div class="faq-a"><b>NAV</b> shows total fund value, <b>Loans Outstanding</b> shows active principal still out in the field, <b>Cash</b> shows liquidity on hand, and the brown bars show <b>new loan volume per month</b> so you can judge whether the market would need to absorb more lending as the strategy scales.</div>
-              </div>
-            </div>
-          </div>
-        </details>
-        <div class="mode-row">
-          <div class="mode-label">Hardcore Mode</div>
-          <div class="ctrl-btns">
-            <div class="btn red active" id="hc-off" onclick="setHardcore(false)">Off</div>
-            <div class="btn plus" id="hc-on" onclick="setHardcore(true)">On</div>
-          </div>
-        </div>
         <div class="event-outline">
           <div class="panel-label" title="This box explains the current liquidity window under the hovered point in time. It shows what LPs ask for, what gets switched, what cash can pay, and what is deferred.">Liquidity Event Outline</div>
           <div class="event-grid">
@@ -607,7 +575,6 @@ svg{display:block;}
     </div>
   </div>
 </div>
-<div class="summary-note" id="summary-note"></div>
 <div class="help-tip" id="help-tip"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
@@ -1279,10 +1246,10 @@ function recalc() {
 
   const summary = document.getElementById('summary-note');
   const years = Math.round(VIEW / 12);
-  summary.className = 'summary-note';
+  summary.className = 'results-copy';
   summary.innerHTML = `Under these settings, the fund makes roughly <b>${S.dpm.toFixed(1)}</b> base loans per month at about <b>$${S.size.toFixed(1)}M</b> each, charges borrowers about <b>${(grossApy * 100).toFixed(1)}%</b>, and keeps about <b>${(fundTake * 100).toFixed(1)}%</b> inside the fund after paying origination partners their share of the borrower rate. GP carry is set at <b>${S.carry.toFixed(1)}%</b> over an <b>${S.hurdle.toFixed(1)}%</b> hurdle and is paid in new units rather than cash. LP capital is <b>${S.hc ? 'funded upfront and redeployed immediately as cash returns' : (S.call ? 'called only when new loans need funding' : 'fully funded upfront')}</b>, with total calls capped at <b>${fmt(fundSize, true)}</b>. Liquidity windows open after <b>${S.lock.toFixed(0)} months</b> and then every <b>${S.liq.toFixed(0)} months</b>, with <b>${S.req.toFixed(1)}%</b> of LP value assumed to request liquidity, <b>${S.switch.toFixed(1)}%</b> switched, and <b>${S.redcap.toFixed(1)}%</b> of LP value available to pay from fund cash. Over the full run, the model originates about <b>${totalLoansOriginated.toFixed(0)}</b> loans, mints about <b>${totalGpUnitsMinted.toFixed(0)}</b> GP units, and ends with GP owning about <b>${(endingGpOwnership * 100).toFixed(1)}%</b> of units. The busiest month originates about <b>${peakMonthlyDeals.toFixed(1)}</b> loans, or roughly <b>${fmt(peakMonthlyOrigination, true)}</b> of new volume.${S.hc ? ` Hardcore Mode is on, so idle cash is immediately redeployed instead of waiting for a gentler ramp.` : ''}${S.mc ? ` Monte Carlo is on, so the chart and KPIs are showing the median simulated path rather than a single fixed case.` : ''}`;
   if (cumulativeLpCalled > fundSize + 0.5 || minCash < 0 || irrGap < 0 || fundTake > grossApy) {
-    summary.className = 'summary-note warn';
+    summary.className = 'results-copy warn';
     const warnings = [];
     if (cumulativeLpCalled > fundSize + 0.5) warnings.push(`total LP calls exceed max fund size`);
     if (minCash < 0) warnings.push(`cash balance turns negative`);
