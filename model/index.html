@@ -19,28 +19,127 @@ html,body{min-height:100%}
 body{background:var(--bg);color:var(--ink);font-family:'DM Mono',monospace;font-size:12px;font-weight:300;min-height:100vh;overflow:auto;display:flex;flex-direction:column}
 a{color:inherit}
 .sitebar{display:flex;justify-content:space-between;align-items:center;padding:0 18px 0 10px;height:56px;border-bottom:1px solid var(--border);background:#f2f2f2;box-shadow:0 1px 10px rgba(0,0,0,0.03);flex:0 0 auto;gap:18px}
-.sitebar .logo-link{display:flex;align-items:center;height:100%;flex-shrink:0}.sitebar .logo{display:block;height:36px;width:auto;object-fit:contain;object-position:left center}
-.sitebar-main{display:flex;align-items:center;gap:16px;min-width:0;flex:1 1 auto}.sitebar-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.05;white-space:nowrap}.sitebar-title span{color:var(--gold)}.sitebar-title a{text-decoration:none}.sitebar-action{display:inline-flex;align-items:center;justify-content:center;padding:7px 12px;border:1px solid var(--border2);background:var(--s1);text-decoration:none;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
-.hdr-copy{padding:10px 24px 10px;border-bottom:1px solid var(--border);background:var(--s1);font-size:10px;line-height:1.7;color:var(--muted2)}.hdr-copy b{color:var(--ink);font-weight:500}.hdr-contact{display:block;margin-bottom:4px}
+.sitebar .logo-link{display:flex;align-items:center;height:100%;flex-shrink:0}
+.sitebar .logo{display:block;height:36px;width:auto;object-fit:contain;object-position:left center}
+.sitebar-main{display:flex;align-items:center;gap:16px;min-width:0;flex:1 1 auto}
+.sitebar-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.05;white-space:nowrap}
+.sitebar-title span{color:var(--gold)}
+.sitebar-title a{text-decoration:none}
+.sitebar-action{display:inline-flex;align-items:center;justify-content:center;padding:7px 12px;border:1px solid var(--border2);background:var(--s1);text-decoration:none;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.hdr-copy{padding:10px 24px 10px;border-bottom:1px solid var(--border);background:var(--s1);font-size:10px;line-height:1.75;color:var(--muted2)}
+.hdr-copy b{color:var(--ink);font-weight:500}
+.hdr-contact{display:block;margin-bottom:4px}
 .body{border-bottom:1px solid var(--border);flex:1 1 auto;min-height:0;display:grid;grid-template-columns:310px minmax(0,1fr)}
 .assumptions-pane{background:var(--s1);border-right:1px solid var(--border);min-height:0;overflow:auto;display:flex;flex-direction:column}
 .panel-label{padding:10px 18px 8px;background:var(--s1);border-bottom:1px solid var(--border);font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase}
-.settings-wrap{background:var(--s1);border-bottom:1px solid var(--border)}.settings-toggle{padding:8px 18px;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;cursor:pointer;list-style:none;user-select:none}.settings-toggle::-webkit-details-marker{display:none}.settings-toggle::after{content:'Show';margin-left:8px;color:var(--gold2)}.settings-wrap[open] .settings-toggle::after{content:'Hide'}
-.settings-body{border-top:1px solid var(--border)}.controls{background:var(--s1)}.ctrl-row{display:block}.ctrl{border-bottom:1px solid var(--border);padding:8px 14px 10px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'label value' 'buttons buttons';column-gap:10px;row-gap:5px;align-items:center;text-align:left}.ctrl:last-child{border-bottom:none}.ctrl-label{grid-area:label;font-size:8px;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase;line-height:1.45}.ctrl-display{grid-area:value;display:flex;align-items:baseline;justify-content:flex-end;gap:5px;text-align:right}.ctrl-val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--gold2);line-height:.95}.ctrl-unit{font-size:9px;color:var(--muted);line-height:1.25;display:block}.ctrl-btns{grid-area:buttons;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-start}.btn{background:var(--s2);border:1px solid var(--border2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap}.btn:hover{background:var(--s3);color:var(--ink)}.btn.plus{color:var(--green2)}.btn.red{color:var(--red2)}.btn.active{background:var(--s3);border-color:var(--border2);color:var(--ink)}.btn.red.active{background:rgba(177,93,77,.14);border-color:rgba(177,93,77,.14);color:var(--red2)}.btn.plus.active{background:rgba(86,123,91,.14);border-color:rgba(86,123,91,.14);color:var(--green2)}
-.mode-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px 12px;border-bottom:1px solid var(--border)}.mode-label{font-size:9px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase}
-.assump-note,.note-block{padding:12px 16px 16px;font-size:10px;line-height:1.75;color:var(--muted2)}.assump-note b,.note-block b{color:var(--ink);font-weight:500}
-.note-block{display:grid;gap:10px}.note-card{padding:10px 12px;background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.04)}.note-q{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
-.chart-area{padding:14px 16px 16px;background:var(--s1);min-height:0;overflow:auto}.chart-shell{display:flex;flex-direction:column;gap:16px;min-height:100%}.chart-main{display:flex;flex-direction:column;gap:12px;min-height:0}.chart-meta{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);gap:12px;align-items:start}
-.hover-panel,.flow-panel,.results-wrap,.chart-frame,.kpi{background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.06)}
-.hover-panel{padding:8px 10px}.hover-period{font-size:9px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}.hover-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 12px}.hover-item{min-width:0;display:flex;align-items:baseline;gap:6px;white-space:nowrap;overflow:hidden}.hover-k{flex:0 0 auto;font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}.hover-v{font-size:11px;color:var(--ink);line-height:1.3;overflow:hidden;text-overflow:ellipsis}.hover-v.nav{color:var(--gold2);font-weight:600}.hover-v.loans{color:var(--purple);font-weight:600}.hover-v.cash{color:var(--teal);font-weight:600}.hover-v.calls{color:var(--blue2);font-weight:600}.hover-story{grid-column:1 / -1;font-size:9px;color:var(--muted2);line-height:1.55;padding-top:2px}
-.flow-panel{padding:10px 12px}.flow-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}.flow-k{font-size:8px;color:var(--muted);letter-spacing:1.3px;text-transform:uppercase;margin-bottom:3px}.flow-v{font-size:11px;color:var(--ink);line-height:1.4}.flow-v.gold{color:var(--gold2);font-weight:600}.flow-v.green{color:var(--green2);font-weight:600}.flow-v.blue{color:var(--blue2);font-weight:600}.flow-note{grid-column:1 / -1;font-size:10px;color:var(--muted2);line-height:1.55;padding-top:2px}
-.results-wrap .settings-toggle{padding:8px 10px 7px}.results-wrap .settings-body{border-top:1px solid var(--border);padding:8px 10px 10px}.results-copy{font-size:10px;line-height:1.75;color:var(--muted2)}.results-copy b{color:var(--ink);font-weight:500}
-.legend{display:flex;gap:12px;flex-wrap:wrap;flex:0 0 auto}.leg{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted)}.leg-line{width:16px;height:2px;flex-shrink:0}.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.chart-frame{position:relative;min-height:420px}.chart-frame.small{min-height:300px}#main-chart,#flow-chart{width:100%;height:100%}
-.chart-rail{border-top:1px solid var(--border);padding-top:16px}.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.kpi{padding:14px 14px 16px;min-height:122px;display:flex;flex-direction:column;justify-content:space-between}.kpi-l{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}.kpi-v{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1}.kpi-v.gold{color:var(--gold2)}.kpi-v.green{color:var(--green2)}.kpi-v.red{color:var(--red2)}.kpi-v.plain{color:var(--ink)}.kpi-v.blue{color:var(--blue2)}.kpi-v.purple{color:var(--purple)}.kpi-s{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
-@media (max-width:1180px){.body{grid-template-columns:1fr}.assumptions-pane{border-right:none;border-bottom:1px solid var(--border)}.chart-meta{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:820px){.sitebar{height:auto;padding:8px 12px;display:block}.sitebar-main{display:block;margin-top:6px}.sitebar-title{white-space:normal}.sitebar-action{display:inline-flex;margin-top:8px}.hdr-copy{padding:10px 14px}.chart-area{padding:12px}.hover-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis{grid-template-columns:1fr}}
-@media (max-width:580px){.hover-grid{grid-template-columns:1fr}.flow-grid{grid-template-columns:1fr}}
+.stress-note{padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(233,223,209,0.4);font-size:10px;line-height:1.7;color:var(--muted2)}
+.stress-note b{color:var(--ink);font-weight:500}
+.settings-wrap{background:var(--s1);border-bottom:1px solid var(--border)}
+.settings-toggle{padding:8px 18px;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;cursor:pointer;list-style:none;user-select:none}
+.settings-toggle::-webkit-details-marker{display:none}
+.settings-toggle::after{content:'Show';margin-left:8px;color:var(--gold2)}
+.settings-wrap[open] .settings-toggle::after{content:'Hide'}
+.settings-body{border-top:1px solid var(--border)}
+.controls{background:var(--s1)}
+.ctrl-row{display:block}
+.ctrl{border-bottom:1px solid var(--border);padding:8px 14px 10px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'label value' 'buttons buttons';column-gap:10px;row-gap:5px;align-items:center;text-align:left}
+.ctrl:last-child{border-bottom:none}
+.ctrl-label{grid-area:label;font-size:8px;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase;line-height:1.45}
+.ctrl-display{grid-area:value;display:flex;align-items:baseline;justify-content:flex-end;gap:5px;text-align:right}
+.ctrl-val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--gold2);line-height:.95}
+.ctrl-unit{font-size:9px;color:var(--muted);line-height:1.25;display:block}
+.ctrl-btns{grid-area:buttons;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-start}
+.btn{background:var(--s2);border:1px solid var(--border2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap}
+.btn:hover{background:var(--s3);color:var(--ink)}
+.btn.plus{color:var(--green2)}
+.btn.red{color:var(--red2)}
+.btn.active{background:var(--s3);border-color:var(--border2);color:var(--ink)}
+.btn.red.active{background:rgba(177,93,77,.14);border-color:rgba(177,93,77,.14);color:var(--red2)}
+.btn.plus.active{background:rgba(86,123,91,.14);border-color:rgba(86,123,91,.14);color:var(--green2)}
+.mode-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px 12px;border-bottom:1px solid var(--border)}
+.mode-label{font-size:9px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase}
+.assump-note,.note-block{padding:12px 16px 16px;font-size:10px;line-height:1.75;color:var(--muted2)}
+.assump-note b,.note-block b{color:var(--ink);font-weight:500}
+.note-block{display:grid;gap:10px}
+.note-card{padding:10px 12px;background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.04)}
+.note-q{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.chart-area{padding:14px 16px 16px;background:var(--s1);min-height:0;overflow:auto}
+.chart-shell{display:flex;flex-direction:column;gap:16px;min-height:100%}
+.chart-main{display:flex;flex-direction:column;gap:14px;min-height:0}
+.chart-meta{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.9fr);gap:12px;align-items:start}
+.meta-stack{display:flex;flex-direction:column;gap:12px}
+.memo-panel,.hover-panel,.carry-panel,.chart-frame,.kpi,.footer-panel{background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.06)}
+.memo-panel{padding:14px 16px 16px}
+.memo-kicker{font-size:8px;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase;margin-bottom:8px}
+.memo-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1;color:var(--ink);margin-bottom:10px}
+.memo-copy{font-size:10px;line-height:1.8;color:var(--muted2)}
+.memo-copy b{color:var(--ink);font-weight:500}
+.memo-seq{display:grid;gap:8px;margin-top:12px}
+.memo-step{display:grid;grid-template-columns:16px minmax(0,1fr);gap:10px;align-items:start;font-size:10px;line-height:1.75;color:var(--muted2)}
+.memo-step strong{color:var(--ink);font-weight:500}
+.memo-num{color:var(--gold2);font-size:10px;line-height:1.6}
+.hover-panel,.carry-panel{padding:10px 12px}
+.hover-period,.carry-title{font-size:9px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
+.hover-grid,.carry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
+.hover-item,.carry-item{min-width:0;display:flex;align-items:baseline;gap:6px;white-space:nowrap;overflow:hidden}
+.hover-k,.carry-k{flex:0 0 auto;font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.hover-v,.carry-v{font-size:11px;color:var(--ink);line-height:1.3;overflow:hidden;text-overflow:ellipsis}
+.hover-v.gold,.carry-v.gold{color:var(--gold2);font-weight:600}
+.hover-v.green,.carry-v.green{color:var(--green2);font-weight:600}
+.hover-v.blue,.carry-v.blue{color:var(--blue2);font-weight:600}
+.hover-v.purple,.carry-v.purple{color:var(--purple);font-weight:600}
+.hover-story,.carry-note{grid-column:1 / -1;font-size:9px;color:var(--muted2);line-height:1.6;padding-top:2px}
+.chart-block{display:flex;flex-direction:column;gap:8px}
+.chart-head{display:grid;gap:4px}
+.chart-label{font-size:8px;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase}
+.chart-title{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:700;line-height:1;color:var(--ink)}
+.chart-copy{font-size:10px;line-height:1.75;color:var(--muted2)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;flex:0 0 auto}
+.leg{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted)}
+.leg-line{width:16px;height:2px;flex-shrink:0}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.chart-frame{position:relative;height:440px}
+.chart-frame.small{height:320px}
+#main-chart,#flow-chart{position:absolute;inset:0;width:100%;height:100%}
+.chart-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;font-size:10px;line-height:1.7;color:var(--muted2);background:rgba(253,250,245,.92);z-index:3}
+.chart-fallback.hidden{display:none}
+.chart-rail{border-top:1px solid var(--border);padding-top:16px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.kpi{padding:14px 14px 16px;min-height:126px;display:flex;flex-direction:column;justify-content:space-between}
+.kpi-l{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.kpi-v{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1}
+.kpi-v.gold{color:var(--gold2)}
+.kpi-v.green{color:var(--green2)}
+.kpi-v.red{color:var(--red2)}
+.kpi-v.plain{color:var(--ink)}
+.kpi-v.blue{color:var(--blue2)}
+.kpi-v.purple{color:var(--purple)}
+.kpi-s{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+.footer-panel{padding:14px 16px 16px;margin-top:12px}
+.footer-copy{font-size:10px;line-height:1.8;color:var(--muted2)}
+.footer-copy b{color:var(--ink);font-weight:500}
+@media (max-width:1180px){
+  .body{grid-template-columns:1fr}
+  .assumptions-pane{border-right:none;border-bottom:1px solid var(--border)}
+  .chart-meta{grid-template-columns:1fr}
+}
+@media (max-width:900px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:820px){
+  .sitebar{height:auto;padding:8px 12px;display:block}
+  .sitebar-main{display:block;margin-top:6px}
+  .sitebar-title{white-space:normal}
+  .sitebar-action{display:inline-flex;margin-top:8px}
+  .hdr-copy{padding:10px 14px}
+  .chart-area{padding:12px}
+  .chart-frame{height:380px}
+  .chart-frame.small{height:280px}
+}
+@media (max-width:640px){
+  .hover-grid,.carry-grid,.kpis{grid-template-columns:1fr}
+  .memo-title{font-size:24px}
+}
 </style>
 </head>
 <body>
@@ -49,21 +148,22 @@ a{color:inherit}
   <div class="sitebar-main"><div class="sitebar-title"><a href="/">The Good Project <span>/</span> Fund One Model</a></div></div>
   <a class="sitebar-action" href="/model/TGP_Fund_One_Model.xlsx" download>Download Excel</a>
 </div>
-<div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>What this page shows:</b> one clean base case. LP capital is committed to the fund, capital is called either upfront or just-in-time, loans are written on a prepaid-interest basis, the fund retains a chosen spread from the borrower rate, prepaid spread is recognized over the loan term, principal is recycled at maturity, and GP carry is paid once per year in <b>new units</b> rather than cash.</div>
+<div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>What this page shows:</b> one base-case operating engine for short-duration Australian private credit with prepaid interest at settlement. The question is simple: <b>if the assumptions are true, does the business work?</b> LP capital is committed, called only when net deployment requires it, retained spread arrives in cash at settlement, profit is earned over time, principal is recycled, and GP carry only mints from annual earned profit above the LP hurdle.</div>
 <div class="body">
   <div class="assumptions-pane">
-    <div class="panel-label">Model Menu</div>
+    <div class="panel-label">Base Case Assumptions</div>
+    <div class="stress-note"><b>Live stress test:</b> this page always shows one scenario only. Use the controls to pressure the same operating engine in real time rather than switching between prebuilt cases.</div>
     <details class="settings-wrap" open>
-      <summary class="settings-toggle">Fund Mechanics</summary>
+      <summary class="settings-toggle">Fund Structure</summary>
       <div class="settings-body">
         <div class="controls"><div class="ctrl-row">
           <div class="ctrl"><div class="ctrl-label">Max Fund Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B committed</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div><div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div></div></div>
           <div class="mode-row"><div class="mode-label">Capital Calls</div><div class="ctrl-btns"><div class="btn red" id="call-off" onclick="setCapitalCall(false)">Upfront</div><div class="btn plus active" id="call-on" onclick="setCapitalCall(true)">Just in time</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Target LP IRR</div><div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">LP Preferred Return</div><div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% for GP carry</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">GP Carry</div><div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% of annual profit</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('carry',-1)">- 1%</div><div class="btn plus" onclick="adj('carry',1)">+ 1%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Target LP IRR Benchmark</div><div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">LP Preferred Return / Hurdle</div><div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">GP Carry</div><div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% of carry base</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('carry',-1)">- 1%</div><div class="btn plus" onclick="adj('carry',1)">+ 1%</div></div></div>
         </div></div>
-        <div class="assump-note" id="carry-note">Carry is calculated on <b>earned fund profit</b>, not on prepaid cash collected at settlement. The model accrues retained spread monthly across the loan term, then crystallizes GP carry <b>once per year</b> above the LP preferred return and pays it in <b>new GP units</b>.</div>
+        <div class="assump-note" id="fund-note">LPs commit a maximum amount but capital is only called when the fund needs fresh cash after accounting for prepaid retained spread already collected at settlement. The target NAV line compounds called capital at the selected LP benchmark so investors can see whether the operating engine clears the hurdle.</div>
       </div>
     </details>
     <details class="settings-wrap" open>
@@ -71,21 +171,20 @@ a{color:inherit}
       <div class="settings-body">
         <div class="controls"><div class="ctrl-row">
           <div class="ctrl"><div class="ctrl-label">Average Gross Loan Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M per loan</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('size',-1)">- $1M</div><div class="btn plus" onclick="adj('size',1)">+ $1M</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Deal Pace</div><div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">loans / month</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Loan Term</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">12</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Borrower Rate</div><div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Fund Retained Spread</div><div class="ctrl-display"><div class="ctrl-val" id="v-take">17.0</div><div class="ctrl-unit">% annual kept</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Monthly Origination Pace</div><div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">loans / month</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Average Loan Term</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">12</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Borrower Gross Rate</div><div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% prepaid</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">TGP Retained Spread</div><div class="ctrl-display"><div class="ctrl-val" id="v-take">17.0</div><div class="ctrl-unit">% annual kept</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div></div>
         </div></div>
-        <div class="assump-note" id="loan-note">This simplified build assumes <b>prepaid interest at settlement</b>. Borrowers are charged <b>25.0%</b>, the fund retains <b>17.0%</b>, and that retained spread is deducted upfront from settlement proceeds. For NAV and carry, that prepaid spread is recognized <b>ratably over the 12-month loan term</b>.</div>
+        <div class="assump-note" id="loan-note">Borrowers prepay interest at settlement. TGP retains its spread in cash on day one, but that retained spread is booked to an <b>unearned reserve</b> and earned monthly across the loan term instead of being treated as month-one profit.</div>
       </div>
     </details>
     <details class="settings-wrap" open>
-      <summary class="settings-toggle">How Capital Moves</summary>
+      <summary class="settings-toggle">Scope And Accounting</summary>
       <div class="note-block">
-        <div class="note-card"><div class="note-q">1. Capital Calls</div>LPs commit a maximum amount. If capital calls are on, the model only calls capital when <b>net cash needed</b> for new loans exceeds cash already on hand. If capital calls are off, the full commitment is funded at the start.</div>
-        <div class="note-card"><div class="note-q">2. Loan Settlement</div>Each month the fund targets a fixed amount of <b>gross commitments</b>. Because spread is prepaid and retained at closing, the actual cash required is less than the gross loan amount.</div>
-        <div class="note-card"><div class="note-q">3. Profit Recognition</div>Prepaid spread improves cash immediately, but it becomes profit only as time passes. That is why the model shows both <b>cash</b> and <b>unearned prepaid spread</b> separately.</div>
-        <div class="note-card"><div class="note-q">4. GP Units</div>At each year-end, GP carry is minted in units based on annual earned profit above the LP preferred return. The GP receives value without taking cash out of the fund.</div>
+        <div class="note-card"><div class="note-q">Product In Scope</div>This version models one product only: <b>short-duration Australian private credit with prepaid interest deducted at settlement</b>. Progressive-draw development facilities, line fees, and construction drawdowns are intentionally out of scope for this phase.</div>
+        <div class="note-card"><div class="note-q">Revenue Recognition</div>Three layers stay separate in the code and on the page: <b>cash collected upfront</b>, <b>unearned retained spread reserve</b>, and <b>earned spread recognized monthly</b>. Changing the term changes the pace of earnings recognition automatically.</div>
+        <div class="note-card"><div class="note-q">Carry Rule</div>GP carry crystallizes <b>once per year</b>. The model uses annual earned profit above the LP hurdle, converts that carry into <b>new GP units</b>, and tracks the resulting ownership dilution and mark-to-model value.</div>
       </div>
     </details>
   </div>
@@ -93,68 +192,99 @@ a{color:inherit}
     <div class="chart-shell">
       <div class="chart-main">
         <div class="chart-meta">
-          <div class="hover-panel">
-            <div class="hover-period" id="hover-period">Start of Fund</div>
-            <div class="hover-grid">
-              <div class="hover-item"><div class="hover-k">NAV</div><div class="hover-v nav" id="hover-nav">$0</div></div>
-              <div class="hover-item"><div class="hover-k">Gross Loans</div><div class="hover-v loans" id="hover-loans">$0</div></div>
-              <div class="hover-item"><div class="hover-k">Cash</div><div class="hover-v cash" id="hover-cash">$0</div></div>
-              <div class="hover-item"><div class="hover-k">Cum Calls</div><div class="hover-v calls" id="hover-calls">$0</div></div>
-              <div class="hover-item"><div class="hover-k">Unearned Spread</div><div class="hover-v" id="hover-unearned">$0</div></div>
-              <div class="hover-item"><div class="hover-k">Prepaid Collected</div><div class="hover-v" id="hover-prepaid">$0</div></div>
-              <div class="hover-item"><div class="hover-k">Principal Returned</div><div class="hover-v" id="hover-principal">$0</div></div>
-              <div class="hover-item"><div class="hover-k">Earned Profit</div><div class="hover-v" id="hover-earned">$0</div></div>
-              <div class="hover-item"><div class="hover-k">New Gross Loans</div><div class="hover-v" id="hover-gross">$0</div></div>
-              <div class="hover-item"><div class="hover-k">NAV / Share</div><div class="hover-v" id="hover-price">$0.00</div></div>
-              <div class="hover-item"><div class="hover-k">IRR To Date</div><div class="hover-v" id="hover-irr">0.0%</div></div>
-              <div class="hover-item"><div class="hover-k">GP Ownership</div><div class="hover-v" id="hover-gpown">0.0%</div></div>
-              <div class="hover-story" id="hover-story">Hover a month on the chart to see the mechanics at that point in the fund’s cycle.</div>
+          <div class="memo-panel">
+            <div class="memo-kicker">How It Works</div>
+            <div class="memo-title">The page is built around the business flow, not liquidity.</div>
+            <div class="memo-copy" id="how-it-works-copy"></div>
+            <div class="memo-seq" id="how-it-works-steps"></div>
+          </div>
+          <div class="meta-stack">
+            <div class="hover-panel">
+              <div class="hover-period" id="hover-period">Year 1 opening month</div>
+              <div class="hover-grid">
+                <div class="hover-item"><div class="hover-k">Capital Called</div><div class="hover-v blue" id="hover-capital">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Gross Loans Originated</div><div class="hover-v purple" id="hover-originated">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Gross Borrower Interest</div><div class="hover-v gold" id="hover-gross-interest">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Paid Away Share</div><div class="hover-v" id="hover-paid-away">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Prepaid Retained Spread</div><div class="hover-v gold" id="hover-prepaid">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Net Deployment</div><div class="hover-v" id="hover-net-deploy">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Principal Repaid</div><div class="hover-v green" id="hover-principal">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Earned Profit</div><div class="hover-v green" id="hover-earned">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Unearned Reserve</div><div class="hover-v" id="hover-unearned">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Principal Outstanding</div><div class="hover-v purple" id="hover-outstanding">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Cash Balance</div><div class="hover-v blue" id="hover-cash">$0</div></div>
+                <div class="hover-item"><div class="hover-k">NAV</div><div class="hover-v gold" id="hover-nav">$0</div></div>
+                <div class="hover-story" id="hover-story">Hover a month on either chart to inspect how calls, prepaid spread, earnings recognition, and principal recycling interact.</div>
+              </div>
+            </div>
+            <div class="carry-panel">
+              <div class="carry-title" id="carry-period">Annual Carry Snapshot</div>
+              <div class="carry-grid">
+                <div class="carry-item"><div class="carry-k">Profit Before Carry</div><div class="carry-v gold" id="carry-profit">$0</div></div>
+                <div class="carry-item"><div class="carry-k">Hurdle Amount</div><div class="carry-v" id="carry-hurdle">$0</div></div>
+                <div class="carry-item"><div class="carry-k">Carry Base</div><div class="carry-v" id="carry-base">$0</div></div>
+                <div class="carry-item"><div class="carry-k">GP Units Minted</div><div class="carry-v purple" id="carry-minted">0</div></div>
+                <div class="carry-item"><div class="carry-k">Cumulative GP Units</div><div class="carry-v purple" id="carry-cum-units">0</div></div>
+                <div class="carry-item"><div class="carry-k">GP Ownership</div><div class="carry-v blue" id="carry-gp-own">0.0%</div></div>
+                <div class="carry-item"><div class="carry-k">GP Mark To Model</div><div class="carry-v gold" id="carry-gp-value">$0</div></div>
+                <div class="carry-item"><div class="carry-k">Average LP Capital</div><div class="carry-v" id="carry-lp-start">$0</div></div>
+                <div class="carry-note" id="carry-note-live">Carry mints from <b>earned profit above the LP hurdle</b>. It does not pay out of gross prepaid cash collected at settlement.</div>
+              </div>
             </div>
           </div>
-          <div class="flow-panel">
-            <div class="flow-grid">
-              <div><div class="flow-k">Borrower Rate</div><div class="flow-v gold" id="flow-borrower">25.0%</div></div>
-              <div><div class="flow-k">TGP Retained Spread</div><div class="flow-v green" id="flow-take">17.0%</div></div>
-              <div><div class="flow-k">Cash Needed / New Loan</div><div class="flow-v blue" id="flow-netneed">$0</div></div>
-              <div><div class="flow-k">Prepaid Spread / New Loan</div><div class="flow-v gold" id="flow-prepaid">$0</div></div>
-              <div><div class="flow-k">Latest GP Units Minted</div><div class="flow-v" id="flow-gpunits">0</div></div>
-              <div><div class="flow-k">Capital Call Mode</div><div class="flow-v" id="flow-callmode">Just in time</div></div>
-              <div class="flow-note" id="flow-note">Capital is called to fund the <b>net</b> cash required after prepaid retained spread is deducted at settlement.</div>
-            </div>
+        </div>
+        <div class="chart-block">
+          <div class="chart-head">
+            <div class="chart-label">Chart 1</div>
+            <div class="chart-title">Monthly Operating Flow</div>
+            <div class="chart-copy">This stack shows the monthly operating engine: capital called, prepaid retained spread collected, net deployment into loans, principal repayments, and monthly profit recognition.</div>
+          </div>
+          <div class="legend">
+            <div class="leg"><div class="leg-line" style="background:var(--blue2);height:8px"></div>Capital called</div>
+            <div class="leg"><div class="leg-line" style="background:var(--gold2);height:8px"></div>Prepaid retained spread</div>
+            <div class="leg"><div class="leg-line" style="background:var(--green2);height:8px"></div>Principal repayments</div>
+            <div class="leg"><div class="leg-line" style="background:var(--teal);height:8px"></div>Earned profit</div>
+            <div class="leg"><div class="leg-line" style="background:var(--red2);height:8px"></div>Net deployment</div>
+          </div>
+          <div class="chart-frame small">
+            <div class="chart-fallback" id="flow-chart-status">Loading chart…</div>
+            <div id="flow-chart"></div>
           </div>
         </div>
-        <details class="settings-wrap results-wrap" open>
-          <summary class="settings-toggle">Scenario Readout</summary>
-          <div class="settings-body"><div class="results-copy" id="summary-note"></div></div>
-        </details>
-        <div class="legend">
-          <div class="leg"><div class="leg-line" style="background:var(--blue2);height:8px"></div>LP capital calls</div>
-          <div class="leg"><div class="leg-line" style="background:var(--gold2);height:8px"></div>Prepaid spread collected</div>
-          <div class="leg"><div class="leg-line" style="background:var(--green2);height:8px"></div>Principal returned</div>
-          <div class="leg"><div class="leg-line" style="background:var(--red2);height:8px"></div>Net cash into loans</div>
-          <div class="leg"><div class="leg-line" style="background:var(--purple)"></div>Cash balance</div>
+        <div class="chart-block">
+          <div class="chart-head">
+            <div class="chart-label">Chart 2</div>
+            <div class="chart-title">Cumulative NAV Build</div>
+            <div class="chart-copy">NAV is driven by the loan book, cash retained in the fund, and the pace at which prepaid spread moves from unearned reserve into earned profit relative to the LP target line.</div>
+          </div>
+          <div class="legend">
+            <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV</div>
+            <div class="leg"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV</div>
+            <div class="leg"><div class="leg-line" style="background:var(--purple)"></div>Gross loans outstanding</div>
+            <div class="leg"><div class="leg-line" style="background:var(--blue2)"></div>Cash balance</div>
+          </div>
+          <div class="chart-frame">
+            <div class="chart-fallback" id="main-chart-status">Loading chart…</div>
+            <div id="main-chart"></div>
+          </div>
         </div>
-        <div class="chart-frame small"><div id="flow-chart"></div></div>
-        <div class="legend">
-          <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV</div>
-          <div class="leg"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV @ IRR</div>
-          <div class="leg"><div class="leg-line" style="background:var(--purple)"></div>Gross loans outstanding</div>
-          <div class="leg"><div class="leg-line" style="background:var(--teal)"></div>Cash balance</div>
-          <div class="leg"><div class="leg-dot" style="background:var(--green2)"></div>GP units minted at year-end</div>
-        </div>
-        <div class="chart-frame"><div id="main-chart"></div></div>
       </div>
       <div class="chart-rail">
-        <div class="panel-label" style="padding-left:0;background:none;border-bottom:none">Current Scenario Analysis</div>
+        <div class="panel-label" style="padding-left:0;background:none;border-bottom:none">Investor Snapshot</div>
         <div class="kpis">
-          <div class="kpi"><div><div class="kpi-l">LP Net IRR</div><div class="kpi-v blue" id="kpi-irr">-</div></div><div class="kpi-s">from capital calls and terminal LP residual</div></div>
-          <div class="kpi"><div><div class="kpi-l">Total Capital Called</div><div class="kpi-v plain" id="kpi-called">-</div></div><div class="kpi-s">cumulative LP funding required</div></div>
-          <div class="kpi"><div><div class="kpi-l">Peak Gross Loan Book</div><div class="kpi-v purple" id="kpi-loans">-</div></div><div class="kpi-s">maximum principal outstanding</div></div>
-          <div class="kpi"><div><div class="kpi-l">Year 10 NAV / Share</div><div class="kpi-v gold" id="kpi-navshare">-</div></div><div class="kpi-s">diluted by GP carry units</div></div>
-          <div class="kpi"><div><div class="kpi-l">Prepaid Spread Collected</div><div class="kpi-v green" id="kpi-prepaid">-</div></div><div class="kpi-s">cash retained at settlement</div></div>
-          <div class="kpi"><div><div class="kpi-l">Earned Profit</div><div class="kpi-v gold" id="kpi-earned">-</div></div><div class="kpi-s">recognized over loan life</div></div>
+          <div class="kpi"><div><div class="kpi-l">LP Net IRR</div><div class="kpi-v blue" id="kpi-irr">-</div></div><div class="kpi-s">from capital calls versus ending LP value</div></div>
+          <div class="kpi"><div><div class="kpi-l">Total Capital Called</div><div class="kpi-v plain" id="kpi-called">-</div></div><div class="kpi-s">gross LP funding actually required</div></div>
+          <div class="kpi"><div><div class="kpi-l">Gross Loans Originated</div><div class="kpi-v purple" id="kpi-originated">-</div></div><div class="kpi-s">total principal written over the run</div></div>
+          <div class="kpi"><div><div class="kpi-l">Ending NAV</div><div class="kpi-v gold" id="kpi-nav">-</div></div><div class="kpi-s">cash plus loans less unearned spread</div></div>
+          <div class="kpi"><div><div class="kpi-l">NAV Per Unit</div><div class="kpi-v gold" id="kpi-navshare">-</div></div><div class="kpi-s">after LP units and GP carry dilution</div></div>
           <div class="kpi"><div><div class="kpi-l">GP Ownership</div><div class="kpi-v plain" id="kpi-gpown">-</div></div><div class="kpi-s">ending diluted fund ownership</div></div>
-          <div class="kpi"><div><div class="kpi-l">GP Value</div><div class="kpi-v gold" id="kpi-gpvalue">-</div></div><div class="kpi-s">value of GP units at year 10 NAV</div></div>
+          <div class="kpi"><div><div class="kpi-l">GP Units Minted</div><div class="kpi-v purple" id="kpi-gpunits">-</div></div><div class="kpi-s">cumulative carry units issued</div></div>
+          <div class="kpi"><div><div class="kpi-l">Capital Turn Multiple</div><div class="kpi-v green" id="kpi-turn">-</div></div><div class="kpi-s">gross loan volume divided by capital called</div></div>
+          <div class="kpi"><div><div class="kpi-l">Average Cash Drag</div><div class="kpi-v red" id="kpi-cashdrag">-</div></div><div class="kpi-s">average idle cash as a share of called capital</div></div>
+        </div>
+        <div class="footer-panel">
+          <div class="note-q">Version 1 Scope Disclosure</div>
+          <div class="footer-copy">This first feasibility model assumes <b>no defaults, no extensions, no losses, no recovery lags, no liquidity events, and no progressive-draw development facilities</b>. It models one prepaid short-duration credit product only. Prepaid retained spread is collected in cash at settlement, held in an unearned reserve, and recognized monthly over the stated term. This is an operating engine for proving the base-case economics, not a full underwriting model.</div>
         </div>
       </div>
     </div>
@@ -164,249 +294,618 @@ a{color:inherit}
 <script>
 const PAR = 1000;
 const VIEW = 120;
+const DEFAULT_HOVER_MONTH = Math.min(12, VIEW);
 let mainChart = null;
 let flowChart = null;
-const S = { fund:1.0, call:1, irr:15.0, hurdle:8.0, carry:15.0, size:25.0, dpm:3.0, term:12, apy:25.0, take:17.0 };
-const limits = { fund:[0.1,10,0.1], irr:[0,40,0.5], hurdle:[0,20,0.5], carry:[0,30,1], size:[2.5,200,1], dpm:[0.25,20,0.25], term:[3,36,3], apy:[5,40,0.5], take:[1,25,0.5] };
-function fmtControl(k, v){ if(['fund','irr','hurdle','carry','size','dpm','apy','take'].includes(k)) return Number(v).toFixed(1); if(k==='term') return String(Math.round(v)); return String(v); }
-function fmt(n, force){ if(n===undefined||n===null) return '-'; if(!force&&Math.abs(n)<0.5) return '-'; const a=Math.abs(n), sg=n<0?'-':''; if(a>=1e9) return sg+'$'+(a/1e9).toFixed(2)+'B'; if(a>=1e6) return sg+'$'+(a/1e6).toFixed(2)+'M'; if(a>=1e3) return sg+'$'+(a/1e3).toFixed(0)+'K'; return sg+'$'+a.toFixed(0); }
-function fmtP(n){ return '$'+n.toFixed(2); }
-function solveMonthlyIrr(cashFlows){ const hasNeg=cashFlows.some(v=>v<0), hasPos=cashFlows.some(v=>v>0); if(!hasNeg||!hasPos) return 0; const npv=r=>cashFlows.reduce((s,cf,i)=>s+cf/Math.pow(1+r,i),0); let lo=-0.95, hi=1.0, npvLo=npv(lo), npvHi=npv(hi), tries=0; while(npvLo*npvHi>0 && tries<60){ hi*=1.5; npvHi=npv(hi); tries++; } if(npvLo*npvHi>0) return 0; for(let i=0;i<120;i++){ const mid=(lo+hi)/2, val=npv(mid); if(Math.abs(val)<1e-8) return mid; if(npvLo*val<=0){ hi=mid; npvHi=val; } else { lo=mid; npvLo=val; } } return (lo+hi)/2; }
-function adj(k,d){ const [mn,mx] = limits[k]; S[k] = Math.max(mn, Math.min(mx, Math.round((S[k]+d)*100)/100)); document.getElementById('v-'+k).textContent = fmtControl(k,S[k]); recalc(); }
-function setCapitalCall(on){ S.call = on ? 1 : 0; document.getElementById('call-on').classList.toggle('active', !!S.call); document.getElementById('call-off').classList.toggle('active', !S.call); recalc(); }
-function buildScenario(){
-  const fundSize = S.fund * 1e9;
-  const loanSize = S.size * 1e6;
-  const loansPerMonth = S.dpm;
-  const term = Math.max(1, Math.round(S.term));
-  const borrowerRate = S.apy/100;
-  const retainedRate = Math.min(S.take/100, borrowerRate);
-  const prepaidFraction = retainedRate * (term/12);
-  const netFundingFraction = Math.max(0.05, 1 - prepaidFraction);
-  const targetIrr = S.irr/100;
-  const hurdle = S.hurdle/100;
-  const carryPct = S.carry/100;
+let resizeObserver = null;
+let latestScenario = null;
+let currentHoverMonth = DEFAULT_HOVER_MONTH;
+let resizeFrame = 0;
 
-  const cashArr = new Array(VIEW+1).fill(0);
-  const navArr = new Array(VIEW+1).fill(0);
-  const priceArr = new Array(VIEW+1).fill(PAR);
-  const grossLoansArr = new Array(VIEW+1).fill(0);
-  const unearnedArr = new Array(VIEW+1).fill(0);
-  const cumCallsArr = new Array(VIEW+1).fill(0);
-  const lpCallArr = new Array(VIEW+1).fill(0);
-  const grossOriginationsArr = new Array(VIEW+1).fill(0);
-  const prepaidArr = new Array(VIEW+1).fill(0);
-  const earnedArr = new Array(VIEW+1).fill(0);
-  const principalArr = new Array(VIEW+1).fill(0);
-  const gpUnitsMintedArr = new Array(VIEW+1).fill(0);
-  const gpUnitsArr = new Array(VIEW+1).fill(0);
-  const gpOwnershipArr = new Array(VIEW+1).fill(0);
-  const lpValueArr = new Array(VIEW+1).fill(0);
-  const irrArr = new Array(VIEW+1).fill(0);
-  const targetNavArr = new Array(VIEW+1).fill(0);
+const S = {
+  fund: 1.0,
+  call: 1,
+  irr: 15.0,
+  hurdle: 8.0,
+  carry: 15.0,
+  size: 25.0,
+  dpm: 3.0,
+  term: 12,
+  apy: 25.0,
+  take: 17.0
+};
 
-  const amort = new Array(VIEW+term+2).fill(0);
-  const principalSched = new Array(VIEW+term+2).fill(0);
+const limits = {
+  fund:[0.1,10,0.1],
+  irr:[0,40,0.5],
+  hurdle:[0,20,0.5],
+  carry:[0,30,1],
+  size:[2.5,200,1],
+  dpm:[0.25,20,0.25],
+  term:[3,36,3],
+  apy:[5,40,0.5],
+  take:[1,25,0.5]
+};
 
-  let cash = S.call ? 0 : fundSize;
-  let grossLoans = 0;
-  let unearned = 0;
-  let cumCalls = S.call ? 0 : fundSize;
-  let lpUnits = S.call ? 0 : fundSize / PAR;
-  let gpUnits = 0;
-  let totalUnits = lpUnits;
-  let nav = cash + grossLoans - unearned;
-  let targetNav = S.call ? 0 : fundSize;
-  let yearEarned = 0;
-  cashArr[0] = cash; navArr[0] = nav; cumCallsArr[0] = cumCalls; priceArr[0] = totalUnits>0 ? nav/totalUnits : PAR; lpValueArr[0] = lpUnits * priceArr[0]; targetNavArr[0] = targetNav;
+function fmtControl(key, value){
+  if(['fund','irr','hurdle','carry','size','dpm','apy','take'].includes(key)) return Number(value).toFixed(1);
+  if(key === 'term') return String(Math.round(value));
+  return String(value);
+}
 
-  for(let m=1; m<=VIEW; m++){
-    const desiredGross = loanSize * loansPerMonth;
-    let grossOrig = desiredGross;
-    let prepaid = grossOrig * prepaidFraction;
-    let netNeeded = grossOrig * netFundingFraction;
-    let remainingCommitment = Math.max(0, fundSize - cumCalls);
-    let availableNetFunding = cash + (S.call ? remainingCommitment : 0);
-    if(netNeeded > availableNetFunding + 1e-6){
-      grossOrig = availableNetFunding / netFundingFraction;
-      prepaid = grossOrig * prepaidFraction;
-      netNeeded = grossOrig * netFundingFraction;
+function fmtMoney(number, force){
+  if(number === undefined || number === null || Number.isNaN(number)) return '-';
+  if(!force && Math.abs(number) < 0.5) return '-';
+  const abs = Math.abs(number);
+  const sign = number < 0 ? '-' : '';
+  if(abs >= 1e9) return sign + '$' + (abs / 1e9).toFixed(2) + 'B';
+  if(abs >= 1e6) return sign + '$' + (abs / 1e6).toFixed(2) + 'M';
+  if(abs >= 1e3) return sign + '$' + (abs / 1e3).toFixed(0) + 'K';
+  return sign + '$' + abs.toFixed(0);
+}
+
+function fmtPrice(number){
+  if(number === undefined || number === null || Number.isNaN(number)) return '-';
+  return '$' + number.toFixed(2);
+}
+
+function fmtPct(number, digits){
+  const precision = digits ?? 1;
+  if(number === undefined || number === null || Number.isNaN(number)) return '-';
+  return (number * 100).toFixed(precision) + '%';
+}
+
+function fmtTurns(number){
+  if(number === undefined || number === null || Number.isNaN(number)) return '-';
+  return number.toFixed(2) + 'x';
+}
+
+function solveMonthlyIrr(cashFlows){
+  const hasNegative = cashFlows.some(value => value < 0);
+  const hasPositive = cashFlows.some(value => value > 0);
+  if(!hasNegative || !hasPositive) return 0;
+  const npv = rate => cashFlows.reduce((sum, cashFlow, index) => sum + cashFlow / Math.pow(1 + rate, index), 0);
+  let low = -0.95;
+  let high = 1.0;
+  let npvLow = npv(low);
+  let npvHigh = npv(high);
+  let tries = 0;
+  while(npvLow * npvHigh > 0 && tries < 60){
+    high *= 1.5;
+    npvHigh = npv(high);
+    tries += 1;
+  }
+  if(npvLow * npvHigh > 0) return 0;
+  for(let i = 0; i < 120; i += 1){
+    const mid = (low + high) / 2;
+    const val = npv(mid);
+    if(Math.abs(val) < 1e-8) return mid;
+    if(npvLow * val <= 0){
+      high = mid;
+      npvHigh = val;
+    } else {
+      low = mid;
+      npvLow = val;
+    }
+  }
+  return (low + high) / 2;
+}
+
+function adj(key, delta){
+  const [min, max] = limits[key];
+  S[key] = Math.max(min, Math.min(max, Math.round((S[key] + delta) * 100) / 100));
+  document.getElementById('v-' + key).textContent = fmtControl(key, S[key]);
+  recalc();
+}
+
+function setCapitalCall(on){
+  S.call = on ? 1 : 0;
+  document.getElementById('call-on').classList.toggle('active', !!S.call);
+  document.getElementById('call-off').classList.toggle('active', !S.call);
+  recalc();
+}
+
+function buildBaseCase(){
+  const maxFundSize = S.fund * 1e9;
+  const averageLoanSize = S.size * 1e6;
+  const monthlyOriginationPace = S.dpm;
+  const averageLoanTermMonths = Math.max(1, Math.round(S.term));
+  const grossRate = S.apy / 100;
+  const retainedRate = Math.min(S.take / 100, grossRate);
+  const paidAwayRate = Math.max(0, grossRate - retainedRate);
+  const targetIrr = S.irr / 100;
+  const hurdleRate = S.hurdle / 100;
+  const carryRate = S.carry / 100;
+
+  const grossInterestPerDollar = grossRate * (averageLoanTermMonths / 12);
+  const prepaidCashPerDollar = retainedRate * (averageLoanTermMonths / 12);
+  const paidAwayCashPerDollar = paidAwayRate * (averageLoanTermMonths / 12);
+  const netCapitalNeededPerDollar = Math.max(0.01, 1 - prepaidCashPerDollar);
+
+  const months = Array.from({length: VIEW + 1}, (_, index) => index);
+  const scheduleLength = VIEW + averageLoanTermMonths + 24;
+
+  const cashBalanceArr = new Array(VIEW + 1).fill(0);
+  const navArr = new Array(VIEW + 1).fill(0);
+  const targetNavArr = new Array(VIEW + 1).fill(0);
+  const capitalCalledArr = new Array(VIEW + 1).fill(0);
+  const cumulativeCapitalCalledArr = new Array(VIEW + 1).fill(0);
+  const grossLoansOriginatedArr = new Array(VIEW + 1).fill(0);
+  const grossBorrowerInterestArr = new Array(VIEW + 1).fill(0);
+  const paidAwayInterestArr = new Array(VIEW + 1).fill(0);
+  const prepaidCashCollectedArr = new Array(VIEW + 1).fill(0);
+  const netDeploymentArr = new Array(VIEW + 1).fill(0);
+  const principalRepaymentsArr = new Array(VIEW + 1).fill(0);
+  const earnedSpreadThisMonthArr = new Array(VIEW + 1).fill(0);
+  const unearnedSpreadBalanceArr = new Array(VIEW + 1).fill(0);
+  const principalOutstandingArr = new Array(VIEW + 1).fill(0);
+  const cumulativeProfitBeforeCarryArr = new Array(VIEW + 1).fill(0);
+  const hurdleAccruedArr = new Array(VIEW + 1).fill(0);
+  const carryBaseArr = new Array(VIEW + 1).fill(0);
+  const carryEarnedArr = new Array(VIEW + 1).fill(0);
+  const gpUnitsMintedArr = new Array(VIEW + 1).fill(0);
+  const gpUnitsOutstandingArr = new Array(VIEW + 1).fill(0);
+  const lpUnitsOutstandingArr = new Array(VIEW + 1).fill(0);
+  const totalUnitsArr = new Array(VIEW + 1).fill(0);
+  const gpOwnershipArr = new Array(VIEW + 1).fill(0);
+  const priceArr = new Array(VIEW + 1).fill(PAR);
+  const lpValueArr = new Array(VIEW + 1).fill(0);
+  const irrArr = new Array(VIEW + 1).fill(0);
+
+  const earnedSchedule = new Array(scheduleLength).fill(0);
+  const principalRepaymentSchedule = new Array(scheduleLength).fill(0);
+  const carryCrystallizationEvents = [];
+
+  let cashBalance = S.call ? 0 : maxFundSize;
+  let unearnedSpreadBalance = 0;
+  let principalOutstanding = 0;
+  let cumulativeCapitalCalled = S.call ? 0 : maxFundSize;
+  let cumulativeProfitBeforeCarry = 0;
+  let annualProfitBeforeCarry = 0;
+  let gpUnitsOutstanding = 0;
+  let lpUnitsOutstanding = S.call ? 0 : (maxFundSize / PAR);
+  let totalUnits = lpUnitsOutstanding;
+  let targetNav = S.call ? 0 : maxFundSize;
+  let hurdleBaseAccumulator = 0;
+  let hurdleBaseMonths = 0;
+
+  capitalCalledArr[0] = S.call ? 0 : maxFundSize;
+  cumulativeCapitalCalledArr[0] = cumulativeCapitalCalled;
+  cashBalanceArr[0] = cashBalance;
+  navArr[0] = cashBalance + principalOutstanding - unearnedSpreadBalance;
+  targetNavArr[0] = targetNav;
+  lpUnitsOutstandingArr[0] = lpUnitsOutstanding;
+  totalUnitsArr[0] = totalUnits;
+  gpUnitsOutstandingArr[0] = gpUnitsOutstanding;
+  gpOwnershipArr[0] = 0;
+  priceArr[0] = totalUnits > 0 ? navArr[0] / totalUnits : PAR;
+  lpValueArr[0] = lpUnitsOutstanding * priceArr[0];
+
+  for(let month = 1; month <= VIEW; month += 1){
+    let grossLoansOriginated = averageLoanSize * monthlyOriginationPace;
+    let grossBorrowerInterestCharged = grossLoansOriginated * grossInterestPerDollar;
+    let prepaidCashCollected = grossLoansOriginated * prepaidCashPerDollar;
+    let paidAwayInterest = grossLoansOriginated * paidAwayCashPerDollar;
+    let netDeployment = grossLoansOriginated * netCapitalNeededPerDollar;
+
+    const remainingCommitment = Math.max(0, maxFundSize - cumulativeCapitalCalled);
+    const capitalAvailable = cashBalance + (S.call ? remainingCommitment : 0);
+    if(netDeployment > capitalAvailable + 1e-6){
+      grossLoansOriginated = Math.max(0, capitalAvailable / netCapitalNeededPerDollar);
+      grossBorrowerInterestCharged = grossLoansOriginated * grossInterestPerDollar;
+      prepaidCashCollected = grossLoansOriginated * prepaidCashPerDollar;
+      paidAwayInterest = grossLoansOriginated * paidAwayCashPerDollar;
+      netDeployment = grossLoansOriginated * netCapitalNeededPerDollar;
     }
 
-    let lpCall = 0;
-    if(netNeeded > cash + 1e-6){
-      lpCall = Math.min(netNeeded - cash, remainingCommitment);
-      cash += lpCall;
-      cumCalls += lpCall;
-      lpUnits += lpCall / PAR;
-      totalUnits += lpCall / PAR;
+    let capitalCalled = 0;
+    if(netDeployment > cashBalance + 1e-6){
+      capitalCalled = Math.min(netDeployment - cashBalance, remainingCommitment);
+      cashBalance += capitalCalled;
+      cumulativeCapitalCalled += capitalCalled;
+      const lpUnitsIssued = capitalCalled / PAR;
+      lpUnitsOutstanding += lpUnitsIssued;
+      totalUnits += lpUnitsIssued;
     }
 
-    cash -= netNeeded;
-    cash += prepaid;
-    grossLoans += grossOrig;
-    unearned += prepaid;
-    grossOriginationsArr[m] = grossOrig;
-    prepaidArr[m] = prepaid;
-    lpCallArr[m] = lpCall;
+    cashBalance -= netDeployment;
+    principalOutstanding += grossLoansOriginated;
+    unearnedSpreadBalance += prepaidCashCollected;
+    annualProfitBeforeCarry += 0;
 
-    if(grossOrig > 0){
-      const monthlyEarn = prepaid / term;
-      for(let t=m; t<Math.min(amort.length, m+term); t++) amort[t] += monthlyEarn;
-      const maturity = m + term;
-      if(maturity < principalSched.length) principalSched[maturity] += grossOrig;
+    if(grossLoansOriginated > 0){
+      const earnedPerMonth = prepaidCashCollected / averageLoanTermMonths;
+      for(let scheduledMonth = month; scheduledMonth < Math.min(scheduleLength, month + averageLoanTermMonths); scheduledMonth += 1){
+        earnedSchedule[scheduledMonth] += earnedPerMonth;
+      }
+      const maturityMonth = month + averageLoanTermMonths;
+      if(maturityMonth < scheduleLength) principalRepaymentSchedule[maturityMonth] += grossLoansOriginated;
     }
 
-    const earned = amort[m] || 0;
-    const principal = principalSched[m] || 0;
-    earnedArr[m] = earned;
-    principalArr[m] = principal;
+    const earnedSpreadThisMonth = earnedSchedule[month] || 0;
+    const principalRepayment = principalRepaymentSchedule[month] || 0;
 
-    unearned = Math.max(0, unearned - earned);
-    cash += principal;
-    grossLoans = Math.max(0, grossLoans - principal);
-    yearEarned += earned;
+    unearnedSpreadBalance = Math.max(0, unearnedSpreadBalance - earnedSpreadThisMonth);
+    cashBalance += principalRepayment;
+    principalOutstanding = Math.max(0, principalOutstanding - principalRepayment);
 
-    nav = cash + grossLoans - unearned;
-    if(m % 12 === 0 || m === VIEW){
-      const yearStartLpValue = lpValueArr[Math.max(0, m-12)] || 0;
-      const annualHurdle = yearStartLpValue * hurdle;
-      const carryValue = Math.max(0, yearEarned - annualHurdle) * carryPct;
-      const navPerUnitPreMint = totalUnits > 0 ? nav / totalUnits : PAR;
-      const minted = navPerUnitPreMint > 0 ? carryValue / navPerUnitPreMint : 0;
-      gpUnits += minted;
-      totalUnits += minted;
-      gpUnitsMintedArr[m] = minted;
-      yearEarned = 0;
+    cumulativeProfitBeforeCarry += earnedSpreadThisMonth;
+    annualProfitBeforeCarry += earnedSpreadThisMonth;
+
+    let hurdleAccrued = 0;
+    let carryBase = 0;
+    let carryEarned = 0;
+    let gpUnitsMinted = 0;
+
+    const navBeforeCarry = cashBalance + principalOutstanding - unearnedSpreadBalance;
+    const navPerUnitBeforeCarry = totalUnits > 0 ? navBeforeCarry / totalUnits : PAR;
+    hurdleBaseAccumulator += cumulativeCapitalCalled;
+    hurdleBaseMonths += 1;
+    if(month % 12 === 0 || month === VIEW){
+      const averageLpCapitalForHurdle = hurdleBaseMonths > 0 ? hurdleBaseAccumulator / hurdleBaseMonths : 0;
+      hurdleAccrued = averageLpCapitalForHurdle * hurdleRate;
+      carryBase = Math.max(0, annualProfitBeforeCarry - hurdleAccrued);
+      carryEarned = carryBase * carryRate;
+      const navPerUnitPreMint = navPerUnitBeforeCarry;
+      gpUnitsMinted = navPerUnitPreMint > 0 ? carryEarned / navPerUnitPreMint : 0;
+      gpUnitsOutstanding += gpUnitsMinted;
+      totalUnits += gpUnitsMinted;
+      carryCrystallizationEvents.push({
+        month,
+        annualProfitBeforeCarry,
+        hurdleAccrued,
+        carryBase,
+        carryEarned,
+        gpUnitsMinted,
+        cumulativeGpUnits: gpUnitsOutstanding,
+        averageLpCapitalForHurdle
+      });
+      annualProfitBeforeCarry = 0;
+      hurdleBaseAccumulator = 0;
+      hurdleBaseMonths = 0;
     }
 
-    targetNav = targetNav * (1 + targetIrr/12) + lpCall;
-    const navPerShare = totalUnits > 0 ? nav / totalUnits : PAR;
-    priceArr[m] = navPerShare;
-    gpUnitsArr[m] = gpUnits;
-    gpOwnershipArr[m] = totalUnits > 0 ? gpUnits / totalUnits : 0;
-    lpValueArr[m] = lpUnits * navPerShare;
-    cashArr[m] = cash;
-    navArr[m] = nav;
-    grossLoansArr[m] = grossLoans;
-    unearnedArr[m] = unearned;
-    cumCallsArr[m] = cumCalls;
-    targetNavArr[m] = targetNav;
+    targetNav = targetNav * (1 + targetIrr / 12) + capitalCalled;
+
+    const nav = cashBalance + principalOutstanding - unearnedSpreadBalance;
+    const navPerUnit = totalUnits > 0 ? nav / totalUnits : PAR;
+    const lpValue = lpUnitsOutstanding * navPerUnit;
+
+    capitalCalledArr[month] = capitalCalled;
+    cumulativeCapitalCalledArr[month] = cumulativeCapitalCalled;
+    grossLoansOriginatedArr[month] = grossLoansOriginated;
+    grossBorrowerInterestArr[month] = grossBorrowerInterestCharged;
+    paidAwayInterestArr[month] = paidAwayInterest;
+    prepaidCashCollectedArr[month] = prepaidCashCollected;
+    netDeploymentArr[month] = netDeployment;
+    principalRepaymentsArr[month] = principalRepayment;
+    earnedSpreadThisMonthArr[month] = earnedSpreadThisMonth;
+    unearnedSpreadBalanceArr[month] = unearnedSpreadBalance;
+    principalOutstandingArr[month] = principalOutstanding;
+    cashBalanceArr[month] = cashBalance;
+    navArr[month] = nav;
+    targetNavArr[month] = targetNav;
+    cumulativeProfitBeforeCarryArr[month] = cumulativeProfitBeforeCarry;
+    hurdleAccruedArr[month] = hurdleAccrued;
+    carryBaseArr[month] = carryBase;
+    carryEarnedArr[month] = carryEarned;
+    gpUnitsMintedArr[month] = gpUnitsMinted;
+    gpUnitsOutstandingArr[month] = gpUnitsOutstanding;
+    lpUnitsOutstandingArr[month] = lpUnitsOutstanding;
+    totalUnitsArr[month] = totalUnits;
+    gpOwnershipArr[month] = totalUnits > 0 ? gpUnitsOutstanding / totalUnits : 0;
+    priceArr[month] = navPerUnit;
+    lpValueArr[month] = lpValue;
   }
 
-  const lpFlows = lpCallArr.map(v => -v);
-  lpFlows[VIEW] += lpValueArr[VIEW];
-  const monthlyIrr = solveMonthlyIrr(lpFlows);
+  const lpCashFlows = capitalCalledArr.map(value => -value);
+  lpCashFlows[VIEW] += lpValueArr[VIEW];
+  const monthlyIrr = solveMonthlyIrr(lpCashFlows);
   const projectedIrr = Math.pow(1 + monthlyIrr, 12) - 1;
-  for(let m=0; m<=VIEW; m++){
-    const partial = lpCallArr.slice(0,m+1).map(v => -v);
-    partial[m] += lpValueArr[m];
-    const part = solveMonthlyIrr(partial);
-    irrArr[m] = Math.pow(1 + part, 12) - 1;
+
+  for(let month = 0; month <= VIEW; month += 1){
+    const partialFlows = capitalCalledArr.slice(0, month + 1).map(value => -value);
+    partialFlows[month] += lpValueArr[month];
+    const partialMonthlyIrr = solveMonthlyIrr(partialFlows);
+    irrArr[month] = Math.pow(1 + partialMonthlyIrr, 12) - 1;
   }
 
-  return { fundSize, targetIrr, borrowerRate, retainedRate, prepaidFraction, netFundingFraction, cashArr, navArr, priceArr, grossLoansArr, unearnedArr, cumCallsArr, lpCallArr, grossOriginationsArr, prepaidArr, earnedArr, principalArr, gpUnitsMintedArr, gpUnitsArr, gpOwnershipArr, lpValueArr, irrArr, targetNavArr, projectedIrr, totalPrepaid:prepaidArr.reduce((a,b)=>a+b,0), totalEarned:earnedArr.reduce((a,b)=>a+b,0), peakLoans:Math.max(...grossLoansArr), totalCalled:cumCallsArr[VIEW], gpValue:gpUnitsArr[VIEW]*priceArr[VIEW] };
+  const totalGrossLoansOriginated = grossLoansOriginatedArr.reduce((sum, value) => sum + value, 0);
+  const totalPrepaidCashCollected = prepaidCashCollectedArr.reduce((sum, value) => sum + value, 0);
+  const totalPaidAwayInterest = paidAwayInterestArr.reduce((sum, value) => sum + value, 0);
+  const totalEarnedProfit = earnedSpreadThisMonthArr.reduce((sum, value) => sum + value, 0);
+  const totalGpUnitsMinted = gpUnitsMintedArr.reduce((sum, value) => sum + value, 0);
+  const averageCashBalance = cashBalanceArr.slice(1).reduce((sum, value) => sum + value, 0) / VIEW;
+  const averageCapitalCalled = cumulativeCapitalCalledArr.slice(1).reduce((sum, value) => sum + value, 0) / VIEW;
+  const averageCashDrag = averageCapitalCalled > 0 ? averageCashBalance / averageCapitalCalled : 0;
+  const capitalTurnMultiple = cumulativeCapitalCalledArr[VIEW] > 0 ? totalGrossLoansOriginated / cumulativeCapitalCalledArr[VIEW] : 0;
+  const latestCarryEvent = carryCrystallizationEvents[carryCrystallizationEvents.length - 1] || {
+    month: 0,
+    annualProfitBeforeCarry: 0,
+    hurdleAccrued: 0,
+    carryBase: 0,
+    carryEarned: 0,
+    gpUnitsMinted: 0,
+    cumulativeGpUnits: 0,
+    averageLpCapitalForHurdle: 0
+  };
+
+  return {
+    months,
+    maxFundSize,
+    averageLoanSize,
+    monthlyOriginationPace,
+    averageLoanTermMonths,
+    grossRate,
+    retainedRate,
+    paidAwayRate,
+    grossInterestPerDollar,
+    prepaidCashPerDollar,
+    netCapitalNeededPerDollar,
+    grossBorrowerInterestArr,
+    paidAwayInterestArr,
+    prepaidCashCollectedArr,
+    earnedSpreadThisMonthArr,
+    unearnedSpreadBalanceArr,
+    principalOutstandingArr,
+    principalRepaymentsArr,
+    netDeploymentArr,
+    capitalCalledArr,
+    cumulativeCapitalCalledArr,
+    cumulativeProfitBeforeCarryArr,
+    hurdleAccruedArr,
+    carryBaseArr,
+    carryEarnedArr,
+    gpUnitsMintedArr,
+    gpUnitsOutstandingArr,
+    lpUnitsOutstandingArr,
+    totalUnitsArr,
+    gpOwnershipArr,
+    priceArr,
+    lpValueArr,
+    cashBalanceArr,
+    navArr,
+    targetNavArr,
+    grossLoansOriginatedArr,
+    irrArr,
+    carryCrystallizationEvents,
+    latestCarryEvent,
+    projectedIrr,
+    totalGrossLoansOriginated,
+    totalPrepaidCashCollected,
+    totalPaidAwayInterest,
+    totalEarnedProfit,
+    totalGpUnitsMinted,
+    averageCashBalance,
+    averageCashDrag,
+    capitalTurnMultiple,
+    endingNav: navArr[VIEW],
+    endingNavPerUnit: priceArr[VIEW],
+    endingGpOwnership: gpOwnershipArr[VIEW],
+    gpMarkToModelValue: gpUnitsOutstandingArr[VIEW] * priceArr[VIEW]
+  };
 }
-function updateSummary(d){
-  document.getElementById('loan-note').innerHTML = `This simplified build assumes <b>prepaid interest at settlement</b>. Borrowers are charged <b>${S.apy.toFixed(1)}%</b>, the fund retains <b>${S.take.toFixed(1)}%</b>, and that retained spread is deducted upfront from settlement proceeds. For NAV and carry, that prepaid spread is recognized <b>ratably over the ${Math.round(S.term)}-month loan term</b>.`;
-  document.getElementById('flow-callmode').textContent = S.call ? 'Just in time' : 'Upfront';
-  document.getElementById('summary-note').innerHTML = `The model writes roughly <b>${fmt(S.size*1e6*S.dpm, true)}</b> of new gross loans per month at the start, which equals about <b>${S.dpm.toFixed(1)}</b> loans of <b>$${S.size.toFixed(1)}M</b> each. Borrowers are charged <b>${S.apy.toFixed(1)}%</b> per year and the fund retains <b>${S.take.toFixed(1)}%</b>, so each new loan brings in prepaid retained spread at settlement but that spread becomes accounting profit only over the life of the loan. With capital calls <b>${S.call ? 'on' : 'off'}</b>, LP capital is ${S.call ? 'called only when net funding needs exceed cash already inside the fund' : 'fully funded at launch'}. Under this base case, the fund ultimately calls about <b>${fmt(d.totalCalled, true)}</b>, reaches a peak active gross loan book of about <b>${fmt(d.peakLoans, true)}</b>, collects about <b>${fmt(d.totalPrepaid, true)}</b> of prepaid retained spread, recognizes about <b>${fmt(d.totalEarned, true)}</b> of earned profit over the run, and ends with LP IRR of about <b>${(d.projectedIrr * 100).toFixed(1)}%</b>. GP carry is minted once per year in units at <b>${S.carry.toFixed(1)}%</b> of annual earned profit above an <b>${S.hurdle.toFixed(1)}%</b> LP preferred return, so the GP participates through dilution instead of cash distributions.`;
+
+function updateHowItWorks(model){
+  const grossMonthlyVolume = S.size * 1e6 * S.dpm;
+  const retainedShare = model.retainedRate;
+  const paidAwayShare = model.paidAwayRate;
+  const prepaidPerLoan = model.prepaidCashPerDollar * model.averageLoanSize;
+  const grossInterestPerLoan = model.grossInterestPerDollar * model.averageLoanSize;
+  const paidAwayPerLoan = paidAwayShare * (model.averageLoanTermMonths / 12) * model.averageLoanSize;
+  const netCapitalPerLoan = model.netCapitalNeededPerDollar * model.averageLoanSize;
+
+  document.getElementById('how-it-works-copy').innerHTML = `LPs commit up to <b>${fmtMoney(model.maxFundSize, true)}</b>. At the current pace the fund targets about <b>${fmtMoney(grossMonthlyVolume, true)}</b> of new gross loans per month, with borrowers paying <b>${fmtPct(model.grossRate)}</b> prepaid interest. TGP keeps <b>${fmtPct(retainedShare)}</b> of annual spread by default and pays away about <b>${fmtPct(paidAwayShare)}</b> where applicable. That means each new loan collects roughly <b>${fmtMoney(grossInterestPerLoan, true)}</b> of gross interest, TGP retains about <b>${fmtMoney(prepaidPerLoan, true)}</b> in cash, and only needs about <b>${fmtMoney(netCapitalPerLoan, true)}</b> of fresh LP capital to fund a <b>${fmtMoney(model.averageLoanSize, true)}</b> loan. The retained cash is real on day one, but accounting profit only arrives as that spread is earned over the <b>${model.averageLoanTermMonths}-month</b> term.`;
+
+  const steps = [
+    `LPs commit capital up to <strong>${fmtMoney(model.maxFundSize, true)}</strong>, but the model only calls what the engine needs.`,
+    `New monthly originations target <strong>${fmtMoney(grossMonthlyVolume, true)}</strong> of gross principal.`,
+    `Borrowers pay <strong>${fmtPct(model.grossRate)}</strong> upfront, or about <strong>${fmtMoney(grossInterestPerLoan, true)}</strong> per average loan.`,
+    `TGP retains about <strong>${fmtMoney(prepaidPerLoan, true)}</strong> of that interest and pays away about <strong>${fmtMoney(paidAwayPerLoan, true)}</strong> where required.`,
+    `Capital called is reduced by the retained spread, so fresh LP cash funds only the <strong>net deployment</strong>.`,
+    `Retained spread lands in cash immediately but sits in an <strong>unearned reserve</strong> rather than becoming day-one profit.`,
+    `That reserve is recognized into <strong>earned profit monthly</strong> over the <strong>${model.averageLoanTermMonths}-month</strong> term.`,
+    `Principal repayments recycle back into cash and can support the next vintage before more LP capital is called.`,
+    `At each year-end, annual earned profit above the <strong>${S.hurdle.toFixed(1)}%</strong> hurdle mints <strong>new GP units</strong> at <strong>${S.carry.toFixed(1)}%</strong> carry.`,
+    `NAV grows from retained economics and recycled principal, while LP IRR is measured from <strong>actual calls</strong> against ending LP value.`
+  ];
+
+  document.getElementById('how-it-works-steps').innerHTML = steps.map((text, index) => `<div class="memo-step"><div class="memo-num">${index + 1}</div><div>${text}</div></div>`).join('');
+
+  document.getElementById('loan-note').innerHTML = `Borrowers prepay interest at settlement. At the current settings TGP keeps <b>${fmtPct(model.retainedRate)}</b> of annual spread, which equals about <b>${fmtMoney(prepaidPerLoan, true)}</b> per new average loan. That cash is booked to <b>unearned retained spread</b> and earned ratably over <b>${model.averageLoanTermMonths} months</b>.`;
+  document.getElementById('fund-note').innerHTML = `LPs commit up to <b>${fmtMoney(model.maxFundSize, true)}</b>. With capital calls <b>${S.call ? 'on' : 'off'}</b>, fresh LP cash only covers <b>net deployment after prepaid retained spread</b>. The target NAV line compounds called capital at the selected <b>${S.irr.toFixed(1)}%</b> LP benchmark.`;
 }
-function updateKPIs(d){
-  document.getElementById('kpi-irr').textContent = `${(d.projectedIrr * 100).toFixed(1)}%`;
-  document.getElementById('kpi-called').textContent = fmt(d.totalCalled, true);
-  document.getElementById('kpi-loans').textContent = fmt(d.peakLoans, true);
-  document.getElementById('kpi-navshare').textContent = fmtP(d.priceArr[VIEW]);
-  document.getElementById('kpi-prepaid').textContent = fmt(d.totalPrepaid, true);
-  document.getElementById('kpi-earned').textContent = fmt(d.totalEarned, true);
-  document.getElementById('kpi-gpown').textContent = `${(d.gpOwnershipArr[VIEW] * 100).toFixed(1)}%`;
-  document.getElementById('kpi-gpvalue').textContent = fmt(d.gpValue, true);
-  document.getElementById('flow-borrower').textContent = `${S.apy.toFixed(1)}%`;
-  document.getElementById('flow-take').textContent = `${S.take.toFixed(1)}%`;
-  const perLoanGross = S.size * 1e6;
-  document.getElementById('flow-netneed').textContent = fmt(perLoanGross * d.netFundingFraction, true);
-  document.getElementById('flow-prepaid').textContent = fmt(perLoanGross * d.prepaidFraction, true);
-  const latestMint = [...d.gpUnitsMintedArr].reverse().find(v => v > 0) || 0;
-  document.getElementById('flow-gpunits').textContent = latestMint.toFixed(0);
-  document.getElementById('flow-note').innerHTML = `Capital is called to fund the <b>net</b> cash required after prepaid retained spread is deducted at settlement. Because the spread is prepaid, a <b>${fmt(perLoanGross, true)}</b> gross loan only needs about <b>${fmt(perLoanGross * d.netFundingFraction, true)}</b> of fresh cash under the current assumptions.`;
-}
-function updateHover(month, d){
-  document.getElementById('hover-period').textContent = month === 0 ? 'Start of Fund' : `Month ${month} of ${VIEW} · Year ${(month/12).toFixed(1)}`;
-  document.getElementById('hover-nav').textContent = fmt(d.navArr[month], true);
-  document.getElementById('hover-loans').textContent = fmt(d.grossLoansArr[month], true);
-  document.getElementById('hover-cash').textContent = fmt(d.cashArr[month], true);
-  document.getElementById('hover-calls').textContent = fmt(d.cumCallsArr[month], true);
-  document.getElementById('hover-unearned').textContent = fmt(d.unearnedArr[month], true);
-  document.getElementById('hover-prepaid').textContent = fmt(d.prepaidArr[month], true);
-  document.getElementById('hover-principal').textContent = fmt(d.principalArr[month], true);
-  document.getElementById('hover-earned').textContent = fmt(d.earnedArr[month], true);
-  document.getElementById('hover-gross').textContent = fmt(d.grossOriginationsArr[month], true);
-  document.getElementById('hover-price').textContent = fmtP(d.priceArr[month]);
-  document.getElementById('hover-irr').textContent = `${(d.irrArr[month]*100).toFixed(1)}%`;
-  document.getElementById('hover-gpown').textContent = `${(d.gpOwnershipArr[month]*100).toFixed(1)}%`;
-  let story = 'The fund has not started yet.';
-  if(month>0){
-    if(d.lpCallArr[month] > 0 && d.grossOriginationsArr[month] > 0) story = 'Fresh LP capital was called this month because new loan volume required more net cash than the fund already held.';
-    else if(d.grossOriginationsArr[month] > 0) story = 'New loans closed this month. Cash left the fund for net proceeds, but prepaid retained spread came back in immediately at settlement.';
-    else if(d.principalArr[month] > 0) story = 'Older loans matured this month, principal returned, and that cash is available for recycling into the next vintage.';
-    else if(d.earnedArr[month] > 0) story = 'No major cash event this month. The fund is simply earning through the unearned prepaid spread already collected on prior loans.';
+
+function updateMonthAudit(month, model){
+  currentHoverMonth = month;
+  const monthLabel = month === 0 ? 'Start of fund' : `Month ${month} · Year ${Math.ceil(month / 12)}`;
+  document.getElementById('hover-period').textContent = monthLabel;
+  document.getElementById('hover-capital').textContent = fmtMoney(model.capitalCalledArr[month], true);
+  document.getElementById('hover-originated').textContent = fmtMoney(model.grossLoansOriginatedArr[month], true);
+  document.getElementById('hover-gross-interest').textContent = fmtMoney(model.grossBorrowerInterestArr[month], true);
+  document.getElementById('hover-paid-away').textContent = fmtMoney(model.paidAwayInterestArr[month], true);
+  document.getElementById('hover-prepaid').textContent = fmtMoney(model.prepaidCashCollectedArr[month], true);
+  document.getElementById('hover-net-deploy').textContent = fmtMoney(model.netDeploymentArr[month], true);
+  document.getElementById('hover-principal').textContent = fmtMoney(model.principalRepaymentsArr[month], true);
+  document.getElementById('hover-earned').textContent = fmtMoney(model.earnedSpreadThisMonthArr[month], true);
+  document.getElementById('hover-unearned').textContent = fmtMoney(model.unearnedSpreadBalanceArr[month], true);
+  document.getElementById('hover-outstanding').textContent = fmtMoney(model.principalOutstandingArr[month], true);
+  document.getElementById('hover-cash').textContent = fmtMoney(model.cashBalanceArr[month], true);
+  document.getElementById('hover-nav').textContent = fmtMoney(model.navArr[month], true);
+
+  let story = 'The engine is waiting for its first capital call and origination cycle.';
+  if(month > 0){
+    if(model.capitalCalledArr[month] > 0 && model.grossLoansOriginatedArr[month] > 0){
+      story = 'Fresh LP capital was called because net deployment exceeded cash already inside the fund after accounting for retained spread collected at settlement.';
+    } else if(model.grossLoansOriginatedArr[month] > 0){
+      story = 'New loans closed this month. The borrower prepaid interest, TGP retained its spread in cash, and only the net funding requirement reduced cash.';
+    } else if(model.principalRepaymentsArr[month] > 0){
+      story = 'Older loans repaid this month, returning principal that can be recycled into the next origination cycle before more LP capital is called.';
+    } else if(model.earnedSpreadThisMonthArr[month] > 0){
+      story = 'No new loan or repayment dominated this month. The business simply earned through retained spread that had already been collected in cash.';
+    }
   }
-  if(d.gpUnitsMintedArr[month] > 0) story += ' Year-end carry crystallized and new GP units were minted from annual earned profit above the LP preferred return.';
+  if(model.gpUnitsMintedArr[month] > 0){
+    story += ' This month also includes a year-end carry crystallization, so GP units were minted from earned profit above the hurdle.';
+  }
   document.getElementById('hover-story').textContent = story;
 }
-function renderCharts(d){
-  if(!window.echarts) return;
-  const mainEl = document.getElementById('main-chart');
+
+function updateCarryPanel(model){
+  const event = model.latestCarryEvent;
+  const yearLabel = event.month ? `Most Recent Carry Crystallization · Year ${Math.ceil(event.month / 12)}` : 'Annual Carry Snapshot';
+  document.getElementById('carry-period').textContent = yearLabel;
+  document.getElementById('carry-profit').textContent = fmtMoney(event.annualProfitBeforeCarry, true);
+  document.getElementById('carry-hurdle').textContent = fmtMoney(event.hurdleAccrued, true);
+  document.getElementById('carry-base').textContent = fmtMoney(event.carryBase, true);
+  document.getElementById('carry-minted').textContent = event.gpUnitsMinted.toFixed(0);
+  document.getElementById('carry-cum-units').textContent = model.gpUnitsOutstandingArr[VIEW].toFixed(0);
+  document.getElementById('carry-gp-own').textContent = fmtPct(model.endingGpOwnership);
+  document.getElementById('carry-gp-value').textContent = fmtMoney(model.gpMarkToModelValue, true);
+  document.getElementById('carry-lp-start').textContent = fmtMoney(event.averageLpCapitalForHurdle, true);
+  document.getElementById('carry-note-live').innerHTML = `Carry is based on <b>earned profit above the hurdle</b>, not on prepaid cash. The hurdle is applied to <b>average LP capital called through the carry period</b>, and the latest crystallization minted <b>${event.gpUnitsMinted.toFixed(0)}</b> GP units from a carry base of <b>${fmtMoney(event.carryBase, true)}</b>.`;
+}
+
+function updateKPIs(model){
+  document.getElementById('kpi-irr').textContent = fmtPct(model.projectedIrr);
+  document.getElementById('kpi-called').textContent = fmtMoney(model.cumulativeCapitalCalledArr[VIEW], true);
+  document.getElementById('kpi-originated').textContent = fmtMoney(model.totalGrossLoansOriginated, true);
+  document.getElementById('kpi-nav').textContent = fmtMoney(model.endingNav, true);
+  document.getElementById('kpi-navshare').textContent = fmtPrice(model.endingNavPerUnit);
+  document.getElementById('kpi-gpown').textContent = fmtPct(model.endingGpOwnership);
+  document.getElementById('kpi-gpunits').textContent = model.totalGpUnitsMinted.toFixed(0);
+  document.getElementById('kpi-turn').textContent = fmtTurns(model.capitalTurnMultiple);
+  document.getElementById('kpi-cashdrag').textContent = fmtPct(model.averageCashDrag);
+}
+
+function setChartStatus(id, message, isError){
+  const statusEl = document.getElementById(id);
+  if(!statusEl) return;
+  statusEl.textContent = message;
+  statusEl.classList.toggle('hidden', !message);
+  statusEl.style.color = isError ? 'var(--red2)' : 'var(--muted2)';
+}
+
+function scheduleResize(){
+  cancelAnimationFrame(resizeFrame);
+  resizeFrame = requestAnimationFrame(() => {
+    if(flowChart) flowChart.resize();
+    if(mainChart) mainChart.resize();
+  });
+}
+
+function ensureCharts(){
   const flowEl = document.getElementById('flow-chart');
-  if(!mainChart) mainChart = echarts.init(mainEl, null, {renderer:'canvas'});
-  if(!flowChart) flowChart = echarts.init(flowEl, null, {renderer:'canvas'});
-  const months = Array.from({length:VIEW+1}, (_,i)=>i);
-  const xLabel = m => m===0 ? 'Start' : (m%12===0 ? `Y${m/12}` : '');
-  const mainMax = Math.max(...d.navArr, ...d.grossLoansArr, ...d.cashArr, ...d.targetNavArr, 1);
-  const flowMax = Math.max(...d.lpCallArr, ...d.prepaidArr, ...d.principalArr, ...d.grossOriginationsArr.map((v,i)=>v*d.netFundingFraction), ...d.cashArr, 1);
-  const gpMarkers = [];
-  for(let m=1;m<=VIEW;m++){ if(d.gpUnitsMintedArr[m] > 0) gpMarkers.push({coord:[m,d.navArr[m]], value:d.gpUnitsMintedArr[m]}); }
+  const mainEl = document.getElementById('main-chart');
+
+  if(!flowEl || !mainEl){
+    console.error('Model charts failed to boot because one or more chart containers are missing.');
+    setChartStatus('flow-chart-status', 'Chart container missing.', true);
+    setChartStatus('main-chart-status', 'Chart container missing.', true);
+    return false;
+  }
+
+  if(Math.round(flowEl.getBoundingClientRect().height) === 0 || Math.round(mainEl.getBoundingClientRect().height) === 0){
+    console.error('Model charts failed to boot because one or more chart containers have zero height.');
+    setChartStatus('flow-chart-status', 'Chart container has zero height.', true);
+    setChartStatus('main-chart-status', 'Chart container has zero height.', true);
+    return false;
+  }
+
+  if(!window.echarts){
+    console.error('window.echarts is missing. The model charts cannot initialize.');
+    setChartStatus('flow-chart-status', 'Chart library failed to load. Check the console.', true);
+    setChartStatus('main-chart-status', 'Chart library failed to load. Check the console.', true);
+    return false;
+  }
+
+  if(!flowChart) flowChart = window.echarts.init(flowEl, null, {renderer:'canvas'});
+  if(!mainChart) mainChart = window.echarts.init(mainEl, null, {renderer:'canvas'});
+  setChartStatus('flow-chart-status', '', false);
+  setChartStatus('main-chart-status', '', false);
+  return true;
+}
+
+function renderCharts(model){
+  if(!ensureCharts()) return;
+
+  const months = model.months;
+  const axisLabel = value => value === 0 ? 'Start' : (value % 12 === 0 ? `Y${value / 12}` : '');
+  const tooltipFormatter = params => {
+    const month = Number(params[0] && params[0].axisValue !== undefined ? params[0].axisValue : 0);
+    updateMonthAudit(month, model);
+    return params.map(item => `${item.marker}${item.seriesName}: ${fmtMoney(item.value, true)}`).join('<br>');
+  };
+
   flowChart.setOption({
     animation:false,
-    grid:{left:60,right:24,top:28,bottom:36},
-    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},formatter:params=>{
-      const m = params[0]?.axisValue ?? 0; updateHover(Number(m), d); return params.map(p=>`${p.marker}${p.seriesName}: ${fmt(p.value, true)}`).join('<br>');
-    }},
-    xAxis:{type:'category',data:months,axisLabel:{formatter:xLabel,fontFamily:'DM Mono',fontSize:10,color:'#776b5d'}},
-    yAxis:{type:'value',axisLabel:{formatter:v=>fmt(v,true),fontFamily:'DM Mono',fontSize:10,color:'#776b5d'},splitLine:{lineStyle:{color:'rgba(156,122,77,0.12)'}}},
+    grid:{left:64,right:24,top:28,bottom:40},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},formatter:tooltipFormatter},
+    xAxis:{type:'category',data:months,axisLabel:{formatter:axisLabel,fontFamily:'DM Mono',fontSize:10,color:'#776b5d'}},
+    yAxis:{type:'value',axisLabel:{formatter:value => fmtMoney(value, true),fontFamily:'DM Mono',fontSize:10,color:'#776b5d'},splitLine:{lineStyle:{color:'rgba(156,122,77,0.12)'}}},
     series:[
-      {name:'LP Calls',type:'bar',data:d.lpCallArr,barMaxWidth:14,itemStyle:{color:'#506a88'}},
-      {name:'Prepaid Spread',type:'bar',data:d.prepaidArr,barMaxWidth:14,itemStyle:{color:'#b38b57'}},
-      {name:'Principal Returned',type:'bar',data:d.principalArr,barMaxWidth:14,itemStyle:{color:'#3f6d47'}},
-      {name:'Net Into Loans',type:'bar',data:d.grossOriginationsArr.map(v=>v*d.netFundingFraction),barMaxWidth:14,itemStyle:{color:'#9c4f40'}},
-      {name:'Cash',type:'line',smooth:true,data:d.cashArr,symbol:'none',lineStyle:{width:2,color:'#7b4bb3'}}
+      {name:'Capital Called',type:'bar',stack:'monthly-flow',data:model.capitalCalledArr,barMaxWidth:16,itemStyle:{color:'#506a88'}},
+      {name:'Prepaid Retained Spread',type:'bar',stack:'monthly-flow',data:model.prepaidCashCollectedArr,barMaxWidth:16,itemStyle:{color:'#b38b57'}},
+      {name:'Principal Repaid',type:'bar',stack:'monthly-flow',data:model.principalRepaymentsArr,barMaxWidth:16,itemStyle:{color:'#3f6d47'}},
+      {name:'Earned Profit',type:'bar',stack:'monthly-flow',data:model.earnedSpreadThisMonthArr,barMaxWidth:16,itemStyle:{color:'#1c7c54'}},
+      {name:'Net Deployment',type:'bar',stack:'monthly-flow',data:model.netDeploymentArr.map(value => -value),barMaxWidth:16,itemStyle:{color:'#9c4f40'}}
     ]
   }, true);
+
   mainChart.setOption({
     animation:false,
-    grid:{left:60,right:24,top:28,bottom:36},
-    tooltip:{trigger:'axis',formatter:params=>{ const m = Number(params[0]?.axisValue ?? 0); updateHover(m,d); return params.map(p=>`${p.marker}${p.seriesName}: ${fmt(p.value, true)}`).join('<br>'); }},
-    xAxis:{type:'category',data:months,axisLabel:{formatter:xLabel,fontFamily:'DM Mono',fontSize:10,color:'#776b5d'}},
-    yAxis:{type:'value',axisLabel:{formatter:v=>fmt(v,true),fontFamily:'DM Mono',fontSize:10,color:'#776b5d'},splitLine:{lineStyle:{color:'rgba(156,122,77,0.12)'}}},
+    grid:{left:64,right:24,top:28,bottom:40},
+    tooltip:{trigger:'axis',formatter:tooltipFormatter},
+    xAxis:{type:'category',data:months,axisLabel:{formatter:axisLabel,fontFamily:'DM Mono',fontSize:10,color:'#776b5d'}},
+    yAxis:{type:'value',axisLabel:{formatter:value => fmtMoney(value, true),fontFamily:'DM Mono',fontSize:10,color:'#776b5d'},splitLine:{lineStyle:{color:'rgba(156,122,77,0.12)'}}},
     series:[
-      {name:'NAV',type:'line',smooth:true,symbol:'none',data:d.navArr,lineStyle:{width:2.4,color:'#b38b57'},markPoint:{symbolSize:18,itemStyle:{color:'#3f6d47'},data:gpMarkers,label:{formatter:p=>p.data.value.toFixed(0),fontFamily:'DM Mono',fontSize:9,color:'#fff'}}},
-      {name:'Target NAV',type:'line',smooth:false,symbol:'none',data:d.targetNavArr,lineStyle:{width:2,color:'#2f6db0',type:'dashed'}},
-      {name:'Gross Loans',type:'line',smooth:true,symbol:'none',data:d.grossLoansArr,lineStyle:{width:2,color:'#7b4bb3'}},
-      {name:'Cash',type:'line',smooth:true,symbol:'none',data:d.cashArr,lineStyle:{width:2,color:'#1c7c54'}}
+      {name:'NAV',type:'line',smooth:true,symbol:'none',data:model.navArr,lineStyle:{width:2.4,color:'#b38b57'}},
+      {name:'Target NAV',type:'line',smooth:false,symbol:'none',data:model.targetNavArr,lineStyle:{width:2,color:'#2f6db0',type:'dashed'}},
+      {name:'Gross Loans Outstanding',type:'line',smooth:true,symbol:'none',data:model.principalOutstandingArr,lineStyle:{width:2,color:'#7b4bb3'}},
+      {name:'Cash Balance',type:'line',smooth:true,symbol:'none',data:model.cashBalanceArr,lineStyle:{width:2,color:'#506a88'}}
     ]
   }, true);
-  flowChart.resize();
-  mainChart.resize();
+
+  scheduleResize();
 }
+
 function recalc(){
-  const d = buildScenario();
-  updateSummary(d);
-  updateKPIs(d);
-  renderCharts(d);
-  updateHover(0,d);
+  latestScenario = buildBaseCase();
+  updateHowItWorks(latestScenario);
+  updateCarryPanel(latestScenario);
+  updateKPIs(latestScenario);
+  updateMonthAudit(currentHoverMonth, latestScenario);
+  renderCharts(latestScenario);
 }
-window.addEventListener('resize', ()=>{ if(mainChart) mainChart.resize(); if(flowChart) flowChart.resize(); });
-recalc();
+
+function bootModelPage(){
+  if(document.getElementById('v-fund')) document.getElementById('v-fund').textContent = fmtControl('fund', S.fund);
+  if(document.getElementById('v-irr')) document.getElementById('v-irr').textContent = fmtControl('irr', S.irr);
+  if(document.getElementById('v-hurdle')) document.getElementById('v-hurdle').textContent = fmtControl('hurdle', S.hurdle);
+  if(document.getElementById('v-carry')) document.getElementById('v-carry').textContent = fmtControl('carry', S.carry);
+  if(document.getElementById('v-size')) document.getElementById('v-size').textContent = fmtControl('size', S.size);
+  if(document.getElementById('v-dpm')) document.getElementById('v-dpm').textContent = fmtControl('dpm', S.dpm);
+  if(document.getElementById('v-term')) document.getElementById('v-term').textContent = fmtControl('term', S.term);
+  if(document.getElementById('v-apy')) document.getElementById('v-apy').textContent = fmtControl('apy', S.apy);
+  if(document.getElementById('v-take')) document.getElementById('v-take').textContent = fmtControl('take', S.take);
+
+  window.addEventListener('resize', scheduleResize);
+  document.querySelectorAll('details').forEach(details => details.addEventListener('toggle', scheduleResize));
+
+  if('ResizeObserver' in window){
+    resizeObserver = new ResizeObserver(() => scheduleResize());
+    const chartArea = document.querySelector('.chart-area');
+    if(chartArea) resizeObserver.observe(chartArea);
+  }
+
+  recalc();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', bootModelPage, {once:true});
+} else {
+  bootModelPage();
+}
 </script>
 </body>
 </html>
