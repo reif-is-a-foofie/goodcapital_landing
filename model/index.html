@@ -164,7 +164,7 @@ a{color:inherit}
           <div class="ctrl"><div class="ctrl-label">GP Carry</div><div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% over hurdle</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('carry',-1)">- 1%</div><div class="btn plus" onclick="adj('carry',1)">+ 1%</div></div></div>
           <div class="ctrl"><div class="ctrl-label">Reinvestment Rate</div><div class="ctrl-display"><div class="ctrl-val" id="v-reinvest">85.0</div><div class="ctrl-unit">% of opening cash swept</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('reinvest',-5)">- 5%</div><div class="btn plus" onclick="adj('reinvest',5)">+ 5%</div></div></div>
         </div></div>
-        <div class="assump-note" id="fund-note">LP capital funds net deployment. Opening cash is split between a reserve and a monthly reinvestment sweep.</div>
+        <div class="assump-note" id="fund-note">LP capital funds net deployment. Opening cash is split between a reserve and a monthly reinvestment sweep. Retained earnings add deployable capacity over time.</div>
       </div>
     </details>
     <details class="settings-wrap">
@@ -172,7 +172,7 @@ a{color:inherit}
       <div class="settings-body">
         <div class="controls"><div class="ctrl-row">
           <div class="ctrl"><div class="ctrl-label">Average Loan Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('size',-1)">- $1M</div><div class="btn plus" onclick="adj('size',1)">+ $1M</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Monthly Origination Pace</div><div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">loans / month</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Base Monthly Origination Pace</div><div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">loans / month at launch</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div></div>
           <div class="ctrl"><div class="ctrl-label">Average Tenor</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">12</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
           <div class="ctrl"><div class="ctrl-label">Gross Borrower Coupon</div><div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% prepaid</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div></div>
           <div class="ctrl"><div class="ctrl-label">Retained Spread</div><div class="ctrl-display"><div class="ctrl-val" id="v-take">17.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div></div>
@@ -427,6 +427,8 @@ function buildBaseCase(){
   const prepaidCashPerDollar = retainedRate * (averageLoanTermMonths / 12);
   const paidAwayCashPerDollar = paidAwayRate * (averageLoanTermMonths / 12);
   const netCapitalNeededPerDollar = Math.max(0.01, 1 - prepaidCashPerDollar);
+  const baseMonthlyOriginationVolume = averageLoanSize * monthlyOriginationPace;
+  const capitalRequiredPerDollarOfMonthlyOrigination = averageLoanTermMonths * netCapitalNeededPerDollar;
 
   const months = Array.from({length: VIEW + 1}, (_, index) => index);
   const scheduleLength = VIEW + averageLoanTermMonths + 24;
@@ -436,6 +438,8 @@ function buildBaseCase(){
   const targetNavArr = new Array(VIEW + 1).fill(0);
   const capitalCalledArr = new Array(VIEW + 1).fill(0);
   const cumulativeCapitalCalledArr = new Array(VIEW + 1).fill(0);
+  const targetGrossLoansOriginatedArr = new Array(VIEW + 1).fill(0);
+  const incrementalOriginationFromProfitArr = new Array(VIEW + 1).fill(0);
   const grossLoansOriginatedArr = new Array(VIEW + 1).fill(0);
   const grossBorrowerInterestArr = new Array(VIEW + 1).fill(0);
   const paidAwayInterestArr = new Array(VIEW + 1).fill(0);
@@ -479,6 +483,7 @@ function buildBaseCase(){
 
   capitalCalledArr[0] = S.call ? 0 : maxFundSize;
   cumulativeCapitalCalledArr[0] = cumulativeCapitalCalled;
+  targetGrossLoansOriginatedArr[0] = baseMonthlyOriginationVolume;
   cashBalanceArr[0] = cashBalance;
   cashReserveArr[0] = cashBalance * (1 - reinvestmentRate);
   cashSweptArr[0] = cashBalance * reinvestmentRate;
@@ -492,7 +497,12 @@ function buildBaseCase(){
   lpValueArr[0] = lpUnitsOutstanding * priceArr[0];
 
   for(let month = 1; month <= VIEW; month += 1){
-    let grossLoansOriginated = averageLoanSize * monthlyOriginationPace;
+    const reinvestedProfitCapital = cumulativeProfitBeforeCarry * reinvestmentRate;
+    const incrementalOriginationFromProfit = capitalRequiredPerDollarOfMonthlyOrigination > 0
+      ? reinvestedProfitCapital / capitalRequiredPerDollarOfMonthlyOrigination
+      : 0;
+    let targetGrossLoansOriginated = baseMonthlyOriginationVolume + incrementalOriginationFromProfit;
+    let grossLoansOriginated = targetGrossLoansOriginated;
     let grossBorrowerInterestCharged = grossLoansOriginated * grossInterestPerDollar;
     let prepaidCashCollected = grossLoansOriginated * prepaidCashPerDollar;
     let paidAwayInterest = grossLoansOriginated * paidAwayCashPerDollar;
@@ -584,6 +594,8 @@ function buildBaseCase(){
 
     capitalCalledArr[month] = capitalCalled;
     cumulativeCapitalCalledArr[month] = cumulativeCapitalCalled;
+    targetGrossLoansOriginatedArr[month] = targetGrossLoansOriginated;
+    incrementalOriginationFromProfitArr[month] = incrementalOriginationFromProfit;
     grossLoansOriginatedArr[month] = grossLoansOriginated;
     grossBorrowerInterestArr[month] = grossBorrowerInterestCharged;
     paidAwayInterestArr[month] = paidAwayInterest;
@@ -648,6 +660,7 @@ function buildBaseCase(){
     maxFundSize,
     averageLoanSize,
     monthlyOriginationPace,
+    baseMonthlyOriginationVolume,
     averageLoanTermMonths,
     grossRate,
     retainedRate,
@@ -655,7 +668,10 @@ function buildBaseCase(){
     grossInterestPerDollar,
     prepaidCashPerDollar,
     netCapitalNeededPerDollar,
+    capitalRequiredPerDollarOfMonthlyOrigination,
     reinvestmentRate,
+    targetGrossLoansOriginatedArr,
+    incrementalOriginationFromProfitArr,
     grossBorrowerInterestArr,
     paidAwayInterestArr,
     prepaidCashCollectedArr,
@@ -703,7 +719,9 @@ function buildBaseCase(){
 }
 
 function updateHowItWorks(model){
-  const grossMonthlyVolume = S.size * 1e6 * S.dpm;
+  const baseMonthlyVolume = model.baseMonthlyOriginationVolume;
+  const endingMonthlyVolume = model.targetGrossLoansOriginatedArr[VIEW];
+  const incrementalMonthlyVolume = Math.max(0, endingMonthlyVolume - baseMonthlyVolume);
   const retainedShare = model.retainedRate;
   const paidAwayShare = model.paidAwayRate;
   const prepaidPerLoan = model.prepaidCashPerDollar * model.averageLoanSize;
@@ -712,7 +730,7 @@ function updateHowItWorks(model){
   const netCapitalPerLoan = model.netCapitalNeededPerDollar * model.averageLoanSize;
   const reserveRate = Math.max(0, 1 - model.reinvestmentRate);
 
-  document.getElementById('how-it-works-copy').innerHTML = `Commitments total <b>${fmtMoney(model.maxFundSize, true)}</b>. Monthly originations run at <b>${fmtMoney(grossMonthlyVolume, true)}</b>. Borrowers pay a <b>${fmtPct(model.grossRate)}</b> prepaid coupon. TGP retains <b>${fmtPct(retainedShare)}</b>, or roughly <b>${fmtMoney(prepaidPerLoan, true)}</b> on an average <b>${fmtMoney(model.averageLoanSize, true)}</b> loan. Net LP funding per loan is about <b>${fmtMoney(netCapitalPerLoan, true)}</b>. <b>${fmtPct(model.reinvestmentRate)}</b> of opening cash is reinvested each month; <b>${fmtPct(reserveRate)}</b> remains in reserve. Retained spread is collected at close, deferred immediately, and earned over <b>${model.averageLoanTermMonths} months</b>.`;
+  document.getElementById('how-it-works-copy').innerHTML = `Commitments total <b>${fmtMoney(model.maxFundSize, true)}</b>. Base monthly originations start at <b>${fmtMoney(baseMonthlyVolume, true)}</b>. Borrowers pay a <b>${fmtPct(model.grossRate)}</b> prepaid coupon. TGP retains <b>${fmtPct(retainedShare)}</b>, or roughly <b>${fmtMoney(prepaidPerLoan, true)}</b> on an average <b>${fmtMoney(model.averageLoanSize, true)}</b> loan. Net LP funding per loan is about <b>${fmtMoney(netCapitalPerLoan, true)}</b>. <b>${fmtPct(model.reinvestmentRate)}</b> of opening cash is reinvested each month; <b>${fmtPct(reserveRate)}</b> remains in reserve. Retained earnings are recycled into new loans, adding about <b>${fmtMoney(incrementalMonthlyVolume, true)}</b> of monthly capacity by the end of the run.`;
 
   const steps = [
     `Capital is called only for net funding need.`,
@@ -720,14 +738,14 @@ function updateHowItWorks(model){
     `TGP retains <strong>${fmtMoney(prepaidPerLoan, true)}</strong>; about <strong>${fmtMoney(paidAwayPerLoan, true)}</strong> is paid away where applicable.`,
     `Retained spread reduces the new LP draw.`,
     `Opening cash is split between a <strong>${fmtPct(reserveRate)}</strong> reserve and a <strong>${fmtPct(model.reinvestmentRate)}</strong> reinvestment sweep.`,
-    `Deferred spread is earned over <strong>${model.averageLoanTermMonths} months</strong>.`,
+    `Deferred spread is earned over <strong>${model.averageLoanTermMonths} months</strong>. Retained earnings increase monthly origination capacity.`,
     `Principal is recycled. Carry crystallizes annually above the <strong>${S.hurdle.toFixed(1)}%</strong> hurdle at <strong>${S.carry.toFixed(1)}%</strong>.`
   ];
 
   document.getElementById('how-it-works-steps').innerHTML = steps.map((text, index) => `<div class="memo-step"><div class="memo-num">${index + 1}</div><div>${text}</div></div>`).join('');
 
   document.getElementById('loan-note').innerHTML = `Retained spread is about <b>${fmtMoney(prepaidPerLoan, true)}</b> per average loan. Collected at close. Deferred immediately. Earned over <b>${model.averageLoanTermMonths} months</b>.`;
-  document.getElementById('fund-note').innerHTML = `LP capital funds <b>net deployment</b> after retained spread and the cash sweep. <b>${fmtPct(model.reinvestmentRate)}</b> of opening cash is reinvested each month; <b>${fmtPct(reserveRate)}</b> remains in reserve.`;
+  document.getElementById('fund-note').innerHTML = `LP capital funds <b>net deployment</b> after retained spread and the cash sweep. <b>${fmtPct(model.reinvestmentRate)}</b> of opening cash is reinvested each month; <b>${fmtPct(reserveRate)}</b> remains in reserve. Earned spread is retained and increases origination capacity over time.`;
 }
 
 function updateMonthAudit(month, model){
