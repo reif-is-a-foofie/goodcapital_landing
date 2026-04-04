@@ -66,7 +66,8 @@ a{color:inherit}
 .note-q{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
 .chart-area{padding:14px 16px 16px;background:var(--s1);min-height:0}
 .chart-shell{display:flex;flex-direction:column;gap:16px;min-height:100%;position:relative}
-.chart-main{display:flex;flex-direction:column;gap:14px;min-height:0;padding-top:var(--hover-overlay-offset, 0px)}
+.chart-main{display:flex;flex-direction:column;gap:14px;min-height:0}
+.chart-main > .chart-block:first-of-type{margin-top:var(--hover-overlay-offset, 0px)}
 .chart-meta{position:sticky;top:12px;z-index:8;height:0;overflow:visible;pointer-events:none}
 .meta-stack{display:block}
 .memo-panel,.hover-panel,.carry-panel,.chart-frame,.kpi,.footer-panel{background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.06)}
@@ -196,6 +197,18 @@ a{color:inherit}
   </div>
   <div class="chart-area">
     <div class="chart-shell">
+      <div class="panel-label" style="padding-left:0;background:none;border-bottom:none">Investor Summary</div>
+      <div class="kpis">
+        <div class="kpi"><div><div class="kpi-l">LP Net IRR</div><div class="kpi-v blue" id="kpi-irr">-</div></div><div class="kpi-s">ending LP value / draws</div></div>
+        <div class="kpi"><div><div class="kpi-l">LP Capital Called</div><div class="kpi-v plain" id="kpi-called">-</div></div><div class="kpi-s">capital funded</div></div>
+        <div class="kpi"><div><div class="kpi-l">Gross Originations</div><div class="kpi-v purple" id="kpi-originated">-</div></div><div class="kpi-s">principal originated</div></div>
+        <div class="kpi"><div><div class="kpi-l">Ending NAV</div><div class="kpi-v gold" id="kpi-nav">-</div></div><div class="kpi-s">cash + loans - deferred spread</div></div>
+        <div class="kpi"><div><div class="kpi-l">NAV / Unit</div><div class="kpi-v gold" id="kpi-navshare">-</div></div><div class="kpi-s">post-carry dilution</div></div>
+        <div class="kpi"><div><div class="kpi-l">GP Ownership</div><div class="kpi-v plain" id="kpi-gpown">-</div></div><div class="kpi-s">ending diluted stake</div></div>
+        <div class="kpi"><div><div class="kpi-l">GP Units Minted</div><div class="kpi-v purple" id="kpi-gpunits">-</div></div><div class="kpi-s">cumulative carry units</div></div>
+        <div class="kpi"><div><div class="kpi-l">Capital Turn</div><div class="kpi-v green" id="kpi-turn">-</div></div><div class="kpi-s">originations / called capital</div></div>
+        <div class="kpi"><div><div class="kpi-l">Average Cash Drag</div><div class="kpi-v red" id="kpi-cashdrag">-</div></div><div class="kpi-s">average cash / called capital</div></div>
+      </div>
       <div class="chart-main">
         <div class="chart-meta">
           <div class="meta-stack">
@@ -258,18 +271,6 @@ a{color:inherit}
         </div>
       </div>
       <div class="chart-rail">
-        <div class="panel-label" style="padding-left:0;background:none;border-bottom:none">Investor Summary</div>
-        <div class="kpis">
-          <div class="kpi"><div><div class="kpi-l">LP Net IRR</div><div class="kpi-v blue" id="kpi-irr">-</div></div><div class="kpi-s">ending LP value / draws</div></div>
-          <div class="kpi"><div><div class="kpi-l">LP Capital Called</div><div class="kpi-v plain" id="kpi-called">-</div></div><div class="kpi-s">capital funded</div></div>
-          <div class="kpi"><div><div class="kpi-l">Gross Originations</div><div class="kpi-v purple" id="kpi-originated">-</div></div><div class="kpi-s">principal originated</div></div>
-          <div class="kpi"><div><div class="kpi-l">Ending NAV</div><div class="kpi-v gold" id="kpi-nav">-</div></div><div class="kpi-s">cash + loans - deferred spread</div></div>
-          <div class="kpi"><div><div class="kpi-l">NAV / Unit</div><div class="kpi-v gold" id="kpi-navshare">-</div></div><div class="kpi-s">post-carry dilution</div></div>
-          <div class="kpi"><div><div class="kpi-l">GP Ownership</div><div class="kpi-v plain" id="kpi-gpown">-</div></div><div class="kpi-s">ending diluted stake</div></div>
-          <div class="kpi"><div><div class="kpi-l">GP Units Minted</div><div class="kpi-v purple" id="kpi-gpunits">-</div></div><div class="kpi-s">cumulative carry units</div></div>
-          <div class="kpi"><div><div class="kpi-l">Capital Turn</div><div class="kpi-v green" id="kpi-turn">-</div></div><div class="kpi-s">originations / called capital</div></div>
-          <div class="kpi"><div><div class="kpi-l">Average Cash Drag</div><div class="kpi-v red" id="kpi-cashdrag">-</div></div><div class="kpi-s">average cash / called capital</div></div>
-        </div>
         <div class="memo-panel">
           <div class="memo-kicker">Operating Case</div>
           <div class="memo-title">Prepaid coupon reduces net LP funding per loan.</div>
