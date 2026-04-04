@@ -148,43 +148,44 @@ a{color:inherit}
   <div class="sitebar-main"><div class="sitebar-title"><a href="/">The Good Project <span>/</span> Fund One Model</a></div></div>
   <a class="sitebar-action" href="/model/TGP_Fund_One_Model.xlsx" download>Download Excel</a>
 </div>
-<div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>What this page shows:</b> one base-case operating engine for short-duration Australian private credit with prepaid interest at settlement. The question is simple: <b>if the assumptions are true, does the business work?</b> LP capital is committed, called only when net deployment requires it, retained spread arrives in cash at settlement, profit is earned over time, principal is recycled, and GP carry only mints from annual earned profit above the LP hurdle.</div>
+<div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>Single operating case.</b> Short-duration Australian private credit with prepaid coupon at settlement. LP capital is drawn against net funding need. Retained spread is deferred at close and earned over term. Principal is recycled. GP carry crystallizes annually in units on earned profit above the LP hurdle.</div>
 <div class="body">
   <div class="assumptions-pane">
-    <div class="panel-label">Base Case Assumptions</div>
-    <div class="stress-note"><b>Live stress test:</b> this page always shows one scenario only. Use the controls to pressure the same operating engine in real time rather than switching between prebuilt cases.</div>
+    <div class="panel-label">Assumptions</div>
+    <div class="stress-note"><b>Single operating case.</b> Inputs update the page in real time.</div>
     <details class="settings-wrap">
-      <summary class="settings-toggle">Fund Structure</summary>
+      <summary class="settings-toggle">Fund Terms</summary>
       <div class="settings-body">
         <div class="controls"><div class="ctrl-row">
-          <div class="ctrl"><div class="ctrl-label">Max Fund Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B committed</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div><div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div></div></div>
-          <div class="mode-row"><div class="mode-label">Capital Calls</div><div class="ctrl-btns"><div class="btn red" id="call-off" onclick="setCapitalCall(false)">Upfront</div><div class="btn plus active" id="call-on" onclick="setCapitalCall(true)">Just in time</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Target LP IRR Benchmark</div><div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">LP Preferred Return / Hurdle</div><div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">GP Carry</div><div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% of carry base</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('carry',-1)">- 1%</div><div class="btn plus" onclick="adj('carry',1)">+ 1%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Fund Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B committed</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div><div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div></div></div>
+          <div class="mode-row"><div class="mode-label">Draw Structure</div><div class="ctrl-btns"><div class="btn red" id="call-off" onclick="setCapitalCall(false)">Fully funded</div><div class="btn plus active" id="call-on" onclick="setCapitalCall(true)">Draw as needed</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Target LP Return</div><div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">LP Hurdle</div><div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">GP Carry</div><div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% over hurdle</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('carry',-1)">- 1%</div><div class="btn plus" onclick="adj('carry',1)">+ 1%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Reinvestment Rate</div><div class="ctrl-display"><div class="ctrl-val" id="v-reinvest">85.0</div><div class="ctrl-unit">% of opening cash swept</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('reinvest',-5)">- 5%</div><div class="btn plus" onclick="adj('reinvest',5)">+ 5%</div></div></div>
         </div></div>
-        <div class="assump-note" id="fund-note">LPs commit a maximum amount but capital is only called when the fund needs fresh cash after accounting for prepaid retained spread already collected at settlement. The target NAV line compounds called capital at the selected LP benchmark so investors can see whether the operating engine clears the hurdle.</div>
+        <div class="assump-note" id="fund-note">LP capital funds net deployment. Opening cash is split between a reserve and a monthly reinvestment sweep.</div>
       </div>
     </details>
     <details class="settings-wrap">
-      <summary class="settings-toggle">Loan Engine</summary>
+      <summary class="settings-toggle">Asset Terms</summary>
       <div class="settings-body">
         <div class="controls"><div class="ctrl-row">
-          <div class="ctrl"><div class="ctrl-label">Average Gross Loan Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M per loan</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('size',-1)">- $1M</div><div class="btn plus" onclick="adj('size',1)">+ $1M</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Average Loan Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('size',-1)">- $1M</div><div class="btn plus" onclick="adj('size',1)">+ $1M</div></div></div>
           <div class="ctrl"><div class="ctrl-label">Monthly Origination Pace</div><div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">loans / month</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Average Loan Term</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">12</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Borrower Gross Rate</div><div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% prepaid</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">TGP Retained Spread</div><div class="ctrl-display"><div class="ctrl-val" id="v-take">17.0</div><div class="ctrl-unit">% annual kept</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Average Tenor</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">12</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Gross Borrower Coupon</div><div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% prepaid</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div></div>
+          <div class="ctrl"><div class="ctrl-label">Retained Spread</div><div class="ctrl-display"><div class="ctrl-val" id="v-take">17.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div></div>
         </div></div>
-        <div class="assump-note" id="loan-note">Borrowers prepay interest at settlement. TGP retains its spread in cash on day one, but that retained spread is booked to an <b>unearned reserve</b> and earned monthly across the loan term instead of being treated as month-one profit.</div>
+        <div class="assump-note" id="loan-note">Coupon is prepaid at close. Retained spread is collected in cash, deferred on day one, and earned over tenor.</div>
       </div>
     </details>
     <details class="settings-wrap">
-      <summary class="settings-toggle">Scope And Accounting</summary>
+      <summary class="settings-toggle">Methodology</summary>
       <div class="note-block">
-        <div class="note-card"><div class="note-q">Product In Scope</div>This version models one product only: <b>short-duration Australian private credit with prepaid interest deducted at settlement</b>. Progressive-draw development facilities, line fees, and construction drawdowns are intentionally out of scope for this phase.</div>
-        <div class="note-card"><div class="note-q">Revenue Recognition</div>Three layers stay separate in the code and on the page: <b>cash collected upfront</b>, <b>unearned retained spread reserve</b>, and <b>earned spread recognized monthly</b>. Changing the term changes the pace of earnings recognition automatically.</div>
-        <div class="note-card"><div class="note-q">Carry Rule</div>GP carry crystallizes <b>once per year</b>. The model uses annual earned profit above the LP hurdle, converts that carry into <b>new GP units</b>, and tracks the resulting ownership dilution and mark-to-model value.</div>
+        <div class="note-card"><div class="note-q">Scope</div>One prepaid short-duration strategy. No progressive-draw construction lending.</div>
+        <div class="note-card"><div class="note-q">Revenue</div>Cash received at close. Retained spread deferred, then earned ratably.</div>
+        <div class="note-card"><div class="note-q">Carry</div>Annual crystallization on profit above hurdle. Paid in GP units.</div>
       </div>
     </details>
   </div>
@@ -193,34 +194,36 @@ a{color:inherit}
       <div class="chart-main">
         <div class="chart-meta">
           <div class="memo-panel">
-            <div class="memo-kicker">Operating Model</div>
-            <div class="memo-title">How the fund earns, recycles, and compounds capital.</div>
+            <div class="memo-kicker">Operating Case</div>
+            <div class="memo-title">Prepaid coupon reduces net LP funding per loan.</div>
             <div class="memo-copy" id="how-it-works-copy"></div>
             <div class="memo-seq" id="how-it-works-steps"></div>
           </div>
           <div class="meta-stack">
             <div class="hover-panel">
-              <div class="hover-period" id="hover-period">Year 1 opening month</div>
+              <div class="hover-period" id="hover-period">Opening month</div>
               <div class="hover-grid">
-                <div class="hover-item"><div class="hover-k">Capital Called</div><div class="hover-v blue" id="hover-capital">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Gross Loans Originated</div><div class="hover-v purple" id="hover-originated">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Gross Borrower Interest</div><div class="hover-v gold" id="hover-gross-interest">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Paid Away Share</div><div class="hover-v" id="hover-paid-away">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Prepaid Retained Spread</div><div class="hover-v gold" id="hover-prepaid">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Net Deployment</div><div class="hover-v" id="hover-net-deploy">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Principal Repaid</div><div class="hover-v green" id="hover-principal">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Earned Profit</div><div class="hover-v green" id="hover-earned">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Unearned Reserve</div><div class="hover-v" id="hover-unearned">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Principal Outstanding</div><div class="hover-v purple" id="hover-outstanding">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Cash Balance</div><div class="hover-v blue" id="hover-cash">$0</div></div>
+                <div class="hover-item"><div class="hover-k">LP Draw</div><div class="hover-v blue" id="hover-capital">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Gross Originations</div><div class="hover-v purple" id="hover-originated">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Gross Coupon</div><div class="hover-v gold" id="hover-gross-interest">$0</div></div>
+                <div class="hover-item"><div class="hover-k">External Share</div><div class="hover-v" id="hover-paid-away">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Retained Spread Collected</div><div class="hover-v gold" id="hover-prepaid">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Net Funding</div><div class="hover-v" id="hover-net-deploy">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Cash Reserve</div><div class="hover-v blue" id="hover-reserve">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Cash Swept</div><div class="hover-v blue" id="hover-reinvestable">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Principal Returned</div><div class="hover-v green" id="hover-principal">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Earned Spread</div><div class="hover-v green" id="hover-earned">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Deferred Spread</div><div class="hover-v" id="hover-unearned">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Loans Outstanding</div><div class="hover-v purple" id="hover-outstanding">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Cash</div><div class="hover-v blue" id="hover-cash">$0</div></div>
                 <div class="hover-item"><div class="hover-k">NAV</div><div class="hover-v gold" id="hover-nav">$0</div></div>
-                <div class="hover-story" id="hover-story">Hover a month on either chart to inspect how calls, prepaid spread, earnings recognition, and principal recycling interact.</div>
+                <div class="hover-story" id="hover-story">Hover a month for draws, reserve, sweep, deferred spread, and repayment recycling.</div>
               </div>
             </div>
             <div class="carry-panel">
-              <div class="carry-title" id="carry-period">Annual Carry Snapshot</div>
+              <div class="carry-title" id="carry-period">Carry Snapshot</div>
               <div class="carry-grid">
-                <div class="carry-item"><div class="carry-k">Profit Before Carry</div><div class="carry-v gold" id="carry-profit">$0</div></div>
+                <div class="carry-item"><div class="carry-k">Pre-Carry Profit</div><div class="carry-v gold" id="carry-profit">$0</div></div>
                 <div class="carry-item"><div class="carry-k">Hurdle Amount</div><div class="carry-v" id="carry-hurdle">$0</div></div>
                 <div class="carry-item"><div class="carry-k">Carry Base</div><div class="carry-v" id="carry-base">$0</div></div>
                 <div class="carry-item"><div class="carry-k">GP Units Minted</div><div class="carry-v purple" id="carry-minted">0</div></div>
@@ -228,7 +231,7 @@ a{color:inherit}
                 <div class="carry-item"><div class="carry-k">GP Ownership</div><div class="carry-v blue" id="carry-gp-own">0.0%</div></div>
                 <div class="carry-item"><div class="carry-k">GP Mark To Model</div><div class="carry-v gold" id="carry-gp-value">$0</div></div>
                 <div class="carry-item"><div class="carry-k">Average LP Capital</div><div class="carry-v" id="carry-lp-start">$0</div></div>
-                <div class="carry-note" id="carry-note-live">Carry mints from <b>earned profit above the LP hurdle</b>. It does not pay out of gross prepaid cash collected at settlement.</div>
+                <div class="carry-note" id="carry-note-live">Carry is based on earned profit above the hurdle, not settlement cash.</div>
               </div>
             </div>
           </div>
@@ -236,15 +239,15 @@ a{color:inherit}
         <div class="chart-block">
           <div class="chart-head">
             <div class="chart-label">Chart 1</div>
-            <div class="chart-title">Monthly Operating Flow</div>
-            <div class="chart-copy">This stack shows the monthly operating engine: capital called, prepaid retained spread collected, net deployment into loans, principal repayments, and monthly profit recognition.</div>
+            <div class="chart-title">Monthly Cash Flows</div>
+            <div class="chart-copy">LP draws, retained spread, net fundings, repayments, and earned spread.</div>
           </div>
           <div class="legend">
-            <div class="leg"><div class="leg-line" style="background:var(--blue2);height:8px"></div>Capital called</div>
-            <div class="leg"><div class="leg-line" style="background:var(--gold2);height:8px"></div>Prepaid retained spread</div>
-            <div class="leg"><div class="leg-line" style="background:var(--green2);height:8px"></div>Principal repayments</div>
-            <div class="leg"><div class="leg-line" style="background:var(--teal);height:8px"></div>Earned profit</div>
-            <div class="leg"><div class="leg-line" style="background:var(--red2);height:8px"></div>Net deployment</div>
+            <div class="leg"><div class="leg-line" style="background:var(--blue2);height:8px"></div>LP draws</div>
+            <div class="leg"><div class="leg-line" style="background:var(--gold2);height:8px"></div>Retained spread collected</div>
+            <div class="leg"><div class="leg-line" style="background:var(--green2);height:8px"></div>Principal returned</div>
+            <div class="leg"><div class="leg-line" style="background:var(--teal);height:8px"></div>Earned spread</div>
+            <div class="leg"><div class="leg-line" style="background:var(--red2);height:8px"></div>Net fundings</div>
           </div>
           <div class="chart-frame small">
             <div class="chart-fallback" id="flow-chart-status">Loading chart…</div>
@@ -254,14 +257,14 @@ a{color:inherit}
         <div class="chart-block">
           <div class="chart-head">
             <div class="chart-label">Chart 2</div>
-            <div class="chart-title">Cumulative NAV Build</div>
-            <div class="chart-copy">NAV is driven by the loan book, cash retained in the fund, and the pace at which prepaid spread moves from unearned reserve into earned profit relative to the LP target line.</div>
+            <div class="chart-title">NAV, Loans, and Cash</div>
+            <div class="chart-copy">NAV, target NAV, loans outstanding, and cash balance.</div>
           </div>
           <div class="legend">
             <div class="leg"><div class="leg-line" style="background:var(--gold2)"></div>NAV</div>
             <div class="leg"><div class="leg-line" style="background:#2f6db0;border-top:2px dashed #2f6db0;height:0"></div>Target NAV</div>
-            <div class="leg"><div class="leg-line" style="background:var(--purple)"></div>Gross loans outstanding</div>
-            <div class="leg"><div class="leg-line" style="background:var(--blue2)"></div>Cash balance</div>
+            <div class="leg"><div class="leg-line" style="background:var(--purple)"></div>Loans outstanding</div>
+            <div class="leg"><div class="leg-line" style="background:var(--blue2)"></div>Cash</div>
           </div>
           <div class="chart-frame">
             <div class="chart-fallback" id="main-chart-status">Loading chart…</div>
@@ -270,21 +273,21 @@ a{color:inherit}
         </div>
       </div>
       <div class="chart-rail">
-        <div class="panel-label" style="padding-left:0;background:none;border-bottom:none">Investor Snapshot</div>
+        <div class="panel-label" style="padding-left:0;background:none;border-bottom:none">Investor Summary</div>
         <div class="kpis">
-          <div class="kpi"><div><div class="kpi-l">LP Net IRR</div><div class="kpi-v blue" id="kpi-irr">-</div></div><div class="kpi-s">from capital calls versus ending LP value</div></div>
-          <div class="kpi"><div><div class="kpi-l">Total Capital Called</div><div class="kpi-v plain" id="kpi-called">-</div></div><div class="kpi-s">gross LP funding actually required</div></div>
-          <div class="kpi"><div><div class="kpi-l">Gross Loans Originated</div><div class="kpi-v purple" id="kpi-originated">-</div></div><div class="kpi-s">total principal written over the run</div></div>
-          <div class="kpi"><div><div class="kpi-l">Ending NAV</div><div class="kpi-v gold" id="kpi-nav">-</div></div><div class="kpi-s">cash plus loans less unearned spread</div></div>
-          <div class="kpi"><div><div class="kpi-l">NAV Per Unit</div><div class="kpi-v gold" id="kpi-navshare">-</div></div><div class="kpi-s">after LP units and GP carry dilution</div></div>
-          <div class="kpi"><div><div class="kpi-l">GP Ownership</div><div class="kpi-v plain" id="kpi-gpown">-</div></div><div class="kpi-s">ending diluted fund ownership</div></div>
-          <div class="kpi"><div><div class="kpi-l">GP Units Minted</div><div class="kpi-v purple" id="kpi-gpunits">-</div></div><div class="kpi-s">cumulative carry units issued</div></div>
-          <div class="kpi"><div><div class="kpi-l">Capital Turn Multiple</div><div class="kpi-v green" id="kpi-turn">-</div></div><div class="kpi-s">gross loan volume divided by capital called</div></div>
-          <div class="kpi"><div><div class="kpi-l">Average Cash Drag</div><div class="kpi-v red" id="kpi-cashdrag">-</div></div><div class="kpi-s">average idle cash as a share of called capital</div></div>
+          <div class="kpi"><div><div class="kpi-l">LP Net IRR</div><div class="kpi-v blue" id="kpi-irr">-</div></div><div class="kpi-s">ending LP value / draws</div></div>
+          <div class="kpi"><div><div class="kpi-l">LP Capital Called</div><div class="kpi-v plain" id="kpi-called">-</div></div><div class="kpi-s">capital funded</div></div>
+          <div class="kpi"><div><div class="kpi-l">Gross Originations</div><div class="kpi-v purple" id="kpi-originated">-</div></div><div class="kpi-s">principal originated</div></div>
+          <div class="kpi"><div><div class="kpi-l">Ending NAV</div><div class="kpi-v gold" id="kpi-nav">-</div></div><div class="kpi-s">cash + loans - deferred spread</div></div>
+          <div class="kpi"><div><div class="kpi-l">NAV / Unit</div><div class="kpi-v gold" id="kpi-navshare">-</div></div><div class="kpi-s">post-carry dilution</div></div>
+          <div class="kpi"><div><div class="kpi-l">GP Ownership</div><div class="kpi-v plain" id="kpi-gpown">-</div></div><div class="kpi-s">ending diluted stake</div></div>
+          <div class="kpi"><div><div class="kpi-l">GP Units Minted</div><div class="kpi-v purple" id="kpi-gpunits">-</div></div><div class="kpi-s">cumulative carry units</div></div>
+          <div class="kpi"><div><div class="kpi-l">Capital Turn</div><div class="kpi-v green" id="kpi-turn">-</div></div><div class="kpi-s">originations / called capital</div></div>
+          <div class="kpi"><div><div class="kpi-l">Average Cash Drag</div><div class="kpi-v red" id="kpi-cashdrag">-</div></div><div class="kpi-s">average cash / called capital</div></div>
         </div>
         <div class="footer-panel">
-          <div class="note-q">Version 1 Scope Disclosure</div>
-          <div class="footer-copy">This first feasibility model assumes <b>no defaults, no extensions, no losses, no recovery lags, no liquidity events, and no progressive-draw development facilities</b>. It models one prepaid short-duration credit product only. Prepaid retained spread is collected in cash at settlement, held in an unearned reserve, and recognized monthly over the stated term. This is an operating engine for proving the base-case economics, not a full underwriting model.</div>
+          <div class="note-q">Model Limits</div>
+          <div class="footer-copy">Illustrative base case. Assumes <b>no defaults, no extensions, no losses, no recoveries, and no liquidity events</b>. Excludes progressive-draw construction lending. This is a feasibility model, not an underwriting model.</div>
         </div>
       </div>
     </div>
@@ -308,6 +311,7 @@ const S = {
   irr: 15.0,
   hurdle: 8.0,
   carry: 15.0,
+  reinvest: 85.0,
   size: 25.0,
   dpm: 3.0,
   term: 12,
@@ -320,6 +324,7 @@ const limits = {
   irr:[0,40,0.5],
   hurdle:[0,20,0.5],
   carry:[0,30,1],
+  reinvest:[0,100,5],
   size:[2.5,200,1],
   dpm:[0.25,20,0.25],
   term:[3,36,3],
@@ -328,7 +333,7 @@ const limits = {
 };
 
 function fmtControl(key, value){
-  if(['fund','irr','hurdle','carry','size','dpm','apy','take'].includes(key)) return Number(value).toFixed(1);
+  if(['fund','irr','hurdle','carry','reinvest','size','dpm','apy','take'].includes(key)) return Number(value).toFixed(1);
   if(key === 'term') return String(Math.round(value));
   return String(value);
 }
@@ -416,6 +421,7 @@ function buildBaseCase(){
   const targetIrr = S.irr / 100;
   const hurdleRate = S.hurdle / 100;
   const carryRate = S.carry / 100;
+  const reinvestmentRate = S.reinvest / 100;
 
   const grossInterestPerDollar = grossRate * (averageLoanTermMonths / 12);
   const prepaidCashPerDollar = retainedRate * (averageLoanTermMonths / 12);
@@ -435,6 +441,8 @@ function buildBaseCase(){
   const paidAwayInterestArr = new Array(VIEW + 1).fill(0);
   const prepaidCashCollectedArr = new Array(VIEW + 1).fill(0);
   const netDeploymentArr = new Array(VIEW + 1).fill(0);
+  const cashReserveArr = new Array(VIEW + 1).fill(0);
+  const cashSweptArr = new Array(VIEW + 1).fill(0);
   const principalRepaymentsArr = new Array(VIEW + 1).fill(0);
   const earnedSpreadThisMonthArr = new Array(VIEW + 1).fill(0);
   const unearnedSpreadBalanceArr = new Array(VIEW + 1).fill(0);
@@ -472,6 +480,8 @@ function buildBaseCase(){
   capitalCalledArr[0] = S.call ? 0 : maxFundSize;
   cumulativeCapitalCalledArr[0] = cumulativeCapitalCalled;
   cashBalanceArr[0] = cashBalance;
+  cashReserveArr[0] = cashBalance * (1 - reinvestmentRate);
+  cashSweptArr[0] = cashBalance * reinvestmentRate;
   navArr[0] = cashBalance + principalOutstanding - unearnedSpreadBalance;
   targetNavArr[0] = targetNav;
   lpUnitsOutstandingArr[0] = lpUnitsOutstanding;
@@ -487,9 +497,11 @@ function buildBaseCase(){
     let prepaidCashCollected = grossLoansOriginated * prepaidCashPerDollar;
     let paidAwayInterest = grossLoansOriginated * paidAwayCashPerDollar;
     let netDeployment = grossLoansOriginated * netCapitalNeededPerDollar;
+    let cashReserve = cashBalance * (1 - reinvestmentRate);
+    let cashSwept = cashBalance - cashReserve;
 
     const remainingCommitment = Math.max(0, maxFundSize - cumulativeCapitalCalled);
-    const capitalAvailable = cashBalance + (S.call ? remainingCommitment : 0);
+    const capitalAvailable = cashSwept + (S.call ? remainingCommitment : 0);
     if(netDeployment > capitalAvailable + 1e-6){
       grossLoansOriginated = Math.max(0, capitalAvailable / netCapitalNeededPerDollar);
       grossBorrowerInterestCharged = grossLoansOriginated * grossInterestPerDollar;
@@ -499,16 +511,15 @@ function buildBaseCase(){
     }
 
     let capitalCalled = 0;
-    if(netDeployment > cashBalance + 1e-6){
-      capitalCalled = Math.min(netDeployment - cashBalance, remainingCommitment);
-      cashBalance += capitalCalled;
+    if(netDeployment > cashSwept + 1e-6){
+      capitalCalled = Math.min(netDeployment - cashSwept, remainingCommitment);
       cumulativeCapitalCalled += capitalCalled;
       const lpUnitsIssued = capitalCalled / PAR;
       lpUnitsOutstanding += lpUnitsIssued;
       totalUnits += lpUnitsIssued;
     }
 
-    cashBalance -= netDeployment;
+    cashBalance = cashReserve + cashSwept + capitalCalled - netDeployment;
     principalOutstanding += grossLoansOriginated;
     unearnedSpreadBalance += prepaidCashCollected;
     annualProfitBeforeCarry += 0;
@@ -578,6 +589,8 @@ function buildBaseCase(){
     paidAwayInterestArr[month] = paidAwayInterest;
     prepaidCashCollectedArr[month] = prepaidCashCollected;
     netDeploymentArr[month] = netDeployment;
+    cashReserveArr[month] = cashReserve;
+    cashSweptArr[month] = cashSwept;
     principalRepaymentsArr[month] = principalRepayment;
     earnedSpreadThisMonthArr[month] = earnedSpreadThisMonth;
     unearnedSpreadBalanceArr[month] = unearnedSpreadBalance;
@@ -642,9 +655,12 @@ function buildBaseCase(){
     grossInterestPerDollar,
     prepaidCashPerDollar,
     netCapitalNeededPerDollar,
+    reinvestmentRate,
     grossBorrowerInterestArr,
     paidAwayInterestArr,
     prepaidCashCollectedArr,
+    cashReserveArr,
+    cashSweptArr,
     earnedSpreadThisMonthArr,
     unearnedSpreadBalanceArr,
     principalOutstandingArr,
@@ -694,31 +710,29 @@ function updateHowItWorks(model){
   const grossInterestPerLoan = model.grossInterestPerDollar * model.averageLoanSize;
   const paidAwayPerLoan = paidAwayShare * (model.averageLoanTermMonths / 12) * model.averageLoanSize;
   const netCapitalPerLoan = model.netCapitalNeededPerDollar * model.averageLoanSize;
+  const reserveRate = Math.max(0, 1 - model.reinvestmentRate);
 
-  document.getElementById('how-it-works-copy').innerHTML = `LPs commit up to <b>${fmtMoney(model.maxFundSize, true)}</b>. At the current pace the fund targets about <b>${fmtMoney(grossMonthlyVolume, true)}</b> of new gross loans per month, with borrowers paying <b>${fmtPct(model.grossRate)}</b> prepaid interest. TGP keeps <b>${fmtPct(retainedShare)}</b> of annual spread by default and pays away about <b>${fmtPct(paidAwayShare)}</b> where applicable. That means each new loan collects roughly <b>${fmtMoney(grossInterestPerLoan, true)}</b> of gross interest, TGP retains about <b>${fmtMoney(prepaidPerLoan, true)}</b> in cash, and only needs about <b>${fmtMoney(netCapitalPerLoan, true)}</b> of fresh LP capital to fund a <b>${fmtMoney(model.averageLoanSize, true)}</b> loan. The retained cash is real on day one, but accounting profit only arrives as that spread is earned over the <b>${model.averageLoanTermMonths}-month</b> term.`;
+  document.getElementById('how-it-works-copy').innerHTML = `Commitments total <b>${fmtMoney(model.maxFundSize, true)}</b>. Monthly originations run at <b>${fmtMoney(grossMonthlyVolume, true)}</b>. Borrowers pay a <b>${fmtPct(model.grossRate)}</b> prepaid coupon. TGP retains <b>${fmtPct(retainedShare)}</b>, or roughly <b>${fmtMoney(prepaidPerLoan, true)}</b> on an average <b>${fmtMoney(model.averageLoanSize, true)}</b> loan. Net LP funding per loan is about <b>${fmtMoney(netCapitalPerLoan, true)}</b>. <b>${fmtPct(model.reinvestmentRate)}</b> of opening cash is reinvested each month; <b>${fmtPct(reserveRate)}</b> remains in reserve. Retained spread is collected at close, deferred immediately, and earned over <b>${model.averageLoanTermMonths} months</b>.`;
 
   const steps = [
-    `LPs commit capital up to <strong>${fmtMoney(model.maxFundSize, true)}</strong>, but the model only calls what the engine needs.`,
-    `New monthly originations target <strong>${fmtMoney(grossMonthlyVolume, true)}</strong> of gross principal.`,
-    `Borrowers pay <strong>${fmtPct(model.grossRate)}</strong> upfront, or about <strong>${fmtMoney(grossInterestPerLoan, true)}</strong> per average loan.`,
-    `TGP retains about <strong>${fmtMoney(prepaidPerLoan, true)}</strong> of that interest and pays away about <strong>${fmtMoney(paidAwayPerLoan, true)}</strong> where required.`,
-    `Capital called is reduced by the retained spread, so fresh LP cash funds only the <strong>net deployment</strong>.`,
-    `Retained spread lands in cash immediately but sits in an <strong>unearned reserve</strong> rather than becoming day-one profit.`,
-    `That reserve is recognized into <strong>earned profit monthly</strong> over the <strong>${model.averageLoanTermMonths}-month</strong> term.`,
-    `Principal repayments recycle back into cash and can support the next vintage before more LP capital is called.`,
-    `At each year-end, annual earned profit above the <strong>${S.hurdle.toFixed(1)}%</strong> hurdle mints <strong>new GP units</strong> at <strong>${S.carry.toFixed(1)}%</strong> carry.`,
-    `NAV grows from retained economics and recycled principal, while LP IRR is measured from <strong>actual calls</strong> against ending LP value.`
+    `Capital is called only for net funding need.`,
+    `Borrowers prepay <strong>${fmtPct(model.grossRate)}</strong>, or about <strong>${fmtMoney(grossInterestPerLoan, true)}</strong> per average loan.`,
+    `TGP retains <strong>${fmtMoney(prepaidPerLoan, true)}</strong>; about <strong>${fmtMoney(paidAwayPerLoan, true)}</strong> is paid away where applicable.`,
+    `Retained spread reduces the new LP draw.`,
+    `Opening cash is split between a <strong>${fmtPct(reserveRate)}</strong> reserve and a <strong>${fmtPct(model.reinvestmentRate)}</strong> reinvestment sweep.`,
+    `Deferred spread is earned over <strong>${model.averageLoanTermMonths} months</strong>.`,
+    `Principal is recycled. Carry crystallizes annually above the <strong>${S.hurdle.toFixed(1)}%</strong> hurdle at <strong>${S.carry.toFixed(1)}%</strong>.`
   ];
 
   document.getElementById('how-it-works-steps').innerHTML = steps.map((text, index) => `<div class="memo-step"><div class="memo-num">${index + 1}</div><div>${text}</div></div>`).join('');
 
-  document.getElementById('loan-note').innerHTML = `Borrowers prepay interest at settlement. At the current settings TGP keeps <b>${fmtPct(model.retainedRate)}</b> of annual spread, which equals about <b>${fmtMoney(prepaidPerLoan, true)}</b> per new average loan. That cash is booked to <b>unearned retained spread</b> and earned ratably over <b>${model.averageLoanTermMonths} months</b>.`;
-  document.getElementById('fund-note').innerHTML = `LPs commit up to <b>${fmtMoney(model.maxFundSize, true)}</b>. With capital calls <b>${S.call ? 'on' : 'off'}</b>, fresh LP cash only covers <b>net deployment after prepaid retained spread</b>. The target NAV line compounds called capital at the selected <b>${S.irr.toFixed(1)}%</b> LP benchmark.`;
+  document.getElementById('loan-note').innerHTML = `Retained spread is about <b>${fmtMoney(prepaidPerLoan, true)}</b> per average loan. Collected at close. Deferred immediately. Earned over <b>${model.averageLoanTermMonths} months</b>.`;
+  document.getElementById('fund-note').innerHTML = `LP capital funds <b>net deployment</b> after retained spread and the cash sweep. <b>${fmtPct(model.reinvestmentRate)}</b> of opening cash is reinvested each month; <b>${fmtPct(reserveRate)}</b> remains in reserve.`;
 }
 
 function updateMonthAudit(month, model){
   currentHoverMonth = month;
-  const monthLabel = month === 0 ? 'Start of fund' : `Month ${month} · Year ${Math.ceil(month / 12)}`;
+  const monthLabel = month === 0 ? 'Opening Balance Sheet' : `Month ${month} · Year ${Math.ceil(month / 12)}`;
   document.getElementById('hover-period').textContent = monthLabel;
   document.getElementById('hover-capital').textContent = fmtMoney(model.capitalCalledArr[month], true);
   document.getElementById('hover-originated').textContent = fmtMoney(model.grossLoansOriginatedArr[month], true);
@@ -726,6 +740,8 @@ function updateMonthAudit(month, model){
   document.getElementById('hover-paid-away').textContent = fmtMoney(model.paidAwayInterestArr[month], true);
   document.getElementById('hover-prepaid').textContent = fmtMoney(model.prepaidCashCollectedArr[month], true);
   document.getElementById('hover-net-deploy').textContent = fmtMoney(model.netDeploymentArr[month], true);
+  document.getElementById('hover-reserve').textContent = fmtMoney(model.cashReserveArr[month], true);
+  document.getElementById('hover-reinvestable').textContent = fmtMoney(model.cashSweptArr[month], true);
   document.getElementById('hover-principal').textContent = fmtMoney(model.principalRepaymentsArr[month], true);
   document.getElementById('hover-earned').textContent = fmtMoney(model.earnedSpreadThisMonthArr[month], true);
   document.getElementById('hover-unearned').textContent = fmtMoney(model.unearnedSpreadBalanceArr[month], true);
@@ -733,27 +749,27 @@ function updateMonthAudit(month, model){
   document.getElementById('hover-cash').textContent = fmtMoney(model.cashBalanceArr[month], true);
   document.getElementById('hover-nav').textContent = fmtMoney(model.navArr[month], true);
 
-  let story = 'The engine is waiting for its first capital call and origination cycle.';
+  let story = 'Opening balance sheet before origination.';
   if(month > 0){
     if(model.capitalCalledArr[month] > 0 && model.grossLoansOriginatedArr[month] > 0){
-      story = 'Fresh LP capital was called because net deployment exceeded cash already inside the fund after accounting for retained spread collected at settlement.';
+      story = 'Swept cash was insufficient. The shortfall was funded with an LP draw.';
     } else if(model.grossLoansOriginatedArr[month] > 0){
-      story = 'New loans closed this month. The borrower prepaid interest, TGP retained its spread in cash, and only the net funding requirement reduced cash.';
+      story = 'New loans closed. Retained spread was collected at settlement; only net funding reduced cash.';
     } else if(model.principalRepaymentsArr[month] > 0){
-      story = 'Older loans repaid this month, returning principal that can be recycled into the next origination cycle before more LP capital is called.';
+      story = 'Principal returned to cash and is available for reinvestment.';
     } else if(model.earnedSpreadThisMonthArr[month] > 0){
-      story = 'No new loan or repayment dominated this month. The business simply earned through retained spread that had already been collected in cash.';
+      story = 'Deferred spread amortized into earned income.';
     }
   }
   if(model.gpUnitsMintedArr[month] > 0){
-    story += ' This month also includes a year-end carry crystallization, so GP units were minted from earned profit above the hurdle.';
+    story += ' Annual carry crystallized in GP units.';
   }
   document.getElementById('hover-story').textContent = story;
 }
 
 function updateCarryPanel(model){
   const event = model.latestCarryEvent;
-  const yearLabel = event.month ? `Most Recent Carry Crystallization · Year ${Math.ceil(event.month / 12)}` : 'Annual Carry Snapshot';
+  const yearLabel = event.month ? `Latest Crystallization · Year ${Math.ceil(event.month / 12)}` : 'Annual Carry Snapshot';
   document.getElementById('carry-period').textContent = yearLabel;
   document.getElementById('carry-profit').textContent = fmtMoney(event.annualProfitBeforeCarry, true);
   document.getElementById('carry-hurdle').textContent = fmtMoney(event.hurdleAccrued, true);
@@ -763,7 +779,7 @@ function updateCarryPanel(model){
   document.getElementById('carry-gp-own').textContent = fmtPct(model.endingGpOwnership);
   document.getElementById('carry-gp-value').textContent = fmtMoney(model.gpMarkToModelValue, true);
   document.getElementById('carry-lp-start').textContent = fmtMoney(event.averageLpCapitalForHurdle, true);
-  document.getElementById('carry-note-live').innerHTML = `Carry is based on <b>earned profit above the hurdle</b>, not on prepaid cash. The hurdle is applied to <b>average LP capital called through the carry period</b>, and the latest crystallization minted <b>${event.gpUnitsMinted.toFixed(0)}</b> GP units from a carry base of <b>${fmtMoney(event.carryBase, true)}</b>.`;
+  document.getElementById('carry-note-live').innerHTML = `Carry is based on <b>earned profit above the hurdle</b>. The hurdle base is <b>average called LP capital</b> for the period. The latest cut minted <b>${event.gpUnitsMinted.toFixed(0)}</b> GP units on a <b>${fmtMoney(event.carryBase, true)}</b> carry base.`;
 }
 
 function updateKPIs(model){
@@ -883,6 +899,7 @@ function bootModelPage(){
   if(document.getElementById('v-irr')) document.getElementById('v-irr').textContent = fmtControl('irr', S.irr);
   if(document.getElementById('v-hurdle')) document.getElementById('v-hurdle').textContent = fmtControl('hurdle', S.hurdle);
   if(document.getElementById('v-carry')) document.getElementById('v-carry').textContent = fmtControl('carry', S.carry);
+  if(document.getElementById('v-reinvest')) document.getElementById('v-reinvest').textContent = fmtControl('reinvest', S.reinvest);
   if(document.getElementById('v-size')) document.getElementById('v-size').textContent = fmtControl('size', S.size);
   if(document.getElementById('v-dpm')) document.getElementById('v-dpm').textContent = fmtControl('dpm', S.dpm);
   if(document.getElementById('v-term')) document.getElementById('v-term').textContent = fmtControl('term', S.term);
