@@ -66,8 +66,8 @@ a{color:inherit}
 .note-q{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
 .chart-area{padding:14px 16px 16px;background:var(--s1);min-height:0}
 .chart-shell{display:flex;flex-direction:column;gap:16px;min-height:100%;position:relative}
-.chart-main{display:flex;flex-direction:column;gap:14px;min-height:0}
-.chart-meta{display:block}
+.chart-main{display:flex;flex-direction:column;gap:14px;min-height:0;padding-top:var(--hover-overlay-offset, 0px)}
+.chart-meta{position:sticky;top:12px;z-index:8;height:0;overflow:visible;pointer-events:none}
 .meta-stack{display:block}
 .memo-panel,.hover-panel,.carry-panel,.chart-frame,.kpi,.footer-panel{background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.06)}
 .memo-panel{padding:14px 16px 16px}
@@ -80,7 +80,7 @@ a{color:inherit}
 .memo-step strong{color:var(--ink);font-weight:500}
 .memo-num{color:var(--gold2);font-size:10px;line-height:1.6}
 .hover-panel,.carry-panel{padding:10px 12px}
-.hover-panel{position:sticky;top:12px;z-index:8}
+.hover-panel{position:relative;z-index:8;pointer-events:auto}
 .hover-period,.carry-title{font-size:9px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
 .hover-grid,.carry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
 .hover-item,.carry-item{min-width:0;display:flex;align-items:baseline;gap:6px;white-space:nowrap;overflow:hidden}
@@ -135,7 +135,7 @@ a{color:inherit}
   .sitebar-action{display:inline-flex;margin-top:8px}
   .hdr-copy{padding:10px 14px}
   .chart-area{padding:12px}
-  .hover-panel{top:8px}
+  .chart-meta{top:8px}
   .chart-frame{height:380px}
   .chart-frame.small{height:280px}
 }
@@ -828,9 +828,18 @@ function setChartStatus(id, message, isError){
 function scheduleResize(){
   cancelAnimationFrame(resizeFrame);
   resizeFrame = requestAnimationFrame(() => {
+    syncHoverOverlayOffset();
     if(flowChart) flowChart.resize();
     if(mainChart) mainChart.resize();
   });
+}
+
+function syncHoverOverlayOffset(){
+  const hoverPanel = document.querySelector('.hover-panel');
+  const chartMain = document.querySelector('.chart-main');
+  if(!hoverPanel || !chartMain) return;
+  const offset = Math.ceil(hoverPanel.getBoundingClientRect().height) + 14;
+  chartMain.style.setProperty('--hover-overlay-offset', `${offset}px`);
 }
 
 function ensureCharts(){
@@ -914,6 +923,7 @@ function recalc(){
   updateCarryPanel(latestScenario);
   updateKPIs(latestScenario);
   updateMonthAudit(currentHoverMonth, latestScenario);
+  syncHoverOverlayOffset();
   renderCharts(latestScenario);
 }
 
