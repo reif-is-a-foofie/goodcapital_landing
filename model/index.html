@@ -29,8 +29,9 @@ a{color:inherit}
 .hdr-copy{padding:10px 24px 10px;border-bottom:1px solid var(--border);background:var(--s1);font-size:10px;line-height:1.75;color:var(--muted2)}
 .hdr-copy b{color:var(--ink);font-weight:500}
 .hdr-contact{display:block;margin-bottom:4px}
-.body{border-bottom:1px solid var(--border);flex:1 1 auto;min-height:0;display:grid;grid-template-columns:310px minmax(0,1fr)}
-.assumptions-pane{background:var(--s1);border-right:1px solid var(--border);min-height:0;overflow:auto;display:flex;flex-direction:column}
+.body{border-bottom:1px solid var(--border);flex:1 1 auto;min-height:0;display:grid;grid-template-columns:310px minmax(0,1fr);align-items:start}
+.assumptions-pane{background:var(--s1);border-right:1px solid var(--border);min-height:0;display:flex;flex-direction:column;padding:14px 0}
+.assumptions-stick{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
 .panel-label{padding:10px 18px 8px;background:var(--s1);border-bottom:1px solid var(--border);font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase}
 .stress-note{padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(233,223,209,0.4);font-size:10px;line-height:1.7;color:var(--muted2)}
 .stress-note b{color:var(--ink);font-weight:500}
@@ -63,8 +64,18 @@ a{color:inherit}
 .note-block{display:grid;gap:10px}
 .note-card{padding:10px 12px;background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.04)}
 .note-q{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
-.chart-area{padding:14px 16px 16px;background:var(--s1);min-height:0;overflow:auto}
-.chart-shell{display:flex;flex-direction:column;gap:16px;min-height:100%}
+.chart-area{padding:14px 16px 16px;background:var(--s1);min-height:0}
+.chart-shell{display:flex;flex-direction:column;gap:16px;min-height:100%;position:relative}
+.live-strip{position:sticky;top:12px;z-index:9;padding:10px 12px 12px;background:rgba(253,250,245,.98);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.06);backdrop-filter:blur(10px)}
+.live-strip-head{font-size:8px;color:var(--muted);letter-spacing:1.7px;text-transform:uppercase;margin-bottom:8px}
+.live-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.live-chip{padding:8px 9px;border:1px solid var(--border);background:rgba(245,242,236,.9);min-width:0}
+.live-k{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.live-v{font-size:11px;color:var(--ink);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.live-v.gold{color:var(--gold2);font-weight:600}
+.live-v.blue{color:var(--blue2);font-weight:600}
+.live-v.purple{color:var(--purple);font-weight:600}
+.live-v.green{color:var(--green2);font-weight:600}
 .chart-main{display:flex;flex-direction:column;gap:14px;min-height:0}
 .chart-meta{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.9fr);gap:12px;align-items:start}
 .meta-stack{display:flex;flex-direction:column;gap:12px}
@@ -120,11 +131,14 @@ a{color:inherit}
 .footer-copy b{color:var(--ink);font-weight:500}
 @media (max-width:1180px){
   .body{grid-template-columns:1fr}
-  .assumptions-pane{border-right:none;border-bottom:1px solid var(--border)}
+  .assumptions-pane{border-right:none;border-bottom:1px solid var(--border);padding:0}
+  .assumptions-stick{position:static;max-height:none;overflow:visible}
   .chart-meta{grid-template-columns:1fr}
+  .live-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:900px){
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:820px){
   .sitebar{height:auto;padding:8px 12px;display:block}
@@ -133,11 +147,12 @@ a{color:inherit}
   .sitebar-action{display:inline-flex;margin-top:8px}
   .hdr-copy{padding:10px 14px}
   .chart-area{padding:12px}
+  .live-strip{top:8px}
   .chart-frame{height:380px}
   .chart-frame.small{height:280px}
 }
 @media (max-width:640px){
-  .hover-grid,.carry-grid,.kpis{grid-template-columns:1fr}
+  .hover-grid,.carry-grid,.kpis,.live-grid{grid-template-columns:1fr}
   .memo-title{font-size:24px}
 }
 </style>
@@ -151,46 +166,64 @@ a{color:inherit}
 <div class="hdr-copy"><span class="hdr-contact">Contact Reif Tauati with questions: <a href="tel:4176197004">4176197004</a> or <a href="mailto:reif@thegoodproject.net">reif@thegoodproject.net</a>.</span><b>Single operating case.</b> Short-duration Australian private credit with prepaid coupon at settlement. LP capital is drawn against net funding need. Retained spread is deferred at close and earned over term. Principal is recycled. GP carry crystallizes annually in units on earned profit above the LP hurdle.</div>
 <div class="body">
   <div class="assumptions-pane">
-    <div class="panel-label">Assumptions</div>
-    <div class="stress-note"><b>Single operating case.</b> Inputs update the page in real time.</div>
-    <details class="settings-wrap">
-      <summary class="settings-toggle">Fund Terms</summary>
-      <div class="settings-body">
-        <div class="controls"><div class="ctrl-row">
-          <div class="ctrl"><div class="ctrl-label">Fund Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B committed</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div><div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div></div></div>
-          <div class="mode-row"><div class="mode-label">Draw Structure</div><div class="ctrl-btns"><div class="btn red" id="call-off" onclick="setCapitalCall(false)">Fully funded</div><div class="btn plus active" id="call-on" onclick="setCapitalCall(true)">Draw as needed</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Target LP Return</div><div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">LP Hurdle</div><div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">GP Carry</div><div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% over hurdle</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('carry',-1)">- 1%</div><div class="btn plus" onclick="adj('carry',1)">+ 1%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Reinvestment Rate</div><div class="ctrl-display"><div class="ctrl-val" id="v-reinvest">85.0</div><div class="ctrl-unit">% of opening cash swept</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('reinvest',-5)">- 5%</div><div class="btn plus" onclick="adj('reinvest',5)">+ 5%</div></div></div>
-        </div></div>
-        <div class="assump-note" id="fund-note">LP capital funds net deployment. Opening cash is split between a reserve and a monthly reinvestment sweep. Retained earnings add deployable capacity over time.</div>
-      </div>
-    </details>
-    <details class="settings-wrap">
-      <summary class="settings-toggle">Asset Terms</summary>
-      <div class="settings-body">
-        <div class="controls"><div class="ctrl-row">
-          <div class="ctrl"><div class="ctrl-label">Average Loan Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('size',-1)">- $1M</div><div class="btn plus" onclick="adj('size',1)">+ $1M</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Base Monthly Origination Pace</div><div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">loans / month at launch</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Average Tenor</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">12</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Gross Borrower Coupon</div><div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% prepaid</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div></div>
-          <div class="ctrl"><div class="ctrl-label">Retained Spread</div><div class="ctrl-display"><div class="ctrl-val" id="v-take">17.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div></div>
-        </div></div>
-        <div class="assump-note" id="loan-note">Coupon is prepaid at close. Retained spread is collected in cash, deferred on day one, and earned over tenor.</div>
-      </div>
-    </details>
-    <details class="settings-wrap">
-      <summary class="settings-toggle">Methodology</summary>
-      <div class="note-block">
-        <div class="note-card"><div class="note-q">Scope</div>One prepaid short-duration strategy. No progressive-draw construction lending.</div>
-        <div class="note-card"><div class="note-q">Revenue</div>Cash received at close. Retained spread deferred, then earned ratably.</div>
-        <div class="note-card"><div class="note-q">Carry</div>Annual crystallization on profit above hurdle. Paid in GP units.</div>
-      </div>
-    </details>
+    <div class="assumptions-stick">
+      <div class="panel-label">Assumptions</div>
+      <div class="stress-note"><b>Single operating case.</b> Inputs update the page in real time.</div>
+      <details class="settings-wrap">
+        <summary class="settings-toggle">Fund Terms</summary>
+        <div class="settings-body">
+          <div class="controls"><div class="ctrl-row">
+            <div class="ctrl"><div class="ctrl-label">Fund Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-fund">1.0</div><div class="ctrl-unit">$B committed</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('fund',-0.1)">- $0.1B</div><div class="btn plus" onclick="adj('fund',0.1)">+ $0.1B</div></div></div>
+            <div class="mode-row"><div class="mode-label">Draw Structure</div><div class="ctrl-btns"><div class="btn red" id="call-off" onclick="setCapitalCall(false)">Fully funded</div><div class="btn plus active" id="call-on" onclick="setCapitalCall(true)">Draw as needed</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">Target LP Return</div><div class="ctrl-display"><div class="ctrl-val" id="v-irr">15.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('irr',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('irr',0.5)">+ 0.5%</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">LP Hurdle</div><div class="ctrl-display"><div class="ctrl-val" id="v-hurdle">8.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('hurdle',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('hurdle',0.5)">+ 0.5%</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">GP Carry</div><div class="ctrl-display"><div class="ctrl-val" id="v-carry">15.0</div><div class="ctrl-unit">% over hurdle</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('carry',-1)">- 1%</div><div class="btn plus" onclick="adj('carry',1)">+ 1%</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">Reinvestment Rate</div><div class="ctrl-display"><div class="ctrl-val" id="v-reinvest">85.0</div><div class="ctrl-unit">% of opening cash swept</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('reinvest',-5)">- 5%</div><div class="btn plus" onclick="adj('reinvest',5)">+ 5%</div></div></div>
+          </div></div>
+          <div class="assump-note" id="fund-note">LP capital funds net deployment. Opening cash is split between a reserve and a monthly reinvestment sweep. Retained earnings add deployable capacity over time.</div>
+        </div>
+      </details>
+      <details class="settings-wrap">
+        <summary class="settings-toggle">Asset Terms</summary>
+        <div class="settings-body">
+          <div class="controls"><div class="ctrl-row">
+            <div class="ctrl"><div class="ctrl-label">Average Loan Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('size',-1)">- $1M</div><div class="btn plus" onclick="adj('size',1)">+ $1M</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">Base Monthly Origination Pace</div><div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">loans / month at launch</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">Average Tenor</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">12</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">Gross Borrower Coupon</div><div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% prepaid</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">Retained Spread</div><div class="ctrl-display"><div class="ctrl-val" id="v-take">17.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div></div>
+          </div></div>
+          <div class="assump-note" id="loan-note">Coupon is prepaid at close. Retained spread is collected in cash, deferred on day one, and earned over tenor.</div>
+        </div>
+      </details>
+      <details class="settings-wrap">
+        <summary class="settings-toggle">Methodology</summary>
+        <div class="note-block">
+          <div class="note-card"><div class="note-q">Scope</div>One prepaid short-duration strategy. No progressive-draw construction lending.</div>
+          <div class="note-card"><div class="note-q">Revenue</div>Cash received at close. Retained spread deferred, then earned ratably.</div>
+          <div class="note-card"><div class="note-q">Carry</div>Annual crystallization on profit above hurdle. Paid in GP units.</div>
+        </div>
+      </details>
+    </div>
   </div>
   <div class="chart-area">
     <div class="chart-shell">
+      <div class="live-strip">
+        <div class="live-strip-head">Active Assumptions</div>
+        <div class="live-grid">
+          <div class="live-chip"><div class="live-k">Fund Size</div><div class="live-v gold" id="live-fund">-</div></div>
+          <div class="live-chip"><div class="live-k">Draw Structure</div><div class="live-v blue" id="live-call">-</div></div>
+          <div class="live-chip"><div class="live-k">LP Return</div><div class="live-v" id="live-irr">-</div></div>
+          <div class="live-chip"><div class="live-k">LP Hurdle</div><div class="live-v" id="live-hurdle">-</div></div>
+          <div class="live-chip"><div class="live-k">GP Carry</div><div class="live-v" id="live-carry">-</div></div>
+          <div class="live-chip"><div class="live-k">Reinvestment</div><div class="live-v green" id="live-reinvest">-</div></div>
+          <div class="live-chip"><div class="live-k">Loan Size</div><div class="live-v gold" id="live-size">-</div></div>
+          <div class="live-chip"><div class="live-k">Launch Pace</div><div class="live-v purple" id="live-dpm">-</div></div>
+          <div class="live-chip"><div class="live-k">Tenor</div><div class="live-v" id="live-term">-</div></div>
+          <div class="live-chip"><div class="live-k">Gross Coupon</div><div class="live-v" id="live-apy">-</div></div>
+          <div class="live-chip"><div class="live-k">Retained Spread</div><div class="live-v gold" id="live-take">-</div></div>
+        </div>
+      </div>
       <div class="chart-main">
         <div class="chart-meta">
           <div class="memo-panel">
@@ -800,6 +833,27 @@ function updateCarryPanel(model){
   document.getElementById('carry-note-live').innerHTML = `Carry is based on <b>earned profit above the hurdle</b>. The hurdle base is <b>average called LP capital</b> for the period. The latest cut minted <b>${event.gpUnitsMinted.toFixed(0)}</b> GP units on a <b>${fmtMoney(event.carryBase, true)}</b> carry base.`;
 }
 
+function updateLiveStrip(){
+  const liveValues = {
+    'live-fund': fmtMoney(S.fund * 1e9, true),
+    'live-call': S.call ? 'Draw as needed' : 'Fully funded',
+    'live-irr': `${fmtControl('irr', S.irr)}%`,
+    'live-hurdle': `${fmtControl('hurdle', S.hurdle)}%`,
+    'live-carry': `${fmtControl('carry', S.carry)}%`,
+    'live-reinvest': `${fmtControl('reinvest', S.reinvest)}%`,
+    'live-size': fmtMoney(S.size * 1e6, true),
+    'live-dpm': `${fmtControl('dpm', S.dpm)} loans / mo`,
+    'live-term': `${fmtControl('term', S.term)} mo`,
+    'live-apy': `${fmtControl('apy', S.apy)}%`,
+    'live-take': `${fmtControl('take', S.take)}%`
+  };
+
+  Object.entries(liveValues).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = value;
+  });
+}
+
 function updateKPIs(model){
   document.getElementById('kpi-irr').textContent = fmtPct(model.projectedIrr);
   document.getElementById('kpi-called').textContent = fmtMoney(model.cumulativeCapitalCalledArr[VIEW], true);
@@ -905,6 +959,7 @@ function renderCharts(model){
 
 function recalc(){
   latestScenario = buildBaseCase();
+  updateLiveStrip();
   updateHowItWorks(latestScenario);
   updateCarryPanel(latestScenario);
   updateKPIs(latestScenario);
