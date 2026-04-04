@@ -67,7 +67,7 @@ a{color:inherit}
 .chart-area{padding:14px 16px 16px;background:var(--s1);min-height:0}
 .chart-shell{display:flex;flex-direction:column;gap:16px;min-height:100%;position:relative}
 .chart-main{display:flex;flex-direction:column;gap:14px;min-height:0}
-.chart-main > .chart-block:first-of-type{margin-top:var(--hover-overlay-offset, 0px)}
+.chart-main > .chart-block:first-of-type{margin-top:calc(var(--hover-overlay-offset, 0px) + 12px)}
 .chart-meta{position:sticky;top:12px;z-index:8;height:0;overflow:visible;pointer-events:none}
 .meta-stack{display:block}
 .memo-panel,.hover-panel,.carry-panel,.chart-frame,.kpi,.footer-panel{background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.06)}
@@ -92,7 +92,7 @@ a{color:inherit}
 .hover-v.blue,.carry-v.blue{color:var(--blue2);font-weight:600}
 .hover-v.purple,.carry-v.purple{color:var(--purple);font-weight:600}
 .hover-story,.carry-note{grid-column:1 / -1;font-size:9px;color:var(--muted2);line-height:1.6;padding-top:2px}
-.chart-block{display:flex;flex-direction:column;gap:8px}
+.chart-block{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
 .chart-head{display:grid;gap:4px}
 .chart-label{font-size:8px;color:var(--muted);letter-spacing:1.8px;text-transform:uppercase}
 .chart-title{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:700;line-height:1;color:var(--ink)}
@@ -101,8 +101,8 @@ a{color:inherit}
 .leg{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted)}
 .leg-line{width:16px;height:2px;flex-shrink:0}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.chart-frame{position:relative;height:440px}
-.chart-frame.small{height:320px}
+.chart-frame{position:relative;height:460px}
+.chart-frame.small{height:420px}
 #main-chart,#flow-chart{position:absolute;inset:0;width:100%;height:100%}
 .chart-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;font-size:10px;line-height:1.7;color:var(--muted2);background:rgba(253,250,245,.92);z-index:3}
 .chart-fallback.hidden{display:none}
@@ -137,8 +137,8 @@ a{color:inherit}
   .hdr-copy{padding:10px 14px}
   .chart-area{padding:12px}
   .chart-meta{top:8px}
-  .chart-frame{height:380px}
-  .chart-frame.small{height:280px}
+  .chart-frame{height:400px}
+  .chart-frame.small{height:340px}
 }
 @media (max-width:640px){
   .hover-grid,.carry-grid,.kpis{grid-template-columns:1fr}
@@ -215,21 +215,21 @@ a{color:inherit}
             <div class="hover-panel">
               <div class="hover-period" id="hover-period">Opening month</div>
               <div class="hover-grid">
-                <div class="hover-item"><div class="hover-k">LP Draw</div><div class="hover-v blue" id="hover-capital">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Gross Originations</div><div class="hover-v purple" id="hover-originated">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Gross Coupon</div><div class="hover-v gold" id="hover-gross-interest">$0</div></div>
-                <div class="hover-item"><div class="hover-k">External Share</div><div class="hover-v" id="hover-paid-away">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Retained Spread Collected</div><div class="hover-v gold" id="hover-prepaid">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Net Funding</div><div class="hover-v" id="hover-net-deploy">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Cash Reserve</div><div class="hover-v blue" id="hover-reserve">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Cash Swept</div><div class="hover-v blue" id="hover-reinvestable">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Principal Returned</div><div class="hover-v green" id="hover-principal">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Earned Spread</div><div class="hover-v green" id="hover-earned">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Deferred Spread</div><div class="hover-v" id="hover-unearned">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Loans Outstanding</div><div class="hover-v purple" id="hover-outstanding">$0</div></div>
-                <div class="hover-item"><div class="hover-k">Cash</div><div class="hover-v blue" id="hover-cash">$0</div></div>
-                <div class="hover-item"><div class="hover-k">NAV</div><div class="hover-v gold" id="hover-nav">$0</div></div>
-                <div class="hover-story" id="hover-story">Hover a month for draws, reserve, sweep, deferred spread, and repayment recycling.</div>
+                <div class="hover-item"><div class="hover-k">New LP Cash</div><div class="hover-v blue" id="hover-capital">$0</div></div>
+                <div class="hover-item"><div class="hover-k">New Loans Closed</div><div class="hover-v purple" id="hover-originated">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Borrower Interest</div><div class="hover-v gold" id="hover-gross-interest">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Interest Paid Away</div><div class="hover-v" id="hover-paid-away">$0</div></div>
+                <div class="hover-item"><div class="hover-k">TGP Interest Kept</div><div class="hover-v gold" id="hover-prepaid">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Cash Into Loans</div><div class="hover-v" id="hover-net-deploy">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Cash Held Back</div><div class="hover-v blue" id="hover-reserve">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Cash Ready To Lend</div><div class="hover-v blue" id="hover-reinvestable">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Principal Repaid</div><div class="hover-v green" id="hover-principal">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Profit Earned</div><div class="hover-v green" id="hover-earned">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Interest Not Yet Earned</div><div class="hover-v" id="hover-unearned">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Active Loan Balance</div><div class="hover-v purple" id="hover-outstanding">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Ending Cash</div><div class="hover-v blue" id="hover-cash">$0</div></div>
+                <div class="hover-item"><div class="hover-k">Ending NAV</div><div class="hover-v gold" id="hover-nav">$0</div></div>
+                <div class="hover-story" id="hover-story">Hover a month to see what cash came in, what cash went into loans, and what profit was actually earned.</div>
               </div>
             </div>
           </div>
@@ -776,17 +776,17 @@ function updateMonthAudit(month, model){
   let story = 'Opening balance sheet before origination.';
   if(month > 0){
     if(model.capitalCalledArr[month] > 0 && model.grossLoansOriginatedArr[month] > 0){
-      story = 'Swept cash was insufficient. The shortfall was funded with an LP draw.';
+      story = 'The fund used available cash first, then called LP capital for the remaining funding need.';
     } else if(model.grossLoansOriginatedArr[month] > 0){
-      story = 'New loans closed. Retained spread was collected at settlement; only net funding reduced cash.';
+      story = 'New loans closed. Borrowers prepaid interest. TGP kept its share in cash and funded only the net amount into loans.';
     } else if(model.principalRepaymentsArr[month] > 0){
-      story = 'Principal returned to cash and is available for reinvestment.';
+      story = 'Older loans repaid principal, which returned to cash and can be lent again.';
     } else if(model.earnedSpreadThisMonthArr[month] > 0){
-      story = 'Deferred spread amortized into earned income.';
+      story = 'Previously collected interest moved from deferred income into earned profit.';
     }
   }
   if(model.gpUnitsMintedArr[month] > 0){
-    story += ' Annual carry crystallized in GP units.';
+    story += ' Annual GP carry also crystallized in units.';
   }
   document.getElementById('hover-story').textContent = story;
 }
