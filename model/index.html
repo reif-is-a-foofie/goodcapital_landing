@@ -67,7 +67,7 @@ a{color:inherit}
 .chart-area{padding:14px 16px 16px;background:var(--s1);min-height:0}
 .chart-shell{display:flex;flex-direction:column;gap:16px;min-height:100%;position:relative}
 .chart-main{display:flex;flex-direction:column;gap:14px;min-height:0}
-.chart-main > .chart-block:first-of-type{margin-top:calc(var(--hover-overlay-offset, 0px) + 44px)}
+.chart-main > .chart-block:first-of-type{margin-top:calc(var(--hover-overlay-offset, 0px) + 72px)}
 .chart-meta{position:sticky;top:12px;z-index:8;height:0;overflow:visible;pointer-events:none}
 .meta-stack{display:block}
 .memo-panel,.hover-panel,.carry-panel,.chart-frame,.kpi,.footer-panel{background:rgba(253,250,245,.96);border:1px solid var(--border);box-shadow:0 6px 18px rgba(38,34,29,.06)}
@@ -85,8 +85,10 @@ a{color:inherit}
 .hover-period,.carry-title{font-size:9px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
 .hover-top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 12px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--border)}
 .hover-stat,.hover-section,.carry-item{min-width:0}
-.hover-sections,.carry-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px}
-.hover-item,.carry-item{min-width:0;display:flex;align-items:baseline;justify-content:space-between;gap:8px;overflow:hidden}
+.hover-sections{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 12px}
+.carry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
+.hover-item{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:8px;overflow:hidden}
+.carry-item{min-width:0;display:flex;align-items:baseline;justify-content:space-between;gap:8px;overflow:hidden}
 .hover-k,.carry-k{flex:0 0 auto;font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
 .hover-v,.carry-v{font-size:11px;color:var(--ink);line-height:1.3;overflow:hidden;text-overflow:ellipsis}
 .hover-v.gold,.carry-v.gold{color:var(--gold2);font-weight:600}
@@ -97,6 +99,8 @@ a{color:inherit}
 .hover-section-title{font-size:8px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px}
 .hover-total{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;line-height:.95;color:var(--ink);margin-bottom:8px}
 .hover-total.blue{color:var(--blue2)}
+.hover-total.green{color:var(--green2)}
+.hover-total.red{color:var(--red2)}
 .hover-section .hover-list{display:grid;gap:5px}
 .hover-story,.carry-note{grid-column:1 / -1;font-size:9px;color:var(--muted2);line-height:1.6;padding-top:2px}
 .chart-block{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
@@ -230,7 +234,7 @@ a{color:inherit}
               <div class="hover-top">
                 <div class="hover-stat"><div class="hover-k">New Loans Closed</div><div class="hover-v purple" id="hover-originated">$0</div></div>
                 <div class="hover-stat"><div class="hover-k">Borrower Coupon</div><div class="hover-v gold" id="hover-gross-interest">$0</div></div>
-                <div class="hover-stat"><div class="hover-k">Interest Paid Away</div><div class="hover-v" id="hover-paid-away">$0</div></div>
+                <div class="hover-stat"><div class="hover-k">TGP Interest Kept</div><div class="hover-v gold" id="hover-retained-top">$0</div></div>
                 <div class="hover-stat"><div class="hover-k">Interest Earned</div><div class="hover-v green" id="hover-earned">$0</div></div>
               </div>
               <div class="hover-sections">
@@ -251,6 +255,13 @@ a{color:inherit}
                   </div>
                 </div>
                 <div class="hover-section">
+                  <div class="hover-section-title">Net Cash Change</div>
+                  <div class="hover-total" id="hover-cash-net">$0</div>
+                  <div class="hover-list">
+                    <div class="hover-item"><div class="hover-k">Cash In Less Cash Out</div><div class="hover-v" id="hover-cash-bridge">$0</div></div>
+                  </div>
+                </div>
+                <div class="hover-section">
                   <div class="hover-section-title">End Of Period</div>
                   <div class="hover-list">
                     <div class="hover-item"><div class="hover-k">Deferred Interest</div><div class="hover-v" id="hover-unearned">$0</div></div>
@@ -259,7 +270,7 @@ a{color:inherit}
                     <div class="hover-item"><div class="hover-k">Ending NAV</div><div class="hover-v gold" id="hover-nav">$0</div></div>
                   </div>
                 </div>
-                <div class="hover-story" id="hover-story">Hover a month to see cash in, cash out, and the ending balances.</div>
+                <div class="hover-story" id="hover-story">Hover a month to see cash in, cash out, net change, and the ending balances.</div>
               </div>
             </div>
           </div>
@@ -802,14 +813,17 @@ function updateMonthAudit(month, model){
   const monthLabel = month === 0 ? 'Opening Balance Sheet' : `Month ${month} · Year ${Math.ceil(month / 12)}`;
   const cashInTotal = model.capitalCalledArr[month] + model.prepaidCashCollectedArr[month] + model.principalRepaymentsArr[month];
   const cashOutTotal = model.netDeploymentArr[month];
+  const cashNetChange = cashInTotal - cashOutTotal;
   document.getElementById('hover-period').textContent = monthLabel;
   document.getElementById('hover-capital').textContent = fmtMoney(model.capitalCalledArr[month], true);
   document.getElementById('hover-originated').textContent = fmtMoney(model.grossLoansOriginatedArr[month], true);
   document.getElementById('hover-gross-interest').textContent = fmtMoney(model.grossBorrowerInterestArr[month], true);
-  document.getElementById('hover-paid-away').textContent = fmtMoney(model.paidAwayInterestArr[month], true);
+  document.getElementById('hover-retained-top').textContent = fmtMoney(model.prepaidCashCollectedArr[month], true);
   document.getElementById('hover-prepaid').textContent = fmtMoney(model.prepaidCashCollectedArr[month], true);
   document.getElementById('hover-cash-in-total').textContent = fmtMoney(cashInTotal, true);
   document.getElementById('hover-cash-out-total').textContent = fmtMoney(cashOutTotal, true);
+  document.getElementById('hover-cash-net').textContent = fmtMoney(cashNetChange, true);
+  document.getElementById('hover-cash-bridge').textContent = fmtMoney(cashNetChange, true);
   document.getElementById('hover-net-deploy').textContent = fmtMoney(model.netDeploymentArr[month], true);
   document.getElementById('hover-principal').textContent = fmtMoney(model.principalRepaymentsArr[month], true);
   document.getElementById('hover-earned').textContent = fmtMoney(model.earnedSpreadThisMonthArr[month], true);
@@ -817,13 +831,18 @@ function updateMonthAudit(month, model){
   document.getElementById('hover-outstanding').textContent = fmtMoney(model.principalOutstandingArr[month], true);
   document.getElementById('hover-cash').textContent = fmtMoney(model.cashBalanceArr[month], true);
   document.getElementById('hover-nav').textContent = fmtMoney(model.navArr[month], true);
+  const cashNetEl = document.getElementById('hover-cash-net');
+  if(cashNetEl){
+    cashNetEl.classList.remove('green','red','blue');
+    cashNetEl.classList.add(cashNetChange >= 0 ? 'green' : 'red');
+  }
 
   let story = 'Opening balance sheet before origination.';
   if(month > 0){
     if(model.capitalCalledArr[month] > 0 && model.grossLoansOriginatedArr[month] > 0){
-      story = 'Cash in came from retained interest, principal repayments, and a top-up LP draw. New loans were funded only for the remaining shortfall.';
+      story = 'Cash in came from retained interest, principal repayments, and a top-up LP draw. After funding new loans, the period closed with a positive cash change.';
     } else if(model.grossLoansOriginatedArr[month] > 0){
-      story = 'New loans closed. Borrowers prepaid coupon, TGP kept its retained share in cash, and only the net amount was deployed into loans.';
+      story = 'New loans closed. Borrowers prepaid coupon, TGP kept its retained share in cash, and only the net amount was funded into loans.';
     } else if(model.principalRepaymentsArr[month] > 0){
       story = 'Principal repayments returned cash to the fund and increased redeployment capacity.';
     } else if(model.earnedSpreadThisMonthArr[month] > 0){
@@ -884,7 +903,7 @@ function syncHoverOverlayOffset(){
   const hoverPanel = document.querySelector('.hover-panel');
   const chartMain = document.querySelector('.chart-main');
   if(!hoverPanel || !chartMain) return;
-  const offset = Math.ceil(hoverPanel.getBoundingClientRect().height) + 14;
+  const offset = Math.ceil(hoverPanel.getBoundingClientRect().height) + 28;
   chartMain.style.setProperty('--hover-overlay-offset', `${offset}px`);
 }
 
@@ -925,10 +944,15 @@ function renderCharts(model){
 
   const months = model.months;
   const axisLabel = value => value === 0 ? 'Start' : (value % 12 === 0 ? `Y${value / 12}` : '');
+  const seriesOrder = ['Capital Called', 'Prepaid Retained Spread', 'Principal Repaid', 'Earned Profit', 'Cash Into Loans'];
   const tooltipFormatter = params => {
     const month = Number(params[0] && params[0].axisValue !== undefined ? params[0].axisValue : 0);
     updateMonthAudit(month, model);
-    return params.map(item => `${item.marker}${item.seriesName}: ${fmtMoney(item.value, true)}`).join('<br>');
+    return params
+      .filter(item => Math.abs(Number(item.value) || 0) >= 0.5)
+      .sort((a, b) => seriesOrder.indexOf(a.seriesName) - seriesOrder.indexOf(b.seriesName))
+      .map(item => `${item.marker}${item.seriesName}: ${fmtMoney(item.value, true)}`)
+      .join('<br>');
   };
 
   flowChart.setOption({
@@ -942,7 +966,7 @@ function renderCharts(model){
       {name:'Prepaid Retained Spread',type:'bar',stack:'monthly-flow',data:model.prepaidCashCollectedArr,barMaxWidth:16,itemStyle:{color:'#b38b57'}},
       {name:'Principal Repaid',type:'bar',stack:'monthly-flow',data:model.principalRepaymentsArr,barMaxWidth:16,itemStyle:{color:'#3f6d47'}},
       {name:'Earned Profit',type:'bar',stack:'monthly-flow',data:model.earnedSpreadThisMonthArr,barMaxWidth:16,itemStyle:{color:'#1c7c54'}},
-      {name:'Net Deployment',type:'bar',stack:'monthly-flow',data:model.netDeploymentArr.map(value => -value),barMaxWidth:16,itemStyle:{color:'#9c4f40'}}
+      {name:'Cash Into Loans',type:'bar',stack:'monthly-flow',data:model.netDeploymentArr.map(value => -value),barMaxWidth:16,itemStyle:{color:'#9c4f40'}}
     ]
   }, true);
 
@@ -953,10 +977,10 @@ function renderCharts(model){
     xAxis:{type:'category',data:months,axisLabel:{formatter:axisLabel,fontFamily:'DM Mono',fontSize:10,color:'#776b5d'}},
     yAxis:{type:'value',axisLabel:{formatter:value => fmtMoney(value, true),fontFamily:'DM Mono',fontSize:10,color:'#776b5d'},splitLine:{lineStyle:{color:'rgba(156,122,77,0.12)'}}},
     series:[
-      {name:'NAV',type:'line',smooth:true,symbol:'none',data:model.navArr,lineStyle:{width:2.4,color:'#b38b57'}},
-      {name:'Target NAV',type:'line',smooth:false,symbol:'none',data:model.targetNavArr,lineStyle:{width:2,color:'#2f6db0',type:'dashed'}},
-      {name:'Gross Loans Outstanding',type:'line',smooth:true,symbol:'none',data:model.principalOutstandingArr,lineStyle:{width:2,color:'#7b4bb3'}},
-      {name:'Cash Balance',type:'line',smooth:true,symbol:'none',data:model.cashBalanceArr,lineStyle:{width:2,color:'#506a88'}}
+      {name:'NAV',type:'line',smooth:true,symbol:'none',color:'#b38b57',itemStyle:{color:'#b38b57'},data:model.navArr,lineStyle:{width:2.4,color:'#b38b57'}},
+      {name:'Target NAV',type:'line',smooth:false,symbol:'none',color:'#2f6db0',itemStyle:{color:'#2f6db0'},data:model.targetNavArr,lineStyle:{width:2,color:'#2f6db0',type:'dashed'}},
+      {name:'Gross Loans Outstanding',type:'line',smooth:true,symbol:'none',color:'#7b4bb3',itemStyle:{color:'#7b4bb3'},data:model.principalOutstandingArr,lineStyle:{width:2,color:'#7b4bb3'}},
+      {name:'Cash Balance',type:'line',smooth:true,symbol:'none',color:'#506a88',itemStyle:{color:'#506a88'},data:model.cashBalanceArr,lineStyle:{width:2,color:'#506a88'}}
     ]
   }, true);
 
@@ -986,15 +1010,21 @@ function bootModelPage(){
   if(document.getElementById('v-take')) document.getElementById('v-take').textContent = fmtControl('take', S.take);
 
   window.addEventListener('resize', scheduleResize);
+  window.addEventListener('load', scheduleResize, {once:true});
   document.querySelectorAll('details').forEach(details => details.addEventListener('toggle', scheduleResize));
 
   if('ResizeObserver' in window){
     resizeObserver = new ResizeObserver(() => scheduleResize());
     const chartArea = document.querySelector('.chart-area');
     if(chartArea) resizeObserver.observe(chartArea);
+    const hoverPanel = document.querySelector('.hover-panel');
+    if(hoverPanel) resizeObserver.observe(hoverPanel);
   }
 
   recalc();
+  requestAnimationFrame(() => scheduleResize());
+  setTimeout(scheduleResize, 180);
+  setTimeout(scheduleResize, 900);
 }
 
 if(document.readyState === 'loading'){
