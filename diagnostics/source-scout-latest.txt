@@ -1,4 +1,4 @@
-Source scout run: 2026-04-03T20:46:28+00:00
+Source scout run: 2026-04-04T00:47:24+00:00
 Mission: AGENT_MISSION.md
 Profile: agents/source_scout_profile.md
 Existing collections: 10
@@ -8,19 +8,19 @@ Query: talmage "jesus the christ"
         copyright=0.8 — publication year 1120 is pre-1928 (US public domain)
         relevance=0.64 — relevant — 4 keyword matches: latter-day saint, talmage, scripture, bible
         task: T-0125
-  SKIP  Jesus the Christ
-        copyright fail (0.10): no copyright status signals found
-        relevance fail (0.10): no relevant keywords found in title or page snippet
   PASS  Jesus the Christ by James E. Talmage | Project Gutenberg
         copyright=1.0 — trusted archive domain (gutenberg.org)
         relevance=0.52 — relevant — 2 keyword matches: talmage, philo
         task: T-0159
+  SKIP  Jesus the Christ
+        copyright fail (0.10): no copyright status signals found
+        relevance fail (0.10): no relevant keywords found in title or page snippet
+  SKIP  r/latterdaysaints on Reddit: Talmage’s “Jesus the Christ”
+        copyright fail (0.10): no copyright status signals found
   PASS  Jesus The Christ | Project Gutenberg
         copyright=1.0 — trusted archive domain (gutenberg.org)
         relevance=0.82 — relevant — 7 keyword matches: latter-day saint, talmage, scripture, apostolic, atonement, resurrection
         task: T-0160
-  SKIP  r/latterdaysaints on Reddit: Talmage’s “Jesus the Christ”
-        copyright fail (0.10): no copyright status signals found
 
 Query: talmage "articles of faith"
   PASS  The Articles of Faith by James E. Talmage | Project Gutenberg
@@ -208,12 +208,12 @@ Query: "philo" "alexandria" yonge translation
   SKIP  The Works of Philo: Complete and Unabridged, New Updated Edition: Yonge, C. D.: 9780943575933: Amazon.com: Books
         copyright fail (0.10): no copyright status signals found
         relevance fail (0.46): relevant — 1 keyword matches: philo
-  SKIP  The Works of Philo: Complete and Unabridged - Philo (of Alexandria.) - Google Books
-        copyright fail (0.10): no copyright status signals found
   PASS  Philo - Wikipedia
         copyright=0.8 — publication year 1453 is pre-1928 (US public domain)
         relevance=0.58 — relevant — 3 keyword matches: philo, hebrew, jewish
         task: T-0157
+  SKIP  The Works of Philo: Complete and Unabridged - Philo (of Alexandria.) - Google Books
+        copyright fail (0.10): no copyright status signals found
   SKIP  The Works of Philo | Logos Bible Software
         copyright fail (0.10): no copyright status signals found
 
@@ -222,7 +222,6 @@ Query: "wars of the jews" josephus whiston
         relevance fail (0.46): relevant — 1 keyword matches: josephus
   SKIP  The Wars of the Jews: Josephus, Flavius, Whiston, William: 9781420934915: Amazon.com: Books
         copyright fail (0.10): no copyright status signals found
-        relevance fail (0.46): relevant — 1 keyword matches: josephus
   SKIP  Flavius Josephus, The Wars of the Jews, Book V, Whiston chapter 11, Whiston section 1
         relevance fail (0.46): relevant — 1 keyword matches: josephus
   SKIP  The Wars of the Jews by Flavius Josephus

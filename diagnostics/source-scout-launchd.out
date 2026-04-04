@@ -103,3 +103,10 @@
   "errors": 0,
   "report": "diagnostics/source-scout-latest.json"
 }
+{
+  "agent": "SourceScout",
+  "candidates_passed": 36,
+  "tasks_created": 36,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}

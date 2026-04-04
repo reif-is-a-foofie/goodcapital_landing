@@ -1,5 +1,5 @@
 {
-  "ts": "2026-04-03T20:46:28+00:00",
+  "ts": "2026-04-04T00:47:24+00:00",
   "agent": "SourceScout",
   "mission_path": "AGENT_MISSION.md",
   "profile_path": "agents/source_scout_profile.md",
@@ -572,8 +572,8 @@
       "url": "https://www.amazon.com/Wars-Jews-Flavius-Josephus/dp/1420934910",
       "copyright_score": 0.1,
       "copyright_reason": "no copyright status signals found",
-      "relevance_score": 0.46,
-      "relevance_reason": "relevant — 1 keyword matches: josephus",
+      "relevance_score": 0.52,
+      "relevance_reason": "relevant — 2 keyword matches: josephus, jewish",
       "error": ""
     },
     {
