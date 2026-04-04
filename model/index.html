@@ -107,17 +107,18 @@ a{color:inherit}
 .chart-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;font-size:10px;line-height:1.7;color:var(--muted2);background:rgba(253,250,245,.92);z-index:3}
 .chart-fallback.hidden{display:none}
 .chart-rail{border-top:1px solid var(--border);padding-top:16px;display:flex;flex-direction:column;gap:12px}
-.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.kpi{padding:14px 14px 16px;min-height:126px;display:flex;flex-direction:column;justify-content:space-between}
-.kpi-l{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
-.kpi-v{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.kpi-note{font-size:9px;line-height:1.6;color:var(--muted2)}
+.kpi{padding:10px 12px 12px;min-height:94px;display:grid;gap:8px;align-content:space-between}
+.kpi-l{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px}
+.kpi-v{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:700;line-height:.95}
 .kpi-v.gold{color:var(--gold2)}
 .kpi-v.green{color:var(--green2)}
 .kpi-v.red{color:var(--red2)}
 .kpi-v.plain{color:var(--ink)}
 .kpi-v.blue{color:var(--blue2)}
 .kpi-v.purple{color:var(--purple)}
-.kpi-s{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+.kpi-s{font-size:10px;color:var(--muted);line-height:1.35}
 .footer-panel{padding:14px 16px 16px;margin-top:12px}
 .footer-copy{font-size:10px;line-height:1.8;color:var(--muted2)}
 .footer-copy b{color:var(--ink);font-weight:500}
@@ -178,7 +179,7 @@ a{color:inherit}
           <div class="controls"><div class="ctrl-row">
             <div class="ctrl"><div class="ctrl-label">Average Loan Size</div><div class="ctrl-display"><div class="ctrl-val" id="v-size">25.0</div><div class="ctrl-unit">$M</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('size',-1)">- $1M</div><div class="btn plus" onclick="adj('size',1)">+ $1M</div></div></div>
             <div class="ctrl"><div class="ctrl-label">Base Monthly Origination Pace</div><div class="ctrl-display"><div class="ctrl-val" id="v-dpm">3.0</div><div class="ctrl-unit">loans / month at launch</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('dpm',-0.25)">- 0.25</div><div class="btn plus" onclick="adj('dpm',0.25)">+ 0.25</div></div></div>
-            <div class="ctrl"><div class="ctrl-label">Average Tenor</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">12</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
+            <div class="ctrl"><div class="ctrl-label">Average Tenor</div><div class="ctrl-display"><div class="ctrl-val" id="v-term">18</div><div class="ctrl-unit">months</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('term',-3)">- 3mo</div><div class="btn plus" onclick="adj('term',3)">+ 3mo</div></div></div>
             <div class="ctrl"><div class="ctrl-label">Gross Borrower Coupon</div><div class="ctrl-display"><div class="ctrl-val" id="v-apy">25.0</div><div class="ctrl-unit">% prepaid</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('apy',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('apy',0.5)">+ 0.5%</div></div></div>
             <div class="ctrl"><div class="ctrl-label">Retained Spread</div><div class="ctrl-display"><div class="ctrl-val" id="v-take">17.0</div><div class="ctrl-unit">% annual</div></div><div class="ctrl-btns"><div class="btn red" onclick="adj('take',-0.5)">- 0.5%</div><div class="btn plus" onclick="adj('take',0.5)">+ 0.5%</div></div></div>
           </div></div>
@@ -197,18 +198,21 @@ a{color:inherit}
   </div>
   <div class="chart-area">
     <div class="chart-shell">
-      <div class="panel-label" style="padding-left:0;background:none;border-bottom:none">Investor Summary</div>
+      <div class="panel-label" style="padding-left:0;background:none;border-bottom:none">LP Summary</div>
       <div class="kpis">
         <div class="kpi"><div><div class="kpi-l">LP Net IRR</div><div class="kpi-v blue" id="kpi-irr">-</div></div><div class="kpi-s">ending LP value / draws</div></div>
+        <div class="kpi"><div><div class="kpi-l">LP MOIC</div><div class="kpi-v blue" id="kpi-moic">-</div></div><div class="kpi-s">ending value / calls</div></div>
+        <div class="kpi"><div><div class="kpi-l">LP Gross Return</div><div class="kpi-v green" id="kpi-return">-</div></div><div class="kpi-s">gain / called capital</div></div>
+        <div class="kpi"><div><div class="kpi-l">LP Ending Value</div><div class="kpi-v gold" id="kpi-lpvalue">-</div></div><div class="kpi-s">pro rata through all calls</div></div>
+        <div class="kpi"><div><div class="kpi-l">LP Net Profit</div><div class="kpi-v plain" id="kpi-lpprofit">-</div></div><div class="kpi-s">ending value less calls</div></div>
         <div class="kpi"><div><div class="kpi-l">LP Capital Called</div><div class="kpi-v plain" id="kpi-called">-</div></div><div class="kpi-s">capital funded</div></div>
         <div class="kpi"><div><div class="kpi-l">Gross Originations</div><div class="kpi-v purple" id="kpi-originated">-</div></div><div class="kpi-s">principal originated</div></div>
         <div class="kpi"><div><div class="kpi-l">Ending NAV</div><div class="kpi-v gold" id="kpi-nav">-</div></div><div class="kpi-s">cash + loans - deferred spread</div></div>
         <div class="kpi"><div><div class="kpi-l">NAV / Unit</div><div class="kpi-v gold" id="kpi-navshare">-</div></div><div class="kpi-s">post-carry dilution</div></div>
-        <div class="kpi"><div><div class="kpi-l">GP Ownership</div><div class="kpi-v plain" id="kpi-gpown">-</div></div><div class="kpi-s">ending diluted stake</div></div>
-        <div class="kpi"><div><div class="kpi-l">GP Units Minted</div><div class="kpi-v purple" id="kpi-gpunits">-</div></div><div class="kpi-s">cumulative carry units</div></div>
         <div class="kpi"><div><div class="kpi-l">Capital Turn</div><div class="kpi-v green" id="kpi-turn">-</div></div><div class="kpi-s">originations / called capital</div></div>
         <div class="kpi"><div><div class="kpi-l">Average Cash Drag</div><div class="kpi-v red" id="kpi-cashdrag">-</div></div><div class="kpi-s">average cash / called capital</div></div>
       </div>
+      <div class="kpi-note">LP figures assume pro rata participation in every call. GP economics sit below in a separate panel.</div>
       <div class="chart-main">
         <div class="chart-meta">
           <div class="meta-stack">
@@ -279,20 +283,25 @@ a{color:inherit}
           <div class="memo-copy" id="how-it-works-copy"></div>
           <div class="memo-seq" id="how-it-works-steps"></div>
         </div>
-        <div class="carry-panel">
-          <div class="carry-title" id="carry-period">Carry Snapshot</div>
-          <div class="carry-grid">
-            <div class="carry-item"><div class="carry-k">Pre-Carry Profit</div><div class="carry-v gold" id="carry-profit">$0</div></div>
-            <div class="carry-item"><div class="carry-k">Hurdle Amount</div><div class="carry-v" id="carry-hurdle">$0</div></div>
-            <div class="carry-item"><div class="carry-k">Carry Base</div><div class="carry-v" id="carry-base">$0</div></div>
-            <div class="carry-item"><div class="carry-k">GP Units Minted</div><div class="carry-v purple" id="carry-minted">0</div></div>
-            <div class="carry-item"><div class="carry-k">Cumulative GP Units</div><div class="carry-v purple" id="carry-cum-units">0</div></div>
-            <div class="carry-item"><div class="carry-k">GP Ownership</div><div class="carry-v blue" id="carry-gp-own">0.0%</div></div>
-            <div class="carry-item"><div class="carry-k">GP Mark To Model</div><div class="carry-v gold" id="carry-gp-value">$0</div></div>
-            <div class="carry-item"><div class="carry-k">Average LP Capital</div><div class="carry-v" id="carry-lp-start">$0</div></div>
-            <div class="carry-note" id="carry-note-live">Carry is based on earned profit above the hurdle, not settlement cash.</div>
+        <details class="settings-wrap">
+          <summary class="settings-toggle">GP Economics</summary>
+          <div class="settings-body">
+            <div class="carry-panel">
+              <div class="carry-title" id="carry-period">Carry Snapshot</div>
+              <div class="carry-grid">
+                <div class="carry-item"><div class="carry-k">Pre-Carry Profit</div><div class="carry-v gold" id="carry-profit">$0</div></div>
+                <div class="carry-item"><div class="carry-k">Hurdle Amount</div><div class="carry-v" id="carry-hurdle">$0</div></div>
+                <div class="carry-item"><div class="carry-k">Carry Base</div><div class="carry-v" id="carry-base">$0</div></div>
+                <div class="carry-item"><div class="carry-k">GP Units Minted</div><div class="carry-v purple" id="carry-minted">0</div></div>
+                <div class="carry-item"><div class="carry-k">Cumulative GP Units</div><div class="carry-v purple" id="carry-cum-units">0</div></div>
+                <div class="carry-item"><div class="carry-k">GP Ownership</div><div class="carry-v blue" id="carry-gp-own">0.0%</div></div>
+                <div class="carry-item"><div class="carry-k">GP Mark To Model</div><div class="carry-v gold" id="carry-gp-value">$0</div></div>
+                <div class="carry-item"><div class="carry-k">Average LP Capital</div><div class="carry-v" id="carry-lp-start">$0</div></div>
+                <div class="carry-note" id="carry-note-live">Carry is based on earned profit above the hurdle, not settlement cash.</div>
+              </div>
+            </div>
           </div>
-        </div>
+        </details>
         <div class="footer-panel">
           <div class="note-q">Model Limits</div>
           <div class="footer-copy">Illustrative base case. Assumes <b>no defaults, no extensions, no losses, no recoveries, and no liquidity events</b>. Excludes progressive-draw construction lending. This is a feasibility model, not an underwriting model.</div>
@@ -652,6 +661,10 @@ function buildBaseCase(){
   const averageCapitalCalled = cumulativeCapitalCalledArr.slice(1).reduce((sum, value) => sum + value, 0) / VIEW;
   const averageCashDrag = averageCapitalCalled > 0 ? averageCashBalance / averageCapitalCalled : 0;
   const capitalTurnMultiple = cumulativeCapitalCalledArr[VIEW] > 0 ? totalGrossLoansOriginated / cumulativeCapitalCalledArr[VIEW] : 0;
+  const endingLpValue = lpValueArr[VIEW];
+  const lpMoic = cumulativeCapitalCalledArr[VIEW] > 0 ? endingLpValue / cumulativeCapitalCalledArr[VIEW] : 0;
+  const lpGrossReturn = cumulativeCapitalCalledArr[VIEW] > 0 ? lpMoic - 1 : 0;
+  const lpNetProfit = endingLpValue - cumulativeCapitalCalledArr[VIEW];
   const latestCarryEvent = carryCrystallizationEvents[carryCrystallizationEvents.length - 1] || {
     month: 0,
     annualProfitBeforeCarry: 0,
@@ -719,6 +732,10 @@ function buildBaseCase(){
     averageCashBalance,
     averageCashDrag,
     capitalTurnMultiple,
+    endingLpValue,
+    lpMoic,
+    lpGrossReturn,
+    lpNetProfit,
     endingNav: navArr[VIEW],
     endingNavPerUnit: priceArr[VIEW],
     endingGpOwnership: gpOwnershipArr[VIEW],
@@ -813,12 +830,14 @@ function updateCarryPanel(model){
 
 function updateKPIs(model){
   document.getElementById('kpi-irr').textContent = fmtPct(model.projectedIrr);
+  document.getElementById('kpi-moic').textContent = fmtTurns(model.lpMoic);
+  document.getElementById('kpi-return').textContent = fmtPct(model.lpGrossReturn);
+  document.getElementById('kpi-lpvalue').textContent = fmtMoney(model.endingLpValue, true);
+  document.getElementById('kpi-lpprofit').textContent = fmtMoney(model.lpNetProfit, true);
   document.getElementById('kpi-called').textContent = fmtMoney(model.cumulativeCapitalCalledArr[VIEW], true);
   document.getElementById('kpi-originated').textContent = fmtMoney(model.totalGrossLoansOriginated, true);
   document.getElementById('kpi-nav').textContent = fmtMoney(model.endingNav, true);
   document.getElementById('kpi-navshare').textContent = fmtPrice(model.endingNavPerUnit);
-  document.getElementById('kpi-gpown').textContent = fmtPct(model.endingGpOwnership);
-  document.getElementById('kpi-gpunits').textContent = model.totalGpUnitsMinted.toFixed(0);
   document.getElementById('kpi-turn').textContent = fmtTurns(model.capitalTurnMultiple);
   document.getElementById('kpi-cashdrag').textContent = fmtPct(model.averageCashDrag);
 }
