@@ -1,23 +1,8 @@
-Beta tester run: 2026-03-31T13:32:53+00:00
+Beta tester run: 2026-04-06T22:36:31+00:00
 Mission: AGENT_MISSION.md
 Profile: agents/beta_tester_profile.md
 - search_quality: ok
 - search_browser: ok
 - mobile_channel: ok
 - commentary_links: ok
-- corpus_integrity: FAIL
-  task: Beta tester: resolve scripture/source corpus integrity failures flagged by the strict audit before they ship as silent regressions
-  stdout: {
-  "scripture": {
-    "chapters": 1582,
-    "verses": 41995,
-    "missing_words_files": 3,
-    "verses_with_truncation": 0,
-    "verses_with_escaped_markup": 97,
-    "verses_with_markup_leak": 0
-  },
-  "sources": {
-    "collections": 10,
-    "docs": 4156,
-    "docs_with_words": 4156,
-    "docs_miss
+- corpus_integrity: ok

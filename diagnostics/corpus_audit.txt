@@ -38,20 +38,20 @@ Most truncation
 Semantic Coverage
 {
   "collections": 10,
-  "docs": 4156,
-  "docs_with_words": 4156,
+  "docs": 4163,
+  "docs_with_words": 4163,
   "docs_missing_words": 0,
-  "annotated_paragraphs": 155603,
-  "matched_paragraphs": 155603
+  "annotated_paragraphs": 159622,
+  "matched_paragraphs": 159622
 }
 
 Lowest-coverage source collections
 joseph_smith_papers: docs=9 with_words=9 doc_coverage=1.0 annotated_paragraphs=1037 matched_paragraphs=1037
-church_fathers: docs=6 with_words=6 doc_coverage=1.0 annotated_paragraphs=3148 matched_paragraphs=3148
 general_conference: docs=3908 with_words=3908 doc_coverage=1.0 annotated_paragraphs=3923 matched_paragraphs=3923
 pioneer_journals: docs=2 with_words=2 doc_coverage=1.0 annotated_paragraphs=4304 matched_paragraphs=4304
-ancient_texts: docs=6 with_words=6 doc_coverage=1.0 annotated_paragraphs=4390 matched_paragraphs=4390
-gutenberg_lds: docs=4 with_words=4 doc_coverage=1.0 annotated_paragraphs=6585 matched_paragraphs=6585
+ancient_texts: docs=8 with_words=8 doc_coverage=1.0 annotated_paragraphs=5241 matched_paragraphs=5241
+church_fathers: docs=10 with_words=10 doc_coverage=1.0 annotated_paragraphs=5640 matched_paragraphs=5640
+gutenberg_lds: docs=5 with_words=5 doc_coverage=1.0 annotated_paragraphs=7261 matched_paragraphs=7261
 history_of_church: docs=7 with_words=7 doc_coverage=1.0 annotated_paragraphs=7886 matched_paragraphs=7886
 times_and_seasons: docs=26 with_words=26 doc_coverage=1.0 annotated_paragraphs=20690 matched_paragraphs=20690
 journal_of_discourses: docs=26 with_words=26 doc_coverage=1.0 annotated_paragraphs=22427 matched_paragraphs=22427

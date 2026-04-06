@@ -15836,11 +15836,11 @@
   "sources": {
     "summary": {
       "collections": 10,
-      "docs": 4156,
-      "docs_with_words": 4156,
+      "docs": 4163,
+      "docs_with_words": 4163,
       "docs_missing_words": 0,
-      "annotated_paragraphs": 155603,
-      "matched_paragraphs": 155603
+      "annotated_paragraphs": 159622,
+      "matched_paragraphs": 159622
     },
     "collections": [
       {
@@ -15849,14 +15849,6 @@
         "docs_with_words": 9,
         "annotated_paragraphs": 1037,
         "matched_paragraphs": 1037,
-        "doc_coverage": 1.0
-      },
-      {
-        "collection": "church_fathers",
-        "docs": 6,
-        "docs_with_words": 6,
-        "annotated_paragraphs": 3148,
-        "matched_paragraphs": 3148,
         "doc_coverage": 1.0
       },
       {
@@ -15877,18 +15869,26 @@
       },
       {
         "collection": "ancient_texts",
-        "docs": 6,
-        "docs_with_words": 6,
-        "annotated_paragraphs": 4390,
-        "matched_paragraphs": 4390,
+        "docs": 8,
+        "docs_with_words": 8,
+        "annotated_paragraphs": 5241,
+        "matched_paragraphs": 5241,
+        "doc_coverage": 1.0
+      },
+      {
+        "collection": "church_fathers",
+        "docs": 10,
+        "docs_with_words": 10,
+        "annotated_paragraphs": 5640,
+        "matched_paragraphs": 5640,
         "doc_coverage": 1.0
       },
       {
         "collection": "gutenberg_lds",
-        "docs": 4,
-        "docs_with_words": 4,
-        "annotated_paragraphs": 6585,
-        "matched_paragraphs": 6585,
+        "docs": 5,
+        "docs_with_words": 5,
+        "annotated_paragraphs": 7261,
+        "matched_paragraphs": 7261,
         "doc_coverage": 1.0
       },
       {

@@ -110,3 +110,87 @@
   "errors": 0,
   "report": "diagnostics/source-scout-latest.json"
 }
+{
+  "agent": "SourceScout",
+  "candidates_passed": 37,
+  "tasks_created": 37,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 37,
+  "tasks_created": 37,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 36,
+  "tasks_created": 36,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 34,
+  "tasks_created": 34,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 36,
+  "tasks_created": 36,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 35,
+  "tasks_created": 35,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 32,
+  "tasks_created": 32,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 32,
+  "tasks_created": 32,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 35,
+  "tasks_created": 35,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 33,
+  "tasks_created": 33,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 32,
+  "tasks_created": 32,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}
+{
+  "agent": "SourceScout",
+  "candidates_passed": 33,
+  "tasks_created": 33,
+  "errors": 0,
+  "report": "diagnostics/source-scout-latest.json"
+}

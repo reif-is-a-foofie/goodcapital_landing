@@ -1,5 +1,5 @@
 {
-  "ts": "2026-03-31T13:32:53+00:00",
+  "ts": "2026-04-06T22:36:31+00:00",
   "agent": "BetaTester",
   "mission_path": "AGENT_MISSION.md",
   "profile_path": "agents/beta_tester_profile.md",
@@ -12,7 +12,7 @@
         "audit_search_quality.py"
       ],
       "code": 0,
-      "stdout": "search.json size: 12376.1 KB\nentries: 5738\nscripture chapters: 1582\nscripture verses: 41995\nsources: 4156\nsource summary length: min=206 avg=1182.4 max=1200\n\nQUERY: John 3:16\n  235.10  verse   John 3:16\n  126.93  verse   John 3:1\n  111.96  verse   John 3:30\n  111.96  verse   John 3:24\n  111.94  verse   John 3:7\n\nQUERY: Good Better Best\n   59.55  source  General Conference · Good, Better, Best\n   21.80  source  General Conference · Prepare for a Mission\n   21.80  source  General Conference · Draw Nearer to Christ\n   20.81  source  General Conference · The Nobility of Man in Choosing Good over Evil\n   20.80  source  General Conference · The Best Investment\n\nQUERY: mist\n   30.05  source  General Conference · Coming through the Mists\n   15.55  source  General Conference · Draw Nearer to Christ\n   11.67  verse   Genesis 2:6\n   11.66  verse   Abraham 5:6\n   11.66  verse   Proverbs 30:23\n\nQUERY: Enuma Elish\n   44.27  source  Ancient Texts · Enuma Elish\n    7.71  verse   1 Chronicles 14:5\n    7.71  verse   2 Samuel 5:16\n    7.71  verse   1 Chronicles 3:6\n    7.71  verse   1 Chronicles 14:7\n\nQUERY: History of the Church\n   60.22  source  History of the Church · Volume 5\n   60.20  source  History of the Church · Volume 4\n   60.20  source  History of the Church · Volume 2\n   59.92  source  History of the Church · Volume 7\n   59.78  source  History of the Church · Volume 3\n\nQUERY: 1 Nephi 8\n  155.59  verse   1 Nephi 8:1\n  140.69  verse   1 Nephi 8:29\n  140.69  verse   1 Nephi 8:35\n  140.68  verse   1 Nephi 8:6\n  140.67  verse   1 Nephi 8:16\n",
+      "stdout": "search.json size: 13237.3 KB\nentries: 5743\nscripture chapters: 1582\nscripture verses: 41995\nsources: 4161\nsource summary length: min=206 avg=1181.6 max=1200\n\nQUERY: John 3:16\n  235.10  verse   John 3:16\n  126.93  verse   John 3:1\n  111.96  verse   John 3:30\n  111.96  verse   John 3:24\n  111.94  verse   John 3:7\n\nQUERY: Good Better Best\n   59.55  source  General Conference · Good, Better, Best\n   21.80  source  General Conference · Prepare for a Mission\n   21.80  source  General Conference · Draw Nearer to Christ\n   20.81  source  General Conference · The Nobility of Man in Choosing Good over Evil\n   20.80  source  General Conference · The Best Investment\n\nQUERY: mist\n   30.05  source  General Conference · Coming through the Mists\n   15.55  source  General Conference · Draw Nearer to Christ\n   11.67  verse   Abraham 5:6\n   11.67  verse   Genesis 2:6\n   11.66  verse   Proverbs 30:23\n\nQUERY: Enuma Elish\n   44.27  source  Ancient Texts · Enuma Elish\n    7.71  verse   1 Chronicles 14:5\n    7.71  verse   2 Samuel 5:16\n    7.71  verse   1 Chronicles 3:6\n    7.71  verse   1 Chronicles 14:7\n\nQUERY: History of the Church\n   60.22  source  History of the Church · Volume 5\n   60.20  source  History of the Church · Volume 4\n   60.20  source  History of the Church · Volume 2\n   59.92  source  History of the Church · Volume 7\n   59.78  source  History of the Church · Volume 3\n\nQUERY: 1 Nephi 8\n  155.59  verse   1 Nephi 8:1\n  140.69  verse   1 Nephi 8:29\n  140.69  verse   1 Nephi 8:35\n  140.68  verse   1 Nephi 8:6\n  140.67  verse   1 Nephi 8:16\n",
       "stderr": "",
       "name": "search_quality",
       "ok": true
@@ -34,7 +34,7 @@
         "test-library-mobile-channel.js"
       ],
       "code": 0,
-      "stdout": "{\n  \"initial\": {\n    \"channelOpen\": true,\n    \"count\": 8,\n    \"clientHeight\": 10,\n    \"scrollHeight\": 1068,\n    \"overflowY\": \"auto\",\n    \"touchAction\": \"pan-y\"\n  },\n  \"scrolled\": {\n    \"scrollTop\": 400,\n    \"maxScroll\": 1058\n  }\n}\n",
+      "stdout": "{\n  \"initial\": {\n    \"channelOpen\": true,\n    \"count\": 8,\n    \"clientHeight\": 51,\n    \"scrollHeight\": 1068,\n    \"overflowY\": \"auto\",\n    \"touchAction\": \"pan-y\"\n  },\n  \"scrolled\": {\n    \"scrollTop\": 400,\n    \"maxScroll\": 1017\n  }\n}\n",
       "stderr": "",
       "name": "mobile_channel",
       "ok": true
@@ -56,12 +56,12 @@
         "lds_pipeline/audit_corpus_integrity.py",
         "--strict"
       ],
-      "code": 1,
-      "stdout": "{\n  \"scripture\": {\n    \"chapters\": 1582,\n    \"verses\": 41995,\n    \"missing_words_files\": 3,\n    \"verses_with_truncation\": 0,\n    \"verses_with_escaped_markup\": 97,\n    \"verses_with_markup_leak\": 0\n  },\n  \"sources\": {\n    \"collections\": 10,\n    \"docs\": 4156,\n    \"docs_with_words\": 4156,\n    \"docs_missing_words\": 0,\n    \"annotated_paragraphs\": 155603,\n    \"matched_paragraphs\": 155603\n  },\n  \"problems\": 100\n}\n",
+      "code": 0,
+      "stdout": "{\n  \"scripture\": {\n    \"chapters\": 1582,\n    \"verses\": 41995,\n    \"missing_words_files\": 0,\n    \"verses_with_truncation\": 0,\n    \"verses_with_escaped_markup\": 0,\n    \"verses_with_markup_leak\": 0\n  },\n  \"sources\": {\n    \"collections\": 10,\n    \"docs\": 4163,\n    \"docs_with_words\": 4163,\n    \"docs_missing_words\": 0,\n    \"annotated_paragraphs\": 159622,\n    \"matched_paragraphs\": 159622\n  },\n  \"problems\": 0\n}\n",
       "stderr": "",
       "name": "corpus_integrity",
-      "ok": false
+      "ok": true
     }
   ],
-  "failures": 1
+  "failures": 0
 }
