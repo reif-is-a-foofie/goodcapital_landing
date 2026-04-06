@@ -662,17 +662,35 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .ent-link { color: var(--accent); border-bottom: 1px dotted currentColor; cursor: pointer; }
 .ent-link:hover { background: rgba(156,122,77,0.08); border-radius: 2px; }
 /* Entity profile panel */
-.entity-profile-header { padding: 18px 16px 10px; border-bottom: 1px solid var(--divider); }
-.entity-profile-name { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.entity-profile-role { font-size: 12px; color: var(--muted); }
-.entity-section-title { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-    color: var(--muted); padding: 12px 16px 6px; }
-.entity-talk-row { padding: 8px 16px; border-bottom: 1px solid var(--divider); cursor: pointer; }
-.entity-talk-row:hover { background: rgba(0,0,0,0.04); }
-.entity-talk-label { font-size: 13px; font-weight: 500; color: var(--text); }
-.entity-talk-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.entity-verse-row { padding: 7px 16px; border-bottom: 1px solid var(--divider); cursor: pointer; font-size: 12px; color: var(--accent); }
-.entity-verse-row:hover { background: rgba(0,0,0,0.04); }
+.ep-header { display: flex; gap: 12px; align-items: flex-start; padding: 16px 16px 12px; border-bottom: 1px solid var(--divider); }
+.ep-image { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--divider); }
+.ep-image-placeholder { width: 72px; height: 72px; border-radius: 8px; background: rgba(156,122,77,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 28px; }
+.ep-title { flex: 1; min-width: 0; }
+.ep-name { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.25; }
+.ep-type { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); margin-top: 3px; }
+.ep-meta { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.ep-wiki { font-size: 11px; color: var(--accent); text-decoration: none; display: inline-block; margin-top: 5px; }
+.ep-wiki:hover { text-decoration: underline; }
+.ep-section { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 12px 16px 5px; }
+.ep-excerpt { padding: 10px 16px; border-bottom: 1px solid var(--divider); }
+.ep-excerpt-text { font-family: 'EB Garamond', Georgia, serif; font-size: 14px; line-height: 1.75; font-style: italic; color: var(--text); padding-left: 12px; border-left: 2px solid rgba(156,122,77,0.3); }
+.ep-excerpt-attr { font-size: 11px; color: var(--muted); margin-top: 5px; padding-left: 12px; }
+.ep-chip-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 16px 12px; border-bottom: 1px solid var(--divider); }
+.ep-chip { font-size: 12px; font-weight: 500; color: var(--accent); background: rgba(156,122,77,0.1); border-radius: 12px; padding: 4px 11px; cursor: pointer; white-space: nowrap; }
+.ep-chip:hover { background: rgba(156,122,77,0.22); }
+.ep-chip.chip-place { color: #4a7090; background: rgba(74,112,144,0.1); }
+.ep-chip.chip-place:hover { background: rgba(74,112,144,0.2); }
+.ep-chip.chip-thing { color: #6a4a8c; background: rgba(106,74,140,0.1); }
+.ep-chip.chip-thing:hover { background: rgba(106,74,140,0.2); }
+.ep-chip.chip-topic { color: #4a7050; background: rgba(74,112,80,0.1); }
+.ep-chip.chip-topic:hover { background: rgba(74,112,80,0.2); }
+.ep-scripture-list { padding: 8px 16px 12px; border-bottom: 1px solid var(--divider); }
+.ep-scripture-ref { display: inline-block; font-size: 12px; color: var(--accent); cursor: pointer; margin: 2px 8px 2px 0; }
+.ep-scripture-ref:hover { text-decoration: underline; }
+.ep-talk-row { padding: 8px 16px; border-bottom: 1px solid var(--divider); cursor: pointer; }
+.ep-talk-row:hover { background: rgba(0,0,0,0.04); }
+.ep-talk-label { font-size: 13px; font-weight: 500; color: var(--text); }
+.ep-talk-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .hist-card { padding: 14px 14px; border-bottom: 1px solid var(--divider); }
 .hist-badge {
     display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .05em;
@@ -852,6 +870,13 @@ var donaldsonNotes = {};   // chapterId → { "verseNum": [para, ...] }
 var entityIndex = {};      // lowercased name variant → person_id (longest-first sorted)
 var entityList  = [];      // full people.json array
 var entityById  = {};      // person_id → entity object
+var placeIndex  = {};      // lowercased name → place_id
+var placeById   = {};      // place_id → place object
+var thingIndex  = {};      // lowercased name → thing_id
+var thingById   = {};      // thing_id → thing object
+var topicIndex  = {};      // lowercased name → topic_id
+var topicById   = {};      // topic_id → topic object
+var bookById    = {};      // book_id → book object
 
 var BOOK_SLUG_DISPLAY = {
     'doctrine_and_covenants': 'D&C',
@@ -1032,7 +1057,13 @@ Promise.all([
     fetch('./source_links.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
     fetch('./verse_discovery.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
     fetch('./entities/people_index.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
-    fetch('./entities/people.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; })
+    fetch('./entities/people.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; }),
+    fetch('./entities/places_index.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
+    fetch('./entities/places.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; }),
+    fetch('./entities/things_index.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
+    fetch('./entities/things.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; }),
+    fetch('./entities/topics.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; }),
+    fetch('./entities/books.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; })
 ]).then(function(results) {
         var data = results[0];
         var sourceData = results[1] || [];
@@ -1041,6 +1072,12 @@ Promise.all([
         entityIndex    = results[4] || {};
         entityList     = results[5] || [];
         entityList.forEach(function(p) { entityById[p.id] = p; });
+        placeIndex = results[6] || {};
+        (results[7] || []).forEach(function(p) { placeById[p.id] = p; });
+        thingIndex = results[8] || {};
+        (results[9] || []).forEach(function(t) { thingById[t.id] = t; });
+        (results[10] || []).forEach(function(t) { topicById[t.id] = t; Object.keys(topicById); });
+        (results[11] || []).forEach(function(b) { bookById[b.id] = b; });
         tocData = data;
         sourceTocData = sourceData;
         tocTree = buildTocTree(data);
@@ -1619,89 +1656,268 @@ function discIsRepeat(text) {
 }
 
 // ── Entity linking ────────────────────────────────────────────────────────
-// Returns HTML with entity name wrapped in .ent-link if found in index
-function linkifyName(text) {
-    if (!text || !Object.keys(entityIndex).length) return escapeHtml(text);
-    var lower = text.toLowerCase().trim();
-    var pid = entityIndex[lower];
-    if (pid) {
-        return '<span class="ent-link" data-entity="' + escapeHtml(pid) + '">' + escapeHtml(text) + '</span>';
+
+function fetchWikiImage(title, imgEl, placeholderEl) {
+    if (!title) return;
+    var cacheKey = 'wiki_img_' + title;
+    var cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+        var img = JSON.parse(cached);
+        if (img && img.source) { imgEl.src = img.source; imgEl.style.display = ''; placeholderEl.style.display = 'none'; }
+        return;
     }
-    return escapeHtml(text);
+    fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(title.replace(/ /g, '_')))
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+            var img = (data && data.thumbnail) ? data.thumbnail : null;
+            sessionStorage.setItem(cacheKey, JSON.stringify(img));
+            if (img && img.source) { imgEl.src = img.source; imgEl.style.display = ''; placeholderEl.style.display = 'none'; }
+        })
+        .catch(function() {});
 }
 
-// Wrap known entity names found anywhere in an attribution/source subline
-function linkifyAttribution(text) {
-    if (!text || !Object.keys(entityIndex).length) return escapeHtml(text);
-    var result = '';
-    var remaining = text;
-    // Iterate sorted keys (longest-first) to greedily match names in the string
-    var keys = Object.keys(entityIndex);
-    // Simple scan: try to find any key in the remaining text (case-insensitive)
-    var matched = false;
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var idx = remaining.toLowerCase().indexOf(key);
-        if (idx !== -1) {
-            var pid = entityIndex[key];
-            var before = remaining.slice(0, idx);
-            var match  = remaining.slice(idx, idx + key.length);
-            var after  = remaining.slice(idx + key.length);
-            result = escapeHtml(before)
-                + '<span class="ent-link" data-entity="' + escapeHtml(pid) + '">' + escapeHtml(match) + '</span>'
-                + escapeHtml(after);
-            matched = true;
-            break;
-        }
-    }
-    return matched ? result : escapeHtml(text);
+function renderExcerpts(excerpts, maxCount) {
+    if (!excerpts || !excerpts.length) return '';
+    var html = '<div class="ep-section">From the Sources</div>';
+    excerpts.slice(0, maxCount || 5).forEach(function(ex) {
+        var attr = ex.attr || (ex.speaker ? (entityById[ex.speaker] || {}).name || ex.speaker : null) || (ex.ref ? ex.ref : '');
+        html += '<div class="ep-excerpt">'
+            + '<div class="ep-excerpt-text">' + escapeHtml(ex.text) + '</div>'
+            + (attr ? '<div class="ep-excerpt-attr">— ' + escapeHtml(attr) + (ex.ref ? ' · ' + escapeHtml(ex.ref) : '') + '</div>' : '')
+            + '</div>';
+    });
+    return html;
 }
 
-// ── Entity profile panel ──────────────────────────────────────────────────
-function openEntityProfile(entityId) {
-    var entity = entityById[entityId];
-    if (!entity) return;
+function renderChips(ids, type) {
+    if (!ids || !ids.length) return '';
+    var labels = {person: 'People', place: 'Places', thing: 'Things', topic: 'Topics'};
+    var html = '<div class="ep-section">' + (labels[type] || type) + ' (' + ids.length + ')</div>'
+        + '<div class="ep-chip-row">';
+    ids.slice(0, 12).forEach(function(id) {
+        var obj = type === 'person' ? entityById[id]
+                : type === 'place' ? placeById[id]
+                : type === 'thing' ? thingById[id]
+                : topicById[id];
+        var name = (obj && obj.name) ? obj.name : id.split(':')[1].replace(/_/g, ' ');
+        var cls = type === 'place' ? ' chip-place' : type === 'thing' ? ' chip-thing' : type === 'topic' ? ' chip-topic' : '';
+        html += '<span class="ep-chip' + cls + '" data-chip-type="' + type + '" data-chip-id="' + escapeHtml(id) + '">'
+            + escapeHtml(name) + '</span>';
+    });
+    html += '</div>';
+    return html;
+}
 
-    var html = '<div class="entity-profile-header">'
-        + '<div class="entity-profile-name">' + escapeHtml(entity.name) + '</div>'
-        + (entity.roles && entity.roles.length
-            ? '<div class="entity-profile-role">' + escapeHtml(entity.roles.join(' · ')) + '</div>'
-            : '')
-        + '</div>';
+function renderScriptureRefs(refs) {
+    if (!refs || !refs.length) return '';
+    var html = '<div class="ep-section">Scriptures (' + refs.length + ')</div>'
+        + '<div class="ep-scripture-list">';
+    refs.slice(0, 30).forEach(function(ref) {
+        html += '<span class="ep-scripture-ref" data-verse-ref="' + escapeHtml(ref) + '">' + escapeHtml(ref) + '</span>';
+    });
+    html += '</div>';
+    return html;
+}
 
-    // Talks in corpus
-    var talks = (entity.doc_ids || []).filter(function(d) { return sourceMeta[d]; });
-    if (talks.length) {
-        html += '<div class="entity-section-title">Talks in This Corpus (' + talks.length + ')</div>';
-        talks.forEach(function(docId) {
-            var m = sourceMeta[docId];
-            html += '<div class="entity-talk-row" data-doc="' + escapeHtml(docId) + '" data-href="' + escapeHtml(m.href || '') + '">'
-                + '<div class="entity-talk-label">' + escapeHtml(m.label || docId) + '</div>'
-                + '<div class="entity-talk-meta">' + escapeHtml(m.collection || '') + (m.date ? ' · ' + escapeHtml(m.date) : '') + '</div>'
-                + '</div>';
-        });
-    }
+function buildProfileHeader(entity, typeLabel, placeholderIcon) {
+    var wikiTitle = entity.wikipedia_title || '';
+    var wikiLink = wikiTitle
+        ? '<a class="ep-wiki" href="https://en.wikipedia.org/wiki/' + encodeURIComponent(wikiTitle.replace(/ /g, '_')) + '" target="_blank" rel="noopener">Wikipedia ↗</a>'
+        : '';
+    var html = '<div class="ep-header">'
+        + '<img class="ep-image" id="ep-img" style="display:none" alt="">'
+        + '<div class="ep-image-placeholder" id="ep-placeholder">' + placeholderIcon + '</div>'
+        + '<div class="ep-title">'
+        + '<div class="ep-name">' + escapeHtml(entity.name) + '</div>'
+        + '<div class="ep-type">' + typeLabel + '</div>'
+        + (entity.roles && entity.roles.length ? '<div class="ep-meta">' + escapeHtml(entity.roles.join(' · ')) + '</div>' : '')
+        + wikiLink
+        + '</div></div>';
+    return html;
+}
 
-    // Quote stats
-    if (entity.quote_count > 0) {
-        html += '<div class="entity-section-title">Cited in Commentary (' + entity.quote_count + ' quotes)</div>';
-    }
-
+function openProfilePanel(entity, typeLabel, placeholderIcon, extraHtml) {
+    var html = buildProfileHeader(entity, typeLabel, placeholderIcon);
+    html += extraHtml || '';
     var chList = document.getElementById('ch-list');
     chList.innerHTML = html;
     document.getElementById('ch-word').textContent = entity.name;
     document.getElementById('channel').classList.add('open');
     channelOpen = true;
 
-    // Wire up talk row clicks
-    chList.querySelectorAll('.entity-talk-row').forEach(function(row) {
-        row.addEventListener('click', function() {
-            var docId = row.dataset.doc;
-            var href  = row.dataset.href;
-            var meta  = sourceMeta[docId];
-            if (meta) loadSourceDocument(docId, meta.href);
+    // Lazy load Wikipedia image
+    var imgEl = document.getElementById('ep-img');
+    var placeholderEl = document.getElementById('ep-placeholder');
+    if (entity.wikipedia_title && imgEl && placeholderEl) {
+        fetchWikiImage(entity.wikipedia_title, imgEl, placeholderEl);
+    }
+
+    // Wire up chip clicks
+    chList.querySelectorAll('.ep-chip[data-chip-id]').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+            var ctype = chip.dataset.chipType;
+            var cid   = chip.dataset.chipId;
+            if (ctype === 'person') openEntityProfile(cid);
+            else if (ctype === 'place') openPlaceProfile(cid);
+            else if (ctype === 'thing') openThingProfile(cid);
+            else if (ctype === 'topic') openTopicProfile(cid);
         });
     });
+
+    // Wire up scripture ref clicks
+    chList.querySelectorAll('.ep-scripture-ref[data-verse-ref]').forEach(function(span) {
+        span.addEventListener('click', function() {
+            // Parse "John 1:5" into chapter id and verse
+            var ref = span.dataset.verseRef;
+            var m = ref.match(/^(.+?)\s+(\d+):(\d+)$/);
+            if (!m) return;
+            var bookSlug = m[1].toLowerCase().replace(/ /g, '_');
+            var chNum = m[2];
+            var chId = bookSlug + '_' + chNum;
+            loadChapter(chId, true);
+        });
+    });
+
+    // Wire up talk row clicks
+    chList.querySelectorAll('.ep-talk-row[data-doc]').forEach(function(row) {
+        row.addEventListener('click', function() {
+            var meta = sourceMeta[row.dataset.doc];
+            if (meta) loadSourceDocument(row.dataset.doc, meta.href);
+        });
+    });
+}
+
+function openEntityProfile(entityId) {
+    var entity = entityById[entityId];
+    if (!entity) return;
+
+    // Build excerpts from quote data in donaldsonNotes (already loaded)
+    // For now use entity.doc_ids to show their talks
+    var talks = (entity.doc_ids || []).filter(function(d) { return sourceMeta[d]; });
+    var talksHtml = '';
+    if (talks.length) {
+        talksHtml += '<div class="ep-section">Talks in This Corpus (' + talks.length + ')</div>';
+        talks.slice(0, 15).forEach(function(docId) {
+            var m = sourceMeta[docId];
+            talksHtml += '<div class="ep-talk-row" data-doc="' + escapeHtml(docId) + '">'
+                + '<div class="ep-talk-label">' + escapeHtml(m.label || docId) + '</div>'
+                + '<div class="ep-talk-meta">' + escapeHtml(m.collection || '') + '</div>'
+                + '</div>';
+        });
+    }
+
+    var extraHtml = ''
+        + renderChips(entity.related_places || [], 'place')
+        + renderChips(entity.related_things || [], 'thing')
+        + renderChips(entity.related_topics || [], 'topic')
+        + talksHtml;
+
+    openProfilePanel(entity, 'Person', '👤', extraHtml);
+}
+
+function openPlaceProfile(placeId) {
+    var entity = placeById[placeId];
+    if (!entity) return;
+
+    var extraHtml = renderExcerpts(entity.excerpts, 6)
+        + renderScriptureRefs(entity.related_scriptures)
+        + renderChips(entity.related_people || [], 'person')
+        + renderChips(entity.related_things || [], 'thing');
+
+    openProfilePanel(entity, 'Place', '📍', extraHtml);
+}
+
+function openThingProfile(thingId) {
+    var entity = thingById[thingId];
+    if (!entity) return;
+
+    var extraHtml = renderExcerpts(entity.excerpts, 6)
+        + renderScriptureRefs(entity.related_scriptures)
+        + renderChips(entity.related_people || [], 'person')
+        + renderChips(entity.related_places || [], 'place');
+
+    openProfilePanel(entity, 'Artifact / Object', '📜', extraHtml);
+}
+
+function openTopicProfile(topicId) {
+    var entity = topicById[topicId];
+    if (!entity) return;
+
+    var extraHtml = renderExcerpts(entity.excerpts, 8)
+        + renderScriptureRefs(entity.related_scriptures)
+        + renderChips(entity.related_people || [], 'person')
+        + renderChips(entity.related_places || [], 'place')
+        + renderChips(entity.related_things || [], 'thing');
+
+    openProfilePanel(entity, 'Topic', '📖', extraHtml);
+}
+
+function openBookProfile(bookId) {
+    var entity = bookById[bookId];
+    if (!entity) return;
+
+    var talksHtml = '';
+    if (entity.chapter_ids && entity.chapter_ids.length) {
+        talksHtml += '<div class="ep-section">Chapters (' + entity.chapter_ids.length + ')</div>';
+        talksHtml += '<div class="ep-scripture-list">';
+        entity.chapter_ids.slice(0, 40).forEach(function(chId) {
+            var meta = chapterMeta[chId];
+            talksHtml += '<span class="ep-scripture-ref" data-chapter-id="' + escapeHtml(chId) + '">'
+                + escapeHtml((meta && meta.label) || chId) + '</span>';
+        });
+        talksHtml += '</div>';
+    }
+
+    var extraHtml = renderExcerpts(entity.description_excerpts || [], 5)
+        + renderChips(entity.related_people || [], 'person')
+        + renderChips(entity.related_places || [], 'place')
+        + renderChips(entity.related_things || [], 'thing')
+        + talksHtml;
+
+    openProfilePanel(entity, entity.testament ? entity.testament + ' Scripture' : 'Scripture', '📗', extraHtml);
+}
+
+// Returns HTML with entity name wrapped in .ent-link if found in index
+function linkifyName(text) {
+    if (!text) return escapeHtml(text || '');
+    var lower = text.toLowerCase().trim();
+    var pid = entityIndex[lower];
+    if (pid) return '<span class="ent-link" data-entity="' + escapeHtml(pid) + '">' + escapeHtml(text) + '</span>';
+    var plid = placeIndex[lower];
+    if (plid) return '<span class="ent-link" data-place="' + escapeHtml(plid) + '">' + escapeHtml(text) + '</span>';
+    var tid = thingIndex[lower];
+    if (tid) return '<span class="ent-link" data-thing="' + escapeHtml(tid) + '">' + escapeHtml(text) + '</span>';
+    return escapeHtml(text);
+}
+
+// Wrap known entity names found in an attribution/source subline
+function linkifyAttribution(text) {
+    if (!text) return escapeHtml(text || '');
+    // Try person index first (longest-first sorted)
+    var keys = Object.keys(entityIndex);
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var idx = text.toLowerCase().indexOf(key);
+        if (idx !== -1) {
+            var pid = entityIndex[key];
+            return escapeHtml(text.slice(0, idx))
+                + '<span class="ent-link" data-entity="' + escapeHtml(pid) + '">' + escapeHtml(text.slice(idx, idx + key.length)) + '</span>'
+                + escapeHtml(text.slice(idx + key.length));
+        }
+    }
+    // Try place index
+    var pkeys = Object.keys(placeIndex);
+    for (var j = 0; j < pkeys.length; j++) {
+        var pkey = pkeys[j];
+        var pidx = text.toLowerCase().indexOf(pkey);
+        if (pidx !== -1) {
+            var plid2 = placeIndex[pkey];
+            return escapeHtml(text.slice(0, pidx))
+                + '<span class="ent-link" data-place="' + escapeHtml(plid2) + '">' + escapeHtml(text.slice(pidx, pidx + pkey.length)) + '</span>'
+                + escapeHtml(text.slice(pidx + pkey.length));
+        }
+    }
+    return escapeHtml(text);
 }
 
 var DISC_PREVIEW_LEN = 320;
@@ -3051,11 +3267,13 @@ document.getElementById('content').addEventListener('click', function(e) {
 // Called when user clicks a .w span
 // ── Entity link click handler ─────────────────────────────────────────────
 document.addEventListener('click', function(e) {
-    var link = e.target.closest('.ent-link[data-entity]');
-    if (link) {
-        e.stopPropagation();
-        openEntityProfile(link.dataset.entity);
-    }
+    var link = e.target.closest('.ent-link');
+    if (!link) return;
+    e.stopPropagation();
+    if (link.dataset.entity) openEntityProfile(link.dataset.entity);
+    else if (link.dataset.place) openPlaceProfile(link.dataset.place);
+    else if (link.dataset.thing) openThingProfile(link.dataset.thing);
+    else if (link.dataset.topic) openTopicProfile(link.dataset.topic);
 });
 
 document.addEventListener('click', function(e) {
