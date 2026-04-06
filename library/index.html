@@ -659,6 +659,20 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
     cursor: pointer; background: none; border: none; padding: 5px 0 0; margin-top: 3px;
 }
 .quote-card.expanded .quote-more { display: none; }
+.ent-link { color: var(--accent); border-bottom: 1px dotted currentColor; cursor: pointer; }
+.ent-link:hover { background: rgba(156,122,77,0.08); border-radius: 2px; }
+/* Entity profile panel */
+.entity-profile-header { padding: 18px 16px 10px; border-bottom: 1px solid var(--divider); }
+.entity-profile-name { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.entity-profile-role { font-size: 12px; color: var(--muted); }
+.entity-section-title { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); padding: 12px 16px 6px; }
+.entity-talk-row { padding: 8px 16px; border-bottom: 1px solid var(--divider); cursor: pointer; }
+.entity-talk-row:hover { background: rgba(0,0,0,0.04); }
+.entity-talk-label { font-size: 13px; font-weight: 500; color: var(--text); }
+.entity-talk-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.entity-verse-row { padding: 7px 16px; border-bottom: 1px solid var(--divider); cursor: pointer; font-size: 12px; color: var(--accent); }
+.entity-verse-row:hover { background: rgba(0,0,0,0.04); }
 .hist-card { padding: 14px 14px; border-bottom: 1px solid var(--divider); }
 .hist-badge {
     display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .05em;
@@ -835,6 +849,9 @@ var sourceMeta = {};
 var sourceLinks    = {};   // doc_id → {para_idx → [{book,ch,v,score,ref}]}
 var verseDiscovery = {};   // "Book Ch:V" → [{tradition_pair, source_label, source_text, ...}]
 var donaldsonNotes = {};   // chapterId → { "verseNum": [para, ...] }
+var entityIndex = {};      // lowercased name variant → person_id (longest-first sorted)
+var entityList  = [];      // full people.json array
+var entityById  = {};      // person_id → entity object
 
 var BOOK_SLUG_DISPLAY = {
     'doctrine_and_covenants': 'D&C',
@@ -1013,12 +1030,17 @@ Promise.all([
     fetch('./toc.json').then(function(r) { return r.json(); }),
     fetch('./source_toc.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; }),
     fetch('./source_links.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
-    fetch('./verse_discovery.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; })
+    fetch('./verse_discovery.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
+    fetch('./entities/people_index.json').then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; }),
+    fetch('./entities/people.json').then(function(r) { return r.ok ? r.json() : []; }).catch(function() { return []; })
 ]).then(function(results) {
         var data = results[0];
         var sourceData = results[1] || [];
         sourceLinks    = results[2] || {};
         verseDiscovery = results[3] || {};
+        entityIndex    = results[4] || {};
+        entityList     = results[5] || [];
+        entityList.forEach(function(p) { entityById[p.id] = p; });
         tocData = data;
         sourceTocData = sourceData;
         tocTree = buildTocTree(data);
@@ -1596,6 +1618,92 @@ function discIsRepeat(text) {
     return DISC_REPEAT_PREFIXES.some(function(p) { return t.indexOf(p) === 0; });
 }
 
+// ── Entity linking ────────────────────────────────────────────────────────
+// Returns HTML with entity name wrapped in .ent-link if found in index
+function linkifyName(text) {
+    if (!text || !Object.keys(entityIndex).length) return escapeHtml(text);
+    var lower = text.toLowerCase().trim();
+    var pid = entityIndex[lower];
+    if (pid) {
+        return '<span class="ent-link" data-entity="' + escapeHtml(pid) + '">' + escapeHtml(text) + '</span>';
+    }
+    return escapeHtml(text);
+}
+
+// Wrap known entity names found anywhere in an attribution/source subline
+function linkifyAttribution(text) {
+    if (!text || !Object.keys(entityIndex).length) return escapeHtml(text);
+    var result = '';
+    var remaining = text;
+    // Iterate sorted keys (longest-first) to greedily match names in the string
+    var keys = Object.keys(entityIndex);
+    // Simple scan: try to find any key in the remaining text (case-insensitive)
+    var matched = false;
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var idx = remaining.toLowerCase().indexOf(key);
+        if (idx !== -1) {
+            var pid = entityIndex[key];
+            var before = remaining.slice(0, idx);
+            var match  = remaining.slice(idx, idx + key.length);
+            var after  = remaining.slice(idx + key.length);
+            result = escapeHtml(before)
+                + '<span class="ent-link" data-entity="' + escapeHtml(pid) + '">' + escapeHtml(match) + '</span>'
+                + escapeHtml(after);
+            matched = true;
+            break;
+        }
+    }
+    return matched ? result : escapeHtml(text);
+}
+
+// ── Entity profile panel ──────────────────────────────────────────────────
+function openEntityProfile(entityId) {
+    var entity = entityById[entityId];
+    if (!entity) return;
+
+    var html = '<div class="entity-profile-header">'
+        + '<div class="entity-profile-name">' + escapeHtml(entity.name) + '</div>'
+        + (entity.roles && entity.roles.length
+            ? '<div class="entity-profile-role">' + escapeHtml(entity.roles.join(' · ')) + '</div>'
+            : '')
+        + '</div>';
+
+    // Talks in corpus
+    var talks = (entity.doc_ids || []).filter(function(d) { return sourceMeta[d]; });
+    if (talks.length) {
+        html += '<div class="entity-section-title">Talks in This Corpus (' + talks.length + ')</div>';
+        talks.forEach(function(docId) {
+            var m = sourceMeta[docId];
+            html += '<div class="entity-talk-row" data-doc="' + escapeHtml(docId) + '" data-href="' + escapeHtml(m.href || '') + '">'
+                + '<div class="entity-talk-label">' + escapeHtml(m.label || docId) + '</div>'
+                + '<div class="entity-talk-meta">' + escapeHtml(m.collection || '') + (m.date ? ' · ' + escapeHtml(m.date) : '') + '</div>'
+                + '</div>';
+        });
+    }
+
+    // Quote stats
+    if (entity.quote_count > 0) {
+        html += '<div class="entity-section-title">Cited in Commentary (' + entity.quote_count + ' quotes)</div>';
+    }
+
+    var chList = document.getElementById('ch-list');
+    chList.innerHTML = html;
+    document.getElementById('ch-word').textContent = entity.name;
+    document.getElementById('channel').classList.add('open');
+    channelOpen = true;
+
+    // Wire up talk row clicks
+    chList.querySelectorAll('.entity-talk-row').forEach(function(row) {
+        row.addEventListener('click', function() {
+            var docId = row.dataset.doc;
+            var href  = row.dataset.href;
+            var meta  = sourceMeta[docId];
+            if (meta) loadSourceDocument(docId, meta.href);
+        });
+    });
+}
+
 var DISC_PREVIEW_LEN = 320;
 function expandCard(btn) {
     btn.closest('.note-card, .quote-card, .hist-card').classList.add('expanded');
@@ -1692,8 +1800,8 @@ function openVerseDiscovery(ref) {
             var byline  = q.speaker || q.attr || '';
             var subline = [q.source, q.date, q.ref].filter(Boolean).join(' · ');
             html += '<div class="quote-card">'
-                + '<div class="quote-speaker ' + typeClass + '">' + escapeHtml(byline) + '</div>'
-                + (subline ? '<div class="quote-source">' + escapeHtml(subline) + '</div>' : '')
+                + '<div class="quote-speaker ' + typeClass + '">' + linkifyName(byline) + '</div>'
+                + (subline ? '<div class="quote-source">' + linkifyAttribution(subline) + '</div>' : '')
                 + '<div class="quote-text">'
                 + makeExpandable(q.text || '', 'quote-preview', 'quote-overflow', 'quote-more')
                 + '</div></div>';
@@ -1709,7 +1817,7 @@ function openVerseDiscovery(ref) {
             var meta = discParseCard(e);
             html += '<div class="hist-card' + (hasLink ? ' has-link' : '') + '" data-idx="' + i + '">'
                 + '<div class="hist-badge ' + (meta.badgeClass || '') + '">' + escapeHtml(meta.badge) + '</div>'
-                + '<div class="hist-author">' + escapeHtml(meta.author) + '</div>'
+                + '<div class="hist-author">' + linkifyName(meta.author) + '</div>'
                 + (meta.work ? '<div class="hist-work">' + escapeHtml(meta.work) + '</div>' : '')
                 + '<div class="hist-quote">'
                 + makeExpandable(qt, 'quote-preview', 'quote-overflow', 'quote-more')
@@ -2941,6 +3049,15 @@ document.getElementById('content').addEventListener('click', function(e) {
 });
 
 // Called when user clicks a .w span
+// ── Entity link click handler ─────────────────────────────────────────────
+document.addEventListener('click', function(e) {
+    var link = e.target.closest('.ent-link[data-entity]');
+    if (link) {
+        e.stopPropagation();
+        openEntityProfile(link.dataset.entity);
+    }
+});
+
 document.addEventListener('click', function(e) {
     // On mobile, touch events may land on a containing element rather than the
     // inner span.w, so fall back to hit-testing at the click coordinates.
