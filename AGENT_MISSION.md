@@ -61,6 +61,14 @@ git commit -m "T-XXXX: description"
 git push origin main
 python3 lds_pipeline/task_ledger.py complete --task-id T-XXXX --agent YourAgentName \
   --commit $(git rev-parse --short HEAD) --notes "what was done"
+
+# Required: spawn one follow-on task from what you observed while doing the work
+python3 lds_pipeline/task_ledger.py append --type queue \
+  --title "The next most valuable thing to do, grounded in what you just learned"
 ```
+
+The queue never runs dry because every agent feeds it. Every new task must be
+grounded in direct observation and must serve the mission: deepen reading, improve
+connections, clean the corpus, or make traversal faster and more trustworthy.
 
 Full design system reference: `AGENT_GUIDELINES.md`

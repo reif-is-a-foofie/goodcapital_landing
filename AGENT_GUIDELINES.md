@@ -222,7 +222,30 @@ python3 lds_pipeline/task_ledger.py complete \
   --commit $(git rev-parse --short HEAD) \
   --notes "brief result summary"
 # → automatically pushes ledger update to origin
+
+# REQUIRED: spawn one follow-on task from your learnings
+python3 lds_pipeline/task_ledger.py append \
+  --type queue \
+  --title "Descriptive title of the next thing that should be done"
+# → the title must stem from something you observed while doing the task
+# → it must align with the project mission (deepen reading, improve links, clean corpus)
+# → one task, not a list — the most valuable next step you can name
 ```
+
+### The follow-on task rule
+
+Every agent is required to append one new task before calling the session complete.
+This is not optional and not a formality. It is the mechanism that keeps the queue
+alive and mission-aligned without human curation.
+
+The follow-on task should come from direct observation:
+- A gap you found while doing the work ("Moses is enriched but Aaron has no born/died data")
+- A related pattern that would compound the value ("places are annotated but events are not")
+- A regression you noticed ("verse 1 Ne 3:7 text renders with a stray bracket")
+- A missing cross-link that would help a reader ("Faith topic has no link to figures known for faith")
+
+Bad follow-on task: vague, broad, or not grounded in what you just did.
+Good follow-on task: specific, actionable, connected to what you observed.
 
 ### Conflict avoidance
 - Claim before writing. Never start work on a task you haven't claimed.
