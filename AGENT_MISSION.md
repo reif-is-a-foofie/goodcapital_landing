@@ -1,7 +1,8 @@
-# The Good Project Mission
+# The Good Project — Agent Mission
 
-The Good Project exists to gather spiritual truth across scriptures, commentary,
-history, and related source traditions into one navigable library.
+Read `MISSION.md` first. That document is the soul of the project —
+it contains the vision in the words of the prophets and defines what we are building.
+This document is the operational layer for agents executing inside that vision.
 
 Its product goal is simple:
 
