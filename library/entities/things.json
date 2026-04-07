@@ -270,7 +270,11 @@
       "Ruth 4:22",
       "Zechariah 8:17"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Instruments used for receiving revelation or translating languages in LDS belief",
+    "wikipedia_summary": "In the Latter Day Saint movement, the term Urim and Thummim refers to a category of instruments used for receiving revelation or translating languages. According to Latter Day Saint theology, the two stones found in the breastplate of Aaron in the Old Testament, the white stone referenced in the Book of Revelation in the New Testament, the two stones bound by silver bows into a set of spectacles (interpreters) that movement founder Joseph Smith said he found buried in the hill Cumorah with the golden plates, and the seer stone found while digging a well used to translate the Book of Mormon are",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Joseph_Smith_receiving_golden_plates.jpg/330px-Joseph_Smith_receiving_golden_plates.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Urim_and_Thummim_(Latter_Day_Saints)"
   },
   {
     "id": "thing:gold_plates",
@@ -673,7 +677,10 @@
       "Words Of Mormon 1:5",
       "Words Of Mormon 1:7"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Metallic plates from which Joseph Smith allegedly translated the Book of Mormon",
+    "wikipedia_summary": "According to Latter Day Saint belief, the golden plates are the source from which Joseph Smith translated the Book of Mormon, a sacred text of the faith. Some accounts from people who reported handling the plates describe the plates as weighing from 30 to 60 pounds, gold in color, and composed of thin metallic pages engraved with hieroglyphics on both sides and bound with three D-shaped rings.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Golden_plates"
   },
   {
     "id": "thing:brass_plates",
@@ -1420,7 +1427,11 @@
       "Omni 1:15",
       "Words Of Mormon 1:13"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Person in the Book of Mormon",
+    "wikipedia_summary": "Laban is a figure in the First Book of Nephi, near the start of the Book of Mormon, a scripture of the Latter Day Saint movement. Although he only makes a brief appearance in the Book of Mormon, his brass plates play an important role when they are taken by Laman and Nephi and are used by the Nephites.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Laban%2C_in_Nephi_and_Laban%2C_by_HH_Haag.png/330px-Laban%2C_in_Nephi_and_Laban%2C_by_HH_Haag.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Laban_(Book_of_Mormon)"
   },
   {
     "id": "thing:breastplate",
@@ -1978,7 +1989,11 @@
       "Revelation 8:2",
       "Romans 15:12"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Latter Day Saint ordinance (ritual)",
+    "wikipedia_summary": "Sealing is an ordinance (ritual) performed in Latter Day Saint temples by a person holding the sealing authority. The purpose of this ordinance is to seal familial relationships, making possible the existence of family relationships throughout eternity. Sealings are typically performed as marriages or as sealing of children to parents. They were performed prior to the death of Joseph Smith, and subsequently performed in the largest of the faiths that came from the movement, The Church of Jesus Christ of Latter-day Saints. LDS Church teachings place great importance on the specific authority re",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Phil_and_Marlene.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Sealing_(Mormonism)"
   },
   {
     "id": "thing:priesthood_keys",
@@ -2384,7 +2399,10 @@
       "Romans 9:4",
       "Zechariah 14:21"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Authority in the Latter Day Saint movement",
+    "wikipedia_summary": "In the Latter Day Saint movement, priesthood is the power and authority of God given to humans, including the authority to perform ordinances and to act as a leader in the church. A group of priesthood holders is referred to as a quorum.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Priesthood_(Latter_Day_Saints)"
   },
   {
     "id": "thing:ark_of_the_covenant",
@@ -2748,7 +2766,11 @@
       "Romans 3:25",
       "Ruth 4:22"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Chest containing the Ten Commandments",
+    "wikipedia_summary": "The Ark of the Covenant, also known as the Ark of the Testimony or the Ark of God, was a religious storage chest and relic held to be the most sacred object by the Israelites.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Tissot_Moses_and_Joshua_in_the_Tabernacle.jpg/330px-Tissot_Moses_and_Joshua_in_the_Tabernacle.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ark_of_the_Covenant"
   },
   {
     "id": "thing:tabernacle",
@@ -3209,7 +3231,11 @@
       "Titus 1:9",
       "Zechariah 4:3"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Temporary dwelling used by Israelites in the biblical Book of Exodus",
+    "wikipedia_summary": "According to the Hebrew Bible, the tabernacle, also known as the Tent of the Congregation, was the portable earthly dwelling of God used by the Israelites from the Exodus until the conquest of Canaan. Moses was instructed at Mount Sinai to construct and transport the tabernacle with the Israelites on their journey through the wilderness and their subsequent conquest of the Promised Land. Based on 1 Kings 6:1, biblical literalists hold that after either 480 or 440 years, Solomon's Temple in Jerusalem superseded it as God's dwelling-place.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Stiftshuette_Modell_Timnapark.jpg/330px-Stiftshuette_Modell_Timnapark.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Tabernacle"
   },
   {
     "id": "thing:temple",
@@ -4850,7 +4876,11 @@
       "Zephaniah 3:19",
       "Zephaniah 3:20"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Former places of Israelite and Jewish worship",
+    "wikipedia_summary": "The Temple in Jerusalem, or alternatively the Holy Temple, refers to the two religious structures that served as the central places of worship for Israelites and Jews on the Temple Mount in the Old City of Jerusalem. According to the Hebrew Bible, the First Temple was built in the 10th century BCE, during the reign of Solomon over the United Kingdom of Israel. It stood until c. 587 BCE, when it was destroyed during the Babylonian siege of Jerusalem. The exact location of this temple on the temple mount is debatable.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Jerusalem_Modell_BW_2.JPG/330px-Jerusalem_Modell_BW_2.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Temple_in_Jerusalem"
   },
   {
     "id": "thing:manna",

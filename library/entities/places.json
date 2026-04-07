@@ -128,7 +128,11 @@
       "Mosiah 18:19",
       "Revelation 8:1"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Town in New York, United States",
+    "wikipedia_summary": "Palmyra is a town in southwestern Wayne County, New York, United States. The population was 7,975 at the 2010 census. The town is named after the ancient city Palmyra in Syria.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/East_Main_Street_Commercial_Historic_District_Palmyra_NY_Aug_09.jpg/330px-East_Main_Street_Commercial_Historic_District_Palmyra_NY_Aug_09.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Palmyra%2C_New_York"
   },
   {
     "id": "place:nauvoo",
@@ -327,7 +331,11 @@
       "Revelation 1:1",
       "Ruth 1:14"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "City in Illinois, United States",
+    "wikipedia_summary": "Nauvoo is a small city in Hancock County, Illinois, United States, on the Mississippi River near Fort Madison, Iowa. The population of Nauvoo was 950 at the 2020 census. Nauvoo attracts visitors for its historic importance and its religious significance to members of The Church of Jesus Christ of Latter-day Saints, Community of Christ, and other groups stemming from the Latter Day Saint movement, as well as the Icarians. The city and its immediate surrounding area are listed on the National Register of Historic Places as the Nauvoo Historic District.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Nauvoo_Temple01.jpg/330px-Nauvoo_Temple01.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Nauvoo%2C_Illinois"
   },
   {
     "id": "place:kirtland",
@@ -568,7 +576,11 @@
       "Romans 16:16",
       "Zechariah 14:21"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "City in Ohio, United States",
+    "wikipedia_summary": "Kirtland is a city in Lake County, Ohio, United States. The population was 6,937 at the 2020 census. Kirtland is known for being the early headquarters of the Latter Day Saint movement from 1831 to 1837 and the site of the movement's first temple, the Kirtland Temple, completed in 1836. The Kirtland Temple and nearby Historic Kirtland Village are maintained as historic sites highlighting that era. The city is also the location for multiple parks in the Lake Metroparks system, as well as the Holden Arboretum.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Kirtland_Temple_ext_%287-25-18%29.jpg/330px-Kirtland_Temple_ext_%287-25-18%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Kirtland%2C_Ohio"
   },
   {
     "id": "place:far_west",
@@ -614,7 +626,11 @@
       "Acts 27:10",
       "Revelation 14:8"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Former Mormon settlement in Missouri, abandoned after the Missouri Mormon War",
+    "wikipedia_summary": "Far West was a settlement of the Latter Day Saint movement in Caldwell County, Missouri, United States, during the late 1830s. It is recognized as a historic site by the U.S. National Register of Historic Places, added to the register in 1970. It is owned and maintained by the Church of Jesus Christ of Latter-day Saints.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/FarWestChurch.jpg/330px-FarWestChurch.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Far_West%2C_Missouri"
   },
   {
     "id": "place:carthage",
@@ -708,7 +724,11 @@
       "Luke 22:12",
       "Matthew 5:13"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "City in the United States",
+    "wikipedia_summary": "Carthage is a city in and the county seat of Hancock County, Illinois, United States. Its population was 2,490 as of the 2020 census. Carthage is best known for being the site of the 1844 killing of Joseph Smith, who founded the Latter Day Saint movement.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Carthage_Jail_from_southwest.jpg/330px-Carthage_Jail_from_southwest.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Carthage%2C_Illinois"
   },
   {
     "id": "place:salt_lake_city",
@@ -1216,7 +1236,11 @@
       "Zechariah 14:8",
       "Zechariah 9:9"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "State capital and largest city of Utah, U.S.",
+    "wikipedia_summary": "Salt Lake City, often shortened to Salt Lake or SLC, is the capital and most populous city of the U.S. state of Utah. It is the county seat of Salt Lake County, the most populous county in the state. The population was 199,723 at the 2020 census, while the Salt Lake City metropolitan area has an estimated 1.3 million residents and is the 46th-largest metropolitan area in the United States. It is also part of the larger Salt Lake City–Ogden–Provo combined statistical area, an urban corridor along a 120-mile (190 km) segment of the Wasatch Front with a population of approximately 2.8 million. It",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Salt_Lake_Union_Pacific_Railroad_Station%2C_South_Temple_at_400_West%2C_Central_City_West%2C_Salt_Lake_City%2C_UT%2C_USA.jpg/330px-Salt_Lake_Union_Pacific_Railroad_Station%2C_South_Temple_at_400_West%2C_Central_City_West%2C_Salt_Lake_City%2C_UT%2C_USA.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Salt_Lake_City"
   },
   {
     "id": "place:harmony",
@@ -1545,7 +1569,11 @@
       "Ruth 4:22",
       "Zechariah 9:9"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Borough in Pennsylvania, US",
+    "wikipedia_summary": "Harmony is a borough in Butler County, Pennsylvania, United States. As of the 2020 census, Harmony had a population of 942. It is located approximately 30 miles (48 km) north of Pittsburgh.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Harmony_PA.jpg/330px-Harmony_PA.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Harmony%2C_Pennsylvania"
   },
   {
     "id": "place:cumorah",
@@ -1758,7 +1786,11 @@
       "Revelation 22:21",
       "Words Of Mormon 1:1"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Drumlin associated with the Latter Day Saint movement",
+    "wikipedia_summary": "Cumorah is a drumlin in Manchester, New York, United States, where Joseph Smith said he found a set of golden plates which he also said he translated into English and published as the Book of Mormon.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Hill-cumorah-crop.jpg/330px-Hill-cumorah-crop.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Cumorah"
   },
   {
     "id": "place:fayette",
