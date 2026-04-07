@@ -661,6 +661,14 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .quote-card.expanded .quote-more { display: none; }
 .ent-link { color: var(--accent); border-bottom: 1px dotted currentColor; cursor: pointer; }
 .ent-link:hover { background: rgba(156,122,77,0.08); border-radius: 2px; }
+/* Entity-linked word spans inside verse text */
+.verse-text span.w[data-entity],
+.verse-text span.w[data-place],
+.verse-text span.w[data-thing] { border-bottom: 1px dotted var(--accent); }
+.verse-text span.ent-link { font-size: inherit; font-family: inherit; }
+/* Place chips use blue; things use purple */
+.verse-text span.w[data-place] { border-bottom-color: #4a7090; }
+.verse-text span.w[data-thing] { border-bottom-color: #6a4a8c; }
 /* Entity profile panel */
 .ep-header { display: flex; gap: 12px; align-items: flex-start; padding: 16px 16px 12px; border-bottom: 1px solid var(--divider); }
 .ep-image { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--divider); }
@@ -2260,6 +2268,134 @@ function loadSourceDocument(docId, href, opts) {
 }
 
 // ── Load a chapter (scripture text only — fast) ──────────────────────────
+// ── Entity annotation ─────────────────────────────────────────────────────
+// After a chapter block is inserted, scan verse text for person/place/thing
+// names and mark them as entity links. Operates on the live DOM.
+//
+// Strategy:
+//  1. For existing span.w nodes whose text matches an entity variant,
+//     add data-entity / data-place / data-thing so clicks open the profile.
+//  2. For multi-word entity names that appear as plain text (not yet in a
+//     span.w), wrap them in span.ent-link nodes via text-node walking.
+
+var _aeBuilt = false;
+// Sorted arrays of variants (longest first) built once from live indexes
+var _aePersonKeys = [];
+var _aePlaceKeys  = [];
+var _aeThingKeys  = [];
+
+function _buildAnnotationKeys() {
+    if (_aeBuilt) return;
+    _aeBuilt = true;
+    // Only scripture figures (have group field) — exclude modern attribution names
+    _aePersonKeys = Object.keys(entityIndex)
+        .filter(function(k) {
+            var eid = entityIndex[k];
+            return eid && entityById[eid] && entityById[eid].group;
+        })
+        .sort(function(a, b) { return b.length - a.length; });
+
+    _aePlaceKeys = Object.keys(placeIndex)
+        .filter(function(k) { return k.length >= 4; })
+        .sort(function(a, b) { return b.length - a.length; });
+
+    _aeThingKeys = Object.keys(thingIndex)
+        .filter(function(k) { return k.length >= 5; })
+        .sort(function(a, b) { return b.length - a.length; });
+}
+
+function _wordBoundary(str, start, len) {
+    var before = start > 0 ? str[start - 1] : ' ';
+    var after  = start + len < str.length ? str[start + len] : ' ';
+    return !/[a-zA-Z]/.test(before) && !/[a-zA-Z]/.test(after);
+}
+
+// Annotate a single span.w if its text matches an entity
+function _annotateWSpan(span) {
+    if (span.dataset.entity || span.dataset.place || span.dataset.thing) return;
+    var t = span.textContent.toLowerCase();
+    for (var i = 0; i < _aePersonKeys.length; i++) {
+        if (_aePersonKeys[i] === t) {
+            span.dataset.entity = entityIndex[_aePersonKeys[i]];
+            return;
+        }
+    }
+    for (var j = 0; j < _aePlaceKeys.length; j++) {
+        if (_aePlaceKeys[j] === t) {
+            span.dataset.place = placeIndex[_aePlaceKeys[j]];
+            return;
+        }
+    }
+    for (var k = 0; k < _aeThingKeys.length; k++) {
+        if (_aeThingKeys[k] === t) {
+            span.dataset.thing = thingIndex[_aeThingKeys[k]];
+            return;
+        }
+    }
+}
+
+// Walk text nodes in an element and wrap multi-word entity matches
+function _annotateTextNodes(el, keys, lookupFn, attrName) {
+    if (!keys.length) return;
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+        acceptNode: function(node) {
+            // Skip text inside existing span.w or ent-link
+            var p = node.parentElement;
+            if (p && (p.classList.contains('w') || p.classList.contains('ent-link'))) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+        }
+    }, false);
+    var nodes = [];
+    var n;
+    while ((n = walker.nextNode())) nodes.push(n);
+
+    nodes.forEach(function(textNode) {
+        var text = textNode.nodeValue;
+        var lower = text.toLowerCase();
+        var found = null;
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            if (key.length < 5) continue; // skip short single-word variants (handled by _annotateWSpan)
+            var idx = lower.indexOf(key);
+            if (idx === -1) continue;
+            if (!_wordBoundary(lower, idx, key.length)) continue;
+            found = { key: key, idx: idx, id: lookupFn(key) };
+            break;
+        }
+        if (!found) return;
+
+        var parent = textNode.parentNode;
+        if (!parent) return;
+        var before = document.createTextNode(text.slice(0, found.idx));
+        var span = document.createElement('span');
+        span.className = 'ent-link';
+        span.dataset[attrName] = found.id;
+        span.textContent = text.slice(found.idx, found.idx + found.key.length);
+        var after = document.createTextNode(text.slice(found.idx + found.key.length));
+        parent.replaceChild(after, textNode);
+        parent.insertBefore(span, after);
+        parent.insertBefore(before, span);
+    });
+}
+
+function annotateChapterEntities(block) {
+    _buildAnnotationKeys();
+
+    var verseDivs = block.querySelectorAll('.verse');
+    verseDivs.forEach(function(vdiv) {
+        var vt = vdiv.querySelector('.verse-text');
+        if (!vt) return;
+
+        // Step 1: annotate existing span.w nodes
+        vt.querySelectorAll('span.w').forEach(_annotateWSpan);
+
+        // Step 2: wrap multi-word names in plain text nodes
+        _annotateTextNodes(vt, _aePersonKeys, function(k) { return entityIndex[k]; }, 'entity');
+        _annotateTextNodes(vt, _aePlaceKeys,  function(k) { return placeIndex[k]; },  'place');
+        _annotateTextNodes(vt, _aeThingKeys,  function(k) { return thingIndex[k]; },  'thing');
+    });
+}
+
 function loadChapter(id, prepend) {
     if (loadedChapters.has(id)) {
         return Promise.resolve();
@@ -2302,6 +2438,7 @@ function loadChapter(id, prepend) {
             restoreHighlights(id, block);
             setNextToLoad(id);
             markVerseDiscovery(block, id);
+            annotateChapterEntities(block);
 
             // Start watching this block — notes load when it enters the viewport
             notesObserver.observe(block);
@@ -3288,7 +3425,9 @@ function focusVerse(verse, toggleExpand) {
 
 document.getElementById('content').addEventListener('click', function(e) {
     // Word click handled separately below — don't toggle verse for word clicks
-    if (e.target.closest('span.w')) return;
+    // Exception: entity-marked span.w clicks are handled by the ent-link listener
+    var wSpan = e.target.closest('span.w');
+    if (wSpan && !wSpan.dataset.entity && !wSpan.dataset.place && !wSpan.dataset.thing) return;
     if (e.target.closest('a.ref-link, a.backlink-ref')) return;
 
     // Verse discovery dot
@@ -3379,6 +3518,11 @@ document.addEventListener('click', function(e) {
         || (e.target.closest('.verse-text, .scripture') && nearestWordSpan(e.target.closest('.verse-text, .scripture'), e.clientX, e.clientY));
     if (!span) return;
     e.stopPropagation();
+
+    // Entity-annotated word spans: open entity profile, skip word study
+    if (span.dataset.entity) { openEntityProfile(span.dataset.entity); return; }
+    if (span.dataset.place)  { openPlaceProfile(span.dataset.place);   return; }
+    if (span.dataset.thing)  { openThingProfile(span.dataset.thing);   return; }
 
     var stem  = span.dataset.st;
     var vnum  = span.dataset.v;
