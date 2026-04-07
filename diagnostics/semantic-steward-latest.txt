@@ -1,6 +1,0 @@
-Semantic steward run: 2026-04-07T13:22:21+00:00
-Mission: AGENT_MISSION.md
-Profile: agents/semantic_steward_profile.md
-- semantic_refresh: ok
-- semantic_dashboard: ok
-Dashboard totals: collections=10 docs=4163 paragraphs=160845 linked_pct=99.2%
