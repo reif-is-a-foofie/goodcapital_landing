@@ -1,5 +1,5 @@
 {
-  "ts": "2026-04-06T22:45:38+00:00",
+  "ts": "2026-04-07T02:46:48+00:00",
   "agent": "SourceScout",
   "mission_path": "AGENT_MISSION.md",
   "profile_path": "agents/source_scout_profile.md",
@@ -23,10 +23,10 @@
   ],
   "candidates_found": 58,
   "candidates_evaluated": 58,
-  "candidates_passed": 33,
+  "candidates_passed": 30,
   "tasks_created": [
     {
-      "task_id": "T-0125",
+      "task_id": "T-0013",
       "title": "Jesus the Christ (book) - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Jesus_the_Christ_(book)",
       "copyright_score": 0.8,
@@ -35,34 +35,16 @@
       "relevance_reason": "relevant — 4 keyword matches: latter-day saint, talmage, scripture, bible"
     },
     {
-      "task_id": "T-0159",
-      "title": "Jesus the Christ by James E. Talmage | Project Gutenberg",
-      "url": "https://www.gutenberg.org/ebooks/22542",
-      "copyright_score": 1.0,
-      "copyright_reason": "trusted archive domain (gutenberg.org)",
-      "relevance_score": 0.52,
-      "relevance_reason": "relevant — 2 keyword matches: talmage, philo"
-    },
-    {
-      "task_id": "T-0160",
-      "title": "Jesus The Christ | Project Gutenberg",
-      "url": "https://www.gutenberg.org/files/22542/22542-h/22542-h.htm",
-      "copyright_score": 1.0,
-      "copyright_reason": "trusted archive domain (gutenberg.org)",
-      "relevance_score": 0.82,
-      "relevance_reason": "relevant — 7 keyword matches: latter-day saint, talmage, scripture, apostolic, atonement, resurrection"
-    },
-    {
-      "task_id": "T-0126",
+      "task_id": "T-0014",
       "title": "The Articles of Faith by James E. Talmage | Project Gutenberg",
       "url": "https://www.gutenberg.org/ebooks/42238",
       "copyright_score": 1.0,
       "copyright_reason": "trusted archive domain (gutenberg.org)",
-      "relevance_score": 0.64,
-      "relevance_reason": "relevant — 4 keyword matches: latter-day saint, talmage, theological, philo"
+      "relevance_score": 0.58,
+      "relevance_reason": "relevant — 3 keyword matches: latter-day saint, talmage, theological"
     },
     {
-      "task_id": "T-0127",
+      "task_id": "T-0015",
       "title": "Articles of Faith (Talmage book) - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Articles_of_Faith_(Talmage_book)",
       "copyright_score": 0.8,
@@ -71,7 +53,7 @@
       "relevance_reason": "relevant — 2 keyword matches: latter-day saint, talmage"
     },
     {
-      "task_id": "T-0129",
+      "task_id": "T-0016",
       "title": "\"Comprehensive History of The Church of Jesus Christ of Latter-day Sain\" by B. H. Roberts",
       "url": "https://scholarsarchive.byu.edu/wordcruncher/61/",
       "copyright_score": 0.85,
@@ -80,7 +62,7 @@
       "relevance_reason": "relevant — 2 keyword matches: latter-day saint, b.h. roberts"
     },
     {
-      "task_id": "T-0130",
+      "task_id": "T-0017",
       "title": "B. H. Roberts - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/B._H._Roberts",
       "copyright_score": 0.8,
@@ -89,16 +71,7 @@
       "relevance_reason": "relevant — 3 keyword matches: latter-day saint, latter day saint, book of mormon"
     },
     {
-      "task_id": "T-0132",
-      "title": "Comprehensive History of The Church of Jesus Christ of Latter-day Saints - Wikipedia",
-      "url": "https://en.wikipedia.org/wiki/Comprehensive_History_of_The_Church_of_Jesus_Christ_of_Latter-day_Saints",
-      "copyright_score": 0.8,
-      "copyright_reason": "publication year 1120 is pre-1928 (US public domain)",
-      "relevance_score": 0.58,
-      "relevance_reason": "relevant — 3 keyword matches: latter-day saint, latter day saint, b.h. roberts"
-    },
-    {
-      "task_id": "T-0133",
+      "task_id": "T-0018",
       "title": "Mormon Publications: 19th and 20th Centuries | Digital Collections | Collections | HBLL",
       "url": "https://lib.byu.edu/collections/mormon-publications-19th-20th-centuries/k/",
       "copyright_score": 0.8,
@@ -107,7 +80,7 @@
       "relevance_reason": "relevant — 8 keyword matches: brigham young, restoration, parley pratt, orson pratt, gospel, theology"
     },
     {
-      "task_id": "T-0134",
+      "task_id": "T-0019",
       "title": "Parley P. Pratt - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Parley_P._Pratt",
       "copyright_score": 0.8,
@@ -116,7 +89,7 @@
       "relevance_reason": "relevant — 5 keyword matches: restoration, latter-day saint, latter day saint, doctrine and covenants, covenant"
     },
     {
-      "task_id": "T-0135",
+      "task_id": "T-0020",
       "title": "The Essential Parley P. Pratt - BYU Studies",
       "url": "https://byustudies.byu.edu/article/the-essential-parley-p-pratt",
       "copyright_score": 0.8,
@@ -125,7 +98,7 @@
       "relevance_reason": "relevant — 4 keyword matches: joseph smith, parley pratt, theological, prophet"
     },
     {
-      "task_id": "T-0136",
+      "task_id": "T-0021",
       "title": "Orson Pratt - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Orson_Pratt",
       "copyright_score": 0.8,
@@ -134,7 +107,7 @@
       "relevance_reason": "relevant — 5 keyword matches: latter-day saint, latter day saint, doctrine and covenants, orson pratt, covenant"
     },
     {
-      "task_id": "T-0138",
+      "task_id": "T-0022",
       "title": "Doctrine and Covenants Historical Resources: Orson Pratt",
       "url": "https://www.churchofjesuschrist.org/study/history/doctrine-and-covenants-historical-resources-2025/people/bio-orson-pratt?lang=eng",
       "copyright_score": 0.8,
@@ -143,7 +116,7 @@
       "relevance_reason": "relevant — 3 keyword matches: doctrine and covenants, orson pratt, covenant"
     },
     {
-      "task_id": "T-0137",
+      "task_id": "T-0023",
       "title": "Orson Pratt – Biography",
       "url": "https://www.josephsmithpapers.org/person/orson-pratt",
       "copyright_score": 0.8,
@@ -152,7 +125,7 @@
       "relevance_reason": "relevant — 2 keyword matches: latter-day saint, orson pratt"
     },
     {
-      "task_id": "T-0139",
+      "task_id": "T-0024",
       "title": "Orson Pratt: Prolific Pamphleteer - Dialogue Journal",
       "url": "https://www.dialoguejournal.com/articles/orson-pratt-prolific-pamphleteer/",
       "copyright_score": 0.8,
@@ -161,7 +134,7 @@
       "relevance_reason": "relevant — 3 keyword matches: joseph smith, orson pratt, theological"
     },
     {
-      "task_id": "T-0140",
+      "task_id": "T-0025",
       "title": "Orson Pratt | Doctrine and Covenants Central",
       "url": "https://doctrineandcovenantscentral.org/people-of-the-dc/orson-pratt/",
       "copyright_score": 0.8,
@@ -170,7 +143,7 @@
       "relevance_reason": "relevant — 3 keyword matches: doctrine and covenants, orson pratt, covenant"
     },
     {
-      "task_id": "T-0141",
+      "task_id": "T-0026",
       "title": "A Select Library of the Nicene and Post-Nicene Fathers of the Christian Church, Vol. 1 | Online Library of Liberty",
       "url": "https://oll.libertyfund.org/titles/schaff-a-select-library-of-the-nicene-and-post-nicene-fathers-of-the-christian-church-vol-1",
       "copyright_score": 0.8,
@@ -179,7 +152,7 @@
       "relevance_reason": "relevant — 6 keyword matches: nicene, post-nicene, augustine, philip schaff, schaff, philo"
     },
     {
-      "task_id": "T-0142",
+      "task_id": "T-0027",
       "title": "Work info: NPNF1-01. The Confessions and Letters of St. Augustine, with a Sketch of his Life and Work - Christian Classics Ethereal Library",
       "url": "https://www.ccel.org/ccel/schaff/npnf101.html",
       "copyright_score": 1.0,
@@ -188,7 +161,7 @@
       "relevance_reason": "relevant — 3 keyword matches: nicene, post-nicene, augustine"
     },
     {
-      "task_id": "T-0143",
+      "task_id": "T-0028",
       "title": "Nicene and Post-Nicene Fathers - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Nicene_and_Post-Nicene_Fathers",
       "copyright_score": 0.8,
@@ -197,7 +170,7 @@
       "relevance_reason": "relevant — 6 keyword matches: nicene, post-nicene, augustine, patristic, philip schaff, schaff"
     },
     {
-      "task_id": "T-0166",
+      "task_id": "T-0029",
       "title": "NPNF2-03. Theodoret, Jerome, Gennadius, & Rufinus",
       "url": "https://bishoysblog.com/wp-content/uploads/2015/01/nicene-post-nicene-fathers-series-2-volume-3.pdf",
       "copyright_score": 0.8,
@@ -206,16 +179,7 @@
       "relevance_reason": "relevant — 5 keyword matches: jerome, eusebius, apostolic, philip schaff, schaff"
     },
     {
-      "task_id": "T-0145",
-      "title": "The Ante-Nicene fathers. translations of the writings of the fathers down to A.D. 325. : Roberts, Alexander, 1826-1901 : Free Download, Borrow, and Streaming : Internet Archive",
-      "url": "https://archive.org/details/antenicenefather04robe",
-      "copyright_score": 1.0,
-      "copyright_reason": "trusted archive domain (archive.org)",
-      "relevance_score": 0.88,
-      "relevance_reason": "relevant — 8 keyword matches: ante-nicene, nicene, origen, clement, irenaeus, tertullian"
-    },
-    {
-      "task_id": "T-0146",
+      "task_id": "T-0030",
       "title": "Tertullian : Ante-Nicene Fathers Translations",
       "url": "https://tertullian.org/anf/index.htm",
       "copyright_score": 1.0,
@@ -224,7 +188,16 @@
       "relevance_reason": "relevant — 5 keyword matches: bible, ante-nicene, nicene, tertullian, early christian"
     },
     {
-      "task_id": "T-0147",
+      "task_id": "T-0031",
+      "title": "The Ante-Nicene fathers. translations of the writings of the fathers down to A.D. 325. : Roberts, Alexander, 1826-1901 : Free Download, Borrow, and Streaming : Internet Archive",
+      "url": "https://archive.org/details/antenicenefather04robe",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (archive.org)",
+      "relevance_score": 0.88,
+      "relevance_reason": "relevant — 8 keyword matches: ante-nicene, nicene, origen, clement, irenaeus, tertullian"
+    },
+    {
+      "task_id": "T-0032",
       "title": "Ante-Nicene Fathers, Vol. I",
       "url": "https://www.tertullian.org/fathers2/ANF-01/TOC.htm",
       "copyright_score": 1.0,
@@ -233,16 +206,16 @@
       "relevance_reason": "relevant — 6 keyword matches: epistle, church fathers, ante-nicene, nicene, clement, justin martyr"
     },
     {
-      "task_id": "T-0167",
+      "task_id": "T-0033",
       "title": "Ante-Nicene Fathers (book) - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Ante-Nicene_Fathers_(book)",
       "copyright_score": 0.8,
       "copyright_reason": "publication year 1120 is pre-1928 (US public domain)",
-      "relevance_score": 0.6,
-      "relevance_reason": "relevant (10 keyword hits) but overlaps existing collection 'church_fathers'"
+      "relevance_score": 0.5,
+      "relevance_reason": "relevant (4 keyword hits) but overlaps existing collection 'church_fathers'"
     },
     {
-      "task_id": "T-0149",
+      "task_id": "T-0034",
       "title": "Ante-Nicene Christian Library - Wikisource, the free online library",
       "url": "https://en.wikisource.org/wiki/Ante-Nicene_Christian_Library",
       "copyright_score": 0.8,
@@ -251,7 +224,7 @@
       "relevance_reason": "relevant — 3 keyword matches: ante-nicene, nicene, early christian"
     },
     {
-      "task_id": "T-0150",
+      "task_id": "T-0035",
       "title": "Ante-Nicene Christian Library: Translations of the Writings of the Fathers Down to A.D. 325 | LibriVox",
       "url": "https://librivox.org/ante-nicene-christian-library-translations-of-the-writings-of-the-fathers-down-to-ad-325-by-alexander-roberts/",
       "copyright_score": 0.9,
@@ -260,7 +233,7 @@
       "relevance_reason": "relevant — 2 keyword matches: ante-nicene, nicene"
     },
     {
-      "task_id": "T-0164",
+      "task_id": "T-0036",
       "title": "Didache - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Didache",
       "copyright_score": 0.8,
@@ -269,7 +242,7 @@
       "relevance_reason": "relevant — 6 keyword matches: testament, didache, apostolic, early christian, apocrypha, philo"
     },
     {
-      "task_id": "T-0152",
+      "task_id": "T-0037",
       "title": "Didache. The Teaching of the Twelve Apostles (translation J. B. Lightfoot).",
       "url": "https://www.earlychristianwritings.com/text/didache-lightfoot.html",
       "copyright_score": 1.0,
@@ -278,7 +251,7 @@
       "relevance_reason": "relevant — 2 keyword matches: didache, early christian"
     },
     {
-      "task_id": "T-0153",
+      "task_id": "T-0038",
       "title": "Church Fathers: The Didache and the Epistle of Barnabas | Catholic Culture",
       "url": "https://www.catholicculture.org/commentary/church-fathers-didache-and-epistle-barnabas/",
       "copyright_score": 0.8,
@@ -287,16 +260,7 @@
       "relevance_reason": "relevant — 7 keyword matches: epistle, church fathers, origen, clement, athanasius, didache"
     },
     {
-      "task_id": "T-0169",
-      "title": "The Apocrypha and Pseudepigrapha of the Old Testament in English | Logos Bible Software",
-      "url": "https://www.logos.com/product/4237/the-apocrypha-and-pseudepigrapha-of-the-old-testament-in-english?ssi=0",
-      "copyright_score": 0.8,
-      "copyright_reason": "publication year 1913 is pre-1928 (US public domain)",
-      "relevance_score": 0.76,
-      "relevance_reason": "relevant — 6 keyword matches: bible, testament, pseudepigrapha, apocrypha, old testament, jewish"
-    },
-    {
-      "task_id": "T-0155",
+      "task_id": "T-0039",
       "title": "The Apocrypha and Pseudepigrapha of the Old Testament",
       "url": "https://www.ccel.org/c/charles/otpseudepig/home.html",
       "copyright_score": 1.0,
@@ -305,7 +269,16 @@
       "relevance_reason": "relevant — 6 keyword matches: testament, enoch, jubilees, pseudepigrapha, apocrypha, old testament"
     },
     {
-      "task_id": "T-0170",
+      "task_id": "T-0040",
+      "title": "The Apocrypha and Pseudepigrapha of the Old Testament in English | Logos Bible Software",
+      "url": "https://www.logos.com/product/4237/the-apocrypha-and-pseudepigrapha-of-the-old-testament-in-english?ssi=0",
+      "copyright_score": 0.8,
+      "copyright_reason": "publication year 1913 is pre-1928 (US public domain)",
+      "relevance_score": 0.76,
+      "relevance_reason": "relevant — 6 keyword matches: bible, testament, pseudepigrapha, apocrypha, old testament, jewish"
+    },
+    {
+      "task_id": "T-0041",
       "title": "The works of Philo : complete and unabridged",
       "url": "https://archive.org/details/worksofphilocomp0000phil",
       "copyright_score": 1.0,
@@ -314,7 +287,7 @@
       "relevance_reason": "relevant — 3 keyword matches: theology, philo, jewish"
     },
     {
-      "task_id": "T-0158",
+      "task_id": "T-0042",
       "title": "The Jewish War - Wikipedia",
       "url": "https://en.wikipedia.org/wiki/The_Jewish_War",
       "copyright_score": 0.8,
@@ -324,6 +297,15 @@
     }
   ],
   "rejections": [
+    {
+      "title": "Jesus the Christ by James E. Talmage | Project Gutenberg",
+      "url": "https://www.gutenberg.org/ebooks/22542",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (gutenberg.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: talmage",
+      "error": ""
+    },
     {
       "title": "Jesus the Christ",
       "url": "https://www.churchofjesuschrist.org/study/manual/jesus-the-christ?lang=eng",
@@ -343,6 +325,15 @@
       "error": ""
     },
     {
+      "title": "Jesus The Christ | Project Gutenberg",
+      "url": "https://www.gutenberg.org/files/22542/22542-h/22542-h.htm",
+      "copyright_score": 1.0,
+      "copyright_reason": "trusted archive domain (gutenberg.org)",
+      "relevance_score": 0.46,
+      "relevance_reason": "relevant — 1 keyword matches: talmage",
+      "error": ""
+    },
+    {
       "title": "The articles of faith by James Edward Talmage | Open Library",
       "url": "https://openlibrary.org/books/OL23278967M/The_articles_of_faith",
       "copyright_score": 0.8,
@@ -352,8 +343,8 @@
       "error": ""
     },
     {
-      "title": "Articles of Faith: Talmage, James E.: 9780877478386: Amazon.com: Books",
-      "url": "https://www.amazon.com/Articles-Faith-Classics-Mormon-literature/dp/0877478384",
+      "title": "Articles of Faith (1968) by James E. Talmage: James E. Talmage: Amazon.com: Books",
+      "url": "https://www.amazon.com/Articles-Faith-James-Talmage/dp/B01KG8IWCS",
       "copyright_score": 0.1,
       "copyright_reason": "no copyright status signals found",
       "relevance_score": 0.52,
@@ -361,8 +352,8 @@
       "error": ""
     },
     {
-      "title": "Articles of Faith (1968) by James E. Talmage: James E. Talmage: Amazon.com: Books",
-      "url": "https://www.amazon.com/Articles-Faith-James-Talmage/dp/B01KG8IWCS",
+      "title": "Articles of Faith: Talmage, James E.: 9780877478386: Amazon.com: Books",
+      "url": "https://www.amazon.com/Articles-Faith-Classics-Mormon-literature/dp/0877478384",
       "copyright_score": 0.1,
       "copyright_reason": "no copyright status signals found",
       "relevance_score": 0.52,
@@ -448,6 +439,15 @@
       "copyright_reason": "no copyright status signals found",
       "relevance_score": 0.88,
       "relevance_reason": "relevant — 8 keyword matches: bible, church fathers, ante-nicene, nicene, origen, clement",
+      "error": ""
+    },
+    {
+      "title": "Ante-Nicene Fathers - Church Fathers & Other Early Christian Literature - Library Guides at Oral Roberts University",
+      "url": "https://library.oru.edu/patristics/ante-nicene",
+      "copyright_score": 0.3,
+      "copyright_reason": "page shows copyright marker without public domain declaration",
+      "relevance_score": 0.94,
+      "relevance_reason": "relevant — 9 keyword matches: church fathers, ante-nicene, nicene, origen, clement, early christian",
       "error": ""
     },
     {

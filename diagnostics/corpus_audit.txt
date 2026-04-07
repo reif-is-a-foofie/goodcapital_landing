@@ -10,26 +10,26 @@ Note: 'verses_with_escaped_markup' counts literal leaked cw/span markup embedded
 }
 
 Lowest-coverage chapters
-mosiah_19: verses=29 annotated=1 matched=1 coverage=0.034 match_coverage=0.034
-alma_47: verses=36 annotated=2 matched=2 coverage=0.056 match_coverage=0.056
-mosiah_10: verses=22 annotated=2 matched=2 coverage=0.091 match_coverage=0.091
-3_nephi_7: verses=26 annotated=3 matched=3 coverage=0.115 match_coverage=0.115
-alma_51: verses=37 annotated=5 matched=5 coverage=0.135 match_coverage=0.135
-mormon_2: verses=29 annotated=4 matched=4 coverage=0.138 match_coverage=0.138
-alma_52: verses=40 annotated=6 matched=6 coverage=0.15 match_coverage=0.15
-alma_20: verses=30 annotated=5 matched=5 coverage=0.167 match_coverage=0.167
-alma_58: verses=41 annotated=7 matched=7 coverage=0.171 match_coverage=0.171
-mosiah_22: verses=16 annotated=3 matched=3 coverage=0.188 match_coverage=0.188
-mosiah_20: verses=26 annotated=5 matched=5 coverage=0.192 match_coverage=0.192
-mosiah_21: verses=36 annotated=7 matched=7 coverage=0.194 match_coverage=0.194
-1_nephi_18: verses=25 annotated=5 matched=5 coverage=0.2 match_coverage=0.2
-alma_15: verses=19 annotated=4 matched=4 coverage=0.211 match_coverage=0.211
-mosiah_9: verses=19 annotated=4 matched=4 coverage=0.211 match_coverage=0.211
-helaman_11: verses=38 annotated=8 matched=8 coverage=0.211 match_coverage=0.211
-helaman_8: verses=28 annotated=6 matched=6 coverage=0.214 match_coverage=0.214
-alma_50: verses=40 annotated=9 matched=9 coverage=0.225 match_coverage=0.225
-ether_14: verses=31 annotated=7 matched=7 coverage=0.226 match_coverage=0.226
-alma_56: verses=57 annotated=13 matched=13 coverage=0.228 match_coverage=0.228
+1_chronicles_8: verses=40 annotated=36 matched=36 coverage=0.9 match_coverage=0.9
+joshua_19: verses=51 annotated=46 matched=46 coverage=0.902 match_coverage=0.902
+esther_9: verses=32 annotated=29 matched=29 coverage=0.906 match_coverage=0.906
+1_chronicles_3: verses=24 annotated=22 matched=22 coverage=0.917 match_coverage=0.917
+joshua_15: verses=63 annotated=58 matched=58 coverage=0.921 match_coverage=0.921
+nehemiah_10: verses=39 annotated=36 matched=36 coverage=0.923 match_coverage=0.923
+joshua_18: verses=28 annotated=26 matched=26 coverage=0.929 match_coverage=0.929
+titus_3: verses=15 annotated=14 matched=14 coverage=0.933 match_coverage=0.933
+job_17: verses=16 annotated=15 matched=15 coverage=0.938 match_coverage=0.938
+luke_19: verses=48 annotated=45 matched=45 coverage=0.938 match_coverage=0.938
+ezekiel_5: verses=17 annotated=16 matched=16 coverage=0.941 match_coverage=0.941
+song_of_solomon_2: verses=17 annotated=16 matched=16 coverage=0.941 match_coverage=0.941
+2_corinthians_10: verses=18 annotated=17 matched=17 coverage=0.944 match_coverage=0.944
+nehemiah_11: verses=36 annotated=34 matched=34 coverage=0.944 match_coverage=0.944
+job_18: verses=21 annotated=20 matched=20 coverage=0.952 match_coverage=0.952
+job_4: verses=21 annotated=20 matched=20 coverage=0.952 match_coverage=0.952
+romans_12: verses=21 annotated=20 matched=20 coverage=0.952 match_coverage=0.952
+2_timothy_4: verses=22 annotated=21 matched=21 coverage=0.955 match_coverage=0.955
+job_16: verses=22 annotated=21 matched=21 coverage=0.955 match_coverage=0.955
+job_8: verses=22 annotated=21 matched=21 coverage=0.955 match_coverage=0.955
 
 Most markup leakage
 

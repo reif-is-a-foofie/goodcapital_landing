@@ -171,6 +171,9 @@ def preprocess_source_text(group_key: str, txt_path: Path, raw: str) -> str:
             hits = [m.start() for m in re.finditer(re.escape("The words of the blessing of Enoch"), text)]
             if hits:
                 text = text[hits[-1]:]
+            # Strip editorial apparatus brackets: 〚restored〛 and ⌜conjectural⌝ readings
+            text = re.sub(r'〚([^〛]*)〛', r'\1', text)
+            text = re.sub(r'⌜([^⌝]*)⌝', r'\1', text)
         elif stem == "book_of_jubilees":
             matches = list(re.finditer(r"\bI\.\s+And it came to pass in the first year\b", text, re.I))
             if matches:

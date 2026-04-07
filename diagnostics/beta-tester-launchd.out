@@ -3,3 +3,33 @@
   "failures": 0,
   "report": "diagnostics/beta-tester-latest.json"
 }
+{
+  "agent": "BetaTester",
+  "failures": 0,
+  "report": "diagnostics/beta-tester-latest.json"
+}
+{
+  "agent": "BetaTester",
+  "failures": 0,
+  "report": "diagnostics/beta-tester-latest.json"
+}
+{
+  "agent": "BetaTester",
+  "failures": 0,
+  "report": "diagnostics/beta-tester-latest.json"
+}
+{
+  "agent": "BetaTester",
+  "failures": 0,
+  "report": "diagnostics/beta-tester-latest.json"
+}
+{
+  "agent": "BetaTester",
+  "failures": 1,
+  "report": "diagnostics/beta-tester-latest.json"
+}
+{
+  "agent": "BetaTester",
+  "failures": 0,
+  "report": "diagnostics/beta-tester-latest.json"
+}
