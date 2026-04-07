@@ -113,3 +113,4 @@ The question before any change:
 
 Technical reference: `AGENT_GUIDELINES.md`
 Agent workflow: `AGENT_MISSION.md`
+Methods: `METHODS.md`

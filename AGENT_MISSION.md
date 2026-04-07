@@ -73,3 +73,4 @@ grounded in direct observation and must serve the mission: deepen reading, impro
 connections, clean the corpus, or make traversal faster and more trustworthy.
 
 Full design system reference: `AGENT_GUIDELINES.md`
+Methods and principles: `METHODS.md`
