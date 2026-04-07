@@ -1,8 +1,10 @@
 # The Good Project — Agent Mission
 
-Read `MISSION.md` first. That document is the soul of the project —
-it contains the vision in the words of the prophets and defines what we are building.
-This document is the operational layer for agents executing inside that vision.
+Read `MISSION.md` first — all of it. That document is the soul of the project.
+It contains the vision in the words of the prophets, what we are building, and
+the four methods that govern every decision: Connection, Spiritual Arcing,
+Depth and Breadth, and Everything Has a Story.
+This document is the operational layer for executing inside that vision.
 
 Its product goal is simple:
 
@@ -73,4 +75,3 @@ grounded in direct observation and must serve the mission: deepen reading, impro
 connections, clean the corpus, or make traversal faster and more trustworthy.
 
 Full design system reference: `AGENT_GUIDELINES.md`
-Methods and principles: `METHODS.md`

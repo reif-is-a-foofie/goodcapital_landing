@@ -5,6 +5,11 @@ or human contributor) working in this repository. Read it before writing a line.
 
 ---
 
+Read `MISSION.md` before this document. The mission and methods there are the
+reason every guideline below exists.
+
+---
+
 ## 1. Design Tokens
 
 All UI is built from these CSS custom properties. Never hardcode these values; use
