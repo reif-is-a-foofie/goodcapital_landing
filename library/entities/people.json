@@ -36,7 +36,12 @@
       "general_conference:october_1969"
     ],
     "quote_count": 1152,
-    "talk_count": 0
+    "talk_count": 0,
+    "desc": "American religious leader (1915–1985)",
+    "wikipedia_title": "Bruce R. McConkie",
+    "wikipedia_summary": "Bruce Redd McConkie was a member of the Quorum of the Twelve Apostles of the Church of Jesus Christ of Latter-day Saints from 1972 until his death. McConkie was a member of the LDS Church's First Council of the Seventy from 1946 until his calling to the Quorum of the Twelve.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/3/35/Bruce_R._McConkie2.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Bruce_R._McConkie"
   },
   {
     "id": "person:neal_a_maxwell",
@@ -154,7 +159,12 @@
       "general_conference:oct._2003"
     ],
     "quote_count": 926,
-    "talk_count": 53
+    "talk_count": 53,
+    "desc": "American scholar, educator, and religious leader (1926–2004)",
+    "wikipedia_title": "Neal A. Maxwell",
+    "wikipedia_summary": "Neal Ash Maxwell was an American scholar, educator, and religious leader who served as a member of the Quorum of the Twelve Apostles of the Church of Jesus Christ of Latter-day Saints from 1981 until his death in 2004.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Neal_A._Maxwell.jpg/330px-Neal_A._Maxwell.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Neal_A._Maxwell"
   },
   {
     "id": "person:donald_w_parry",
@@ -2401,7 +2411,12 @@
       "general_conference:oct._2007"
     ],
     "quote_count": 327,
-    "talk_count": 90
+    "talk_count": 90,
+    "desc": "LDS Church president (1924–2025)",
+    "wikipedia_title": "Russell M. Nelson",
+    "wikipedia_summary": "Russell Marion Nelson Sr. was an American religious leader and surgeon who was the seventeenth president of the Church of Jesus Christ of Latter-day Saints from 2018 until his death in 2025. Before becoming church president, Nelson was a member of its Quorum of the Twelve Apostles for nearly thirty-four years and was the quorum president from 2015 to 2018. As church president, Nelson was recognized by the church as the prophet, seer, and revelator.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Russell_M_Nelson_%28cropped2%29.jpg/330px-Russell_M_Nelson_%28cropped2%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Russell_M._Nelson"
   },
   {
     "id": "person:adam_clarke",
@@ -2677,7 +2692,12 @@
       "general_conference:october_1969"
     ],
     "quote_count": 208,
-    "talk_count": 200
+    "talk_count": 200,
+    "desc": "American religious leader and author (1910–2008)",
+    "wikipedia_title": "Gordon B. Hinckley",
+    "wikipedia_summary": "Gordon Bitner Hinckley was an American religious leader and author who served as the 15th president of the Church of Jesus Christ of Latter-day Saints from March 1995 until his death in January 2008 at age 97. Considered a prophet, seer, and revelator by church members, Hinckley was the oldest person to preside over the church in its history until Russell M. Nelson surpassed his age in 2022.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Gordon_B._Hinckley2.jpg/330px-Gordon_B._Hinckley2.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Gordon_B._Hinckley"
   },
   {
     "id": "person:dallin_h_oaks",
@@ -3393,7 +3413,12 @@
       "general_conference:october_1964"
     ],
     "quote_count": 247,
-    "talk_count": 65
+    "talk_count": 65,
+    "desc": "President of the LDS Church (1895–1985)",
+    "wikipedia_title": "Spencer W. Kimball",
+    "wikipedia_summary": "Spencer Woolley Kimball was an American religious leader who was the twelfth president of the Church of Jesus Christ of Latter-day Saints.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Spencer_W._Kimball3.JPG/330px-Spencer_W._Kimball3.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Spencer_W._Kimball"
   },
   {
     "id": "person:hugh_nibley",
@@ -3404,7 +3429,12 @@
     "roles": [],
     "doc_ids": [],
     "quote_count": 295,
-    "talk_count": 0
+    "talk_count": 0,
+    "desc": "Latter-day Saint religious scholar (1910–2005)",
+    "wikipedia_title": "Hugh Nibley",
+    "wikipedia_summary": "Hugh Winder Nibley was an American scholar and member of the Church of Jesus Christ of Latter-day Saints who was a professor at Brigham Young University (BYU) for nearly 50 years. He was a prolific author, and wrote apologetic works supporting the archaeological, linguistic, and historical claims of Joseph Smith. He was a member of the LDS Church, and wrote and lectured on LDS scripture and doctrinal topics, publishing many articles in the LDS Church magazines.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Nibley_faculty_photo.png/330px-Nibley_faculty_photo.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Hugh_Nibley"
   },
   {
     "id": "person:ezra_taft_benson",
@@ -3511,7 +3541,12 @@
       "general_conference:october_1949"
     ],
     "quote_count": 226,
-    "talk_count": 62
+    "talk_count": 62,
+    "desc": "President of The Church of Jesus Christ of Latter-day Saints (1899–1994)",
+    "wikipedia_title": "Ezra Taft Benson",
+    "wikipedia_summary": "Ezra Taft Benson was an American farmer, government official, and religious leader who served as the 15th United States Secretary of Agriculture during both presidential terms of Dwight D. Eisenhower and as the 13th president of the Church of Jesus Christ of Latter-day Saints from 1985 until his death in 1994.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Ezra_Taft_Benson.jpg/330px-Ezra_Taft_Benson.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ezra_Taft_Benson"
   },
   {
     "id": "person:daniel_h_ludlow",
@@ -3640,7 +3675,12 @@
       "general_conference:oct._2006"
     ],
     "quote_count": 214,
-    "talk_count": 62
+    "talk_count": 62,
+    "desc": "American religious leader (1924–2015)",
+    "wikipedia_title": "Boyd K. Packer",
+    "wikipedia_summary": "Boyd Kenneth Packer was an American religious leader and educator who served as president of the Quorum of the Twelve Apostles of the Church of Jesus Christ of Latter-day Saints from 2008 until his death. He also served as the quorum's acting president from 1994 to 2008 and was an apostle and member of the Quorum of the Twelve from 1970 until his death. He served as a general authority of the church from 1961 until his death.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Boyd_K._Packer.jpg/330px-Boyd_K._Packer.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Boyd_K._Packer"
   },
   {
     "id": "person:joseph_fielding_smith",
@@ -3780,7 +3820,12 @@
       "general_conference:oct._2006"
     ],
     "quote_count": 185,
-    "talk_count": 57
+    "talk_count": 57,
+    "desc": "American educator and religious leader (1940–2025)",
+    "wikipedia_title": "Jeffrey R. Holland",
+    "wikipedia_summary": "Jeffrey Roy Holland was an American educator and a religious leader. He was president of the Quorum of the Twelve Apostles of the Church of Jesus Christ of Latter-day Saints from October 14, 2025, until his death. He was the ninth president of Brigham Young University (BYU) and was acting president of the Quorum of the Twelve Apostles from November 15, 2023 until September 27, 2025, when the First Presidency was dissolved as a result of church president Russell M. Nelson's death.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Elder_Jeffrey_R._Holland.jpg/330px-Elder_Jeffrey_R._Holland.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Jeffrey_R._Holland"
   },
   {
     "id": "person:james_e_talmage",
@@ -3801,7 +3846,12 @@
       "general_conference:october_1930"
     ],
     "quote_count": 191,
-    "talk_count": 0
+    "talk_count": 0,
+    "desc": "Religious leader and academic",
+    "wikipedia_title": "James E. Talmage",
+    "wikipedia_summary": "\n\nJames Edward Talmage was an English chemist, geologist, and religious leader who served as a member of the Quorum of the Twelve Apostles of the Church of Jesus Christ of Latter-day Saints from 1911 until his death.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/1/1c/James_E._Talmage.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/James_E._Talmage"
   },
   {
     "id": "person:jacob_milgrom",
@@ -63206,7 +63256,11 @@
         "label": "Psalms 99:6"
       }
     ],
-    "ref_count": 403
+    "ref_count": 403,
+    "wikipedia_title": "Aaron",
+    "wikipedia_summary": "According to the Old Testament of the Bible, Aaron was an Israelite prophet, high priest, and the elder brother of Moses. Information about Aaron comes exclusively from religious texts, such as the Hebrew Bible, the New Testament, and the Quran.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/El_sumo_sacerdote_Aar%C3%B3n_%28Museo_del_Prado%29_%28cropped%29.jpg/330px-El_sumo_sacerdote_Aar%C3%B3n_%28Museo_del_Prado%29_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Aaron"
   },
   {
     "id": "person:aaron_bom",
@@ -65233,7 +65287,11 @@
         "label": "Psalms 99:6"
       }
     ],
-    "ref_count": 403
+    "ref_count": 403,
+    "wikipedia_title": "Aaron",
+    "wikipedia_summary": "According to the Old Testament of the Bible, Aaron was an Israelite prophet, high priest, and the elder brother of Moses. Information about Aaron comes exclusively from religious texts, such as the Hebrew Bible, the New Testament, and the Quran.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/El_sumo_sacerdote_Aar%C3%B3n_%28Museo_del_Prado%29_%28cropped%29.jpg/330px-El_sumo_sacerdote_Aar%C3%B3n_%28Museo_del_Prado%29_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Aaron"
   },
   {
     "id": "person:abraham",
@@ -67066,7 +67124,11 @@
         "label": "Romans 9:7"
       }
     ],
-    "ref_count": 364
+    "ref_count": 364,
+    "wikipedia_title": "Abraham",
+    "wikipedia_summary": "Abraham is a patriarch revered in the Abrahamic religions, including Judaism, Christianity, and Islam. In Judaism, he is the founding father and first Hebrew patriarch who began the covenantal relationship between the Jewish people and God; in Christianity, he is the spiritual progenitor of all believers, whether Jewish or non-Jewish; and in Islam, he is a link in the chain of Islamic prophets that begins with Adam and culminates in Muhammad. Abraham is also revered in other Abrahamic religions, including the Baháʼí Faith and the Druze faith. He is regarded as the common forefather of both the",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Guercino_Abramo_ripudia_Agar_%28cropped_2%29.jpg/330px-Guercino_Abramo_ripudia_Agar_%28cropped_2%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Abraham"
   },
   {
     "id": "person:saul_king",
@@ -70280,7 +70342,11 @@
         "label": "Song Of Solomon 8:12"
       }
     ],
-    "ref_count": 286
+    "ref_count": 286,
+    "wikipedia_title": "Solomon",
+    "wikipedia_summary": "Solomon, also called Jedidiah, was a king of the Kingdom of Israel and Judah, according to the Hebrew Bible. The successor of his father David, he is described as the penultimate ruler of all Twelve Tribes of Israel under a united Israel and Judah. His reign is hypothesized to have lasted from c. 970–931 BCE. According to the biblical narrative, his reign brought commercial prosperity through alliances and trade, but his accumulation of wealth, horses, and foreign wives, many of whom introduced idolatry, led to divine punishment. After Solomon's death, his son Rehoboam’s harsh policies led the",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Simeon_Solomon%2C_King_Solomon%2C_1872_or_1874%2C_NGA_76152_%28cropped%29.jpg/330px-Simeon_Solomon%2C_King_Solomon%2C_1872_or_1874%2C_NGA_76152_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Solomon"
   },
   {
     "id": "person:alma_elder",
@@ -71527,7 +71593,11 @@
         "label": "Mosiah 29:47"
       }
     ],
-    "ref_count": 247
+    "ref_count": 247,
+    "wikipedia_title": "Alma the Elder",
+    "wikipedia_summary": "Alma is a Nephite prophet in the Book of Mormon. Initially a priest who serves in the court of King Noah, when a prophet named Abinadi preaches to the court Alma concurs with Abinadi and affirms that what the prophet said is true. For this, Noah banishes Alma and tries to have him killed. After leaving the court, Alma goes on to found a church among Noah's subjects. He eventually leads these churchgoers out from Noah's lands, through a sojourn under Lamanite rule, and to the land of Zarahemla, where their ancestors had come from a few generations earlier, where Alma becomes high priest of the ",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Alma_Being_Carried_to_His_Fathers_House%2C_October_1925%2C_cropped_to_Alma_the_Elder.png/330px-Alma_Being_Carried_to_His_Fathers_House%2C_October_1925%2C_cropped_to_Alma_the_Elder.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Alma_the_Elder"
   },
   {
     "id": "person:alma_younger",
@@ -72775,7 +72845,11 @@
         "label": "Mosiah 29:47"
       }
     ],
-    "ref_count": 247
+    "ref_count": 247,
+    "wikipedia_title": "Alma the Younger",
+    "wikipedia_summary": "In the Book of Mormon, Alma, the son of Alma is a Nephite prophet often referred to as Alma the Younger to distinguish him from his father, who is often referred to as Alma the Elder. These appellations, \"the Younger\" and \"the Elder,\" are not used in the Book of Mormon; they are distinctions made by scholars, useful because both individuals were prominent during the same portion of the Book of Mormon's narrative and filled a similar cultural and religious role. Alma is the namesake of the Book of Alma.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Alma_Being_Carried_to_His_Fathers_House%2C_October_1925%2C_cropped_to_Alma_the_Younger.png/330px-Alma_Being_Carried_to_His_Fathers_House%2C_October_1925%2C_cropped_to_Alma_the_Younger.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Alma_the_Younger"
   },
   {
     "id": "person:ammon",
@@ -73982,7 +74056,11 @@
         "label": "Zephaniah 2:9"
       }
     ],
-    "ref_count": 239
+    "ref_count": 239,
+    "wikipedia_title": "Ammon",
+    "wikipedia_summary": "Ammon was an ancient Semitic-speaking kingdom occupying the east of the Jordan River, between the torrent valleys of Arnon and Jabbok, in present-day Jordan. The chief city of the country was Rabbah or Rabbat Ammon, site of the modern city of Amman, Jordan's capital. Milcom and Molech are named in the Hebrew Bible as the gods of Ammon. The people of this kingdom are called Children of Ammon or Ammonites.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Kingdoms_around_Israel_830_map.svg/330px-Kingdoms_around_Israel_830_map.svg.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ammon"
   },
   {
     "id": "person:peter",
@@ -76194,7 +76272,11 @@
         "label": "Zechariah 6:11"
       }
     ],
-    "ref_count": 216
+    "ref_count": 216,
+    "wikipedia_title": "Joshua",
+    "wikipedia_summary": "Joshua, also known as Yehoshua, Jehoshua, or Josue, was Moses' assistant in the books of Exodus and Numbers, and later succeeded Moses as leader of the Israelite tribes in the Book of Joshua of the Hebrew Bible. His name was Hoshea the son of Nun, of the tribe of Ephraim, but Moses called him \"Yehoshua\", the name by which he is commonly known in English. According to the Bible, he was born in Egypt prior to the Exodus.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Collection_Motais_de_Narbonne_-_Josu%C3%A9_arr%C3%A8te_la_course_du_soleil_-_Carlo_Maratta.jpg/330px-Collection_Motais_de_Narbonne_-_Josu%C3%A9_arr%C3%A8te_la_course_du_soleil_-_Carlo_Maratta.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Joshua"
   },
   {
     "id": "person:captain_moroni",
@@ -77172,7 +77254,11 @@
         "label": "Words Of Mormon 1:1"
       }
     ],
-    "ref_count": 193
+    "ref_count": 193,
+    "wikipedia_title": "Captain Moroni",
+    "wikipedia_summary": "According to the Book of Mormon, Captain Moroni was an important Nephite military commander who lived during the first century BC. He is first mentioned in the Book of Alma as \"the chief captain over the Nephites.\"",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/George_Ottinger%2C_Moroni_Raises_the_Title_of_Liberty%2C_published_1888%2C_cropped.png/330px-George_Ottinger%2C_Moroni_Raises_the_Title_of_Liberty%2C_published_1888%2C_cropped.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Captain_Moroni"
   },
   {
     "id": "person:moroni_bom",
@@ -78149,7 +78235,11 @@
         "label": "Words Of Mormon 1:1"
       }
     ],
-    "ref_count": 193
+    "ref_count": 193,
+    "wikipedia_title": "Moroni (Book of Mormon)",
+    "wikipedia_summary": "Moroni is described in the Book of Mormon as the last Nephite prophet, historian, and military commander who, according to the faith of the Latter Day Saint movement, became the Angel Moroni who presented the golden plates to Joseph Smith.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Moroni_Receives_the_Plates_from_Mormon%2C_by_CCA_Christensen%2C_cropped.jpg/330px-Moroni_Receives_the_Plates_from_Mormon%2C_by_CCA_Christensen%2C_cropped.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Moroni_(prophet)"
   },
   {
     "id": "person:john_baptist",
@@ -79122,7 +79212,11 @@
         "label": "Revelation 22:8"
       }
     ],
-    "ref_count": 192
+    "ref_count": 192,
+    "wikipedia_title": "John the Baptist",
+    "wikipedia_summary": "John the Baptist was a Jewish preacher active in the area of the Jordan River in the early first century AD. He is also known as Saint John the Forerunner in Eastern Orthodoxy and Oriental Orthodoxy, Saint John the Immerser in the Baptist tradition, and as the prophet Yahya ibn Zakariya in Islam. He is sometimes referred to as John the Baptiser.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Accademia_-_St_John_the_Baptist_by_Titian_Cat314.jpg/330px-Accademia_-_St_John_the_Baptist_by_Titian_Cat314.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/John_the_Baptist"
   },
   {
     "id": "person:king_benjamin",
@@ -81870,7 +81964,11 @@
         "label": "Psalms 99:6"
       }
     ],
-    "ref_count": 176
+    "ref_count": 176,
+    "wikipedia_title": "Samuel the Lamanite",
+    "wikipedia_summary": "According to the Book of Mormon, Samuel the Lamanite is a prophet who lived in the ancient Americas, sent by Jesus Christ around 5 BC to teach and warn the Nephites just before his birth in the Old World. The account is recorded in Helaman 13–16.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/The_Warning_of_Samuel_the_Lamanite%2C_November_1925%2C_cropped.png/330px-The_Warning_of_Samuel_the_Lamanite%2C_November_1925%2C_cropped.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Samuel_the_Lamanite"
   },
   {
     "id": "person:paul",
@@ -83485,7 +83583,11 @@
         "label": "Romans 9:10"
       }
     ],
-    "ref_count": 152
+    "ref_count": 152,
+    "wikipedia_title": "Isaac",
+    "wikipedia_summary": "Isaac is one of the three patriarchs of the Israelites and an important figure in the Abrahamic religions, including Judaism, Samaritanism, Christianity, Islam, the Baháʼí Faith, and Rastafari. Isaac first appears in the Torah, in which he is the son of Abraham and Sarah, the father of Jacob and Esau, and the grandfather of the twelve tribes of Israel.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Isaac_Blessing_Jacob_MET_DP145918_%28cropped_2%29.jpg/330px-Isaac_Blessing_Jacob_MET_DP145918_%28cropped_2%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Isaac"
   },
   {
     "id": "person:jeremiah",
@@ -84252,7 +84354,11 @@
         "label": "Nehemiah 12:34"
       }
     ],
-    "ref_count": 151
+    "ref_count": 151,
+    "wikipedia_title": "Jeremiah",
+    "wikipedia_summary": "Jeremiah, also called Jeremias, and occasionally in older English texts Jeremy, was one of the major prophets of the Hebrew Bible. According to Jewish tradition, Jeremiah authored the book that bears his name, the Books of Kings, and the Book of Lamentations, with the assistance and under the editorship of Baruch ben Neriah, his scribe and disciple.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/SA_160-Jeremia_op_de_puinhopen_van_Jeruzalem.jpg/330px-SA_160-Jeremia_op_de_puinhopen_van_Jeruzalem.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Jeremiah"
   },
   {
     "id": "person:adam",
@@ -84919,7 +85025,11 @@
         "label": "Romans 5:14"
       }
     ],
-    "ref_count": 131
+    "ref_count": 131,
+    "wikipedia_title": "Adam",
+    "wikipedia_summary": "Adam is the name given in Genesis 1–5 to the first human. Adam is the first human being aware of God, and features as such in various belief systems.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Michelangelo%2C_Creation_of_Adam_03.jpg/330px-Michelangelo%2C_Creation_of_Adam_03.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Adam"
   },
   {
     "id": "person:noah",
@@ -85561,7 +85671,11 @@
         "label": "Numbers 36:11"
       }
     ],
-    "ref_count": 126
+    "ref_count": 126,
+    "wikipedia_title": "Noah",
+    "wikipedia_summary": "Noah appears as the last of the Antediluvian patriarchs in the traditions of Abrahamic religions. His story appears in the Hebrew Bible, the Quran and Baha'i writings, and extracanonically.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Giovanni_Benedetto_Castiglione_gen._Il_Grecchetto_-_Noah_mit_den_Tieren_vor_der_Arche_-_GG_1645_-_Kunsthistorisches_Museum_%28cropped%29.jpg/330px-Giovanni_Benedetto_Castiglione_gen._Il_Grecchetto_-_Noah_mit_den_Tieren_vor_der_Arche_-_GG_1645_-_Kunsthistorisches_Museum_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Noah"
   },
   {
     "id": "person:noah_king",
@@ -86204,7 +86318,11 @@
         "label": "Numbers 36:11"
       }
     ],
-    "ref_count": 126
+    "ref_count": 126,
+    "wikipedia_title": "King Noah",
+    "wikipedia_summary": "King Noah is a Nephite king in the Book of Mormon who appears in the Book of Mosiah. Noah rules over a colony of Nephites who come from Zarahemla and settle in the land of Lehi-Nephi, succeeding his father, Zeniff. In the Book of Mosiah, King Noah distances from his father's teachings, committing what the text calls \"all manner of wickedness.\" Noah and his priests sentence a prophet named Abinadi, who prophesies of his kingdom's downfall if they did not repent, to death by fire. During a Lamanite invasion, Noah and some of his people flee the land, and those who remain are subjected to Lamanit",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Lehi_Blesses_His_Posterity%2C_cropped.jpg/330px-Lehi_Blesses_His_Posterity%2C_cropped.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/King_Noah"
   },
   {
     "id": "person:lehi",
@@ -87365,7 +87483,11 @@
         "label": "Romans 11:2"
       }
     ],
-    "ref_count": 112
+    "ref_count": 112,
+    "wikipedia_title": "Elijah",
+    "wikipedia_summary": "Elijah was a prophet and miracle worker who lived in the northern kingdom of Israel during the reign of King Ahab, according to the Books of Kings in the Hebrew Bible.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Giovanni_Girolamo_Savoldo%2C_Elijah_Fed_by_the_Raven%2C_c._1510%2C_NGA_46134.jpg/330px-Giovanni_Girolamo_Savoldo%2C_Elijah_Fed_by_the_Raven%2C_c._1510%2C_NGA_46134.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Elijah"
   },
   {
     "id": "person:isaiah",
@@ -87938,7 +88060,11 @@
         "label": "Romans 9:29"
       }
     ],
-    "ref_count": 112
+    "ref_count": 112,
+    "wikipedia_title": "Isaiah",
+    "wikipedia_summary": "Isaiah was the 8th-century BC Israelite prophet after whom the Book of Isaiah is named.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Jesaja_%28Michelangelo%29.jpg/330px-Jesaja_%28Michelangelo%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Isaiah"
   },
   {
     "id": "person:matthew",
@@ -90069,7 +90195,10 @@
         "label": "Moses 6:24"
       }
     ],
-    "ref_count": 79
+    "ref_count": 79,
+    "wikipedia_title": "Jared",
+    "wikipedia_summary": "Jared is a given name of Biblical derivation.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Jared"
   },
   {
     "id": "person:enoch",
@@ -90446,7 +90575,11 @@
         "label": "Moses 8:19"
       }
     ],
-    "ref_count": 73
+    "ref_count": 73,
+    "wikipedia_title": "Enoch",
+    "wikipedia_summary": "Enoch is a biblical figure and patriarch prior to Noah's flood. He is the son of Jared and father of Methuselah.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Spas_na_Ilyine_-_Patriarch_Enoch.jpg/330px-Spas_na_Ilyine_-_Patriarch_Enoch.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Enoch"
   },
   {
     "id": "person:gideon",
@@ -90788,7 +90921,11 @@
         "label": "Mosiah 22:9"
       }
     ],
-    "ref_count": 66
+    "ref_count": 66,
+    "wikipedia_title": "Gideon",
+    "wikipedia_summary": "Gideon also named Jerubbaal and Jerubbesheth was an Israelite shopeṭ (\"judge\"), military leader, and prophet whose calling and victory over the Midianites is described in Judges 6–8 in the Hebrew Bible.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Maerten_van_Heemskerck_-_G%C3%A9d%C3%A9on_et_le_miracle_de_la_Toison%2C_MBA_1747_%28b%29_%28cropped%29.jpg/330px-Maerten_van_Heemskerck_-_G%C3%A9d%C3%A9on_et_le_miracle_de_la_Toison%2C_MBA_1747_%28b%29_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Gideon"
   },
   {
     "id": "person:helaman",
@@ -91120,7 +91257,11 @@
         "label": "Mosiah 1:2"
       }
     ],
-    "ref_count": 64
+    "ref_count": 64,
+    "wikipedia_title": "Helaman",
+    "wikipedia_summary": "The Book of Mormon mentions three men named Helaman. The first was the son of King Benjamin, king of the united Nephite-Zarahemla kingdom who lived in the 2nd century BC. Besides his genealogy, information about the first Helaman is limited. His brother, Mosiah, became heir to the throne.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Lehi_Blesses_His_Posterity%2C_cropped.jpg/330px-Lehi_Blesses_His_Posterity%2C_cropped.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Helaman"
   },
   {
     "id": "person:coriantumr",
@@ -91715,7 +91856,11 @@
         "label": "Matthew 27:65"
       }
     ],
-    "ref_count": 54
+    "ref_count": 54,
+    "wikipedia_title": "Pilate",
+    "wikipedia_summary": "Pontius Pilate was the fifth governor of the Roman province of Judaea, serving under Emperor Tiberius from 26/27 to 36/37 AD. He is best known for being the official who presided over the trial of Jesus and ultimately ordered his crucifixion. Pilate's importance in Christianity is underscored by his prominent place in both the Apostles' and Nicene Creeds. Because the gospels portray Pilate as reluctant to execute Jesus, the Ethiopian Orthodox Tewahedo Church believes that Pilate became a Christian and venerates him as both a martyr and a saint, a belief which was also historically held by the ",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Ecce_homo_by_Antonio_Ciseri_%281%29.jpg/330px-Ecce_homo_by_Antonio_Ciseri_%281%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Pontius_Pilate"
   },
   {
     "id": "person:sarah",
@@ -91993,7 +92138,11 @@
         "label": "Numbers 26:46"
       }
     ],
-    "ref_count": 53
+    "ref_count": 53,
+    "wikipedia_title": "Sarah",
+    "wikipedia_summary": "Sarah is a biblical matriarch, prophet, and major figure in Abrahamic religions. While different Abrahamic faiths portray her differently, Judaism, Christianity, and Islam all depict her character similarly, as that of a pious woman, renowned for her hospitality and beauty, the wife of Abraham, and the mother of Isaac. Sarah has her feast day on 1 September in the Catholic Church, 19 August in the Coptic Orthodox Church, 20 January in the LCMS, and 12 and 20 December in the Eastern Orthodox Church.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/James_Jacques_Joseph_Tissot_-_Abram%27s_Counsel_to_Sarai_-_Google_Art_Project_%28cropped%29.jpg/330px-James_Jacques_Joseph_Tissot_-_Abram%27s_Counsel_to_Sarai_-_Google_Art_Project_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Sarah"
   },
   {
     "id": "person:zechariah",
@@ -92543,7 +92692,11 @@
         "label": "2 Kings 9:1"
       }
     ],
-    "ref_count": 52
+    "ref_count": 52,
+    "wikipedia_title": "Elisha",
+    "wikipedia_summary": "Elisha was, according to the Hebrew Bible, an Israelite prophet and a wonder-worker. His name is commonly transliterated into English as Elisha via Hebrew, Eliseus via Greek and Latin, Ełishe (Yeghishe/Elisha) via Armenian or Alyasa via Arabic, and Elyasa or Elyesa via Turkish. Also mentioned in the New Testament and the Quran,[6:86][38:48] Elisha is venerated as a prophet in Judaism, Christianity and Islam and writings of the Bahá'í Faith refer to him by name.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Chapelle_des_Carm%C3%A9lites_-_Interieur_-_%C3%89lis%C3%A9e_ressuscitant_le_fils_de_la_Sunamite_par_Despax_%28cropped%29.jpg/330px-Chapelle_des_Carm%C3%A9lites_-_Interieur_-_%C3%89lis%C3%A9e_ressuscitant_le_fils_de_la_Sunamite_par_Despax_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Elisha"
   },
   {
     "id": "person:james_zebedee",
@@ -92810,7 +92963,11 @@
         "label": "Matthew 4:21"
       }
     ],
-    "ref_count": 51
+    "ref_count": 51,
+    "wikipedia_title": "James, son of Zebedee",
+    "wikipedia_summary": "James the Great was one of the Twelve Apostles of Jesus. According to the New Testament, he was the second of the apostles to die, after Judas Iscariot, and the first to be martyred. Saint James is the patron saint of Spain and, according to tradition, what are believed to be his remains are held in Santiago de Compostela in Galicia, Spain.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Peter_Paul_Rubens_-_St_James_the_Apostle_-_WGA20192.jpg/330px-Peter_Paul_Rubens_-_St_James_the_Apostle_-_WGA20192.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/James_the_Great"
   },
   {
     "id": "person:esther",
@@ -93072,7 +93229,11 @@
         "label": "Esther 9:32"
       }
     ],
-    "ref_count": 50
+    "ref_count": 50,
+    "wikipedia_title": "Esther",
+    "wikipedia_summary": "Esther, originally Hadassah, is the eponymous heroine of the Book of Esther in the Hebrew Bible.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Esthermillais.jpg/330px-Esthermillais.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Esther"
   },
   {
     "id": "person:laman",
@@ -93329,7 +93490,10 @@
         "label": "Mosiah 9:13"
       }
     ],
-    "ref_count": 49
+    "ref_count": 49,
+    "wikipedia_title": "Laman",
+    "wikipedia_summary": "Lamane or laman means \"master of the land\" in the Serer language. The name was also sometimes the title of chiefs or kings of the Serer people of the Senegambia region which includes modern day Senegal and the Gambia. This title was also used by some kings of the Wolof kingdoms. The title is sometimes used interchangeably with the old Serer title Maad. After the Guelowars' migration to the Sine and the foundation of the Kingdom of Sine, \"lamane\" denotes a provincial chief answerable to the King of Sine and Saloum.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Lamane"
   },
   {
     "id": "person:mormon",
@@ -93586,7 +93750,11 @@
         "label": "Words Of Mormon 1:11"
       }
     ],
-    "ref_count": 49
+    "ref_count": 49,
+    "wikipedia_title": "Mormon",
+    "wikipedia_summary": "Mormons are a religious and cultural group related to Mormonism, the principal branch of the Latter Day Saint movement started by Joseph Smith in upstate New York during the Second Great Awakening. After Smith's death in 1844, the movement split into several groups following different leaders; the majority followed Brigham Young, while smaller groups followed Sidney Rigdon and James Strang. Many who did not follow Young eventually merged into the Community of Christ, led by Smith’s son, Joseph Smith III. The term Mormon typically refers to members of the Church of Jesus Christ of Latter-day Sa",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Joseph_Smith_Preaching_to_the_Indians_by_William_Armitage.png/330px-Joseph_Smith_Preaching_to_the_Indians_by_William_Armitage.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Mormons"
   },
   {
     "id": "person:mary_mother",
@@ -93841,7 +94009,11 @@
         "label": "Romans 16:6"
       }
     ],
-    "ref_count": 48
+    "ref_count": 48,
+    "wikipedia_title": "Mary, mother of Jesus",
+    "wikipedia_summary": "Mary was a first-century Jewish woman of Nazareth, the wife of Joseph and the mother of Jesus. She is an important figure of Christianity, venerated under various titles such as virgin or queen, many of which are mentioned in the Litany of Loreto. The Eastern and Oriental Orthodox, Catholic, Evangelical Lutheran, Reformed, Anglican, Methodist and Baptist churches believe that Mary, as mother of Jesus, is the Mother of God. The Church of the East historically regarded her as Christotokos, a term still used in the liturgy of the Assyrian Church of the East. She has the highest position in Islam ",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Madonna_Advocata.png/330px-Madonna_Advocata.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Mary%2C_mother_of_Jesus"
   },
   {
     "id": "person:simeon",
@@ -94093,7 +94265,10 @@
         "label": "Revelation 7:7"
       }
     ],
-    "ref_count": 48
+    "ref_count": 48,
+    "wikipedia_title": "Simeon",
+    "wikipedia_summary": "Simeon is a given name, from the Hebrew שמעון, usually transliterated in English as Shimon. In Greek, it is written Συμεών, hence the Latinized spelling Symeon. It is a cognate of the name Simon.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Simeon"
   },
   {
     "id": "person:ruth",
@@ -94548,7 +94723,11 @@
         "label": "Joseph Smith History 1:73"
       }
     ],
-    "ref_count": 43
+    "ref_count": 43,
+    "wikipedia_title": "Oliver Cowdery",
+    "wikipedia_summary": "Oliver H. P. Cowdery was an American religious leader who, with Joseph Smith, was an important participant in the formative period of the Latter Day Saint movement in the 1820s and 1830s.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Olivercowdery-sm.jpg/330px-Olivercowdery-sm.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Oliver_Cowdery"
   },
   {
     "id": "person:herod",
@@ -94970,7 +95149,11 @@
         "label": "Numbers 34:19"
       }
     ],
-    "ref_count": 38
+    "ref_count": 38,
+    "wikipedia_title": "Caleb",
+    "wikipedia_summary": "Caleb is a figure who appears in the Hebrew Bible as a representative of the Tribe of Judah during the Israelites' journey to the Promised Land.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Schnorr_von_Carolsfeld_Bibel_in_Bildern_1860_058.png/330px-Schnorr_von_Carolsfeld_Bibel_in_Bildern_1860_058.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Caleb"
   },
   {
     "id": "person:samson",
@@ -95172,7 +95355,11 @@
         "label": "Judges 16:30"
       }
     ],
-    "ref_count": 38
+    "ref_count": 38,
+    "wikipedia_title": "Samson",
+    "wikipedia_summary": "Samson was the last of the judges of the ancient Israelites mentioned in the Book of Judges and one of the last leaders who \"judged\" the twelve tribes of Israel before the institution of the monarchy. He is sometimes regarded as an Israelite version of the popular Near Eastern folk hero archetype also embodied by the Sumerian Gilgamesh and Enkidu, as well as the Greek Heracles. Samson was given superhuman powers by God in the form of extreme strength.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Lucas_Cranach_d.%C3%84._-_Simson_bezwingt_den_L%C3%B6wen.jpg/330px-Lucas_Cranach_d.%C3%84._-_Simson_bezwingt_den_L%C3%B6wen.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Samson"
   },
   {
     "id": "person:ezra",
@@ -95369,7 +95556,11 @@
         "label": "Nehemiah 8:13"
       }
     ],
-    "ref_count": 37
+    "ref_count": 37,
+    "wikipedia_title": "Ezra",
+    "wikipedia_summary": "Ezra is the main character of the Book of Ezra. According to the Hebrew Bible, he was an important Jewish scribe (sofer) and priest (kohen) in the early Second Temple period. In the Greek Septuagint, the name is rendered as Ésdrās, from which the Latin name Esdras comes. His name is probably a shortened Aramaic translation of the Hebrew name עזריהו‎, meaning \"Yah helps\".",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/109.Ezra_Reads_the_Law_to_the_People.jpg/330px-109.Ezra_Reads_the_Law_to_the_People.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ezra"
   },
   {
     "id": "person:philip",
@@ -95561,7 +95752,11 @@
         "label": "Matthew 14:3"
       }
     ],
-    "ref_count": 36
+    "ref_count": 36,
+    "wikipedia_title": "Philip",
+    "wikipedia_summary": "Philip, also Phillip, is a male name derived from the Greek Φιλιππος, from a compound of φίλος and ἵππος. Prominent Philips who popularized the name include kings of Macedonia and one of the apostles of early Christianity.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Macedon_Philip_II_AR_Tetradrachm_Thunderbolt_Control_Mark%2C_LeRider_234_Plate_Coin%2C_1965_Thessalonica_Hoard.xcf/330px-Macedon_Philip_II_AR_Tetradrachm_Thunderbolt_Control_Mark%2C_LeRider_234_Plate_Coin%2C_1965_Thessalonica_Hoard.xcf.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Philip"
   },
   {
     "id": "person:sam",
@@ -95925,7 +96120,10 @@
         "label": "Micah 5:7"
       }
     ],
-    "ref_count": 33
+    "ref_count": 33,
+    "wikipedia_title": "Micah",
+    "wikipedia_summary": "Micah is a given name.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Micah"
   },
   {
     "id": "person:abinadi",
@@ -96097,7 +96295,11 @@
         "label": "Mosiah 26:15"
       }
     ],
-    "ref_count": 32
+    "ref_count": 32,
+    "wikipedia_title": "Abinadi",
+    "wikipedia_summary": "According to the Book of Mormon, Abinadi was a prophet who lived on the American continent about 150 BC. In the Book of Mormon account, Abinadi visited the court of King Noah at Lehi-Nephi, and pleaded for them to repent of their iniquity and live the law of Moses. Abinadi also gave Noah the message of the coming of the Lord Jesus Christ to earth in the flesh, to live among the children of men. Noah and his priests threatened Abinadi that unless he recalled all the words he had said against him and his priests, they would kill him. Abinadi stood by his words and Noah had him burned with fire. ",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/DeathOfAbinadi.png/330px-DeathOfAbinadi.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Abinadi"
   },
   {
     "id": "person:rebekah",
@@ -96422,7 +96624,10 @@
         "label": "Proverbs 31:4"
       }
     ],
-    "ref_count": 30
+    "ref_count": 30,
+    "wikipedia_title": "Lemuel",
+    "wikipedia_summary": "Lemuel is a Hebrew name, meaning \"devoted to God\", which may refer to:",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Lemuel"
   },
   {
     "id": "person:ether",
@@ -96579,7 +96784,11 @@
         "label": "Joshua 19:7"
       }
     ],
-    "ref_count": 29
+    "ref_count": 29,
+    "wikipedia_title": "Ether",
+    "wikipedia_summary": "In organic chemistry, ethers are a class of compounds that contain an ether group, a single oxygen atom bonded to two separate carbon atoms, each part of an organyl group. They have the general formula R−O−R′, where R and R′ represent the organyl groups. Ethers can again be classified into two varieties: if the organyl groups are the same on both sides of the oxygen atom, then it is a simple or symmetrical ether, whereas if they are different, the ethers are called mixed or unsymmetrical ethers. A typical example of the first group is the solvent and anaesthetic diethyl ether, commonly referre",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Ether-%28general%29.svg/330px-Ether-%28general%29.svg.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ether"
   },
   {
     "id": "person:barnabas",
@@ -96726,7 +96935,11 @@
         "label": "Galatians 2:13"
       }
     ],
-    "ref_count": 27
+    "ref_count": 27,
+    "wikipedia_title": "Barnabas",
+    "wikipedia_summary": "Barnabas, born Joseph (Ἰωσήφ) or Joses (Ἰωσής), was a prominent Christian disciple, identified as an apostle in Acts 14:14. According to Acts 4:36, he was a Cypriot Levite. He undertook missionary journeys as a companion of Paul the Apostle, evangelizing among the \"God-fearing\" Gentiles who attended synagogues in some of the Hellenized cities of Anatolia. He participated in the Council of Jerusalem.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Galer%C3%ADa_Uffizi%2C_Florencia%2C_Italia%2C_2022_09_18%2C_DD_42_%281%29_%28cropped%29.jpg/330px-Galer%C3%ADa_Uffizi%2C_Florencia%2C_Italia%2C_2022_09_18%2C_DD_42_%281%29_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Barnabas"
   },
   {
     "id": "person:timothy",
@@ -97002,7 +97215,11 @@
         "label": "Joseph Smith History 1:7"
       }
     ],
-    "ref_count": 24
+    "ref_count": 24,
+    "wikipedia_title": "Hyrum Smith",
+    "wikipedia_summary": "Hyrum Smith was an American religious leader in the Church of Jesus Christ of Latter Day Saints, the original church of the Latter Day Saint movement. He was the older brother of the movement's founder, Joseph Smith, and was killed with his brother at Carthage Jail where they were being held awaiting trial.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Hyrum_Smith_ca_1880-1920.png/330px-Hyrum_Smith_ca_1880-1920.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Hyrum_Smith"
   },
   {
     "id": "person:thomas",
@@ -97319,7 +97536,11 @@
         "label": "Jonah 4:9"
       }
     ],
-    "ref_count": 18
+    "ref_count": 18,
+    "wikipedia_title": "Jonah",
+    "wikipedia_summary": "Jonah the son of Amittai or Jonas was a Jewish prophet from Gath-hepher in the Northern Kingdom of Israel around the 8th century BCE according to the Hebrew Bible. He is the central figure of the Book of Jonah, one of the minor prophets, which details his reluctance in delivering the judgment of God to the city of Nineveh in the Neo-Assyrian Empire. After he is swallowed by a large sea creature and then released, he returns to the divine mission.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Dore_jonah.jpg/330px-Dore_jonah.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Jonah"
   },
   {
     "id": "person:eve",
@@ -97406,7 +97627,10 @@
         "label": "Moses 5:16"
       }
     ],
-    "ref_count": 15
+    "ref_count": 15,
+    "wikipedia_title": "Eve",
+    "wikipedia_summary": "Eve is a figure from the Book of Genesis in the Hebrew Bible. According to the origin story of the Abrahamic religions, she was the first woman to be created by God. Eve is known also as Adam's wife.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Eve"
   },
   {
     "id": "person:lazarus",
@@ -97570,7 +97794,11 @@
         "label": "Titus 1:5"
       }
     ],
-    "ref_count": 13
+    "ref_count": 13,
+    "wikipedia_title": "Titus",
+    "wikipedia_summary": "Titus Flavius Vespasianus was Roman emperor from 79 to 81 AD. A member of the Flavian dynasty, Titus succeeded his father Vespasian upon his death, becoming the first Roman emperor ever to succeed his biological father.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Titus_Ny_Carlsberg_Glyptotek_IN3159.jpg/330px-Titus_Ny_Carlsberg_Glyptotek_IN3159.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Titus"
   },
   {
     "id": "person:miriam",
@@ -97642,7 +97870,11 @@
         "label": "Numbers 26:59"
       }
     ],
-    "ref_count": 12
+    "ref_count": 12,
+    "wikipedia_title": "Miriam",
+    "wikipedia_summary": "Miriam is described in the Hebrew Bible as the daughter of Amram and Jochebed, and the older sister of Moses and Aaron. She was a prophetess and first appears in the Book of Exodus.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Miriam_%28Dalziels%27_Bible_Gallery%29_MET_DP835720.jpg/330px-Miriam_%28Dalziels%27_Bible_Gallery%29_MET_DP835720.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Miriam"
   },
   {
     "id": "person:nehemiah",
@@ -97714,7 +97946,11 @@
         "label": "Nehemiah 9:28"
       }
     ],
-    "ref_count": 12
+    "ref_count": 12,
+    "wikipedia_title": "Nehemiah",
+    "wikipedia_summary": "Nehemiah is the central figure of the Book of Nehemiah, which describes his work in rebuilding Jerusalem during the Second Temple period as the governor of Yehud Medinata, the autonomous province of Judea within the Achaemenid Empire, under Artaxerxes I.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Prophet_nehemiah.jpg/330px-Prophet_nehemiah.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Nehemiah"
   },
   {
     "id": "person:andrew",
@@ -97786,7 +98022,11 @@
         "label": "Matthew 4:18"
       }
     ],
-    "ref_count": 12
+    "ref_count": 12,
+    "wikipedia_title": "Andrew",
+    "wikipedia_summary": "Andrew is the English form from the Old French name Andreu / Andrieu, themselves from Latin Andreas, from Greek-derived given name Andreas. It is related to Ancient Greek: ἀνήρ/ἀνδρός aner/andros, \"man\", thus meaning \"manly\" and, as consequence, \"brave\", \"strong\", \"courageous\", and \"warrior\". In the King James Bible, the Greek \"Ἀνδρέας\" is translated as Andrew.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Andreas_San_Giovanni_in_Laterano_2006-09-07.jpg/330px-Andreas_San_Giovanni_in_Laterano_2006-09-07.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Andrew"
   },
   {
     "id": "person:martha",
@@ -97858,7 +98098,11 @@
         "label": "Luke 10:41"
       }
     ],
-    "ref_count": 12
+    "ref_count": 12,
+    "wikipedia_title": "Martha",
+    "wikipedia_summary": "Martha is a biblical figure described in the Gospels of Luke and John. Together with her siblings Lazarus and Mary of Bethany, she is described as living in the village of Bethany near Jerusalem and witnessing Jesus resurrecting her brother, Lazarus.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Johannes_%28Jan%29_Vermeer_-_Christ_in_the_House_of_Martha_and_Mary_-_Google_Art_Project_%28cropped2%29.jpg/330px-Johannes_%28Jan%29_Vermeer_-_Christ_in_the_House_of_Martha_and_Mary_-_Google_Art_Project_%28cropped2%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Martha"
   },
   {
     "id": "person:brother_of_jared",
@@ -97932,7 +98176,11 @@
         "label": "Ether 6:25"
       }
     ],
-    "ref_count": 12
+    "ref_count": 12,
+    "wikipedia_title": "Brother of Jared",
+    "wikipedia_summary": "In the Book of Mormon, the Brother of Jared is the most prominent person in the account given in the beginning of the Book of Ether. The Brother of Jared's name is not given in the text of the Book of Mormon, but Joseph Smith stated in 1834 that it was Mahonri Moriancumer.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Lehi_Blesses_His_Posterity%2C_cropped.jpg/330px-Lehi_Blesses_His_Posterity%2C_cropped.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Brother_of_Jared"
   },
   {
     "id": "person:hannah",
@@ -98067,7 +98315,10 @@
         "label": "Matthew 10:3"
       }
     ],
-    "ref_count": 11
+    "ref_count": 11,
+    "wikipedia_title": "Nathanael",
+    "wikipedia_summary": "Nathanael is an English name of Hebrew origin. It is of Biblical origin and holds significance for Jews and Christians. Several figures in both the Old and New Testament bear the name. Figures in the Old Testament, which is transliterated from Hebrew, have their names rendered as Nethanel in English whereas those in the New Testament, which is translated from Greek, have theirs rendered as Nathanael. Since the early 20th century, the most common English spelling is Nathaniel, a change likely influenced by the popularity of other Biblical names ending in -iel. Bearers may use the nicknames Nate",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Nathanael"
   },
   {
     "id": "person:deborah",
@@ -98129,7 +98380,11 @@
         "label": "Judges 5:15"
       }
     ],
-    "ref_count": 10
+    "ref_count": 10,
+    "wikipedia_title": "Deborah",
+    "wikipedia_summary": "According to the Book of Judges, Deborah was a prophetess of Judaism, the fourth Judge of pre-monarchic Israel and the only female judge mentioned in the Hebrew Bible. Many scholars contend that the phrase, \"a woman of Lappidoth\", as translated from biblical Hebrew in Judges 4:4 denotes her marital status as the wife of Lapidoth. Alternatively, \"lappid\" translates as \"torch\" or \"lightning\", therefore the phrase, \"woman of Lappidoth\" could be referencing Deborah as a \"fiery woman\". Deborah told Barak, an Israelite general from Kedesh in Naphtali, that God commanded him to lead an attack against",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Johanna_Unger_%E2%80%93_Debora.jpg/330px-Johanna_Unger_%E2%80%93_Debora.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Deborah"
   },
   {
     "id": "person:ezekiel",
@@ -98191,7 +98446,11 @@
         "label": "Ezekiel 37:1"
       }
     ],
-    "ref_count": 10
+    "ref_count": 10,
+    "wikipedia_title": "Ezekiel",
+    "wikipedia_summary": "Ezekiel, also spelled Ezechiel, was an Israelite priest. The Book of Ezekiel, relating his visions and acts, is named after him.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Ezekiel_by_Michelangelo%2C_restored_-_large.jpg/330px-Ezekiel_by_Michelangelo%2C_restored_-_large.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ezekiel"
   },
   {
     "id": "person:malachi",
@@ -98253,7 +98512,11 @@
         "label": "Malachi 3:8"
       }
     ],
-    "ref_count": 10
+    "ref_count": 10,
+    "wikipedia_title": "Malachi",
+    "wikipedia_summary": "Malachi or Malachias is the name used by the author of the Book of Malachi, the last book of the Nevi'im (Prophets) section of the Tanakh. It is possible that Malachi is not a proper name, because it means \"messenger\"; it has been assumed to be a pseudonym. According to Jewish tradition, Malachi's true identity is Ezra the scribe.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Lorenzo_monaco%2C_cappella_bartolini_salimbeni%2C_profeti_nella_volta%2C_1420-24%2C_03_malachia.JPG/330px-Lorenzo_monaco%2C_cappella_bartolini_salimbeni%2C_profeti_nella_volta%2C_1420-24%2C_03_malachia.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Malachi"
   },
   {
     "id": "person:zoram",
@@ -98372,7 +98635,11 @@
         "label": "Hosea 8:9"
       }
     ],
-    "ref_count": 9
+    "ref_count": 9,
+    "wikipedia_title": "Hosea",
+    "wikipedia_summary": "In the Hebrew Bible, Hosea, also known as Osee, son of Beeri, was an 8th-century BC prophet in Israel and the nominal primary author of the Book of Hosea. He is the first of the Twelve Minor Prophets, whose collective writings were aggregated and organized into a single book in the Jewish Tanakh by the Second Temple period but which are distinguished as individual books in Christianity. Hosea is often seen as a \"prophet of doom\", but underneath his message of destruction is a promise of restoration. The Talmud claims that he was the greatest prophet of his generation. The period of Hosea's min",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Hosea_by_James_Tissot_%28cropped%29.jpg/330px-Hosea_by_James_Tissot_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Hosea"
   },
   {
     "id": "person:stephen",
@@ -98429,7 +98696,11 @@
         "label": "Doctrine And Covenants 80:1"
       }
     ],
-    "ref_count": 9
+    "ref_count": 9,
+    "wikipedia_title": "Stephen",
+    "wikipedia_summary": "Stephen or Steven is an English male first name. It is particularly significant to Christians, as it belonged to Saint Stephen, an early disciple and deacon who, according to the Book of Acts, was stoned to death; he is widely regarded as the first martyr of the Christian Church.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/4/49/StStephen_GiacomoCavedone.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Stephen"
   },
   {
     "id": "person:caiaphas",
@@ -98486,7 +98757,11 @@
         "label": "Matthew 26:57"
       }
     ],
-    "ref_count": 9
+    "ref_count": 9,
+    "wikipedia_title": "Caiaphas",
+    "wikipedia_summary": "Joseph ben Caiaphas was the High Priest of Israel during the first century. In the New Testament, the Gospels of Matthew, Luke and John indicate he was an organizer of the plot to kill Jesus. He is portrayed as presiding over the Sanhedrin trial of Jesus. The primary sources for Caiaphas' life are the New Testament and the writings of Josephus. The latter records he was made high priest by the Roman procurator Valerius Gratus after Simon ben Camithus had been deposed.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Gerard_van_Honthorst_-_Christ_before_the_High_Priest_-_WGA11650_%28cropped%29.jpg/330px-Gerard_van_Honthorst_-_Christ_before_the_High_Priest_-_WGA11650_%28cropped%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Caiaphas"
   },
   {
     "id": "person:nicodemus",
@@ -98523,7 +98798,11 @@
         "label": "John 7:50"
       }
     ],
-    "ref_count": 5
+    "ref_count": 5,
+    "wikipedia_title": "Nicodemus",
+    "wikipedia_summary": "Nicodemus is a New Testament figure venerated as a saint in a number of Christian traditions. He is depicted as a Pharisee and a member of the Sanhedrin who is drawn to hear Jesus's teachings. Like Lazarus, Nicodemus is not mentioned in the synoptic Gospels, but only by John, who devotes more than half of Chapter 3 of his gospel and a few verses of Chapter 7 to Nicodemus; and, lastly, mentions him in Chapter 19.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Brooklyn_Museum_-_Nicodemus_%28Nicod%C3%A8me%29_-_James_Tissot_-_overall.jpg/330px-Brooklyn_Museum_-_Nicodemus_%28Nicod%C3%A8me%29_-_James_Tissot_-_overall.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Nicodemus"
   },
   {
     "id": "person:emma_smith",
@@ -98561,7 +98840,11 @@
         "label": "Joseph Smith History 1:57"
       }
     ],
-    "ref_count": 5
+    "ref_count": 5,
+    "wikipedia_title": "Emma Smith",
+    "wikipedia_summary": "Emma Hale Smith Bidamon was a leader in the early Latter Day Saint movement and a prominent member of the Reorganized Church of Jesus Christ of Latter Day Saints as well as the first wife of Joseph Smith, the movement's founder. In 1842, when the Ladies' Relief Society of Nauvoo was formed as a women's service organization, she was elected by its members as the organization's first president.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/EmmaHSmith3.jpg/330px-EmmaHSmith3.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Emma_Smith"
   },
   {
     "id": "person:sariah",
@@ -98593,7 +98876,11 @@
         "label": "1 Nephi 8:14"
       }
     ],
-    "ref_count": 4
+    "ref_count": 4,
+    "wikipedia_title": "Sariah",
+    "wikipedia_summary": "According to the Book of Mormon, Sariah was the wife of Lehi, and the mother of Laman, Lemuel, Sam, and Nephi. She traveled with her husband from Jerusalem, into the wilderness, and eventually, across the ocean to the \"promised land\". She is noted for the story in First Nephi where she complains to Lehi for sending her sons back to Jerusalem thinking that they may have died. Once they return, Sariah testifies that her husband is truly a prophet. In Lehi's vision of the tree of life, Sariah chooses to eat the fruit representing God's love. She has two more sons, Jacob and Joseph, while travelin",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Sariah%2C_story_of_lehi%2C_pt_9.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Sariah"
   },
   {
     "id": "person:zacchaeus",
@@ -98620,7 +98907,11 @@
         "label": "Luke 19:8"
       }
     ],
-    "ref_count": 3
+    "ref_count": 3,
+    "wikipedia_title": "Zacchaeus",
+    "wikipedia_summary": "Zacchaeus was a man, recorded in the Gospel of Luke, a chief tax-collector at Jericho. His story includes his faith in climbing a sycamore tree to see Jesus and also his generosity in giving away half of all he possessed.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Palestine_Jericho5_tango7174.jpg/330px-Palestine_Jericho5_tango7174.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Zacchaeus"
   },
   {
     "id": "person:sherem",
@@ -98642,7 +98933,10 @@
         "label": "Jacob 7:7"
       }
     ],
-    "ref_count": 2
+    "ref_count": 2,
+    "wikipedia_title": "Sherem",
+    "wikipedia_summary": "This list is intended as a compendium of individuals mentioned in the Book of Mormon.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/List_of_Book_of_Mormon_people"
   },
   {
     "id": "person:joseph_husband",
@@ -98660,7 +98954,11 @@
         "label": "Matthew 1:19"
       }
     ],
-    "ref_count": 1
+    "ref_count": 1,
+    "wikipedia_title": "Joseph, husband of Mary",
+    "wikipedia_summary": "According to the canonical Gospels, Joseph was a 1st-century Jewish man of Nazareth who was married to Mary, the mother of Jesus, and was the legal father of Jesus.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Guido_Reni_-_St_Joseph_with_the_Infant_Jesus_-_WGA19304.jpg/330px-Guido_Reni_-_St_Joseph_with_the_Infant_Jesus_-_WGA19304.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Saint_Joseph"
   },
   {
     "id": "person:anna",
@@ -98690,7 +98988,11 @@
       "the disciple whom Jesus loved"
     ],
     "scripture_refs": [],
-    "ref_count": 0
+    "ref_count": 0,
+    "wikipedia_title": "John the Apostle",
+    "wikipedia_summary": "John the Apostle, also known as Saint John the Beloved and, in Eastern Orthodox Christianity, Saint John the Theologian, was one of the Twelve Apostles of Jesus according to the New Testament. Generally listed as the youngest apostle, he was the son of Zebedee and Salome. His brother James was another of the Twelve Apostles. The Church Fathers identify him as John the Evangelist, John of Patmos, John the Elder, and the Beloved Disciple, and claim that he outlived the remaining apostles and was the only one to die of natural causes, although modern scholars are divided on the veracity of these ",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Rubens_apostel_johannes_grt.jpg/330px-Rubens_apostel_johannes_grt.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/John_the_Apostle"
   },
   {
     "id": "person:mary_magdalene",
@@ -98702,7 +99004,11 @@
       "Mary of Magdala"
     ],
     "scripture_refs": [],
-    "ref_count": 0
+    "ref_count": 0,
+    "wikipedia_title": "Mary Magdalene",
+    "wikipedia_summary": "Mary Magdalene was a woman who, according to the four canonical gospels, travelled with Jesus as one of his followers and was a witness to his crucifixion and resurrection. In Gnostic writings, Mary Magdalene is depicted as Jesus's closest disciple who uniquely understood his teachings, causing tension with Peter, and is honoured as the \"apostle to the apostles\".",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/TINTORETTO_-_Magdalena_penitente_%28Musei_Capitolini%2C_Roma%2C_1598-1602%29_-_copia.jpg/330px-TINTORETTO_-_Magdalena_penitente_%28Musei_Capitolini%2C_Roma%2C_1598-1602%29_-_copia.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Mary_Magdalene"
   },
   {
     "id": "person:john_the_revelator",
@@ -98713,6 +99019,10 @@
       "John the Revelator"
     ],
     "scripture_refs": [],
-    "ref_count": 0
+    "ref_count": 0,
+    "wikipedia_title": "John the Revelator",
+    "wikipedia_summary": "John of Patmos is the name traditionally given to the author of the Book of Revelation. Revelation 1:9 states that John was on Patmos, an Aegean island off the coast of Roman Asia, where according to some biblical historians, he was exiled as a result of anti-Christian persecution under the Roman emperor Domitian.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Johannes_op_Patmos_Saint_John_on_Patmos_Berlin%2C_Staatlichen_Museen_zu_Berlin%2C_Gemaldegalerie_HR.jpg/330px-Johannes_op_Patmos_Saint_John_on_Patmos_Berlin%2C_Staatlichen_Museen_zu_Berlin%2C_Gemaldegalerie_HR.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/John_of_Patmos"
   }
 ]

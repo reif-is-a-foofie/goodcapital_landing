@@ -5128,7 +5128,11 @@
       "Revelation 2:7",
       "Revelation 6:5"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Edible substance described in the Bible",
+    "wikipedia_summary": "Manna, sometimes or archaically spelled mana, is described in the Bible and the Quran as an edible substance that God bestowed upon the Israelites while they were wandering the desert during the 40-year period that followed the Exodus and preceded the conquest of Canaan.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Tissot_The_Gathering_of_the_Manna_%28color%29.jpg/330px-Tissot_The_Gathering_of_the_Manna_%28color%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Manna"
   },
   {
     "id": "thing:rod_of_aaron",
@@ -5305,7 +5309,11 @@
       "Numbers 21:8",
       "Numbers 21:9"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Staves carried by Moses's brother, Aaron, in the Torah",
+    "wikipedia_summary": "Aaron's rod refers to any of the walking sticks carried by Moses's brother, Aaron, in the Torah. The Bible tells how, along with Moses's rod, Aaron's rod was endowed with miraculous power during the Plagues of Egypt that preceded the Exodus. Later, his rod miraculously sprouted blossoms and almonds to symbolize God's choice of Aaron and his tribe for holy service.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Aarons_rod_budding_%285753119%29.jpg/330px-Aarons_rod_budding_%285753119%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Aaron's_rod"
   },
   {
     "id": "thing:burning_bush",
@@ -5483,7 +5491,11 @@
       "Matthew 3:11",
       "Moses 1:26"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Supernatural phenomenon described by Exodus 3:1–4:17",
+    "wikipedia_summary": "The burning bush refers to an event recorded in the Jewish Torah. It happened in the mid-15th century BCE or the 13th century BCE. It is described in the third chapter of the Book of Exodus as having occurred on Mount Horeb. According to the biblical account, the bush was on fire but was not consumed by the flames, hence the name. In the biblical and Quranic narrative, the burning bush is the location at which Moses was appointed by God to lead the Israelites out of Egypt and into Canaan.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Bourdon%2C_S%C3%A9bastien_-_Burning_bush.jpg/330px-Bourdon%2C_S%C3%A9bastien_-_Burning_bush.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Burning_bush"
   },
   {
     "id": "thing:pillar_of_fire",
@@ -5678,7 +5690,7 @@
       "rod of Moses",
       "Moses' rod"
     ],
-    "wikipedia_title": null,
+    "wikipedia_title": "Staff of Moses",
     "excerpts": [
       {
         "text": "It is like the rod of Moses on which the serpent-bitten Israelites had only to look to be healed.",
@@ -5720,7 +5732,11 @@
       "Exodus 17:15",
       "Exodus 7:9"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Walking stick used by Moses",
+    "wikipedia_summary": "The Staff of Moses, also known as the Rod of Moses or Staff of God, is mentioned in the Bible and Quran as a walking stick used by Moses. According to the Book of Exodus, the staff was used to produce water from a rock, was transformed into a snake and back, and was used at the parting of the Red Sea. Whether the staff of Moses was the same as the staff used by his brother Aaron has been debated by rabbinical scholars.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/VictoryOLord.JPG/330px-VictoryOLord.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Staff_of_Moses"
   },
   {
     "id": "thing:stone_tablets",
@@ -6300,7 +6316,11 @@
       "Words Of Mormon 1:18",
       "Zechariah 14:21"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Biblical principles relating to ethics and worship",
+    "wikipedia_summary": "The Ten Commandments, or the Decalogue, are religious and ethical directives, structured as a covenant document, that, according to the Hebrew Bible, were given by God to Moses. The text of the Ten Commandments appears in three markedly distinct versions in the Hebrew Bible: at Exodus 20:1–17, Deuteronomy 5:6–21, and the \"Ritual Decalogue\" of Exodus 34:11–26.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/0001_FL9694984.jpg/330px-0001_FL9694984.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ten_Commandments"
   },
   {
     "id": "thing:altar",
@@ -6766,7 +6786,11 @@
       "Revelation 8:5",
       "Zephaniah 3:20"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Structure upon which offerings such as sacrifices are made for religious purposes",
+    "wikipedia_summary": "An altar is a table or platform for the presentation of religious offerings, for sacrifices, or for other ritualistic purposes. Altars are found at shrines, temples, churches, and other places of worship. They are used particularly in Christianity, Buddhism, Hinduism, and modern paganism. Many historical-medieval faiths also made use of them, including the Roman, Greek, and Norse religions.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/RD_alter.jpg/330px-RD_alter.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Altar"
   },
   {
     "id": "thing:menorah",
@@ -6955,7 +6979,11 @@
       "Zechariah 3:10",
       "Zechariah 4:3"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Ancient Hebrew lampstand",
+    "wikipedia_summary": "The Temple menorah is a seven-branched candelabrum that is described in the Hebrew Bible and later ancient sources as having been used in the Tabernacle and the Temple in Jerusalem.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Menorah_0307.jpg/330px-Menorah_0307.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Temple_menorah"
   },
   {
     "id": "thing:veil_of_the_temple",
@@ -7326,7 +7354,7 @@
       "holy anointing oil",
       "oil of consecration"
     ],
-    "wikipedia_title": null,
+    "wikipedia_title": "Anointing oil",
     "excerpts": [
       {
         "text": "The root *QDS is used with reference to God (Exodus 15:11; Leviticus 20:3); God's temples (Exodus 38:24; 40:9; 2 Chronicles 29:5; Ezekiel 42:14); persons directly associated with temples, such as the priests (Leviticus 21:6) and the people of Israel (Jeremiah 2:3; Psalm 114:2); temple furniture (Exodus 30:29; 2 Chronicles 35:3); altars (Exodus 29:37; Deuteronomy 9:24); anointing oil (Exodus…",
@@ -7457,7 +7485,10 @@
       "Matthew 2:11",
       "Numbers 17:13"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Oil used to sanctify, to set the anointed person or object apart",
+    "wikipedia_summary": "\nIn the ancient Israelite religion, the holy anointing oil formed an integral part of the ordination of the priesthood and the High Priest as well as in the consecration of the articles of the Tabernacle and subsequent temples in Jerusalem. The primary purpose of anointing with the holy anointing oil was to sanctify, to set the anointed person or object apart as qodesh, or \"holy\".",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Holy_anointing_oil"
   },
   {
     "id": "thing:crown_of_thorns",
@@ -7685,7 +7716,11 @@
       "Proverbs 26:13",
       "Revelation 16:20"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Christian relic",
+    "wikipedia_summary": "\nAccording to the New Testament, a woven crown of thorns was placed on the head of Jesus during the events leading up to his crucifixion. It was one of the instruments of the Passion, employed by Jesus' captors both to cause him pain and to mock his claim of authority. It is mentioned in the gospels of Matthew, Mark and John, and is often alluded to by the early Church Fathers, such as Clement of Alexandria, Origen and others, along with being referenced in the apocryphal Gospel of Peter.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Christ_Carrying_the_Cross_1580.jpg/330px-Christ_Carrying_the_Cross_1580.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Crown_of_thorns"
   },
   {
     "id": "thing:baptism",
@@ -8590,7 +8625,11 @@
       "Zechariah 14:21",
       "Zechariah 9:12"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Christian rite of initiation into the Church",
+    "wikipedia_summary": "Baptism is a Christian rite of initiation almost invariably with the use of water. It may be performed by sprinkling or pouring water on the head, or immersing in water, traditionally three times for each person of the Trinity. It is also called christening, although this is typically reserved for the baptism of infants. Baptism is regarded as a sacrament in most churches and an ordinance in others, with the synoptic gospels recounting that John the Baptist baptized Jesus.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Baptism_in_the_Jordan_River_140308-N-HB951-058.jpg/330px-Baptism_in_the_Jordan_River_140308-N-HB951-058.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Baptism"
   },
   {
     "id": "thing:sacrament",
@@ -8954,7 +8993,11 @@
       "Romans 6:3",
       "Ruth 2:1"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Ordinance",
+    "wikipedia_summary": "In the Church of Jesus Christ of Latter-day Saints, the Holy Sacrament of the Lord's Supper, most often simply referred to as the sacrament, is the ordinance in which participants eat bread and drink water in remembrance of the body and blood of Jesus Christ. Normally, the sacrament is provided every Sunday as part of the sacrament meeting, the primary weekly worship service, in each LDS Church congregation.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Bread_sacrament_tray_%2835790368395%29.jpg/330px-Bread_sacrament_tray_%2835790368395%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Sacrament_(LDS_Church)"
   },
   {
     "id": "thing:incense",
@@ -8964,7 +9007,7 @@
       "altar of incense",
       "sweet incense"
     ],
-    "wikipedia_title": null,
+    "wikipedia_title": "Incense",
     "excerpts": [
       {
         "text": "Jeroboam stood by the altar to burn incense --It was at one of the annual festivals.",
@@ -9177,6 +9220,10 @@
       "Revelation 19:3",
       "Revelation 1:20"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Material that releases fragrant smoke when burnt",
+    "wikipedia_summary": "Incense is an aromatic biotic material that releases fragrant smoke when burnt. The term is used for either the material or the aroma. Incense is used for aesthetic reasons, religious worship, aromatherapy, meditation, and ceremonial reasons. It may also be used as a simple deodorant or insect repellent.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Incenselonghua.jpg/330px-Incenselonghua.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Incense"
   }
 ]

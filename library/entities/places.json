@@ -1844,7 +1844,10 @@
       "Luke 22:12",
       "Moses 2:31"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Town in New York, United States",
+    "wikipedia_summary": "Fayette is a town in Seneca County, New York, United States. The population was 3,617 at the 2020 census. The town is in the north-central part of the county and is southeast of Geneva, New York.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Fayette%2C_New_York"
   },
   {
     "id": "place:adam_ondi_ahman",
@@ -2020,7 +2023,11 @@
       "Revelation 2:6",
       "Revelation 8:13"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Historic site in Daviess County, Missouri",
+    "wikipedia_summary": "Adam-ondi-Ahman is a historic site in Daviess County, Missouri, about five miles south of Jameson. It is located along the east bluffs above the Grand River. According to the teachings of The Church of Jesus Christ of Latter-day Saints, it is the site where Adam and Eve lived after being expelled from the Garden of Eden. It teaches that the place will be a gathering spot for a meeting of the priesthood leadership, including prophets of all ages and other righteous people, prior to the Second Coming of Jesus Christ.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Adam-ondi-Ahman-Tower.jpg/330px-Adam-ondi-Ahman-Tower.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Adam-ondi-Ahman"
   },
   {
     "id": "place:liberty_jail",
@@ -2182,7 +2189,11 @@
       "Proverbs 16:18",
       "Psalms 22:1"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Historic jail in Missouri, U.S.",
+    "wikipedia_summary": "Liberty Jail is a historical jail in Liberty, Missouri, United States, which served as the county jail of Clay County, Missouri between December 1834 and 1853.\nThe jail is known in Latter Day Saint movement due to the imprisonment of its founder, Joseph Smith, and some of his associates during the 1838 Mormon War.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Liberty-jail1.png/330px-Liberty-jail1.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Liberty_Jail"
   },
   {
     "id": "place:winter_quarters",
@@ -2235,7 +2246,11 @@
       "Exodus 19:1",
       "Luke 18:22"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "American historic place",
+    "wikipedia_summary": "Winter Quarters was an encampment formed by approximately 2,500 members of the Church of Jesus Christ of Latter-day Saints as they waited during the winter of 1846–47 for better conditions for their trek westward. It followed a preliminary tent settlement some 3½ miles west at Cutler's Park. Members of the Church built more than 800 cabins at the Winter Quarters settlement. Located in present-day North Omaha overlooking the Missouri River, the settlement remained populated until 1848.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Winter_Quarters_by_C.C.A._Christensen.png/330px-Winter_Quarters_by_C.C.A._Christensen.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Winter_Quarters_(North_Omaha%2C_Nebraska)"
   },
   {
     "id": "place:hauns_mill",
@@ -2249,7 +2264,11 @@
     "related_people": [],
     "related_things": [],
     "related_scriptures": [],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Massacre of Latter Day Saints at Hawn's Mill in Missouri, United States",
+    "wikipedia_summary": "The Hawn’s Mill Massacre occurred on October 30, 1838, when a mob/militia unit from Livingston County, Missouri, attacked a Mormon settlement in eastern Caldwell County, Missouri, after the Battle of Crooked River. By far the bloodiest event in the 1838 Mormon War in Missouri, it has long been remembered by the members of the Latter Day Saint movement. While the spelling \"Haun\" is common when referring to the massacre or the mill where it occurred, the mill's owner used the spelling \"Hawn\" in legal documents.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Haun%27s_Mill_by_C.C.A._Christensen.png/330px-Haun%27s_Mill_by_C.C.A._Christensen.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Hawn's_Mill_massacre"
   },
   {
     "id": "place:jerusalem",
@@ -3857,7 +3876,11 @@
       "Zephaniah 3:19",
       "Zephaniah 3:20"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "City in the Southern Levant",
+    "wikipedia_summary": "Jerusalem is a city in the Southern Levant, on a plateau in the Judaean Mountains between the Mediterranean and the Dead Sea. It is one of the oldest cities in the world and is considered holy to the three major Abrahamic religions: Judaism, Christianity and Islam. Both Israel and Palestine claim Jerusalem as their capital city; Israel maintains its primary governmental institutions there, while Palestine ultimately foresees it as its seat of power. Neither claim is widely recognised internationally.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/%D7%94%D7%9E%D7%A6%D7%95%D7%93%D7%94_%D7%91%D7%9C%D7%99%D7%9C%D7%94.jpg/330px-%D7%94%D7%9E%D7%A6%D7%95%D7%93%D7%94_%D7%91%D7%9C%D7%99%D7%9C%D7%94.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Jerusalem"
   },
   {
     "id": "place:bethlehem",
@@ -4123,7 +4146,11 @@
       "Ruth 4:1",
       "Ruth 4:11"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "City in the West Bank, Palestine",
+    "wikipedia_summary": "Bethlehem is a city in the West Bank, Palestine, located about ten kilometres south of Jerusalem, and the capital of the Bethlehem Governorate. It had a population of 28,591 people, as of 2017. The city's economy is strongly linked to tourism, especially during the Christmas period, when Christians embark on a pilgrimage to the Church of the Nativity, which is revered as the location of the birth of Jesus.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Church_of_the_Nativity_%287703592746%29.jpg/330px-Church_of_the_Nativity_%287703592746%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Bethlehem"
   },
   {
     "id": "place:galilee",
@@ -4500,7 +4527,11 @@
       "Song Of Solomon 8:14",
       "Zechariah 13:7"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Region in northern Israel",
+    "wikipedia_summary": "Galilee is a region located in northern Israel and southern Lebanon consisting of two parts: the Upper Galilee and the Lower Galilee. Other sub-regions are the Western Galilee and the Galilee Panhandle.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Lower_Galilee_map.svg/330px-Lower_Galilee_map.svg.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Galilee"
   },
   {
     "id": "place:nazareth",
@@ -4828,7 +4859,11 @@
       "Zechariah 12:6",
       "Zechariah 14:21"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Largest city in the Northern District of Israel",
+    "wikipedia_summary": "Nazareth is the largest city in the Northern District of Israel. In 2024 its population was 75,704. Known as \"the Arab capital of Israel\", Nazareth serves as a cultural, political, religious, economic and commercial center for the Arab citizens of Israel. The inhabitants are predominantly Arabs, of whom 69% are Muslim and 31% Christian. The city also commands immense religious significance, deriving from its status as the hometown of Jesus, the central figure of Christianity and a prophet in Islam and the Baháʼí Faith.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Nazareth_Panorama_Dafna_Tal_IMOT_%2814532097313%29.jpg/330px-Nazareth_Panorama_Dafna_Tal_IMOT_%2814532097313%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Nazareth"
   },
   {
     "id": "place:capernaum",
@@ -5030,7 +5065,11 @@
       "Matthew 7:29",
       "Micah 7:20"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Village at Lake Tiberias in historical Judea",
+    "wikipedia_summary": "Capernaum was a fishing village established during the time of the Hasmoneans, located on the northern shore of the Sea of Galilee. It had a population of about 1,500 in the 1st century AD. Archaeological excavations have revealed two ancient synagogues built one over the other. A house turned into a church during the Byzantine period is held by Christian tradition to have been the home of Saint Peter.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Sites_of_Christianity_in_the_Galillee_-_Ruins_of_the_ancient_Great_Synagogue_at_Capernaum_%28or_Kfar_Nahum%29_on_the_shore_of_the_Lake_of_Galilee%2C_Northern_Israel.jpg/330px-thumbnail.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Capernaum"
   },
   {
     "id": "place:jericho",
@@ -5263,7 +5302,11 @@
       "Revelation 8:2",
       "Ruth 2:1"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Palestinian city in the West Bank",
+    "wikipedia_summary": "Jericho is a city in the West Bank, Palestine, and the capital of the Jericho Governorate. The city is located in the Jordan Valley, with the Jordan River to the east and Jerusalem to the west.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Tell_es-sultan.jpg/330px-Tell_es-sultan.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Jericho"
   },
   {
     "id": "place:jordan_river",
@@ -5655,7 +5698,11 @@
       "Zechariah 10:10",
       "Zechariah 14:5"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "River that flows to the Dead Sea",
+    "wikipedia_summary": "The Jordan River or River Jordan, also known as Nahr Al-Sharieat, is a 251-kilometre-long (156 mi) endorheic river in the Levant that flows roughly north to south through the Sea of Galilee and drains to the Dead Sea. The river passes by or through Jordan, Syria, Israel, and Palestine.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/20100923_mer_morte13.JPG/330px-20100923_mer_morte13.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Jordan_River"
   },
   {
     "id": "place:gethsemane",
@@ -5956,7 +6003,11 @@
       "Mosiah 3:11",
       "Mosiah 3:7"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Garden by Jerusalem's Mount of Olives",
+    "wikipedia_summary": "Gethsemane is a garden as well as a courtyard at the foot of the Mount of Olives in East Jerusalem, where, according to the four Gospels of the New Testament, Jesus Christ underwent the Agony in the Garden and was arrested before his crucifixion. The garden is a place of great resonance in Christianity. There are several small olive groves in church property, all adjacent to each other and identified with biblical Gethsemane.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Jerusalem_Gethsemane_tango7174.jpg/330px-Jerusalem_Gethsemane_tango7174.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Gethsemane"
   },
   {
     "id": "place:golgotha",
@@ -6221,7 +6272,11 @@
       "Psalms 22:1",
       "Zechariah 13:6"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Site of Jesus' crucifixion",
+    "wikipedia_summary": "Calvary or Golgotha, was a site immediately outside Roman Jerusalem's walls where, according to Christianity's four canonical gospels, Jesus was crucified.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Golgotha_%28Church_of_the_Holy_Sepulchre%29.jpg/330px-Golgotha_%28Church_of_the_Holy_Sepulchre%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Calvary"
   },
   {
     "id": "place:sinai",
@@ -6609,7 +6664,11 @@
       "Ruth 4:22",
       "Zechariah 12:8"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Mountain in the Sinai Peninsula",
+    "wikipedia_summary": "Mount Sinai, also known as Jabal Musa, is a mountain on the Sinai Peninsula of Egypt. It is one of several locations claimed to be the biblical Mount Sinai, the place where, according to the sacred scriptures of the three major Abrahamic religions, the Hebrew prophet Moses received the Ten Commandments from God.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Sinai_from_the_southwest.jpg/330px-Mount_Sinai_from_the_southwest.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Mount_Sinai"
   },
   {
     "id": "place:egypt",
@@ -7519,7 +7578,11 @@
       "Zechariah 10:10",
       "Zechariah 14:18"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Cradle of civilization in North Africa",
+    "wikipedia_summary": "Ancient Egypt was a cradle of civilization concentrated along the lower reaches of the Nile River in the eastern corner of North Africa. It emerged from prehistoric Egypt around 3150 BC, when Upper and Lower Egypt were united by Menes, who is believed by the majority of Egyptologists to have been the same person as Narmer. The history of ancient Egypt unfolded as a series of stable kingdoms interspersed by the \"Intermediate Periods\" of relative instability. These stable kingdoms existed in one of three periods: the Old Kingdom of the Early Bronze Age; the Middle Kingdom of the Middle Bronze Ag",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Ancient_Egypt_map-en.svg/330px-Ancient_Egypt_map-en.svg.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ancient_Egypt"
   },
   {
     "id": "place:babylon",
@@ -8036,7 +8099,11 @@
       "Zephaniah 3:20",
       "Zephaniah 3:9"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Ancient Mesopotamian city in Iraq",
+    "wikipedia_summary": "Babylon was an ancient city located on the lower Euphrates river in southern Mesopotamia, within modern-day Hillah, Iraq, about 85 kilometres south of modern-day Baghdad. Babylon functioned as the main cultural and political centre of the Akkadian-speaking region of Babylonia. Its rulers established two important empires in antiquity, the 19th–16th century BC Old Babylonian Empire, and the 7th–6th century BC Neo-Babylonian Empire. Babylon was also used as a regional capital of other empires, such as the Achaemenid Empire. Babylon was one of the most important urban centres of the ancient Near ",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Ishtar_Gate.jpg/330px-Ishtar_Gate.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Babylon"
   },
   {
     "id": "place:nineveh",
@@ -8233,7 +8300,11 @@
       "Revelation 16:21",
       "Revelation 17:7"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Ancient Assyrian city",
+    "wikipedia_summary": "Nineveh was an ancient Near Eastern city of Upper Mesopotamia, located in the modern-day city of Mosul in northern Iraq. It is located on the eastern bank of the Tigris River and was the capital and largest city of the Neo-Assyrian Empire, and potentially the wealthiest city in the ancient world. Today, it is a common name for the half of Mosul that lies on the eastern bank of the Tigris, and the country's Nineveh Governorate takes its name from it.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Nineveh_-_Mashki_Gate.jpg/330px-Nineveh_-_Mashki_Gate.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Nineveh"
   },
   {
     "id": "place:damascus",
@@ -8489,7 +8560,11 @@
       "Philippians 3:6",
       "Song Of Solomon 8:14"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Capital city of Syria",
+    "wikipedia_summary": "Damascus (دِمَشْق) is the capital and largest city of Syria. It is the oldest capital city in the world. Known colloquially in Syria as aš-Šām and dubbed, poetically, the \"City of Jasmine\", Damascus is a major cultural center of the Levant and the Arab world.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Damascus_from_qasioun_mountain.jpg/330px-Damascus_from_qasioun_mountain.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Damascus"
   },
   {
     "id": "place:samaria",
@@ -8780,7 +8855,11 @@
       "Revelation 14:18",
       "Song Of Solomon 8:14"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Region of ancient Israel",
+    "wikipedia_summary": "Samaria, the Hellenized form of the Hebrew name Shomron, is used as a historical and biblical name for the central region of the Land of Israel. It is bordered by Judea to the south, Galilee to the north, the Jordan River to the east, and the Mediterranean Sea to the west. The region is known in Arabic under two names, Samirah, and Mount Nablus.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Views_from_Sebastia_18.jpg/330px-Views_from_Sebastia_18.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Samaria"
   },
   {
     "id": "place:bethany",
@@ -9119,7 +9198,11 @@
       "Matthew 15:32",
       "Matthew 4:19"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Ancient Jewish settlement in the Golan Heights",
+    "wikipedia_summary": "Bethsaida, also known as Julias or Julia, is a place mentioned in the New Testament. Julias lay in an administrative district known as Gaulonitis, now the Golan Heights.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Ruins_of_Bethsaida_village_in_summer_2011_%287%29.JPG/330px-Ruins_of_Bethsaida_village_in_summer_2011_%287%29.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Bethsaida"
   },
   {
     "id": "place:cana",
@@ -9271,7 +9354,11 @@
       "Luke 5:14",
       "Mark 7:4"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Historical place in Galilee",
+    "wikipedia_summary": "Cana of Galilee is the location of the Wedding at Cana, at which the miracle of turning water into wine took place in the Gospel of John.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Cana_of_Galilee._90.Holy_land_photographed._Daniel_B._Shepp._1894-1.jpg/330px-Cana_of_Galilee._90.Holy_land_photographed._Daniel_B._Shepp._1894-1.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Cana"
   },
   {
     "id": "place:emmaus",
@@ -9432,7 +9519,11 @@
       "Mark 16:20",
       "Matthew 28:16"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Ancient village near Jerusalem",
+    "wikipedia_summary": "Emmaus is a town mentioned in the Gospel of Luke of the New Testament. Luke reports that Jesus appeared, after his death and resurrection, before two of his disciples while they were walking on the road to Emmaus.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Emmaus_Nicopolis_basilica.JPG/330px-Emmaus_Nicopolis_basilica.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Emmaus"
   },
   {
     "id": "place:mount_of_olives",
@@ -9665,7 +9756,11 @@
       "Zechariah 14:2",
       "Zechariah 14:4"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Mountain in East Jerusalem",
+    "wikipedia_summary": "The Mount of Olives or Mount Olivet is a mountain ridge in East Jerusalem, east of and adjacent to Jerusalem's Old City. It is named for the olive groves that once covered its slopes. The southern part of the mount was the Silwan necropolis, attributed to the elite of the ancient Kingdom of Judah. The western slopes of the mount, those facing Jerusalem, have been used as a Jewish cemetery for over 3,000 years and holds approximately 150,000 graves, making it central in the tradition of Jewish cemeteries. Atop the hill lies the Palestinian neighbourhood of At-Tur, a former village that is now p",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/2013-Aerial-Mount_of_Olives.jpg/330px-2013-Aerial-Mount_of_Olives.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Mount_of_Olives"
   },
   {
     "id": "place:temple_mount",
@@ -9931,7 +10026,11 @@
       "Revelation 7:17",
       "Ruth 2:1"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Religious site in Jerusalem",
+    "wikipedia_summary": "The Temple Mount is a hill in the Old City of Jerusalem. Once the site of two successive Temples in Jerusalem, it is now home to the Islamic compound known as al-Aqsa, which includes the al-Aqsa Mosque and the Dome of the Rock. It has been venerated as a holy site for thousands of years, including in Judaism, Christianity and Islam.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Jerusalem-2013%282%29-Aerial-Temple_Mount-%28south_exposure%29.jpg/330px-Jerusalem-2013%282%29-Aerial-Temple_Mount-%28south_exposure%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Temple_Mount"
   },
   {
     "id": "place:dead_sea",
@@ -10214,7 +10313,11 @@
       "Romans 15:26",
       "Zechariah 14:8"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Salt lake in the Levant",
+    "wikipedia_summary": "The Dead Sea, also known by other names, is a landlocked salt lake bordered by Jordan to the east, the West Bank to the west and Israel to the southwest. It lies in the endorheic basin of the Jordan Rift Valley, and its main tributary is the Jordan River.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Dead_Sea_beach_00.JPG/330px-Dead_Sea_beach_00.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Dead_Sea"
   },
   {
     "id": "place:canaan",
@@ -10782,7 +10885,11 @@
       "Zechariah 1:6",
       "Zephaniah 2:5"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Region in the ancient Near East",
+    "wikipedia_summary": "Canaan was an ancient Semitic-speaking civilization and region of the Southern Levant during the late 2nd millennium BC. Canaan had significant geopolitical importance in the Late Bronze Age Amarna Period as the area where the spheres of interest of the Egyptian, Hittite, Mitanni, and Assyrian Empires converged or overlapped. Much of present-day knowledge about Canaan stems from 20th century archaeological excavations in this area at sites such as Tel Hazor, Tel Megiddo, En Esur, and Gezer.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/A_dictionary_of_the_Bible.._%281887%29_%2814781539332%29.jpg/330px-A_dictionary_of_the_Bible.._%281887%29_%2814781539332%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Canaan"
   },
   {
     "id": "place:judea",
@@ -11691,7 +11798,11 @@
       "Zechariah 9:9",
       "Zephaniah 3:20"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Region in the Levant",
+    "wikipedia_summary": "Judea or Judaea is a mountainous region of the Levant. Traditionally dominated by the city of Jerusalem, it is now part of Israel and the West Bank. The name is derived from the Hebrew name Yehudah, and was used during the Babylonian, Persian, Hellenistic, and Roman periods. Under the Hasmoneans, the Herodians, and the Romans, the term was applied to an area larger than the Judea of earlier periods. In the aftermath of the Bar Kokhba revolt, the Roman province of Judaea was renamed Syria Palaestina.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Giv%27at_Seled%2C_near_Tzafririm.jpg/330px-Giv%27at_Seled%2C_near_Tzafririm.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Judea"
   },
   {
     "id": "place:antioch",
@@ -11898,7 +12009,11 @@
       "Revelation 2:6",
       "Romans 4:17"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Hellenistic city, modern Antakya, Turkey",
+    "wikipedia_summary": "Antioch was a city located in northern Syria at the site of modern Antakya, Turkey. Founded in 300 BC, Antioch became one of the most important cities of the ancient eastern Mediterranean. The capital of the Hellenistic Seleucid Empire, it remained significant under the Roman and Byzantine Empires, and during the Crusades was the centre of the Principality of Antioch.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Antioch_on_the_Orontes_en.svg/330px-Antioch_on_the_Orontes_en.svg.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Antioch"
   },
   {
     "id": "place:rome",
@@ -12342,7 +12457,11 @@
       "Zechariah 1:19",
       "Zechariah 9:9"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Capital and largest city of Italy",
+    "wikipedia_summary": "Rome is the capital city and most populated comune (municipality) of Italy. It is also the administrative centre of the Lazio region and of the Metropolitan City of Rome. A special comune named Roma Capitale with a population of 2.7 million in an area of 1,287.36 km2 (497.1 mi2), Rome is the third most populous city in the European Union by population within city limits. The Metropolitan City of Rome Capital, with a population of 4.2 million, is the most populous metropolitan city in Italy. Its metropolitan area is the third-most populous within Italy. Rome is located in the central-western po",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/330px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Rome"
   },
   {
     "id": "place:ephesus",
@@ -12597,7 +12716,11 @@
       "Romans 1:31",
       "Titus 3:15"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Ancient Greek city in Anatolia",
+    "wikipedia_summary": "Ephesus was an ancient Greek city on the coast of Ionia, in present-day Selçuk in İzmir Province, Turkey. It was built in the 10th century BC on the site of Apasa, a city-state that was also the capital of Arzawa, by Attic and Ionian Greek colonists. During the Classical Greek era, it was one of twelve cities that were members of the Ionian League. The city came under the control of the Roman Republic in 129 BC.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Ephesus_Celsus_Library_Fa%C3%A7ade.jpg/330px-Ephesus_Celsus_Library_Fa%C3%A7ade.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Ephesus"
   },
   {
     "id": "place:corinth",
@@ -12852,7 +12975,11 @@
       "Romans 1:11",
       "Romans 6:3"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "City in the Peloponnese, Greece",
+    "wikipedia_summary": "Corinth is a city in the Peloponnese in Greece. The successor to the ancient city of Corinth, it is the capital of the Corinthia regional unit and the seat of the municipality of Corinth, of which it is a municipal unit. The municipal unit has a population of 38,485 according to the 2021 census, of whom 30,816 live within the city limits of Corinth.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Corinth_22.JPG/330px-Corinth_22.JPG",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Corinth"
   },
   {
     "id": "place:athens",
@@ -13024,7 +13151,11 @@
       "Numbers 16:22",
       "Revelation 3:7"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Capital and largest city of Greece",
+    "wikipedia_summary": "Athens is the capital and largest city of Greece. A significant coastal urban area in the Mediterranean, Athens is also the capital of the Attica region and is the southernmost capital on the European mainland. With its urban area's population numbering over 3.6 million, it is the eighth-largest urban area in the European Union (EU). The Municipality of Athens, which constitutes a small administrative unit of the entire urban area, had a population of 643,452 in 2021, within its official limits, and a land area of 38.96 square kilometres.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg/330px-Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Athens"
   },
   {
     "id": "place:bountiful",
@@ -13257,7 +13388,7 @@
       "city of Zarahemla",
       "land of Zarahemla"
     ],
-    "wikipedia_title": null,
+    "wikipedia_title": "Zarahemla",
     "excerpts": [
       {
         "text": "The Lord inspires the righteous to flee before suffering descends on those who remain: Noah boards the ark; Abraham leaves Ur and Haran; Lot is led out of Sodom; Jacob flees across the Jordan to escape from his brother Esau; Lehi leaves Jerusalem before its destruction; Nephi and his followers are spared the wrath of Laman and Lemuel by fleeing; Mosiah abandons the land of Nephi to discover the…",
@@ -13569,7 +13700,11 @@
       "Psalms 35:13",
       "Words Of Mormon 1:18"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Nephite capital in the Book of Mormon",
+    "wikipedia_summary": "Zarahemla is a land in the Book of Mormon that for much of the narrative functions as the capital of the Nephites, their political and religious center. Zarahemla has been the namesake of multiple communities in the United States, has been alluded to in literature that references Mormonism, and has been portrayed in artwork depicting Book of Mormon content.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Baptism_of_Limhi%2C_by_George_Ottinger.png/330px-Baptism_of_Limhi%2C_by_George_Ottinger.png",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Zarahemla"
   },
   {
     "id": "place:land_of_nephi",
@@ -14677,7 +14812,7 @@
     "variants": [
       "land of Helam"
     ],
-    "wikipedia_title": null,
+    "wikipedia_title": "Helam",
     "excerpts": [
       {
         "text": "Alma's people \"pitched their tents\" after fleeing to Helam, but then they \"began to build buildings\" (Mosiah 23:5).",
@@ -14816,7 +14951,10 @@
       "Mosiah 8:21",
       "Mosiah 8:7"
     ],
-    "doc_ids": []
+    "doc_ids": [],
+    "desc": "Place in Israel",
+    "wikipedia_summary": "Helam is a Hebrew Bible place name. According to 2 Samuel 10:15-18, Helam was the site of King David's victory over the Syrians under Hadadezer. It may be associated with modern Alma, Israel, about 55 km (34 mi) east of the Sea of Galilee.",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Helam"
   },
   {
     "id": "place:lehi_nephi",
