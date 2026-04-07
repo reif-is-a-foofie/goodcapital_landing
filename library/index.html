@@ -672,6 +672,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text);
 .ep-wiki { font-size: 11px; color: var(--accent); text-decoration: none; display: inline-block; margin-top: 5px; }
 .ep-wiki:hover { text-decoration: underline; }
 .ep-section { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 12px 16px 5px; }
+.ep-desc { font-size: 13px; color: var(--fg); line-height: 1.55; padding: 10px 16px 8px; border-bottom: 1px solid var(--divider); }
 .ep-excerpt { padding: 10px 16px; border-bottom: 1px solid var(--divider); }
 .ep-excerpt-text { font-family: 'EB Garamond', Georgia, serif; font-size: 14px; line-height: 1.75; font-style: italic; color: var(--text); padding-left: 12px; border-left: 2px solid rgba(156,122,77,0.3); }
 .ep-excerpt-attr { font-size: 11px; color: var(--muted); margin-top: 5px; padding-left: 12px; }
@@ -1689,6 +1690,59 @@ function renderExcerpts(excerpts, maxCount) {
     return html;
 }
 
+// Scan plain verse text for known people/places/things; return {persons,places,things} as ID arrays
+function scanVerseEntities(verseText) {
+    var text = verseText.toLowerCase();
+    var foundPersons = {}, foundPlaces = {}, foundThings = {};
+
+    // Scripture people (longest variants first)
+    var spKeys = Object.keys(entityIndex).filter(function(k) {
+        return (entityIndex[k] || '').startsWith('person:');
+    }).sort(function(a, b) { return b.length - a.length; });
+    spKeys.forEach(function(variant) {
+        var idx = text.indexOf(variant);
+        if (idx === -1) return;
+        // Require word boundary (not mid-word)
+        var before = idx > 0 ? text[idx - 1] : ' ';
+        var after  = idx + variant.length < text.length ? text[idx + variant.length] : ' ';
+        if (/[a-z]/.test(before) || /[a-z]/.test(after)) return;
+        var pid = entityIndex[variant];
+        var entity = entityById[pid];
+        // Only include scripture people (they have a 'group' field), not modern attribution names
+        if (entity && entity.group) foundPersons[pid] = true;
+    });
+
+    // Places
+    var plKeys = Object.keys(placeIndex).sort(function(a, b) { return b.length - a.length; });
+    plKeys.forEach(function(variant) {
+        if (variant.length < 4) return;
+        var idx = text.indexOf(variant);
+        if (idx === -1) return;
+        var before = idx > 0 ? text[idx - 1] : ' ';
+        var after  = idx + variant.length < text.length ? text[idx + variant.length] : ' ';
+        if (/[a-z]/.test(before) || /[a-z]/.test(after)) return;
+        foundPlaces[placeIndex[variant]] = true;
+    });
+
+    // Things
+    var thKeys = Object.keys(thingIndex).sort(function(a, b) { return b.length - a.length; });
+    thKeys.forEach(function(variant) {
+        if (variant.length < 4) return;
+        var idx = text.indexOf(variant);
+        if (idx === -1) return;
+        var before = idx > 0 ? text[idx - 1] : ' ';
+        var after  = idx + variant.length < text.length ? text[idx + variant.length] : ' ';
+        if (/[a-z]/.test(before) || /[a-z]/.test(after)) return;
+        foundThings[thingIndex[variant]] = true;
+    });
+
+    return {
+        persons: Object.keys(foundPersons),
+        places:  Object.keys(foundPlaces),
+        things:  Object.keys(foundThings),
+    };
+}
+
 function renderChips(ids, type) {
     if (!ids || !ids.length) return '';
     var labels = {person: 'People', place: 'Places', thing: 'Things', topic: 'Topics'};
@@ -1791,26 +1845,38 @@ function openEntityProfile(entityId) {
     var entity = entityById[entityId];
     if (!entity) return;
 
-    // Build excerpts from quote data in donaldsonNotes (already loaded)
-    // For now use entity.doc_ids to show their talks
+    var extraHtml = '';
+
+    // Scripture figure: show description and verse appearances
+    if (entity.group && entity.desc) {
+        extraHtml += '<div class="ep-desc">' + escapeHtml(entity.desc) + '</div>';
+    }
+    if (entity.group && entity.scripture_refs && entity.scripture_refs.length) {
+        extraHtml += '<div class="ep-section">Scripture Appearances (' + entity.scripture_refs.length + ')</div>'
+            + '<div class="ep-scripture-list">';
+        entity.scripture_refs.slice(0, 40).forEach(function(ref) {
+            extraHtml += '<span class="ep-scripture-ref" data-verse-ref="' + escapeHtml(ref.label) + '">'
+                + escapeHtml(ref.label) + '</span>';
+        });
+        extraHtml += '</div>';
+    }
+
+    extraHtml += renderChips(entity.related_places || [], 'place')
+        + renderChips(entity.related_things || [], 'thing')
+        + renderChips(entity.related_topics || [], 'topic');
+
+    // Modern LDS figure: show their talks
     var talks = (entity.doc_ids || []).filter(function(d) { return sourceMeta[d]; });
-    var talksHtml = '';
     if (talks.length) {
-        talksHtml += '<div class="ep-section">Talks in This Corpus (' + talks.length + ')</div>';
+        extraHtml += '<div class="ep-section">Talks in This Corpus (' + talks.length + ')</div>';
         talks.slice(0, 15).forEach(function(docId) {
             var m = sourceMeta[docId];
-            talksHtml += '<div class="ep-talk-row" data-doc="' + escapeHtml(docId) + '">'
+            extraHtml += '<div class="ep-talk-row" data-doc="' + escapeHtml(docId) + '">'
                 + '<div class="ep-talk-label">' + escapeHtml(m.label || docId) + '</div>'
                 + '<div class="ep-talk-meta">' + escapeHtml(m.collection || '') + '</div>'
                 + '</div>';
         });
     }
-
-    var extraHtml = ''
-        + renderChips(entity.related_places || [], 'place')
-        + renderChips(entity.related_things || [], 'thing')
-        + renderChips(entity.related_topics || [], 'topic')
-        + talksHtml;
 
     openProfilePanel(entity, 'Person', '👤', extraHtml);
 }
@@ -1981,6 +2047,19 @@ function openVerseDiscovery(ref) {
     document.getElementById('ch-word').textContent = 'Verse commentary';
     document.getElementById('ch-hint').textContent = ref;
     var html = '';
+
+    // ── People · Places · Things in this verse ──
+    var verseEl = document.getElementById('v' + vnum);
+    var verseText = verseEl ? (verseEl.querySelector('.verse-text') || verseEl).textContent : '';
+    if (verseText) {
+        var ents = scanVerseEntities(verseText);
+        if (ents.persons.length || ents.places.length || ents.things.length) {
+            html += '<div class="disc-section">People · Places · Things</div>';
+            html += renderChips(ents.persons, 'person');
+            html += renderChips(ents.places, 'place');
+            html += renderChips(ents.things, 'thing');
+        }
+    }
 
     // ── Key words ──
     if (donaWords.length) {
