@@ -37,6 +37,7 @@ Other commands
 
 import argparse
 import json
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -58,6 +59,42 @@ def _append(entry: dict) -> None:
     LEDGER.parent.mkdir(parents=True, exist_ok=True)
     with LEDGER.open("a", encoding="utf-8") as fh:
         fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+
+def _push_ledger() -> None:
+    """Stage task-ledger.jsonl and push to origin so distributed agents see current state."""
+    try:
+        subprocess.run(
+            ["git", "add", str(LEDGER)],
+            cwd=str(REPO), capture_output=True, check=True
+        )
+        result = subprocess.run(
+            ["git", "diff", "--cached", "--name-only"],
+            cwd=str(REPO), capture_output=True, text=True
+        )
+        if "task-ledger.jsonl" in result.stdout:
+            subprocess.run(
+                ["git", "commit", "-m", f"ledger: {entry_note()}"],
+                cwd=str(REPO), capture_output=True, check=True
+            )
+        subprocess.run(
+            ["git", "push", "origin", "main"],
+            cwd=str(REPO), capture_output=True, check=True
+        )
+        print("  [ledger] pushed to origin")
+    except subprocess.CalledProcessError as e:
+        print(f"  [ledger] push failed: {e.stderr.decode() if e.stderr else e}", file=sys.stderr)
+
+
+def entry_note() -> str:
+    """Return a short commit message fragment based on the last ledger event."""
+    events = _load_events()
+    if not events:
+        return "update"
+    last = events[-1]
+    kind = last.get("event", "update")
+    tid  = last.get("task_id", "")
+    return f"{kind} {tid}".strip()
 
 
 def _load_events() -> list[dict]:
@@ -90,7 +127,7 @@ def _project(events: list[dict]) -> dict[str, dict]:
 
         kind = ev.get("event", ev.get("type", ""))
 
-        if kind in ("task_queued", "queue") and tid not in tasks:
+        if kind in ("task_queued", "queue", "task_registered") and tid not in tasks:
             _next_seq[0] += 1
             tasks[tid] = {
                 "task_id":    tid,
@@ -208,6 +245,7 @@ def cmd_claim(args) -> None:
         "ts":      utc_now(),
     })
     print(f"Claimed {tid} for agent {args.agent}.")
+    _push_ledger()
 
 
 def cmd_next(args) -> None:
@@ -234,6 +272,7 @@ def cmd_next(args) -> None:
         "agent":   args.agent,
         "ts":      utc_now(),
     })
+    _push_ledger()
     print(json.dumps({
         "task_id":     t["task_id"],
         "title":       t["title"],
@@ -263,6 +302,7 @@ def cmd_complete(args) -> None:
         entry["notes"] = args.notes
     _append(entry)
     print(f"Completed {tid}.")
+    _push_ledger()
 
 
 def cmd_reopen(args) -> None:

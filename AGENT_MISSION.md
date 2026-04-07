@@ -39,3 +39,28 @@ A change is better when it helps a reader:
 - reach a stronger source faster
 - keep traversing without confusion
 - trust that the text on screen is clean, accurate, and readable
+
+## Agent Federation
+
+This project runs distributed agents that each pull the repository, claim a task
+from the shared ledger, execute it, and push results back. Every claim and completion
+is pushed to origin immediately so all agents see current state.
+
+Before starting any work:
+
+```bash
+git pull origin main
+python3 lds_pipeline/task_ledger.py next --agent YourAgentName
+```
+
+When done:
+
+```bash
+git add <files>
+git commit -m "T-XXXX: description"
+git push origin main
+python3 lds_pipeline/task_ledger.py complete --task-id T-XXXX --agent YourAgentName \
+  --commit $(git rev-parse --short HEAD) --notes "what was done"
+```
+
+Full design system reference: `AGENT_GUIDELINES.md`
