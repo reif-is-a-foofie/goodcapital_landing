@@ -52530,10 +52530,10 @@
       }
     ],
     "ref_count": 456,
-    "wikipedia_title": "Jacob",
-    "wikipedia_summary": "Jacob, later given the name Israel, is a Hebrew patriarch of the Abrahamic religions. He first appears in the Torah, where he is described in the Book of Genesis as a son of Isaac and Rebecca. Accordingly, alongside his older fraternal twin brother Esau, Jacob's paternal grandparents are Abraham and Sarah and his maternal grandfather is Bethuel, whose wife is not mentioned. He is said to have bought Esau's birthright and, with his mother's help, deceived his aging father to bless him instead of Esau. Then, following a severe drought in his homeland Canaan, Jacob and his descendants migrated to",
-    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Jan_Victors_-_Jacob_Seeking_the_Forgiveness_of_Esau_-_79.330_-_Indianapolis_Museum_of_Art_%28cropped%29.jpg/330px-Jan_Victors_-_Jacob_Seeking_the_Forgiveness_of_Esau_-_79.330_-_Indianapolis_Museum_of_Art_%28cropped%29.jpg",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Jacob"
+    "wikipedia_title": "Jacob (Book of Mormon)",
+    "wikipedia_summary": "In the Book of Mormon, Jacob is a younger brother of the prophet Nephi, the keeper of the small plates of Nephi after Nephi's death, and narrates the Book of Jacob, which in the frame narrative of the overall Book of Mormon he authors.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Lehi_Blesses_His_Posterity%2C_cropped.jpg/330px-Lehi_Blesses_His_Posterity%2C_cropped.jpg",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Jacob_(Book_of_Mormon)"
   },
   {
     "id": "person:nephi_1",
@@ -54795,7 +54795,11 @@
         "label": "Words Of Mormon 1:13"
       }
     ],
-    "ref_count": 450
+    "ref_count": 450,
+    "wikipedia_title": "Nephi, son of Lehi",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Nephi,_son_of_Lehi",
+    "wikipedia_summary": "Nephi is one of the central figures described in the Book of Mormon. In the Latter Day Saint movement, he is described as the son of Lehi, a prophet, and the founder of the Nephite people. The Book of Mormon also describes him as the author of its first two books, First and Second Nephi.",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Nephi%2C_story_of_Lehi%2C_pt_30.png"
   },
   {
     "id": "person:nephi_son_helaman",
@@ -57057,7 +57061,10 @@
         "label": "Words Of Mormon 1:13"
       }
     ],
-    "ref_count": 450
+    "ref_count": 450,
+    "wikipedia_title": "Nephi, son of Helaman",
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Nephi,_son_of_Helaman",
+    "wikipedia_summary": "The Book of Helaman is one of the books that make up the Book of Mormon, a text held sacred by churches within the Latter Day Saint movement, including the Church of Jesus Christ of Latter-day Saints. The book continues the history of the Nephites and the Lamanites from approximately 50 BC to 1 BC. It discusses political unrest among the Nephites and the formation of a group of secret dissenters called the Gadianton Robbers. Helaman, son of Helaman leads the Nephites for a time, and his sons Nephi and Lehi go on a successful mission to the Lamanites. When Nephi returns home, he correctly ident"
   },
   {
     "id": "person:joseph_egypt",
@@ -61226,10 +61233,10 @@
       }
     ],
     "ref_count": 414,
-    "wikipedia_title": "Joseph",
-    "wikipedia_summary": "Joseph is a common male name, derived from the Hebrew Yosef. \"Joseph\" is used, along with \"Josef\", mostly in English, French and partially German languages. This spelling is also found as a variant in the languages of the modern-day Nordic countries. In Portuguese and Spanish, the name is \"José\". In Arabic, including in the Quran, the name is spelled يوسف, Yūsuf. In Kurdish (Kurdî), the name is Ûsiv or Yûsiv, Persian, the name is Yousef, and in Turkish it is Yusuf. In Pashto the name is spelled Esaf (ايسپ) and in Malayalam it is spelled Ousep (ഔസേപ്പ്). In Tamil, it is spelled as Yosepu (யோசேப",
+    "wikipedia_title": "Joseph (Book of Mormon)",
+    "wikipedia_summary": "This list is intended as a compendium of individuals mentioned in the Book of Mormon.",
     "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Peter_von_Cornelius_002.jpg/330px-Peter_von_Cornelius_002.jpg",
-    "wikipedia_url": "https://en.wikipedia.org/wiki/Joseph"
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Joseph_(Book_of_Mormon)"
   },
   {
     "id": "person:aaron_ot",
@@ -65288,7 +65295,7 @@
       }
     ],
     "ref_count": 403,
-    "wikipedia_title": "Aaron",
+    "wikipedia_title": "Aaron (Book of Mormon)",
     "wikipedia_summary": "According to the Old Testament of the Bible, Aaron was an Israelite prophet, high priest, and the elder brother of Moses. Information about Aaron comes exclusively from religious texts, such as the Hebrew Bible, the New Testament, and the Quran.",
     "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/El_sumo_sacerdote_Aar%C3%B3n_%28Museo_del_Prado%29_%28cropped%29.jpg/330px-El_sumo_sacerdote_Aar%C3%B3n_%28Museo_del_Prado%29_%28cropped%29.jpg",
     "wikipedia_url": "https://en.wikipedia.org/wiki/Aaron"
@@ -95943,7 +95950,10 @@
         "label": "Alma 3:6"
       }
     ],
-    "ref_count": 35
+    "ref_count": 35,
+    "wikipedia_title": "Sam (Book of Mormon)",
+    "wikipedia_summary": "Sam is a minor character in the early part of the Book of Mormon narrative. He is the third son of Lehi and the older brother of Nephi, the narrator of the Book of Mormon's first two books. Sam is almost always allied with Nephi in conflicts with their older brothers, Laman and Lemuel. In the later books of the Book of Mormon, Sam's descendants are combined with Nephi's descendants and simply called \"Nephites.\"",
+    "wikipedia_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Lehi_Blesses_His_Posterity%2C_cropped.jpg/330px-Lehi_Blesses_His_Posterity%2C_cropped.jpg"
   },
   {
     "id": "person:micah",
